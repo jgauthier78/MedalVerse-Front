@@ -74,8 +74,12 @@ Adresses :
 https://medium.com/@pinkmoonfinance/how-to-use-pinksale-matic-testnet-8788e6a09e10
 
  - Créer un Id projet pour le RPC :
-https://rpc.maticvigil.com/
+  https://rpc.maticvigil.com/
+ 
  - Block Explorer :
+ https://mumbai.polygonscan.com/
+
+ - Faucet :
 https://faucet.polygon.technology/
 
 
