@@ -15,11 +15,6 @@ Technos. utlisées :
  - React 17 / Bootstrap 5 (5.1.3)
   - react-i18next
 
-
-(1) Le prix provient d'un Oracle Chainlink
-
-(2) Le prix provient d'un faux Oracle, il est modifiable par le gestionnaire du contrat
-
 **Contrats Solidity :** 
 
  - Contrat 1
