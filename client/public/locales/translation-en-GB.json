@@ -1,0 +1,48 @@
+{
+  "simpleStorageContract":
+    {
+      "title" : "Good to Go!",
+      "status" : "Your Truffle Box is installed and ready.",
+      "subtitle" : "Smart Contract Example",
+      "notice1" : "If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).",
+      "notice1DefaultValue" : "5",
+      "notice2" : "Try changing the value stored on line 40 of App.js.",
+      "getValue" : "The stored value is:",
+      "provideNewValue" : "Provide a new stored value to store : ",
+      "setValueButton" : "Set",
+
+      "owner" : "Owner : "
+
+    }
+  ,
+  "account":
+    {
+      "address" : "address : "
+    },
+  "Web3":
+    {
+      "loading": "Merci de patienter pendant le chargement"
+    },
+
+  "Formats" :
+    {
+      "date" : "fr-FR"
+    },
+
+  "Errors":
+    {
+      "contractUndefined" : "Can't load contract. Wrong blockchain ?",
+      "4001": {
+        "title" : "Transaction signature denied",
+        "message":"User denied message signature",
+        "variant" : "warning"
+      },
+      "default": {
+        "title" : "Erreur",
+        "message":"Erreur",
+        "variant" : "danger"
+      }
+      
+    }
+  
+}

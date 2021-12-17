@@ -1,0 +1,47 @@
+{
+  "simpleStorageContract":
+    {
+      "title" : "Prêt",
+      "status" : "L'application est prête",
+      "subtitle" : "Smart contrat d'exemple",
+      "notice1" : "Si le contrat est compilé et déployé correctement; la valeur par défaut affichée devrait être ",
+      "notice1DefaultValue" : "5",
+      "notice2" : "Essayez de modifier la valeur enregistrée à la ligne 40 de l'application App.js.",
+      "getValue" : "La valeur enregistrée est : ",
+      "provideNewValue" : "Indiquez une nouvelle valeur à enregistrer",
+      "setValueButton" : "Assigner",
+
+      "owner" : "Propriétaire : "
+    }
+  ,
+  "account":
+    {
+      "address" : "Adresse : : "
+    },
+  "Web3":
+    {
+      "loading": "Merci de patienter pendant le chargement"
+    },
+
+  "Formats" :
+    {
+      "date" : "fr-FR"
+    },
+
+  "Errors":
+    {
+      "contractUndefined" : "Can't load contract. Wrong blockchain ?",
+      "4001": {
+        "title" : "Transaction signature denied",
+        "message":"User denied message signature",
+        "variant" : "warning"
+      },
+      "default": {
+        "title" : "Erreur",
+        "message":"Erreur",
+        "variant" : "danger"
+      }
+      
+    }
+  
+}
