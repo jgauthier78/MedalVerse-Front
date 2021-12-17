@@ -17,7 +17,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -30,7 +31,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -445,7 +447,7 @@
   "sourceMap": "55:311:0:-:0;;;207:50;;;;;;;;;-1:-1:-1;234:5:0;:18;;-1:-1:-1;;;;;;234:18:0;242:10;234:18;;;55:311;;;;;;",
   "deployedSourceMap": "55:311:0:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;103:36;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;79:20;;;:::i;:::-;;;;;;;:::i;261:103::-;;;;;;:::i;:::-;;:::i;:::-;;103:36;;;;:::o;79:20::-;;;-1:-1:-1;;;;;79:20:0;;:::o;261:103::-;190:5;;-1:-1:-1;;;;;190:5:0;176:10;:19;172:26;;;323:24:::1;:36:::0;;;172:26;261:103;:::o;14:190:2:-;;126:2;114:9;105:7;101:23;97:32;94:2;;;147:6;139;132:22;94:2;-1:-1:-1;175:23:2;;84:120;-1:-1:-1;84:120:2:o;209:203::-;-1:-1:-1;;;;;373:32:2;;;;355:51;;343:2;328:18;;310:102::o;417:177::-;563:25;;;551:2;536:18;;518:76::o",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8;\n\ncontract Migrations {\n  address public owner;\n  uint public last_completed_migration;\n\n  modifier restricted() {\n    if (msg.sender == owner) _;\n  }\n\n  constructor() public {\n    owner = msg.sender;\n  }\n\n  function setCompleted(uint completed) public restricted {\n    last_completed_migration = completed;\n  }\n}\n",
-  "sourcePath": "C:\\DEV\\ETH\\Alyra\\MedalVerse\\react-truffle\\contracts\\Migrations.sol",
+  "sourcePath": "/home/pec/Projets/MedalVerse/MedalVerse-Front/contracts/Migrations.sol",
   "ast": {
     "absolutePath": "project:/contracts/Migrations.sol",
     "exportedSymbols": {
@@ -1230,8 +1232,8 @@
     "3333": {
       "events": {},
       "links": {},
-      "address": "0x9A6041D25B77A16b0A63c6B157CD49ABBF2aE966",
-      "transactionHash": "0xafc30bc90cffd32db57f1e838cc3471db71e2d45bec44c4a5e3092bfdad6a8ea"
+      "address": "0x706338244143121D7D751fC6764feF62D9d97dBB",
+      "transactionHash": "0x99f9a35f57e22149d2f6a7a7e49f8ead4e6620304bb31ca903dc577373440a28"
     },
     "80001": {
       "events": {},
@@ -1241,7 +1243,8 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-12-16T20:58:03.813Z",
+  "updatedAt": "2021-12-17T13:30:49.010Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {},
