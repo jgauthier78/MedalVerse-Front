@@ -34,7 +34,7 @@ contract OrganizerHandler is Ownable {
 	event OganizationAdded(address _user, uint256 indx);
 
 	// Methods -------------------------------
-	function addOrganizer(address _user) public onlyOwner isNotNull(_user) {
+	function addOrganizer(address _user) internal onlyOwner isNotNull(_user) {
 		uint256 indx = organizerList.length;
 		Organizer storage _organizer = organizerList.push();
 		_organizer._user = _user;
@@ -44,6 +44,12 @@ contract OrganizerHandler is Ownable {
 		emit OrganizerAdded(_user, indx);
 	}
 
+	// Methods -------------------------------
+	///@dev add an organization to the list of orgs
+	///@param _user admin of the organization
+	///@param _name UI dislay name
+	///@param _description UI description text
+	///@param _logoURI Link to the icon logo
 	function addOrganization(
 		address _user,
 		string memory _name,
@@ -56,10 +62,16 @@ contract OrganizerHandler is Ownable {
 		_org.description = _description;
 		_org.logoURI = _logoURI;
 		_org.activ = true;
-		// aJOUTER: Set admin user
+
+		// add the user to the list of admin
+		organizationAddAdmin(_user, indx);
+
 		emit OganizationAdded(_user, indx);
 	}
 
+	///@dev add an admin to an org.
+	///@param _user admin of the organizatio
+	///@param orgId id of the organization
 	function organizationAddAdmin(address _user, uint256 orgId)
 		private
 		onlyOwner
