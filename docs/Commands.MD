@@ -23,5 +23,5 @@
 
 
 ##React
--  npm start
--  npm startBrave
+-  npm run start
+-  npm run startBrave
