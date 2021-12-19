@@ -7,7 +7,7 @@
       "notice1" : "If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).",
       "notice1DefaultValue" : "5",
       "notice2" : "Try changing the value stored on line 40 of App.js.",
-      "getValue" : "The stored value is:",
+      "getValue" : "Current stored value is:",
       "provideNewValue" : "Provide a new stored value to store : ",
       "setValueButton" : "Set",
 
@@ -23,7 +23,6 @@
           }
       }
 
-
     }
   ,
   "account":
@@ -32,7 +31,7 @@
     },
   "Web3":
     {
-      "loading": "Merci de patienter pendant le chargement"
+      "loading": "Please kindly wait while loading ..."
     },
 
   "Formats" :
