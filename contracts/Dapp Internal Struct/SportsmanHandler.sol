@@ -34,8 +34,8 @@ contract SportsmanHandler is Ownable {
 	// Methods -------------------------------
 	///@dev Register an author, given an address
 	///@param _user Address of the user to register as author
-	function addAuthor(address _user, uint256 _sportCategory)
-		private
+	function addSportsman(address _user, uint256 _sportCategory)
+		internal
 		onlyOwner
 		isNotNull(_user)
 	{

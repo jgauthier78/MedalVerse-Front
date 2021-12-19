@@ -29,22 +29,19 @@ contract MedalVerse is
 		_;
 	}
 
+	// Methods -------------------------------
 	function addNewUser(
 		address _userAddress,
 		string memory _iconURI,
 		string memory _userName,
-		string memory _email
+		string memory _email,
+		uint8 _role,
+		uint256 _sportsCategory
 	) public onlyOwner isNotNull(_userAddress) {
-		addUser(_userAddress, _iconURI, _userName, _email, 0);
-	}
+		addUser(_userAddress, _iconURI, _userName, _email, _role);
 
-	function addNewAuthor(
-		address _userAddress,
-		string memory _iconURI,
-		string memory _userName,
-		string memory _email
-	) public onlyOwner isNotNull(_userAddress) {
-		addUser(_userAddress, _iconURI, _userName, _email, 2);
-		addAuthor(_userAddress);
+		if ((_role & 2) == 2) addAuthor(_userAddress);
+		if ((_role & 4) == 4) addOrganizer(_userAddress);
+		if ((_role & 8) == 8) addSportsman(_userAddress, _sportsCategory);
 	}
 }

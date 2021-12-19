@@ -8,7 +8,10 @@ module.exports = async function (deployer) {
 
   console.log("MedalVerse Deployed ------------")
   console.log("Populating with Users")
-  await MVerse.addUser(accounts[1], "A.jpeg", "PaulP", "pol@gmail.com", 0, { from: accounts[0] })
+
+  MVerse.addNewUser(accounts[1], "1.jpeg", "Paul_Henry", "pol@gmail.com", 12, 0, { from: accounts[0] })
+
+
 
 
 };
