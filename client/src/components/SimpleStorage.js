@@ -35,42 +35,14 @@ const SimpleStorage = ( { simpleStorageValue, simpleStorageSet, handleError, sim
   const [ currentvalue, setCurrentValue ] = useState( simpleStorageValue )
 
   let intervalRef = useRef();
-  
+
   // ----------------------------------------
-/*
-  useEffect(() => {
-      const fetchBusinesses = () => {
-         return fetch("theURL", {method: "GET"}
-      )
-        .then(res => normalizeResponseErrors(res))
-        .then(res => {
-          return res.json();
-        })
-        .then(rcvdBusinesses => {
-          // some stuff
-        })
-        .catch(err => {
-          // some error handling
-        });
-    };
-    fetchBusinesses();
-  }, []);
-*/
-  // ----------------------------------------
-  /*
-  const updateValue =  async () =>
-  {
-      let val = await simpleStorageGet( ) ;
-      console.log("updateValue:simpleStorageGet=" + val)
-      setCurrentValue(val);
-  } // updateValue
-*/
 
 const updateValue = useCallback( async() => {
   let val = await simpleStorageGet( ) ;
   console.log("updateValue:simpleStorageGet=" + val)
   setCurrentValue(val);
-}, [])
+}, [simpleStorageGet])
 
   // ----------------------------------------
 
@@ -85,7 +57,6 @@ const updateValue = useCallback( async() => {
       return () => clearInterval( intervalRef.current ) ;
     }, [simpleStorageValue, simpleStorageGet, updateValue] // dependencies
   );
-
   
   // ----------------------------------------
 
@@ -140,7 +111,7 @@ const updateValue = useCallback( async() => {
     <Card.Text>{t("simpleStorageContract.subtitle")}</Card.Text>
     <Card.Text>{t("simpleStorageContract.notice1")}{t("simpleStorageContract.notice1DefaultValue")}</Card.Text>
     <Card.Text>{t("simpleStorageContract.notice2")}</Card.Text>
-    <Card.Text>{t("simpleStorageContract.getValue")}<b>{ /*simpleStorageValue*/ currentvalue }</b></Card.Text>
+    <Card.Text>{t("simpleStorageContract.getValue")}<b> { /*simpleStorageValue*/ currentvalue }</b></Card.Text>
     <Card.Text></Card.Text>
     <Card.Text></Card.Text>
     <Card.Text></Card.Text>

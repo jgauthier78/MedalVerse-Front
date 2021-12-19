@@ -24,7 +24,8 @@ i18n
     debug: true,
 
     backend: {
-      loadPath: '/locales/translation-{{lng}}.json'
+      loadPath: '/locales/translation-{{lng}}.json',
+      allowMultiLoading: true
     },
 
     interpolation: {
@@ -33,7 +34,7 @@ i18n
     ,
     // react i18next special options (optional)
     react: {
-    useSuspense: false,
+    // useSuspense: false,
   },
   });
 

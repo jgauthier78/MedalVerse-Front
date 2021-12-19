@@ -82,7 +82,6 @@ class MainApp extends Component
   render()
   {
     // Translation
-    const { t } = this.props;
     return (
       <Container className="vh-100 d-flex flex-column ">
 
