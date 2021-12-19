@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.21 <0.7.0;
+pragma solidity >=0.4.21 <0.9.0;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
@@ -7,7 +7,8 @@ import "../contracts/SimpleStorage.sol";
 
 contract TestSimpleStorage {
 
-  function testItStoresAValue() public {
+  function testItStoresAValue()
+  {
     SimpleStorage simpleStorage = SimpleStorage(DeployedAddresses.SimpleStorage());
 
     simpleStorage.set(89);

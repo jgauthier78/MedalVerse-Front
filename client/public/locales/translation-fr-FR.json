@@ -7,11 +7,22 @@
       "notice1" : "Si le contrat est compilé et déployé correctement; la valeur par défaut affichée devrait être ",
       "notice1DefaultValue" : "5",
       "notice2" : "Essayez de modifier la valeur enregistrée à la ligne 40 de l'application App.js.",
-      "getValue" : "La valeur enregistrée est : ",
+      "getValue" : "La valeur actuellement enregistrée est :",
       "provideNewValue" : "Indiquez une nouvelle valeur à enregistrer",
-      "setValueButton" : "Assigner",
+      "setValueButton" : "Enregistrer",
 
-      "owner" : "Propriétaire : "
+      "owner" : "Propriétaire : ",
+
+      "errors":
+      {
+        "setNewValue":
+          {
+            "message": "Erreur lors de l'affectation",
+            "level": "danger",
+            "title": "Assignation d'une nouvelle valeur"
+          }
+      }
+  
     }
   ,
   "account":
@@ -20,7 +31,7 @@
     },
   "Web3":
     {
-      "loading": "Merci de patienter pendant le chargement"
+      "loading": "Merci de patienter pendant le chargement ..."
     },
 
   "Formats" :

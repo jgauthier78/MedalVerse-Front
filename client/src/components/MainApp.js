@@ -11,19 +11,13 @@ import { withTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // Components
 import Container from 'react-bootstrap/Container';
-// import Card from 'react-bootstrap/Card';
-// import Button from 'react-bootstrap/Button';
-// import Form from 'react-bootstrap/Form';
-
-/* Icons */
-// import { Pencil } from 'react-bootstrap-icons';
 
 // Smartcontract(s) Interface(s)
 import simpleStorageContract from "../contracts/SimpleStorage.json";
 
 
 /* Utils Web3 */
-import { getWeb3, toChecksumAddress /*, isAddress*/ } from "../js/getWeb3";
+import { getWeb3, toChecksumAddress } from "../js/getWeb3";
 
 /* Composants React */
 import  { Web3Loader } from "./Status";
@@ -38,7 +32,7 @@ import { SimpleStorage } from "./SimpleStorage";
 /* Utils */
 // import  { truncateString } from "./AppUtils";
 
-/* CSS spécifiques */
+/* CSS */
 import "../styles/App.css";
 
 /*
@@ -88,7 +82,6 @@ class MainApp extends Component
   render()
   {
     // Translation
-    const { t } = this.props;
     return (
       <Container className="vh-100 d-flex flex-column ">
 
@@ -107,7 +100,7 @@ class MainApp extends Component
               <Toolbar owner={this.state.owner} connectedAccountAddr={this.state.connectedAccountAddr} />
           </Container>
 
-          <SimpleStorage simpleStorageValue={this.state.simpleStorageValue} simpleStorageSet={this.simpleStorage_set} handleError={this.handleError} />
+          <SimpleStorage simpleStorageValue={this.state.simpleStorageValue} simpleStorageSet={this.simpleStorage_set} handleError={this.handleError} simpleStorageGet={this.simpleStorage_get} />
 
         </Container>
       }
@@ -227,39 +220,39 @@ class MainApp extends Component
 /*
     const { erc20StakingContractInstance } = this.state;
 
-    if ( erc20StakingContractInstance !== undefined )
+    if ( xxxContractInstance !== undefined )
      {
-      var contractERC20StakingEvents = erc20StakingContractInstance.events.allEvents
+      var contractXxxxxEvents = xxxContractInstance.events.allEvents
       (
         { fromBlock: 'latest' },
         (error, result) =>
           {
             if (error)
             {
-              console.error("erc20StakingContractInstance: %s error:" + erc20StakingContractInstance.options.address + error ) ;
+              console.error("xxxContractInstance: %s error:" + xxxContractInstance.options.address + error ) ;
             // debug
             alert(error)
             }
           else
             {
-              console.info("erc20StakingContractInstance: %s result:" + erc20StakingContractInstance.options.address + result ) ;
+              console.info("xxxContractInstance: %s result:" + xxxContractInstance.options.address + result ) ;
             }
           }
       ); // contractInstanceVoting.events.allEvents
 
 
-      contractERC20StakingEvents.on('data', event =>
+      contractXxxxxEvents.on('data', event =>
         {
-          if (event.event === "Erc20VaultRemoved")
+          if (event.event === "EventXXX00")
             {
               this.refreshContractsData( ) ;
             }
-            else if (event.event === "Erc20VaultCreated")
+            else if (event.event === "EventXXX01")
             {
               this.refreshContractsData( ) ;
             }
-        }); // contractInstanceVotingEvents.on
-      } // erc20StakingContractInstance !== undefined
+        }); // contractXxxxxEvents.on
+      } // xxxContractInstance !== undefined
 */
   }; // initEventHandlers
 
@@ -492,7 +485,7 @@ simpleStorage_get = async( ) =>
     if ( simpleStorage_ContractInstance !== undefined )
     {
       value = await simpleStorage_ContractInstance.methods.get().call() ;
-    } // erc20StakingContractInstance!==undefined
+    } // simpleStorage_ContractInstance!==undefined
 
    } // try
   catch (error)

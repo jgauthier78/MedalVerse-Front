@@ -1,11 +1,13 @@
 // React
-import React from 'react';
+import React, { Suspense } from 'react';
+
 import ReactDOM from 'react-dom';
 
 import * as serviceWorker from './serviceWorker';
 
 // App
 import MainAppTranslated from './components/MainApp';
+import Loading from './components/Loading';
 
 // Translation
 // import i18n (needs to be bundled ;))
@@ -15,9 +17,11 @@ import './i18n';
 
 ReactDOM.render(
   <React.StrictMode>
+    <Suspense fallback={<Loading />}>
       <I18nextProvider i18n={i18next}>
-          <MainAppTranslated/>
+        <MainAppTranslated/>
       </I18nextProvider>
+    </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 );
