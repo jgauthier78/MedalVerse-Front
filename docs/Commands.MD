@@ -9,9 +9,9 @@ truffle
 truffle compile
 
 testnet
-truffle deploy --reset --network maticMumbaiTestnet
-truffle deploy --reset --network kovan
-truffle deploy --reset --network ropsten
+  truffle deploy --reset --network maticMumbaiTestnet
+  truffle deploy --reset --network kovan
+  truffle deploy --reset --network ropsten
 
 local
-truffle deploy --reset --network devlocalbenoist
+  truffle deploy --reset --network devlocalbenoist
