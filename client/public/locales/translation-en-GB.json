@@ -11,7 +11,18 @@
       "provideNewValue" : "Provide a new stored value to store : ",
       "setValueButton" : "Set",
 
-      "owner" : "Owner : "
+      "owner" : "Owner : ",
+
+      "errors":
+      {
+        "setNewValue":
+          {
+            "message": "Error while setting new value",
+            "level": "danger",
+            "title": "Set value error"
+          }
+      }
+
 
     }
   ,

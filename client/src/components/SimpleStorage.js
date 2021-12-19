@@ -1,5 +1,5 @@
 // React + Hooks
-import React, { useState /*, useEffect */ } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 /* Translation */
 import { useTranslation } from 'react-i18next';
@@ -27,42 +27,97 @@ import { Pencil } from 'react-bootstrap-icons';
 
 // ------------------------------------------
 
-const SimpleStorage = ( { simpleStorageValue, simpleStorageSet, handleError } ) =>
+const SimpleStorage = ( { simpleStorageValue, simpleStorageSet, handleError, simpleStorageGet } ) =>
 {
   const { t } = useTranslation();
-  const [value, setValue] = useState( "" )
+  const [ newValue, setNewValue ] = useState( "" )
+
+  const [ currentvalue, setCurrentValue ] = useState( simpleStorageValue )
+
+  let intervalRef = useRef();
   
+  // ----------------------------------------
+/*
+  useEffect(() => {
+      const fetchBusinesses = () => {
+         return fetch("theURL", {method: "GET"}
+      )
+        .then(res => normalizeResponseErrors(res))
+        .then(res => {
+          return res.json();
+        })
+        .then(rcvdBusinesses => {
+          // some stuff
+        })
+        .catch(err => {
+          // some error handling
+        });
+    };
+    fetchBusinesses();
+  }, []);
+*/
+  // ----------------------------------------
+  /*
+  const updateValue =  async () =>
+  {
+      let val = await simpleStorageGet( ) ;
+      console.log("updateValue:simpleStorageGet=" + val)
+      setCurrentValue(val);
+  } // updateValue
+*/
+
+const updateValue = useCallback( async() => {
+  let val = await simpleStorageGet( ) ;
+  console.log("updateValue:simpleStorageGet=" + val)
+  setCurrentValue(val);
+}, [])
+
+  // ----------------------------------------
+
+  useEffect
+  (
+    () =>
+    {
+      // actions
+      setCurrentValue(simpleStorageValue);
+      intervalRef.current = setInterval( updateValue, 10000);
+      // cleanup/unmount
+      return () => clearInterval( intervalRef.current ) ;
+    }, [simpleStorageValue, simpleStorageGet, updateValue] // dependencies
+  );
+
+  
+  // ----------------------------------------
+
   // Value event handler
   const handleOnNewValue = (e) =>
   {
       console.log("SimpleStorage::handleOnNewValue:e.target.value= '"+e.target.value+"'")
       const value = e.target.value
-      setValue(value);
+      setNewValue( value );
   } // handleOnAmountChange
+
+  // ----------------------------------------
 
   const onHandleSimpleStorageSetNewValue = async ( ) =>
   {
-    console.log("SimpleStorage::onHandleSimpleStorageSetNewValue: value = "+ value ) ;
+    console.log("SimpleStorage::onHandleSimpleStorageSetNewValue: value = "+ newValue ) ;
     try
     {
-      console.log("SimpleStorage::onHandleSimpleStorageSetNewValue: value = "+ value ) ;
-      if ( value !== undefined )
+      if ( newValue !== undefined )
       {
-        await simpleStorageSet( value ) ;
+        await simpleStorageSet( newValue ) ;
+        await updateValue() ;
       }
       else
       {
         // TODO : message d'erreur
-        // alert( t("erc20VaultContract.app.user.input.amountMustBeGreaterThanZero") );
-          // TODO : message d'erreur
-          // console.log( t("erc20VaultContract.app.user.input.amountMustBeGreaterThanZero") );
           let error =
           {
-            message:   t("erc20VaultContract.app.user.input.amountMustBeGreaterThanZero"),
-            level :   "warning",
-            title:    t("erc20VaultContract.app.user.input.title.deposit") + t("erc20VaultContract.app.user.input.title.inputError")
+            message:   t("simpleStorageContract.errors.setNewValue.message"),
+            level :   "simpleStorageContract.errors.setNewValue.level",
+            title:    t("simpleStorageContract.errors.setNewValue.title")
           };
-          
           throw error;
       } // else
     } // try
@@ -73,6 +128,10 @@ const SimpleStorage = ( { simpleStorageValue, simpleStorageSet, handleError } ) 
     } // catch
 
   } // onHandleERC20VaultDeposit
+
+  // ----------------------------------------
+  // render
+
   return (
 
     <Card style={{ width: '50rem' }} bg="dark" border="light" className="text-light text-center" >
@@ -81,14 +140,14 @@ const SimpleStorage = ( { simpleStorageValue, simpleStorageSet, handleError } ) 
     <Card.Text>{t("simpleStorageContract.subtitle")}</Card.Text>
     <Card.Text>{t("simpleStorageContract.notice1")}{t("simpleStorageContract.notice1DefaultValue")}</Card.Text>
     <Card.Text>{t("simpleStorageContract.notice2")}</Card.Text>
-    <Card.Text>{t("simpleStorageContract.getValue")}<b>{ simpleStorageValue }</b></Card.Text>
+    <Card.Text>{t("simpleStorageContract.getValue")}<b>{ /*simpleStorageValue*/ currentvalue }</b></Card.Text>
     <Card.Text></Card.Text>
     <Card.Text></Card.Text>
     <Card.Text></Card.Text>
     <Card.Body>
       <Form.Group>
         <Form.Control type="text" id="value"
-        value={ value }
+        value={ newValue }
         placeholder={t("simpleStorageContract.provideNewValue")} 
         aria-label={t("simpleStorageContract.provideNewValue")} 
         onChange={ handleOnNewValue }
@@ -105,8 +164,6 @@ const SimpleStorage = ( { simpleStorageValue, simpleStorageSet, handleError } ) 
       >
         <Pencil style={{verticalAlign: '-10%'}}
       /> {t("simpleStorageContract.setValueButton")}
-
-        
 
       </Button>
     </Card.Footer >
