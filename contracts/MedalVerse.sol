@@ -28,6 +28,17 @@ contract MedalVerse is
 		require(a != address(0));
 		_;
 	}
+	modifier isNotNullUint256(uint256 a)
+		virtual
+		override(
+			OrganizerHandler,
+			SportsmanHandler,
+			EventHandler,
+			AuthorHandler
+		) {
+		require(a != 0);
+		_;
+	}
 
 	// Methods -------------------------------
 	function addNewUser(

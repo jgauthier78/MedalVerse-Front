@@ -6,8 +6,7 @@ import "./NFT_Medal_Bkg_Desc.sol";
 ///@dev Structure for describing MedalVerse Authors - used by AuthorHandler
 struct Author {
 	address userAddress; // address used as ref
-	mapping(uint256 => uint256) creations; // list of creations saved in AuthorHandler
-	uint256 creationCount; // Number of creations
+	uint256[] creations; // list of creations saved in AuthorHandler
 	bool activ;
 }
 
@@ -26,7 +25,10 @@ contract AuthorHandler is Ownable {
 		require(a != address(0));
 		_;
 	}
-
+	modifier isNotNullUint256(uint256 a) virtual {
+		require(a != 0);
+		_;
+	}
 	// Events -------------------------------
 	event AuthorAdded(address usrAddr, uint256 indx);
 	event CreationAdded(address usrAddr, uint256 indx);
@@ -72,7 +74,7 @@ contract AuthorHandler is Ownable {
 		});
 
 		// Save the index into the author Structure
-		_author.creations[_author.creationCount++] = allCreationCount;
+		_author.creations.push(allCreationCount);
 		emit CreationAdded(_user, allCreationCount);
 	}
 
@@ -85,5 +87,65 @@ contract AuthorHandler is Ownable {
 		isNotNull(_NFT)
 	{
 		allCreations[_creationId].NFT_Bkg_Adr = _NFT;
+	}
+
+	///@dev returns the list of creations for user _author
+	///@param _author address of the user
+	function getAuthorCreationsList(address _author)
+		public
+		view
+		isNotNull(_author)
+		isNotNullUint256(allAuthors[_author].creations.length)
+		returns (uint256[] memory)
+	{
+		return allAuthors[_author].creations;
+	}
+
+	///@dev returns the list of creations: they may be inactive, must test activ value
+	///@param _start start index  - paging
+	///@param _end ending index - paging
+	function getCreationList(uint256 _start, uint256 _end)
+		public
+		view
+		isNotNullUint256(allCreations.length)
+		returns (NFT_Medal_Bkg_Desc[] memory)
+	{
+		require(_start <= _end); // check params
+		require(_start < allCreations.length, "StartIndex out of range");
+
+		// we adjust the ending value
+		if (_end >= allCreations.length) _end = allCreations.length - 1;
+
+		// creat an array for returning only usefull values
+		NFT_Medal_Bkg_Desc[] memory _desc = new NFT_Medal_Bkg_Desc[](
+			_end - _start + 1
+		);
+
+		// Fill the structure
+		uint256 x = _start;
+		while (x <= _end) {
+			_desc[x - _start] = NFT_Medal_Bkg_Desc({
+				price: allCreations[x].price,
+				creationId: allCreations[x].creationId,
+				sportCategory: allCreations[x].sportCategory,
+				author: allCreations[x].author,
+				NFT_Bkg_Adr: allCreations[x].NFT_Bkg_Adr,
+				description: allCreations[x].description,
+				URI: allCreations[x].URI,
+				activ: allCreations[x].activ
+			});
+
+			x++;
+		}
+		return _desc;
+	}
+
+	function getAuthor(address _user)
+		public
+		view
+		isNotNull(_user)
+		returns (Author memory)
+	{
+		return allAuthors[_user];
 	}
 }
