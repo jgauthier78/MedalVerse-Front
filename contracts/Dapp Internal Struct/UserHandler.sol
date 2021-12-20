@@ -26,13 +26,20 @@ contract UserHandler is Ownable {
 	event UserAdded(address usrAddr, uint256 indx);
 
 	// User Methods -------------------------
+
+	///@dev Registers a User, given an address and all the details
+	///@param _userAddress of the user to register as User
+	///@param _iconURI UI for the user
+	///@param _userName concatenation of first & last name
+	///@param _email of the user to register as User
+	///@param _role of the user to register as User
 	function addUser(
 		address _userAddress,
 		string memory _iconURI,
 		string memory _userName,
 		string memory _email,
 		uint8 _role
-	) public onlyOwner isNotNull(_userAddress) {
+	) internal onlyOwner isNotNull(_userAddress) {
 		// Copy to the structure
 		_Users[_userAddress] = User({
 			iconURI: _iconURI,
@@ -46,6 +53,8 @@ contract UserHandler is Ownable {
 		emit UserAdded(_userAddress, registeredUsers.length - 1);
 	}
 
+	///@dev Returns details about a user, given an address (for UI=)
+	///@param _userAdr of the user
 	function getUserDetails(address _userAdr)
 		external
 		view

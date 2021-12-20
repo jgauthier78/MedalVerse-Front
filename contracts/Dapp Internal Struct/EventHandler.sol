@@ -23,7 +23,10 @@ contract EventHandler is Ownable {
 		require(a != address(0));
 		_;
 	}
-
+	modifier isNotNullUint256(uint256 a) virtual {
+		require(a != 0);
+		_;
+	}
 	// Events -------------------------------
 	event eventAdded(uint256 eventId);
 	event eventRemoved(uint256 eventId);
@@ -62,5 +65,36 @@ contract EventHandler is Ownable {
 	///@param eventId id of the event
 	function getEvent(uint256 eventId) public view returns (EventDesc memory) {
 		return eventList[eventId];
+	}
+
+	///@dev returns the list of Events
+	///@param _start start index  - paging
+	///@param _end ending index - paging
+	function getEventList(uint256 _start, uint256 _end)
+		public
+		view
+		isNotNullUint256(eventCount)
+		returns (EventDesc[] memory)
+	{
+		require(_start <= _end); // check params
+		require(_start < eventCount, "StartIndex out of range");
+
+		// we adjust the ending value
+		if (_end >= eventCount) _end = eventCount - 1;
+
+		// creat an array for returning only usefull values
+		EventDesc[] memory _result = new EventDesc[](_end - _start + 1);
+		// Fill the structure
+		uint256 x = _start;
+		while (x <= _end) {
+			_result[x] = eventList[x];
+			x++;
+		}
+		return _result;
+	}
+
+	///@dev returns the number of Events
+	function getEventCount() public view returns (uint256) {
+		return eventCount;
 	}
 }
