@@ -35,3 +35,7 @@ node_modules.*
 # editors
 
 *.code-workspace
+
+
+# Commenter pour déployer
+/client/src/contracts
