@@ -21,7 +21,7 @@
 - **npm install**
 
  - npm i react-router-dom@6.2.1
-
+ - npm i react-router-bootstrap@0.26.0
 
 
 ------------
