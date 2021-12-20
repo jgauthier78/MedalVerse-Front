@@ -4,24 +4,27 @@
 
 ------------
 
-
 ## Truffle
 
 ### compile
 - truffle compile
 
+### test
+- truffle test  .\test\simplestorage-test.js -g a
+
 ### deploy
-####Testnet
+
+#### testnet
 -  truffle deploy --reset --network maticMumbaiTestnet
 -  truffle deploy --reset --network kovan
 -  truffle deploy --reset --network ropsten
 
-####Local
+#### local
 - truffle deploy --reset --network devlocalbenoist
 
 ------------
 
 
-##React
+## React
 -  npm run start
 -  npm run startBrave

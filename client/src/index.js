@@ -13,7 +13,7 @@ import Loading from './components/Loading';
 // import i18n (needs to be bundled ;))
 import {I18nextProvider} from "react-i18next";
 import i18next from "i18next";
-import './i18n';
+import './js/i18n';
 
 ReactDOM.render(
   <React.StrictMode>

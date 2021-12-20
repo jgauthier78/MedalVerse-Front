@@ -26,12 +26,6 @@ import  { Alerts } from "./Alerts";
 import { Toolbar } from "./Header";
 import { SimpleStorage } from "./SimpleStorage";
 
-/* Constantes */
-// import * as CONSTS from "./consts";
-
-/* Utils */
-// import  { truncateString } from "./AppUtils";
-
 /* CSS */
 import "../styles/App.css";
 

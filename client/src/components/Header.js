@@ -4,7 +4,7 @@ import React from "react";
 /* Traduction */
 import { useTranslation } from 'react-i18next';
 // Changement de langue
-import i18n from '../i18n';
+import i18n from '../js/i18n';
 
 /* React - Bootstrap*/
 import Button from 'react-bootstrap/Button';
