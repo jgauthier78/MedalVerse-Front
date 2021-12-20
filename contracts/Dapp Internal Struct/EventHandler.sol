@@ -94,11 +94,7 @@ contract EventHandler is Ownable {
 	}
 
 	///@dev returns the number of Events
-	function getEventCount(uint256 _start, uint256 _end)
-		public
-		view
-		returns (uint256)
-	{
+	function getEventCount() public view returns (uint256) {
 		return eventCount;
 	}
 }
