@@ -78,7 +78,7 @@ contract AuthorHandler is Ownable {
 		emit CreationAdded(_user, allCreationCount);
 	}
 
-	///@dev Register a creation for a given author
+	///@dev Register a creation for a given author TESTED
 	///@param _creationId index of the creation as registered in allCreations
 	///@param _NFT Address of the minted NFT
 	function affectNFTtoCreation(uint256 _creationId, address _NFT)
@@ -89,7 +89,7 @@ contract AuthorHandler is Ownable {
 		allCreations[_creationId].NFT_Bkg_Adr = _NFT;
 	}
 
-	///@dev returns the list of creations for user _author
+	///@dev returns the list of creations for user _author TESTED
 	///@param _author address of the user
 	function getAuthorCreationsList(address _author)
 		public
@@ -101,7 +101,7 @@ contract AuthorHandler is Ownable {
 		return allAuthors[_author].creations;
 	}
 
-	///@dev returns the list of creations: they may be inactive, must test activ value
+	///@dev returns the list of creations: they may be inactive, must test activ value TESTED
 	///@param _start start index  - paging
 	///@param _end ending index - paging
 	function getCreationList(uint256 _start, uint256 _end)
@@ -140,6 +140,8 @@ contract AuthorHandler is Ownable {
 		return _desc;
 	}
 
+	///@dev returns the Author struc corresponding to the user TESTED
+	///@param _user user address
 	function getAuthor(address _user)
 		public
 		view
