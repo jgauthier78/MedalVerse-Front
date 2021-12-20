@@ -1,8 +1,5 @@
 /* React */
-import React, { useState /*, useEffect*/ } from "react";
-
-/* Traduction */
-// import { useTranslation } from 'react-i18next';
+import React, { useState } from "react";
 
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import Toast from 'react-bootstrap/Toast';
@@ -16,13 +13,11 @@ function Alerts( { alertsList } )
     alertsList &&
           alertsList.map((alert,idx) =>
             <Alert key={idx} title={alert.title} message={alert.message} detail={alert.detail} time={alert.time} variant={alert.variant} />
-          ) // alertsList.forEach
+          ) // alertsList.map
     }
   </ToastContainer>
-  
 
-  ) // return
-
+) // return
 
 } // Alerts
 

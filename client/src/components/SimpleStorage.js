@@ -5,25 +5,12 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from 'react-i18next';
 
 /* Bootstrap */
-// Css
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// Components
-//import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 /* Icons */
 import { Pencil } from 'react-bootstrap-icons';
-
-
-/* Utils Web3 */
-// import { getWeb3, toChecksumAddress /*, isAddress*/ } from "../js/getWeb3";
-
-/* Utils */
-// import  { truncateString } from "./AppUtils";
-
-/* CSS spécifiques */
 
 // ------------------------------------------
 
