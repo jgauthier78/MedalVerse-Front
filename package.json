@@ -2,7 +2,6 @@
   "devDependencies": {
     "@openzeppelin/contracts": "^4.4.1",
     "@openzeppelin/contracts-upgradeable": "^4.4.1",
-    "@openzeppelin/test-helpers": "^0.5.15",
     "@truffle/hdwallet-provider": "^2.0.0",
     "chai": "^4.3.4",
     "chai-bignumber": "^3.0.0",
