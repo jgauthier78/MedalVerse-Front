@@ -1,4 +1,31 @@
 {
+  "homePage":
+  {
+    "welcome" : "Bienvenue"
+  }
+  ,
+  "profilePage":
+  {
+    "title" : "Profile"
+  }
+  ,
+  "menu":
+  {
+    "title" : "MedalVerse",
+
+    "home" : "Home",
+    "profile" : "Profile",
+    "simpleStorage" : "Simple Storage",
+
+    "dropdown1":
+      {
+        "title" : "Submenu",
+        "home" : "Home",
+        "profile" : "Profile",
+        "simpleStorage" : "Simple Storage"
+      }
+  }
+  ,
   "simpleStorageContract":
     {
       "title" : "Good to Go!",
@@ -42,12 +69,14 @@
   "Errors":
     {
       "contractUndefined" : "Can't load contract. Wrong blockchain ?",
-      "4001": {
+      "4001":
+      {
         "title" : "Transaction signature denied",
         "message":"User denied message signature",
         "variant" : "warning"
       },
-      "default": {
+      "default":
+      {
         "title" : "Erreur",
         "message":"Erreur",
         "variant" : "danger"

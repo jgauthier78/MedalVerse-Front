@@ -2,6 +2,7 @@
 import React, { Suspense } from 'react';
 
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from "react-router-dom"
 
 import * as serviceWorker from './serviceWorker';
 
@@ -17,11 +18,13 @@ import './js/i18n';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={<Loading />}>
-      <I18nextProvider i18n={i18next}>
-        <MainAppTranslated/>
-      </I18nextProvider>
-    </Suspense>
+    <BrowserRouter>
+      <Suspense fallback={<Loading />}>
+        <I18nextProvider i18n={i18next}>
+          <MainAppTranslated/>
+        </I18nextProvider>
+      </Suspense>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

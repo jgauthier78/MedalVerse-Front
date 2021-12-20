@@ -16,9 +16,12 @@
   -> CONFLIT avec webpack 4.44.2 dont dépend react-scripts dans le projet client
   -> TestSimpleStorage.sol ne compile pas
 
+
 ##client folder :
 - **npm install**
 
+ - npm i react-router-dom@6.2.1
+ - npm i react-router-bootstrap@0.26.0
 
 
 ------------

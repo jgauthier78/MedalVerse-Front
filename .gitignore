@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-/client/src/contracts
+
 # testing
 /coverage
 
@@ -30,3 +30,7 @@ yarn-error.log*
 # editors
 
 *.code-workspace
+
+# Commenter pour déployer
+/client/src/contracts
+
