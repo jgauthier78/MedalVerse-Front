@@ -6,7 +6,8 @@
   ,
   "profilePage":
   {
-    "title" : "Profile"
+    "title" : "Profile",
+    "subtitle" : "{{connectedAccountAddr}}'s profile'"
   }
   ,
   "menu":

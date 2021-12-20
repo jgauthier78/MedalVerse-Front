@@ -97,7 +97,7 @@ class MainApp extends Component
           <Container fluid>
 
               <Toolbar owner={this.state.owner} connectedAccountAddr={this.state.connectedAccountAddr} />
-              <NavBar></NavBar>
+              <NavBar connectedAccountAddr={this.state.connectedAccountAddr} />
 
           </Container>
 
@@ -109,7 +109,7 @@ class MainApp extends Component
 
               <Route path="/" element={ <Home/> } />
 
-              <Route path="/profile" element={ <Profile/> } />
+              <Route path="/profile/:userid" element={ <Profile/> } />
 
               <Route path="/simpleStorage" element={ <SimpleStorage simpleStorageValue={this.state.simpleStorageValue} simpleStorageSet={this.simpleStorage_set} handleError={this.handleError} simpleStorageGet={this.simpleStorage_get} /> }  />
 

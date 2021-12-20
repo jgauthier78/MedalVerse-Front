@@ -22,7 +22,7 @@ import { Trophy } from 'react-bootstrap-icons';
 /* CSS */
 import "../styles/NavBar.css";
 
-const NavBar = ( /* {  } */ ) =>
+const NavBar = ( { connectedAccountAddr } ) =>
 {
   const { t } = useTranslation() ;
 /*
@@ -43,7 +43,7 @@ return (
   <Navbar bg="dark" expand="lg"  >
     <Container>
 
-      <Navbar.Brand href="#home" className={textStyleCentered}><Trophy style={{verticalAlign: '-10%'}}/> {t("menu.title")}</Navbar.Brand>
+      <Navbar.Brand href="/" className={textStyleCentered}><Trophy style={{verticalAlign: '-10%'}}/> {t("menu.title")}</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
       <Navbar.Collapse id="basic-navbar-nav">
@@ -54,7 +54,7 @@ return (
             <Nav.Link className={textStyleCentered}>{t("menu.home")}</Nav.Link>
           </LinkContainer>
 
-          <LinkContainer to="/profile">
+          <LinkContainer to={"/profile/"+connectedAccountAddr}>
             <Nav.Link className={textStyleCentered}>{t("menu.profile")}</Nav.Link>
           </LinkContainer>
 
@@ -66,7 +66,7 @@ return (
 
           <NavDropdown menuVariant="dark" title={t("menu.dropdown1.title")} id="navbar-menu-nav-dropdown" >
             <NavDropdown.Item href="/" className={textStyleLeft}>{t("menu.home")}</NavDropdown.Item>
-            <NavDropdown.Item href="/profile" className={textStyleLeft}>{t("menu.profile")}</NavDropdown.Item>
+            <NavDropdown.Item href="/profile/Toto" className={textStyleLeft}>{t("menu.profile")}</NavDropdown.Item>
             <NavDropdown.Item href="/simpleStorage" className={textStyleLeft}>{t("menu.simpleStorage")}</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="/" className={textStyleLeft}>{t("menu.home")}</NavDropdown.Item>
