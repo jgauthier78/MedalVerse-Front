@@ -1,6 +1,7 @@
 // React
 // Components
 import React, { Component } from "react";
+import {Route,Routes} from "react-router-dom"
 
 /* Translation */
 import { withTranslation } from 'react-i18next';
@@ -24,7 +25,10 @@ import  { Web3Loader } from "./Status";
 import  { Alerts } from "./Alerts";
 // import { FatalError } from "./AppComponents-Errors";
 import { Toolbar } from "./Header";
+import { NavBar } from "./NavBar";
 import { SimpleStorage } from "./SimpleStorage";
+import  { Home } from "./Home";
+import  { Profile } from "./Profile";
 
 /* CSS */
 import "../styles/App.css";
@@ -91,10 +95,27 @@ class MainApp extends Component
           <Alerts alertsList={ this.state.alertsList } />
 
           <Container fluid>
+
               <Toolbar owner={this.state.owner} connectedAccountAddr={this.state.connectedAccountAddr} />
+              <NavBar></NavBar>
+
           </Container>
 
-          <SimpleStorage simpleStorageValue={this.state.simpleStorageValue} simpleStorageSet={this.simpleStorage_set} handleError={this.handleError} simpleStorageGet={this.simpleStorage_get} />
+          <hr></hr>
+
+          <Container fluid>
+
+            <Routes>
+
+              <Route path="/" element={ <Home/> } />
+
+              <Route path="/profile" element={ <Profile/> } />
+
+              <Route path="/simpleStorage" element={ <SimpleStorage simpleStorageValue={this.state.simpleStorageValue} simpleStorageSet={this.simpleStorage_set} handleError={this.handleError} simpleStorageGet={this.simpleStorage_get} /> }  />
+
+            </Routes>
+
+          </Container>
 
         </Container>
       }

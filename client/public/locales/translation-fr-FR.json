@@ -1,4 +1,31 @@
 {
+  "homePage":
+  {
+    "welcome" : "Bienvenue"
+  }
+  ,
+  "profilePage":
+  {
+    "title" : "Profil"
+  }
+  ,
+   "menu":
+  {
+    "title" : "MedalVerse",
+
+    "home" : "Accueil",
+    "profile" : "Profil",
+    "simpleStorage" : "Simple Storage",
+
+    "dropdown1":
+      {
+        "title" : "Sous-menu",
+        "home" : "Accueil",
+        "profile" : "Profil",
+        "simpleStorage" : "Simple Storage"
+      }
+  }
+  ,
   "simpleStorageContract":
     {
       "title" : "Prêt",
