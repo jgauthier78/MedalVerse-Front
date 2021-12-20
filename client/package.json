@@ -46,7 +46,7 @@
     ]
   },
   "devDependencies": {
-    "@truffle/hdwallet-provider": "^2.0.0",
+    "@truffle/hdwallet-provider": "^1.5.1",
     "gh-pages": "^3.2.3"
   },
   "Github_homepage": "https://BenoistP.github.io/React-Truffle-Vote/",
