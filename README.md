@@ -17,7 +17,7 @@ Technos. utlisées :
 
 **Contrats Solidity :** 
 
- - Contrat NFT ThrowIn
+ - Contrat NFT ThrowIn:
     Mint du NFT WorldCup mintable en 1 seul exemplaire il est capable d'enregistrer et supprimée les participant a l'evenement et,
     de garder dans un tableau les vainqueur present et passé 
  
