@@ -16,6 +16,11 @@
   -> CONFLIT avec webpack 4.44.2 dont dépend react-scripts dans le projet client
   -> TestSimpleStorage.sol ne compile pas
 
+  - Globally installed required packages
+  - npm install -g truffle
+
+  - npm i @3id/connect
+
 
 ##client folder :
 - **npm install**
