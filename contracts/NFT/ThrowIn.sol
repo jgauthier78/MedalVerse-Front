@@ -91,7 +91,8 @@ import "../../node_modules/@openzeppelin/contracts/access/Ownable.sol";
             }
 
         }
-
+        
+        // Bloqué sur la suppression d'un element precis
         function removeThisParticipant(uint element) public onlyOwner{
 
             element--;
