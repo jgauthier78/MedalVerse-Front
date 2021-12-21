@@ -54,12 +54,6 @@ import "../../node_modules/@openzeppelin/contracts/access/Ownable.sol";
             return numberMint;
         }
 
-        function viewpa() public view returns(uint){
-
-            return numberOfParticipant;
-        }
-
-
         function addParticipant(string memory team, address walletTeam) public onlyOwner {
 
             numberOfParticipant++;
