@@ -12,8 +12,8 @@ Description longue du **projet**.
 
 Technos. utlisées :
  - Solidity 0.8
- - React 17 / Bootstrap 5 (5.1.3)
-  - react-i18next
+ - React 17 (17.0.2) / Bootstrap 5 (5.1.3)
+ - react-i18next (21.3.3)
 
 **Contrats Solidity :** 
 
@@ -60,16 +60,16 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 - à la racine du projet :
 
 
-[Déploiement Dev](https://medalverse-app-dev.herokuapp.com/)
-https://medalverse-app-dev.herokuapp.com/
 
-Chaine : Kovan ?
+~~Chaine : Kovan ?
 https://kovan.etherscan.io/
-Adresses :
+Adresses :~~
 
 ## Matic
+[Déploiement Dev](https://medalverse-dev-maticmumbai.herokuapp.com/)
+https://medalverse-dev-maticmumbai.herokuapp.com/
 
-# Testnet
+### Testnet
  - Setting up Matic Mumbai Testnet :
 https://medium.com/@pinkmoonfinance/how-to-use-pinksale-matic-testnet-8788e6a09e10
 
@@ -82,8 +82,6 @@ https://medium.com/@pinkmoonfinance/how-to-use-pinksale-matic-testnet-8788e6a09e
  - Faucet :
 https://faucet.polygon.technology/
 
-
-truffle migrate --network maticMumbaiTestnet --reset
 
 
 ------------
