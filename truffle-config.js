@@ -124,7 +124,7 @@ module.exports =
     {
       provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_URL + Matic_MedalVerse_Dev_01_ProjectId ),
       network_id: network_id_maticMumbaiTestnet,
-      confirmations: 2,
+      confirmations: 4,
       timeoutBlocks: 200,
       skipDryRun: true,
       gas: 6000000,
