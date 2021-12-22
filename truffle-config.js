@@ -5,7 +5,13 @@ require('dotenv').config()
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
-Wallet_mnemonic = process.env.Wallet_mnemonic
+
+
+// Local Wallet Mnemonic used for deployments
+Wallet_mnemonic_LOCAL=process.env.Wallet_mnemonic_LOCAL
+
+// Common Wallet Mnemonic used for deployments
+Wallet_mnemonic_MEDELAVERSE_COMMON=process.env.Wallet_mnemonic_MEDELAVERSE_COMMON
 
 Infura_ProjectId = process.env.InfuraProjectId
 Infura_ProjectSecret = process.env.InfuraProjectSecret
@@ -80,7 +86,7 @@ module.exports =
 
     ropsten:
     {
-      provider: () => new HDWalletProvider( Wallet_mnemonic, Ethereum_Tesnet__Ropsten_RPC_URL + Infura_ProjectId ),
+      provider: () => new HDWalletProvider( Wallet_mnemonic_LOCAL, Ethereum_Tesnet__Ropsten_RPC_URL + Infura_ProjectId ),
       network_id: network_id_ropsten,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       gasPrice: Web3.utils.toWei("50", "gwei"),
@@ -91,7 +97,7 @@ module.exports =
 
     kovan:
     {
-      provider: () => new HDWalletProvider( Wallet_mnemonic, Ethereum_Tesnet__Kovan_RPC_URL + Infura_ProjectId ),
+      provider: () => new HDWalletProvider( Wallet_mnemonic_LOCAL, Ethereum_Tesnet__Kovan_RPC_URL + Infura_ProjectId ),
       network_id: network_id_kovan,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       gasPrice: Web3.utils.toWei("5", "gwei"),
@@ -103,7 +109,7 @@ module.exports =
 
     rinkeby:
     {
-      provider: () => new HDWalletProvider( Wallet_mnemonic, Ethereum_Tesnet__Rinkeby_RPC_URL + Infura_ProjectId ),
+      provider: () => new HDWalletProvider( Wallet_mnemonic_LOCAL, Ethereum_Tesnet__Rinkeby_RPC_URL + Infura_ProjectId ),
       network_id: network_id_rinkeby,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       gasPrice: Web3.utils.toWei("5", "gwei"),
@@ -116,7 +122,7 @@ module.exports =
 
     maticMumbaiTestnet:
     {
-      provider: () => new HDWalletProvider(Wallet_mnemonic, Matic_Tesnet_RPC_URL + Matic_MedalVerse_Dev_01_ProjectId ),
+      provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_URL + Matic_MedalVerse_Dev_01_ProjectId ),
       network_id: network_id_maticMumbaiTestnet,
       confirmations: 2,
       timeoutBlocks: 200,
