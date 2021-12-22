@@ -21,13 +21,22 @@ Technos. utlisées :
     Mint du NFT WorldCup mintable en 1 seul exemplaire il est capable d'enregistrer et supprimée les participant a l'evenement et,
     de garder dans un tableau les vainqueur present et passé 
  
- - Contrat 2
- - description contrat 2
- - ...
-   ...
- - Contrat n
-   description contrat n
+ - MedalVerse: contrat principal qui expose les fonctionnalités de la DAPP, et possède les structures internes au fonctionnement de la DAPP. MedalVerse hérite des contrats Handler des structures internes.
+
+ Structures internes: 
  
+ - UserHandler : Un user est un utilisateur enregistré sur la plateforme, avec un ensemble de détails sur la personne détentrice du compte. UserHandler gère la liste des Users, accès, création, désactivation
+
+ - AuthorHandler: un auteur est un user aynt des propriétés spécifiques qui possède une liste de créations, peut en produire de nouvelles et les vendre. AuthorHandler gère la liste des auteurs, des créations (accès à la base, appel de fonction sur ces structures).
+
+- OrganizerHandler: Un organizer est un organisme qui peut créer des évènements, il est piloté par une liste d'admins qui ont le droit d'intéragir avec l'évènement. OrganizerHandler permet de lister, ajouter/désactiver un organizer
+
+- EventHandler: Un évènement est généré par un organisme, et possède des propriétés particulières (date de départ, fin, etc.). EventHandler gère la liste des
+
+- SportsmanHandler: Un Sportsman est un user ayant le rôle de Sportif et possède des propriétés supplémentaires comme une liste d'évènement auquel il est enregistré, ainsi qu'un champ de bits décrivant les sports qu'il pratique. SportsmanHandler gère la liste des Sportsman
+
+
+
 **Interfaces Solidity :** 
 - Interface 1
 - Interface 2
