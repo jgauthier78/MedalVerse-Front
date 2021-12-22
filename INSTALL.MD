@@ -18,6 +18,7 @@
 
   - Globally installed required packages
   - npm install -g truffle
+  - npm install -g ganache-cli
 
   - npm i @3id/connect
 
