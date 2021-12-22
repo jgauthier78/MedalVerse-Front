@@ -21,7 +21,7 @@ module.exports = async function (deployer) {
     v = await MVerse.getOrganizerAddressById(v[0]);
     console.log("orgs: " + v)
   
-    v = await MVerse.getOrganizerOrganisationList(accounts[0])
+    v = await MVerse.getOrganizerOrganisationList(accounts[0]) 
     console.log("list of orgs " + v)
   */
 };
