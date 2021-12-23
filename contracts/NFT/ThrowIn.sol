@@ -7,7 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
     //@dev Add winners to the Winners array and modify its structure associated with this wallet
     contract ThrowIn is ERC721URIStorage, Ownable {
         
-        constructor(string memory name, string memory symbol) ERC721 (name, symbol){
+        constructor(string memory oragnization) ERC721 ("Roland Garros", "RLG"){
+        
+        nameOfOrganization = name
         }
 
         event cupMinted(address mint);
@@ -37,8 +39,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
         mapping(address=>Winners) internal win;
         mapping(address=>Participants) internal particip;
+       
 
-
+        
+        string nameOfOrganization;
         uint numberMint;
         uint numberOfParticipant;
         
@@ -147,5 +151,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
             return (participantString, numberParticipant);
         }
-
+        
+        function getOrganizationOwner() public view returns(string memory){
+        
+            return nameOfOrganization;
+        
+        }
     }
