@@ -67,11 +67,7 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 ## Lancement des tests
 - à la racine du projet :
 
-
-
-~~Chaine : Kovan ?
-https://kovan.etherscan.io/
-Adresses :~~
+truffle test --network developement
 
 ## Matic
 [Déploiement Dev](https://medalverse-dev-maticmumbai.herokuapp.com/)
