@@ -15,7 +15,7 @@ Technos. utlisées :
 **Contrats Solidity :** 
 
  - Contrat NFT ThrowIn:
-    Mint du NFT WorldCup mintable en 1 seul exemplaire il est capable d'enregistrer et supprimée les participant a l'evenement et,
+    Mint du NFT Roland Garros mintable en 1 seul exemplaire il est capable d'enregistrer et supprimée les participant a l'evenement et
     de garder dans un tableau les vainqueur present et passé 
  
  - MedalVerse: contrat principal qui expose les fonctionnalités de la DAPP, et possède les structures internes au fonctionnement de la DAPP. MedalVerse hérite des contrats Handler des structures internes.
