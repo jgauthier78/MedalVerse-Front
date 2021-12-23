@@ -6,9 +6,6 @@
 Description longue du **projet**.
 
 ### Fonctionnalités :
-- 1
-- 2
-- 3
 
 Technos. utlisées :
  - Solidity 0.8
