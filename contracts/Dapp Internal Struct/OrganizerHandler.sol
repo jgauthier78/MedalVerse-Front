@@ -43,6 +43,9 @@ contract OrganizerHandler is Ownable {
 	event OganizationAdded(address _user, uint256 indx);
 
 	// Methods -------------------------------
+	// Methods -------------------------------
+	///@dev add an organizer to the list of organizers
+	///@param _user address of the organizer
 	function addOrganizer(address _user) internal onlyOwner isNotNull(_user) {
 		uint256 indx = organizerList.length;
 		Organizer storage _organizer = organizerList.push();

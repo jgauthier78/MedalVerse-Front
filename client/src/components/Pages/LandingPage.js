@@ -3,6 +3,17 @@ import Button from "react-bootstrap/esm/Button";
 import Dialog from 'react-bootstrap-dialog'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NavBar from "../UIElements/NavBar"
+import SimpleFooter from "../UIElements/SimpleFooter"
+
+import BandeauTitre from './Landing/BandeauTitre'
+
+import { Container, Row, Col } from "react-bootstrap";
+import SecondBandeau from "./Landing/SecondBandeau";
+import TroisiemeBandeau from "./Landing/TroisiemeBandeau";
+import QuatriemeBandeau from "./Landing/QuatriemeBandeau";
+
+
 
 class LandingPage extends Component {
 
@@ -65,11 +76,20 @@ class LandingPage extends Component {
     render() {
         return (
             <Fragment>
-                <p>LandingPage</p>
-                <Button onClick={this.loginCallBack}>Login</Button>
+                <NavBar loginCallBack={this.loginCallBack} />
+                <main ref="main">
+                    <BandeauTitre />
+                    <SecondBandeau />
+                    <TroisiemeBandeau />
+                    <QuatriemeBandeau />
+
+                </main>
+                <SimpleFooter />
+
                 <Dialog ref={(el) => { this.dialog = el }} />
                 <ToastContainer />
             </Fragment >
+
         )
     }
 }

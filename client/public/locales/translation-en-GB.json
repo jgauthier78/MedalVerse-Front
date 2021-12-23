@@ -1,88 +1,66 @@
 {
-  "homePage":
-  {
-    "welcome" : "Bienvenue"
-  }
-  ,
-  "profilePage":
-  {
-    "title" : "Profile",
-    "subtitle" : "{{connectedAccountAddr}}'s profile'"
-  }
-  ,
-  "menu":
-  {
-    "title" : "MedalVerse",
-
-    "home" : "Home",
-    "profile" : "Profile",
-    "simpleStorage" : "Simple Storage",
-
-    "dropdown1":
-      {
-        "title" : "Submenu",
-        "home" : "Home",
-        "profile" : "Profile",
-        "simpleStorage" : "Simple Storage"
-      }
-  }
-  ,
-  "simpleStorageContract":
-    {
-      "title" : "Good to Go!",
-      "status" : "Your Truffle Box is installed and ready.",
-      "subtitle" : "Smart Contract Example",
-      "notice1" : "If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).",
-      "notice1DefaultValue" : "5",
-      "notice2" : "Try changing the value stored on line 40 of App.js.",
-      "getValue" : "Current stored value is:",
-      "provideNewValue" : "Provide a new stored value to store : ",
-      "setValueButton" : "Set",
-
-      "owner" : "Owner : ",
-
-      "errors":
-      {
-        "setNewValue":
-          {
-            "message": "Error while setting new value",
-            "level": "danger",
-            "title": "Set value error"
-          }
-      }
-
+  "homePage": {
+    "welcome": "Bienvenue"
+  },
+  "profilePage": {
+    "title": "Profile",
+    "subtitle": "{{connectedAccountAddr}}'s profile'"
+  },
+  "menu": {
+    "title": "MedalVerse",
+    "home": "Home",
+    "profile": "Profile",
+    "simpleStorage": "Simple Storage",
+    "LoginButton": "Login",
+    "dropdown1": {
+      "title": "Submenu",
+      "home": "Home",
+      "profile": "Profile",
+      "simpleStorage": "Simple Storage"
     }
-  ,
-  "account":
-    {
-      "address" : "address : "
-    },
-  "Web3":
-    {
-      "loading": "Please kindly wait while loading ..."
-    },
-
-  "Formats" :
-    {
-      "date" : "fr-FR"
-    },
-
-  "Errors":
-    {
-      "contractUndefined" : "Can't load contract. Wrong blockchain ?",
-      "4001":
-      {
-        "title" : "Transaction signature denied",
-        "message":"User denied message signature",
-        "variant" : "warning"
-      },
-      "default":
-      {
-        "title" : "Erreur",
-        "message":"Erreur",
-        "variant" : "danger"
+  },
+  "simpleStorageContract": {
+    "title": "Good to Go!",
+    "status": "Your Truffle Box is installed and ready.",
+    "subtitle": "Smart Contract Example",
+    "notice1": "If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).",
+    "notice1DefaultValue": "5",
+    "notice2": "Try changing the value stored on line 40 of App.js.",
+    "getValue": "Current stored value is:",
+    "provideNewValue": "Provide a new stored value to store : ",
+    "setValueButton": "Set",
+    "owner": "Owner : ",
+    "errors": {
+      "setNewValue": {
+        "message": "Error while setting new value",
+        "level": "danger",
+        "title": "Set value error"
       }
-      
     }
-  
+  },
+  "bandeau": {
+    "title": "MedalVerse"
+  },
+  "account": {
+    "address": "address : "
+  },
+  "Web3": {
+    "loading": "Please kindly wait while loading ..."
+  },
+  "Formats": {
+    "date": "fr-FR"
+  },
+  "Errors": {
+    "contractUndefined": "Can't load contract. Wrong blockchain ?",
+    "4001": {
+      "title": "Transaction signature denied",
+      "message": "User denied message signature",
+      "variant": "warning"
+    },
+    "default": {
+      "title": "Erreur",
+      "message": "Erreur",
+      "variant": "danger"
+    }
+  }
 }

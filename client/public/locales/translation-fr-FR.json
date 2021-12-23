@@ -1,86 +1,66 @@
 {
-  "homePage":
-  {
-    "welcome" : "Bienvenue"
-  }
-  ,
-  "profilePage":
-  {
-    "title" : "Profil",
-    "subtitle" : "profil de {{connectedAccountAddr}}"
-  }
-  ,
-   "menu":
-  {
-    "title" : "MedalVerse",
-
-    "home" : "Accueil",
-    "profile" : "Profil",
-    "simpleStorage" : "Simple Storage",
-
-    "dropdown1":
-      {
-        "title" : "Sous-menu",
-        "home" : "Accueil",
-        "profile" : "Profil",
-        "simpleStorage" : "Simple Storage"
+  "homePage": {
+    "welcome": "Bienvenue"
+  },
+  "profilePage": {
+    "title": "Profil",
+    "subtitle": "profil de {{connectedAccountAddr}}"
+  },
+  "menu": {
+    "title": "MedalVerse",
+    "home": "Accueil",
+    "profile": "Profil",
+    "simpleStorage": "Simple Storage",
+    "dropdown1": {
+      "title": "Sous-menu",
+      "home": "Accueil",
+      "profile": "Profil",
+      "simpleStorage": "Simple Storage"
+    },
+    "LoginButton": "Se Connecter"
+  },
+  "simpleStorageContract": {
+    "title": "Prêt",
+    "status": "L'application est prête",
+    "subtitle": "Smart contrat d'exemple",
+    "notice1": "Si le contrat est compilé et déployé correctement; la valeur par défaut affichée devrait être ",
+    "notice1DefaultValue": "5",
+    "notice2": "Essayez de modifier la valeur enregistrée à la ligne 40 de l'application App.js.",
+    "getValue": "La valeur actuellement enregistrée est :",
+    "provideNewValue": "Indiquez une nouvelle valeur à enregistrer",
+    "setValueButton": "Enregistrer",
+    "owner": "Propriétaire : ",
+    "errors": {
+      "setNewValue": {
+        "message": "Erreur lors de l'affectation",
+        "level": "danger",
+        "title": "Assignation d'une nouvelle valeur"
       }
-  }
-  ,
-  "simpleStorageContract":
-    {
-      "title" : "Prêt",
-      "status" : "L'application est prête",
-      "subtitle" : "Smart contrat d'exemple",
-      "notice1" : "Si le contrat est compilé et déployé correctement; la valeur par défaut affichée devrait être ",
-      "notice1DefaultValue" : "5",
-      "notice2" : "Essayez de modifier la valeur enregistrée à la ligne 40 de l'application App.js.",
-      "getValue" : "La valeur actuellement enregistrée est :",
-      "provideNewValue" : "Indiquez une nouvelle valeur à enregistrer",
-      "setValueButton" : "Enregistrer",
-
-      "owner" : "Propriétaire : ",
-
-      "errors":
-      {
-        "setNewValue":
-          {
-            "message": "Erreur lors de l'affectation",
-            "level": "danger",
-            "title": "Assignation d'une nouvelle valeur"
-          }
-      }
-  
     }
-  ,
-  "account":
-    {
-      "address" : "Adresse : : "
+  },
+  "bandeau": {
+    "title": "MedalVerse"
+  },
+  "account": {
+    "address": "Adresse : : "
+  },
+  "Web3": {
+    "loading": "Merci de patienter pendant le chargement ..."
+  },
+  "Formats": {
+    "date": "fr-FR"
+  },
+  "Errors": {
+    "contractUndefined": "Can't load contract. Wrong blockchain ?",
+    "4001": {
+      "title": "Transaction signature denied",
+      "message": "User denied message signature",
+      "variant": "warning"
     },
-  "Web3":
-    {
-      "loading": "Merci de patienter pendant le chargement ..."
-    },
-
-  "Formats" :
-    {
-      "date" : "fr-FR"
-    },
-
-  "Errors":
-    {
-      "contractUndefined" : "Can't load contract. Wrong blockchain ?",
-      "4001": {
-        "title" : "Transaction signature denied",
-        "message":"User denied message signature",
-        "variant" : "warning"
-      },
-      "default": {
-        "title" : "Erreur",
-        "message":"Erreur",
-        "variant" : "danger"
-      }
-      
+    "default": {
+      "title": "Erreur",
+      "message": "Erreur",
+      "variant": "danger"
     }
-  
+  }
 }
