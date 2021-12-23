@@ -18,7 +18,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 
         struct Winners {
-            string team;
+            string player;
             uint year;
             address wallet;
             uint numberOfVictory;
@@ -27,7 +27,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
         struct Participants {
             uint nbActiveParticipant;
-            string team;
+            string player;
             address wallet;
         }
 
@@ -63,7 +63,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
             numberOfParticipant++;
 
             particip[walletTeam].nbActiveParticipant = numberOfParticipant;
-            particip[walletTeam].team = team;
+            particip[walletTeam].player = team;
             particip[walletTeam].wallet = walletTeam;
 
             Participants memory newParticipant = Participants(particip[walletTeam].nbActiveParticipant, team, walletTeam);
@@ -76,7 +76,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         function addWinners(string memory team, uint year, address walletTeam) public onlyOwner {
 
             win[walletTeam].wallet = walletTeam;
-            win[walletTeam].team = team;
+            win[walletTeam].player = team;
             win[walletTeam].numberOfVictory += 1;
 
             Winners memory newWinners = Winners(team, year, walletTeam, win[walletTeam].numberOfVictory);
@@ -127,7 +127,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
             uint[] memory yearOfVictory = new uint[](winners.length);
 
             for(uint i = 0; i < winners.length; i++) {
-                winnersString[i] = winners[i].team;
+                winnersString[i] = winners[i].player;
                 yearOfVictory[i] = winners[i].year;
             }
 
@@ -141,7 +141,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
             uint[] memory numberParticipant = new uint[](participants.length);
 
             for(uint i = 0; i < participants.length; i++) {
-                participantString[i] = participants[i].team;
+                participantString[i] = participants[i].player;
                 numberParticipant[i] = participants[i].nbActiveParticipant;
             }
 
