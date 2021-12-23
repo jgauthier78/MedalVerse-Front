@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
+import Loading from './components/Loading';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import getWeb3 from "./utils/getWeb3";
 import NotFound from "./components/Pages/NotFound"
@@ -7,6 +8,13 @@ import MedalVerseContract from "./contracts/MedalVerse.json";
 import OrganizerMain from "./components/Pages/OrganizerMain";
 import SporstmanMain from "./components/Pages/SporstmanMain";
 import RedirectTo from "./components/UIElements/RedirectTo";
+import "./styles/Main.css"
+
+// Translation
+// import i18n (needs to be bundled ;))
+import { I18nextProvider } from "react-i18next";
+import i18next from "i18next";
+import './utils/i18n';
 
 class App extends Component {
 
@@ -31,28 +39,36 @@ class App extends Component {
                 <Routes>
                     <Route exact path='/' element=
                         {this.state.redirectTo === null ?
-                            <LandingPage
-                                setIsConnected={this.setIsConnected} getWeb3Cnx={this.getWeb3Cnx}
-                                initContract={this.initContract} initAccounts={this.initAccounts} getAccounts={this.getAccounts} initUserDetails={this.initUserDetails} updateUserDetails={this.updateUserDetails}
-                            />
+                            <Suspense fallback={<Loading />}>
+                                <I18nextProvider i18n={i18next}>
+                                    <LandingPage
+                                        setIsConnected={this.setIsConnected} getWeb3Cnx={this.getWeb3Cnx}
+                                        initContract={this.initContract} initAccounts={this.initAccounts} getAccounts={this.getAccounts} initUserDetails={this.initUserDetails} updateUserDetails={this.updateUserDetails}
+                                    />
+                                </I18nextProvider>
+                            </Suspense>
                             :
                             <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                         }
 
                     />
                     <Route exact path='organizer' element={this.state.redirectTo === null ?
-                        <OrganizerMain />
+                        <I18nextProvider i18n={i18next}>
+                            <OrganizerMain />
+                        </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
                     <Route exact path='sportsman' element={this.state.redirectTo === null ?
-                        <SporstmanMain />
+                        <I18nextProvider i18n={i18next}>
+                            <SporstmanMain />
+                        </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
                     <Route element={NotFound} />
                 </Routes>
-            </BrowserRouter>
+            </BrowserRouter >
         )
 
     }
