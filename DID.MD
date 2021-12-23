@@ -36,4 +36,18 @@ https://developers.idx.xyz/learn/overview/
 
 DID -> index -> liste de definitionID
 definitionID -> enregistrement (record) + schema JSON (definition)
-tout est ces objets sont des "stream" enregistrés sur Ceramic
+tout ces objets sont des "stream" enregistrés sur Ceramic
+
+
+npm i @3id/connect
+npm i @ceramicnetwork/3id-did-resolver
+npm i @ceramicnetwork/http-client
+npm i dids
+
+encore valable mais déprécié:
+npm i @ceramicstudio/idx
+
+a remplacer par
+@datamodels
+
+https://blog.ceramic.network/the-next-architecture-for-building-web3-data-applications/
