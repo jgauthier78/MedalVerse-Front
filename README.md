@@ -33,13 +33,6 @@ Technos. utlisées :
 - SportsmanHandler: Un Sportsman est un user ayant le rôle de Sportif et possède des propriétés supplémentaires comme une liste d'évènement auquel il est enregistré, ainsi qu'un champ de bits décrivant les sports qu'il pratique. SportsmanHandler gère la liste des Sportsman
 
 
-
-**Interfaces Solidity :** 
-- Interface 1
-- Interface 2
-- ...
-- Interface n
-
 ## Installation
 - à la racine du projet :
 npm i
