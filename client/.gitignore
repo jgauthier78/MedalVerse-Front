@@ -38,4 +38,4 @@ node_modules.*
 
 
 # Commenter pour déployer
-/client/src/contracts
+/src/contracts
