@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         
         constructor(string memory oragnization) ERC721 ("Roland Garros", "RLG"){
         
-        nameOfOrganization = name;
+        nameOfOrganization = organization;
         }
 
         event cupMinted(address mint);
