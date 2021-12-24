@@ -15,7 +15,7 @@ contract NFTMedaille is ERC721URIStorage, Ownable {
 
        name = name; // Name of NFT
        symbol = symbol; // Symbol of NFT 
-       imageURI = imgURI; // Path poru found the image of the nft
+       imageURI = imgURI; // Path for found the image of the nft
     }
    
     string imageURI; // Store the path to find the image of the nft
