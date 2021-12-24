@@ -25,10 +25,10 @@ contract NFTMedaille is ERC721URIStorage, Ownable {
     function mintNFTMedaille (uint numberMint) public onlyOwner { 
     
        for(uint i; i < numberMint; i++){
-       _tokenIds.increment();
-       uint256 newItemId = _tokenIds.current();
-       _mint(msg.sender, newItemId);
-       _setTokenURI(newItemId, imageURI);
+         _tokenIds.increment();
+         uint256 newItemId = _tokenIds.current();
+         _mint(msg.sender, newItemId);
+         _setTokenURI(newItemId, imageURI);
        }
  
     }
