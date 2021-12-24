@@ -63,4 +63,8 @@ contract UserHandler is Ownable {
 	{
 		return _Users[_userAdr];
 	}
+
+	function getUserCount() external view returns (uint256) {
+		return registeredUsers.length;
+	}
 }
