@@ -1,6 +1,9 @@
 import React, { Fragment, Component } from "react";
-import Button from "react-bootstrap/esm/Button";
-import Dialog from 'react-bootstrap-dialog'
+// import Button from "react-bootstrap/esm/Button";
+// import Dialog from 'react-bootstrap-dialog'
+import { SimpleModal } from "../Modals"
+import { withTranslation } from 'react-i18next';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavBar from "../UIElements/NavBar"
@@ -8,17 +11,24 @@ import SimpleFooter from "../UIElements/SimpleFooter"
 
 import BandeauTitre from './Landing/BandeauTitre'
 
-import { Container, Row, Col } from "react-bootstrap";
+// import { Container, Row, Col } from "react-bootstrap";
 import SecondBandeau from "./Landing/SecondBandeau";
 import TroisiemeBandeau from "./Landing/TroisiemeBandeau";
 import QuatriemeBandeau from "./Landing/QuatriemeBandeau";
 
+ import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from '../../utils/did'
 
+class LandingPageWithTranslation extends Component {
 
-class LandingPage extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { show: false };
+        this.showModal = this.showModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+      }
 
     toast_options = {
-
         autoClose: 2000,
         hideProgressBar: false,
         position: toast.POSITION.TOP_LEFT,
@@ -26,12 +36,22 @@ class LandingPage extends Component {
         progress: 0.2
     };
 
-    /* Callback for the Login Button*/
+    closeModal(){
+        this.setState( {show: true} );
+    }
+
+    showModal(){
+        console.log("show")
+        this.setState( {show: true} );
+    }
+        /* Callback for the Login Button*/
     loginCallBack = async () => {
+        console.log("loginCallBack")
         var _getWeb3 = this.props.getWeb3Cnx
         var result
         // We loop so the site is not accessible until everything is set properly
-        this.dialog.show({ body: 'Connection au Wallet' })
+        // this.dialog.show({ body: 'Connection au Wallet' })
+        this.showModal();
         let success = true;
 
         // getWeb3 comes from App
@@ -42,6 +62,11 @@ class LandingPage extends Component {
             // getting accounts
             this._accounts = await this.props.initAccounts()
             if (this._accounts != null) {
+
+                await DID_init( this._web3, window.ethereum )
+                DID_showConf();
+                DID_readProfile();
+
                 // getting MedalVerse contract
                 result = await this.props.initContract()
                 if (result.err === null) {
@@ -66,7 +91,10 @@ class LandingPage extends Component {
             erreur = "Erreur de connexion"
             success = false
         }
-        this.dialog.hide();
+        // this.dialog.hide();
+        this.closeModal();
+        
+
         if (!success) toast.error(erreur, this.toast_options);
         else this.props.updateUserDetails()
     }
@@ -74,6 +102,7 @@ class LandingPage extends Component {
 
 
     render() {
+        const { t } = this.props;
         return (
             <Fragment>
                 <NavBar loginCallBack={this.loginCallBack} />
@@ -85,13 +114,16 @@ class LandingPage extends Component {
 
                 </main>
                 <SimpleFooter />
-
-                <Dialog ref={(el) => { this.dialog = el }} />
+{/*                <Dialog ref={(el) => { this.dialog = el }} /> */}
+            <SimpleModal title={t("LandingPage.walletConnect.title")} messageBody={t("LandingPage.walletConnect.body")} show={this.state.show} animation={false} />
+            
                 <ToastContainer />
             </Fragment >
 
         )
     }
 }
+
+const LandingPage = withTranslation()(LandingPageWithTranslation);
 
 export default LandingPage

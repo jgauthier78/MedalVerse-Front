@@ -7,14 +7,16 @@ import { DID } from 'dids'
 
 import { CERAMIC_ENDPOINT, BASIC_PROFILE_ALIAS } from './did_CONSTS'
 
+var networkId, accountAddress, PROVIDER;
 
 const DID_init = async ( web3, /*window.ethereum*/ provider ) =>
 {
     console.log("DID_init")
-    return [ web3, web3.eth.net.getId(), web3.eth.accounts[0], provider ];
+    networkId = await web3.eth.net.getId();
+    accountAddress = await web3.eth.getAccounts();
+    PROVIDER = provider;
 } // init
 
-const { WEB3, networkId, accountAddress, PROVIDER } = DID_init ;
 
 const DID_showConf = () =>
 {
@@ -23,6 +25,7 @@ const DID_showConf = () =>
 
 const DID_readProfile = async ( /*address, web3 */ /*, endpoint*/ ) =>
 {
+  console.log("DID_readProfile")
     //const [address] = await connect()
     const ceramic = new CeramicClient(/*endpoint*/CERAMIC_ENDPOINT)
     const idx = new IDX({ ceramic })

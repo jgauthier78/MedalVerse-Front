@@ -1,4 +1,10 @@
 {
+  "LandingPage" :{
+    "walletConnect": {
+      "title" : "Connection au Wallet",
+      "body" : "En cours"
+    }
+  },
   "homePage": {
     "welcome": "Bienvenue"
   },
