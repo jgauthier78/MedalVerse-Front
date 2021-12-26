@@ -6,12 +6,9 @@ import NotFound from "./components/Pages/NotFound"
 import LandingPage from "./components/Pages/LandingPage"
 import MedalVerseContract from "./contracts/MedalVerse.json";
 import OrganizerMain from "./components/Pages/OrganizerMain";
-import AthleteMain from "./components/Pages/AthleteMain";
+import SporstmanMain from "./components/Pages/SporstmanMain";
 import RedirectTo from "./components/UIElements/RedirectTo";
 import "./styles/Main.css"
-
-
-import {ROLES} from "./utils/roles_CONSTS"
 
 // Translation
 // import i18n (needs to be bundled ;))
@@ -21,14 +18,6 @@ import './utils/i18n';
 
 class App extends Component {
 
-    constructor(props)
-    {
-      super(props);
-
-      this.handleSaveUserProfile = this.handleSaveUserProfile.bind(this);
-      this.handleOrganizerSaveProfile = this.handleOrganizerSaveProfile.bind(this);
-    }
-  
     state = {
         web3: null,
         accounts: null,
@@ -36,37 +25,15 @@ class App extends Component {
         isConnected: false,
         userRole: -1,
         roleUpdated: false,
-        redirectTo: null
+        redirectTo: null,
+        userDetails: null,
     }
 
-
- handleSaveUserProfile = async( profile ) =>
- {
-  try
-  {
-    console.log("App::handleSaveUserProfile name="+ profile.name)
-    // const { connectedAccountAddr } = this.state;
-    // this.ERC20_SetEventHandler( erc20ContractInstance ) ;
-    // return await erc20ContractInstance.methods.approve( vault_adr_spender, amount ).send( {from: connectedAccountAddr} );
-    }
-  catch (error)
-  {
-   // Catch any errors for any of the above operations.
-   this.handleError( error, true )
-  } // catch
-
-} // handleSaveUserProfile
-
-handleOrganizerSaveProfile= async( profile ) =>
-{
-    this.handleSaveUserProfile(profile)
-} // handleOrganizerSaveProfile
 
     setIsConnected = val => this.setState({ isConnected: val })
-    isConnected = () => this.state.isConnected
+    isConnected = () => { return this.state.isConnected; }
 
     render() {
-        let profilOrganisateur = {"name":"Nom de l'organisateur"}
 
         return (
             <BrowserRouter >
@@ -75,10 +42,7 @@ handleOrganizerSaveProfile= async( profile ) =>
                         {this.state.redirectTo === null ?
                             <Suspense fallback={<Loading />}>
                                 <I18nextProvider i18n={i18next}>
-                                    <LandingPage
-                                        setIsConnected={this.setIsConnected} getWeb3Cnx={this.getWeb3Cnx}
-                                        initContract={this.initContract} initAccounts={this.initAccounts} getAccounts={this.getAccounts} initUserDetails={this.initUserDetails} updateUserDetails={this.updateUserDetails}
-                                    />
+                                    <LandingPage AppCallBacks={this.AppCallBacks} />
                                 </I18nextProvider>
                             </Suspense>
                             :
@@ -88,15 +52,14 @@ handleOrganizerSaveProfile= async( profile ) =>
                     />
                     <Route exact path='organizer' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                              {JSON.stringify(profilOrganisateur)}
-                            <OrganizerMain handleSaveProfile={this.handleOrganizerSaveProfile} profile={ profilOrganisateur }/>
+                            <OrganizerMain AppCallBacks={this.AppCallBacks} />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
-                    <Route exact path='athlete' element={this.state.redirectTo === null ?
+                    <Route exact path='sportsman' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                            <AthleteMain />
+                            <SporstmanMain AppCallBacks={this.AppCallBacks} />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
@@ -108,6 +71,25 @@ handleOrganizerSaveProfile= async( profile ) =>
 
     }
 
+    constructor(props) {
+        super(props)
+        this.AppCallBacks =
+        {
+            setIsConnected: this.setIsConnected,
+            getWeb3Cnx: this.getWeb3Cnx,
+            initAccounts: this.initAccounts,
+            getAccounts: this.getAccounts,
+            initContract: this.initContract,
+            initUserDetails: this.initUserDetails,
+            updateUserDetails: this.updateUserDetails,
+            resetNavigateTo: this.resetNavigateTo,
+            accountsUpdated: this.accountsUpdated,
+            getUserEvents: this.getUserEvents,
+            getUserDetails: this.getUserDetails,
+            isConnected: this.isConnected,
+            getRoleString: this.getRoleString
+        }
+    }
 
     // Returns the Web3 provider
     getWeb3Cnx = async () => {
@@ -178,6 +160,9 @@ handleOrganizerSaveProfile= async( profile ) =>
             // call the contract method to get infos about user
             result.detail = await this.state.contract.methods.getUserDetails(this.getAccounts()).call()
             this.setState({ userRole: result.detail.role })
+            this.setState({ userDetails: result.detail })
+            this.setState({ isConnected: true })
+
         }
         catch (err) {
             result.err = err
@@ -188,13 +173,29 @@ handleOrganizerSaveProfile= async( profile ) =>
     // Redirect to the correct page after reading user details from contract
     updateUserDetails = () => {
         let role = this.state.userRole
-        if (role & ROLES.ROLE_ORGANIZER) // Organizer
+        if (role & 4) // Organizer
             this.setState({ redirectTo: "/organizer" })
-        else if (role & ROLES.ROLE_ATHLETE) // Athlete
-            this.setState({ redirectTo: "/athlete" })
-        else if (role & ROLES.ROLE_AUTHOR) // Author
+        else if (role & 8) // Sportsman
+            this.setState({ redirectTo: "/sportsman" })
+        else if (role & 2) // Author
             this.setState({ redirectTo: "/author" })
         else this.setState({ redirectTo: "/" }) // Not registered
+    }
+
+    getRoleString = () => {
+        let role = this.state.userRole
+        if (role & 4) return "Organisateur"
+        else if (role & 8) // Sportsman
+            return "Sportif"
+        else if (role & 2) // Author
+            return "Auteur"
+    }
+    disconnet = () => {
+        this.setState({ userDetails: null, isConnected: false, userRole: 0 })
+    }
+
+    getUserDetails = () => {
+        return this.state.userDetails
     }
 
     // We need to reset state after redirecting, otherwise we have an infinite loop
@@ -210,6 +211,31 @@ handleOrganizerSaveProfile= async( profile ) =>
         await this.initUserDetails()
         // redirect to the right page
         this.updateUserDetails()
+    }
+
+    /* Retourne la structure complete des évènements auxquels un user appartient */
+    getUserEvents = async () => {
+        let account = this.getAccounts()
+        let result = { nbEvents: 0, Event: null }
+        // We get the nb of events the sporsman registered to
+        result.nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
+        if (result.nbEvents > 0) {
+            // We get the list of events the sporsman registered to
+            let eventIndxList = await this.state.contract.methods.getSportsmanEventsSubscriptions(account).call()
+            if (eventIndxList.length > 0) {
+                result.eventList = []
+                result.organisationDesc = []
+                // We now populate the structure
+                for (let i = 0; i < result.nbEvents; i++) {
+                    let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
+                    result.eventList.push(val)
+                    let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.organizedBy).call()
+                    result.organisationDesc.push(organisationDesc)
+                }
+            }
+
+        }
+        console.log(result)
     }
 }
 
