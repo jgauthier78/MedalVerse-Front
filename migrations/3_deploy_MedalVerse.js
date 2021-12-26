@@ -12,6 +12,7 @@ module.exports = async function (deployer) {
   console.log("Populating with Users")
 
 
+  // Generates an public / private pair for fake sportsman / organizers
   function generateFakeAdr() {
     var id = crypto.randomBytes(32).toString('hex');
     var privateKey = "0x" + id;
@@ -24,6 +25,11 @@ module.exports = async function (deployer) {
   const Author = 2
   const Organizer = 4
   const Sportsman = 8
+  //  const Time1 = Math.floor((new Date(2022, 01, 01)).getTime() / 1000000)
+  //  const Time2 = Math.floor((new Date(2022, 12, 31)).getTime() / 1000000)
+
+  const Time1 = 0
+  const Time2 = 0
 
   /* Ajouter un utilisateur */
   function avatarRef(s) { return "/img/avatars/" + s }
@@ -32,8 +38,8 @@ module.exports = async function (deployer) {
   }
   /*************************************/
 
-  await MVerse.addNewUser(accounts[1], "1.jpeg", "Paul_Henry", "pol@gmail.com", Sportsman + Organizer, 0, { from: accounts[0] })
-  await MVerse.addNewUser(accounts[0], "2.jpeg", "François Coste", "fcoste@gmail.com", Sportsman, 0, { from: accounts[0] })
+  await MVerse.addNewUser(accounts[1], avatarRef("1.jpg"), "Paul_Henry", "pol@gmail.com", Sportsman + Organizer, 0, { from: accounts[0] })
+  await MVerse.addNewUser(accounts[0], avatarRef("2.jpg"), "François Coste", "fcoste@gmail.com", Sportsman, 0, { from: accounts[0] })
   console.log(accounts[1] + " : Organisateur")
   console.log(accounts[0] + " : Sportif")
   await addUser("Sonia Legendre", "slegendre", Sportsman, 0)
@@ -70,6 +76,15 @@ module.exports = async function (deployer) {
   let a = await MVerse.getUserCount({ from: accounts[0] })
   console.log(a.toString() + ' utilisateurs ajoutés')
 
+  await MVerse.addOrganization(accounts[1], "FFA", "Fédération Française d'Athlétisme", "A.jpg", { from: accounts[1] });
+  await MVerse.addOrganization(accounts[1], "FFE", "Fédération Française d'Escrime", "B.jpg", { from: accounts[1] });
   await MVerse.organizationAddAdmin(0, accounts[1]);
+  await MVerse.organizationAddAdmin(1, accounts[1]);
+
+  await MVerse.newEvent(0, Time1, Time2, 2, { from: accounts[1] });
+  await MVerse.newEvent(1, Time1, Time2, 4, { from: accounts[1] });
+
+  await MVerse.LinkUserAndEvent(accounts[0], 0);
+  await MVerse.LinkUserAndEvent(accounts[0], 1);
 
 };

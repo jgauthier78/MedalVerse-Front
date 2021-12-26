@@ -25,10 +25,13 @@ class App extends Component {
         isConnected: false,
         userRole: -1,
         roleUpdated: false,
+        redirectTo: null,
+        userDetails: null,
     }
 
 
     setIsConnected = val => this.setState({ isConnected: val })
+    isConnected = () => { return this.state.isConnected; }
 
     render() {
 
@@ -39,6 +42,7 @@ class App extends Component {
                         {this.state.redirectTo === null ?
                             <Suspense fallback={<Loading />}>
                                 <I18nextProvider i18n={i18next}>
+                                    <LandingPage AppCallBacks={this.AppCallBacks} />
                                 </I18nextProvider>
                             </Suspense>
                             :
@@ -48,12 +52,14 @@ class App extends Component {
                     />
                     <Route exact path='organizer' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
+                            <OrganizerMain AppCallBacks={this.AppCallBacks} />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
                     <Route exact path='sportsman' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
+                            <SporstmanMain AppCallBacks={this.AppCallBacks} />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
@@ -65,6 +71,25 @@ class App extends Component {
 
     }
 
+    constructor(props) {
+        super(props)
+        this.AppCallBacks =
+        {
+            setIsConnected: this.setIsConnected,
+            getWeb3Cnx: this.getWeb3Cnx,
+            initAccounts: this.initAccounts,
+            getAccounts: this.getAccounts,
+            initContract: this.initContract,
+            initUserDetails: this.initUserDetails,
+            updateUserDetails: this.updateUserDetails,
+            resetNavigateTo: this.resetNavigateTo,
+            accountsUpdated: this.accountsUpdated,
+            getUserEvents: this.getUserEvents,
+            getUserDetails: this.getUserDetails,
+            isConnected: this.isConnected,
+            getRoleString: this.getRoleString
+        }
+    }
 
     // Returns the Web3 provider
     getWeb3Cnx = async () => {
@@ -135,6 +160,9 @@ class App extends Component {
             // call the contract method to get infos about user
             result.detail = await this.state.contract.methods.getUserDetails(this.getAccounts()).call()
             this.setState({ userRole: result.detail.role })
+            this.setState({ userDetails: result.detail })
+            this.setState({ isConnected: true })
+
         }
         catch (err) {
             result.err = err
@@ -154,6 +182,22 @@ class App extends Component {
         else this.setState({ redirectTo: "/" }) // Not registered
     }
 
+    getRoleString = () => {
+        let role = this.state.userRole
+        if (role & 4) return "Organisateur"
+        else if (role & 8) // Sportsman
+            return "Sportif"
+        else if (role & 2) // Author
+            return "Auteur"
+    }
+    disconnet = () => {
+        this.setState({ userDetails: null, isConnected: false, userRole: 0 })
+    }
+
+    getUserDetails = () => {
+        return this.state.userDetails
+    }
+
     // We need to reset state after redirecting, otherwise we have an infinite loop
     resetNavigateTo = () => {
         this.setState({ redirectTo: null })
@@ -167,6 +211,31 @@ class App extends Component {
         await this.initUserDetails()
         // redirect to the right page
         this.updateUserDetails()
+    }
+
+    /* Retourne la structure complete des évènements auxquels un user appartient */
+    getUserEvents = async () => {
+        let account = this.getAccounts()
+        let result = { nbEvents: 0, Event: null }
+        // We get the nb of events the sporsman registered to
+        result.nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
+        if (result.nbEvents > 0) {
+            // We get the list of events the sporsman registered to
+            let eventIndxList = await this.state.contract.methods.getSportsmanEventsSubscriptions(account).call()
+            if (eventIndxList.length > 0) {
+                result.eventList = []
+                result.organisationDesc = []
+                // We now populate the structure
+                for (let i = 0; i < result.nbEvents; i++) {
+                    let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
+                    result.eventList.push(val)
+                    let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.organizedBy).call()
+                    result.organisationDesc.push(organisationDesc)
+                }
+            }
+
+        }
+        console.log(result)
     }
 }
 
