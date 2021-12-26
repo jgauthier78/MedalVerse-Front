@@ -1,8 +1,19 @@
-import React from "react";
+// import React from "react";
+import { Container } from "react-bootstrap";
+import { Profile } from "../Profile";
 
-const OrganizerMain = () => {
+const OrganizerMain = ( { handleSaveProfile, profile } ) => {
     return (
-        <p>Organizer Main</p>
+
+        <Container fluid>
+
+            <Container fluid>
+            <p>Organizer Main</p>
+            </Container>
+        <Profile handleSaveProfile={handleSaveProfile} profile={profile} />
+
+        </Container>
+
     )
 }
 
