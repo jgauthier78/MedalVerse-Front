@@ -6,7 +6,7 @@ import NotFound from "./components/Pages/NotFound"
 import LandingPage from "./components/Pages/LandingPage"
 import MedalVerseContract from "./contracts/MedalVerse.json";
 import OrganizerMain from "./components/Pages/OrganizerMain";
-import SporstmanMain from "./components/Pages/SporstmanMain";
+import AthleteMain from "./components/Pages/AthleteMain";
 import RedirectTo from "./components/UIElements/RedirectTo";
 import "./styles/Main.css"
 
@@ -94,9 +94,9 @@ handleOrganizerSaveProfile= async( profile ) =>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
-                    <Route exact path='sportsman' element={this.state.redirectTo === null ?
+                    <Route exact path='athlete' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                            <SporstmanMain />
+                            <AthleteMain />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
@@ -190,8 +190,8 @@ handleOrganizerSaveProfile= async( profile ) =>
         let role = this.state.userRole
         if (role & ROLES.ROLE_ORGANIZER) // Organizer
             this.setState({ redirectTo: "/organizer" })
-        else if (role & ROLES.ROLE_SPORTSMAN) // Sportsman
-            this.setState({ redirectTo: "/sportsman" })
+        else if (role & ROLES.ROLE_ATHLETE) // Athlete
+            this.setState({ redirectTo: "/athlete" })
         else if (role & ROLES.ROLE_AUTHOR) // Author
             this.setState({ redirectTo: "/author" })
         else this.setState({ redirectTo: "/" }) // Not registered
