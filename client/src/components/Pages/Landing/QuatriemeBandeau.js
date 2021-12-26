@@ -1,12 +1,8 @@
-import React, { Fragment, Component } from "react";
-import {
-    Button, Card, CardImg,
-    Badge
-} from "react-bootstrap";
+import { Card, CardImg } from "react-bootstrap";
 import { Container, Row, Col } from "react-bootstrap";
 
 
-export default () => {
+let QuatriemeBandeau = () => {
     return (
         <section className="section bg-light-gray">
             <Container>
@@ -56,3 +52,5 @@ export default () => {
         </section>
     )
 }
+
+export default QuatriemeBandeau 

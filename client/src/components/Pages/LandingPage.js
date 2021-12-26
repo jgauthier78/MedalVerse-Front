@@ -16,7 +16,7 @@ import SecondBandeau from "./Landing/SecondBandeau";
 import TroisiemeBandeau from "./Landing/TroisiemeBandeau";
 import QuatriemeBandeau from "./Landing/QuatriemeBandeau";
 
- import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from '../../utils/did'
+import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from '../../utils/did'
 
 class LandingPageWithTranslation extends Component {
 
@@ -26,7 +26,7 @@ class LandingPageWithTranslation extends Component {
         this.state = { show: false };
         this.showModal = this.showModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-      }
+    }
 
     toast_options = {
         autoClose: 2000,
@@ -36,18 +36,17 @@ class LandingPageWithTranslation extends Component {
         progress: 0.2
     };
 
-    closeModal(){
-        this.setState( {show: true} );
+    closeModal() {
+        this.setState({ show: false });
     }
 
-    showModal(){
-        console.log("show")
-        this.setState( {show: true} );
+    showModal() {
+        this.setState({ show: true });
     }
-        /* Callback for the Login Button*/
+    /* Callback for the Login Button*/
     loginCallBack = async () => {
         console.log("loginCallBack")
-        var _getWeb3 = this.props.getWeb3Cnx
+        var _getWeb3 = this.props.AppCallBacks.getWeb3Cnx
         var result
         // We loop so the site is not accessible until everything is set properly
         // this.dialog.show({ body: 'Connection au Wallet' })
@@ -60,19 +59,19 @@ class LandingPageWithTranslation extends Component {
         if (result.err === null) {
             this._web3 = result.web3
             // getting accounts
-            this._accounts = await this.props.initAccounts()
+            this._accounts = await this.props.AppCallBacks.initAccounts()
             if (this._accounts != null) {
 
-                await DID_init( this._web3, window.ethereum )
+                await DID_init(this._web3, window.ethereum)
                 DID_showConf();
                 DID_readProfile();
 
                 // getting MedalVerse contract
-                result = await this.props.initContract()
+                result = await this.props.AppCallBacks.initContract()
                 if (result.err === null) {
                     this.MedalVerse = result.contract
 
-                    result = await this.props.initUserDetails()
+                    result = await this.props.AppCallBacks.initUserDetails()
                     if (result.err === null) {
                         console.log(result.detail)
                     }
@@ -93,10 +92,10 @@ class LandingPageWithTranslation extends Component {
         }
         // this.dialog.hide();
         this.closeModal();
-        
+
 
         if (!success) toast.error(erreur, this.toast_options);
-        else this.props.updateUserDetails()
+        else this.props.AppCallBacks.updateUserDetails()
     }
 
 
@@ -105,7 +104,7 @@ class LandingPageWithTranslation extends Component {
         const { t } = this.props;
         return (
             <Fragment>
-                <NavBar loginCallBack={this.loginCallBack} />
+                <NavBar loginCallBack={this.loginCallBack} AppCallBacks={this.props.AppCallBacks} />
                 <main ref="main">
                     <BandeauTitre />
                     <SecondBandeau />
@@ -114,9 +113,9 @@ class LandingPageWithTranslation extends Component {
 
                 </main>
                 <SimpleFooter />
-{/*                <Dialog ref={(el) => { this.dialog = el }} /> */}
-            <SimpleModal title={t("LandingPage.walletConnect.title")} messageBody={t("LandingPage.walletConnect.body")} show={this.state.show} animation={false} />
-            
+                {/*                <Dialog ref={(el) => { this.dialog = el }} /> */}
+                <SimpleModal title={t("LandingPage.walletConnect.title")} messageBody={t("LandingPage.walletConnect.body")} show={this.state.show} animation={false} />
+
                 <ToastContainer />
             </Fragment >
 

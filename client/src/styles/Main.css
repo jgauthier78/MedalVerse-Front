@@ -2,9 +2,49 @@
   margin-top: 24px;
 }
 
+
+.card-rounded{
+  border-radius: 1.05rem !important;
+  
+}
+.card-rounded-sm{
+  border-radius: 1.25rem !important;
+
+}
+.sidebarText{
+  color: black;
+}
+.colored-Sidebar{
+  background-color: #F2F3F5;
+}
 .roundedImage{
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  box-shadow: 0 25px 50px -12px rgba(87, 87, 87, 0.25);
   border-radius: 1.25rem !important; 
+}
+.verticalSeparator-left {
+  border-right: 1px solid rgba(90, 89, 89, 0.2);
+}
+.c-details span {
+  font-weight: 300;
+  font-size: 13px
+}
+
+.profileImage {
+  width: 50px;
+  height:auto;
+  border-radius: 100rem !important;
+  margin-bottom: 20px;
+}
+.cardProfile {
+  border-radius: 0.5rem !important;
+  background-color: white !important;
+
+}
+.profile-page {
+  background-color: #F2F3F5;
+}
+.profileText{
+  color:black;
 }
 
 .mediumSizeImage{
@@ -3486,6 +3526,8 @@ input[type="button"].btn-block {
     .navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {
       color: rgba(255, 255, 255, 0.65); }
 
+
+
 .card {
   position: relative;
   display: flex;
@@ -3495,7 +3537,7 @@ input[type="button"].btn-block {
   background-color: #fff;
   background-clip: border-box;
   border: 0.0625rem solid rgba(0, 0, 0, 0.05);
-  border-radius: 1.05rem !important; }
+   }
   .card > hr {
     margin-right: 0;
     margin-left: 0; }
@@ -5889,7 +5931,7 @@ button.bg-darker:focus {
   min-width: 100vw !important; }
 
 .min-vh-100 {
-  min-height: 100vh !important; }
+  min-height: calc(100% - 650px); }
 
 .vw-100 {
   width: 100vw !important; }

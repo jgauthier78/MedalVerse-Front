@@ -2,12 +2,12 @@ const expect = require('chai').expect;
 
 const throwIn = artifacts.require('ThrowIn');
 
-contract('ThrowIn', function(accounts){
+contract('ThrowIn', function (accounts) {
 
 
     const owner = accounts[0];
     const year = 1998;
-    
+
 
     const name = "Rapahel Nadal";
     const name1 = "Roger Federer";
@@ -15,11 +15,11 @@ contract('ThrowIn', function(accounts){
 
     beforeEach(async function () {
         this.throwInInstance = await throwIn.new("FITennis", { from: owner });
-      });
+    });
 
     // MINT -------------------------------
-    it("Mint du NFT Coupe", async function(){
-        await this.throwInInstance.mintCup("img", {from:accounts[0]});
+    it("Mint du NFT Coupe", async function () {
+        await this.throwInInstance.mintCup("img", { from: accounts[0] });
 
         let balance = await this.throwInInstance.balanceOf(accounts[0]);
 
@@ -28,17 +28,17 @@ contract('ThrowIn', function(accounts){
     })
 
     // Add Participant -------------------------------
-    it("ajout de participant", async function(){
+    it("ajout de participant", async function () {
         await this.throwInInstance.addParticipant(name, accounts[1]);
 
         let participant = await this.throwInInstance.particip(accounts[1]);
 
         // check
-        expect(participant.player === name , participant.wallet === accounts[1]);
+        expect(participant.player === name, participant.wallet === accounts[1]);
     })
 
     // Add Winner -------------------------------
-    it("ajout d'un Winner", async function(){
+    it("ajout d'un Winner", async function () {
         await this.throwInInstance.addWinner(name, accounts[1], year);
 
         let winner = await this.throwInInstance.win(accounts[1]);
@@ -50,11 +50,11 @@ contract('ThrowIn', function(accounts){
     })
 
     // Remove All Participant -------------------------------
-    it("Supprime tous les participant", async function(){
+    it("Supprime tous les participant", async function () {
         await this.throwInInstance.addParticipant(name, accounts[1]);
         await this.throwInInstance.addParticipant(name1, accounts[2]);
 
-        await this.throwInInstance.removeAllParticipants({from: owner})
+        await this.throwInInstance.removeAllParticipants({ from: owner })
 
         balanceOfParticipant = await this.throwInInstance.viewNumberOfParticipants();
 
@@ -63,7 +63,7 @@ contract('ThrowIn', function(accounts){
     })
 
     // Remove This Participant -------------------------------
-    it("Supprimé un participant", async function(){
+    it("Supprime un participant", async function () {
         await this.throwInInstance.addParticipant(name, accounts[1]);
         await this.throwInInstance.addParticipant(name1, accounts[2]);
         await this.throwInInstance.addParticipant(name2, accounts[3]);
@@ -75,5 +75,5 @@ contract('ThrowIn', function(accounts){
         // check
         expect(participant.player === name1, participant.wallet === accounts[2]);
     })
-    
+
 })

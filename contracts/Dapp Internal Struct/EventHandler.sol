@@ -30,10 +30,11 @@ contract EventHandler is Ownable {
 	// Events -------------------------------
 	event eventAdded(uint256 eventId);
 	event eventRemoved(uint256 eventId);
+	event eventRegisterSportsman(uint256 eventId, address sportsmanId);
 
 	// Methods -------------------------------
 	///@dev add an event to the list of events
-	///@param _organizedBy id of the organizer
+	///@param _organizedBy id of the oganization
 	///@param _startDate Date for the event to start
 	///@param _endDate Date for the event to finish
 	///@param _sportCategory Type of event
@@ -42,7 +43,7 @@ contract EventHandler is Ownable {
 		uint8 _startDate,
 		uint8 _endDate,
 		uint256 _sportCategory
-	) public onlyOwner {
+	) public returns (uint256) {
 		EventDesc storage _event = eventList[eventCount];
 		_event.eventId = eventCount;
 		_event.organizedBy = _organizedBy;
@@ -51,7 +52,7 @@ contract EventHandler is Ownable {
 		_event.sportCategory = _sportCategory;
 		_event.activ = true;
 		emit eventAdded(eventCount);
-		eventCount++;
+		return eventCount++;
 	}
 
 	///@dev remove an event from the list of events
@@ -96,5 +97,17 @@ contract EventHandler is Ownable {
 	///@dev returns the number of Events
 	function getEventCount() public view returns (uint256) {
 		return eventCount;
+	}
+
+	///@dev Add a Sportsman to an event
+	///@param eventId id of the event
+	///@param sportsmanID address of the sportsman
+	function EventRegisterSportsman(
+		uint256 eventId,
+		address sportsmanID // Sportsman already validated by child class
+	) internal {
+		require(eventId < eventCount);
+		eventList[eventId].registeredSportsMan.push(sportsmanID);
+		emit eventRegisterSportsman(eventId, sportsmanID);
 	}
 }

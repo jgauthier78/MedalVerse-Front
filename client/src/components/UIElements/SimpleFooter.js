@@ -24,6 +24,7 @@ class SimpleFooter extends React.Component {
                   <a
                     href="https://www.google.com"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     MedalVerse
                   </a>
@@ -36,6 +37,7 @@ class SimpleFooter extends React.Component {
                     <NavLink
                       href="https://www.google.com"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       MedalVerse
                     </NavLink>
@@ -44,6 +46,7 @@ class SimpleFooter extends React.Component {
                     <NavLink
                       href="https://www.google.com"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       A Propos
                     </NavLink>
@@ -52,6 +55,7 @@ class SimpleFooter extends React.Component {
                     <NavLink
                       href="http://blog.creative-tim.com?ref=adsr-footer"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       Blog
                     </NavLink>
@@ -60,6 +64,7 @@ class SimpleFooter extends React.Component {
                     <NavLink
                       href="https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       MIT License
                     </NavLink>

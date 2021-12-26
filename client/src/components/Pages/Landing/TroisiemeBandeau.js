@@ -1,12 +1,8 @@
-import React, { Fragment, Component } from "react";
-import {
-    Button, Card,
-    Badge
-} from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 import { Container, Row, Col } from "react-bootstrap";
 import OkIcon from "../../icons/OkIcon";
 
-export default () => {
+const TroisiemeBandeau = () => {
     return (
         <section className="section section-lg ">
             <Container>
@@ -97,3 +93,5 @@ export default () => {
         </section>
     )
 }
+
+export default TroisiemeBandeau

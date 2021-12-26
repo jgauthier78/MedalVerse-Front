@@ -25,12 +25,10 @@ class App extends Component {
         isConnected: false,
         userRole: -1,
         roleUpdated: false,
-        redirectTo: null
     }
 
 
     setIsConnected = val => this.setState({ isConnected: val })
-    isConnected = () => this.state.isConnected
 
     render() {
 
@@ -41,10 +39,6 @@ class App extends Component {
                         {this.state.redirectTo === null ?
                             <Suspense fallback={<Loading />}>
                                 <I18nextProvider i18n={i18next}>
-                                    <LandingPage
-                                        setIsConnected={this.setIsConnected} getWeb3Cnx={this.getWeb3Cnx}
-                                        initContract={this.initContract} initAccounts={this.initAccounts} getAccounts={this.getAccounts} initUserDetails={this.initUserDetails} updateUserDetails={this.updateUserDetails}
-                                    />
                                 </I18nextProvider>
                             </Suspense>
                             :
@@ -54,14 +48,12 @@ class App extends Component {
                     />
                     <Route exact path='organizer' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                            <OrganizerMain />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
                     <Route exact path='sportsman' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                            <SporstmanMain />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />

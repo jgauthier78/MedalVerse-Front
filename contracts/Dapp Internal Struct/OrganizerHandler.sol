@@ -12,6 +12,7 @@ contract OrganizerHandler is Ownable {
 
 	struct Organization {
 		uint256[] adminList;
+		uint256[] EventList;
 		string name;
 		string description;
 		string logoURI;
@@ -68,7 +69,7 @@ contract OrganizerHandler is Ownable {
 		string memory _name,
 		string memory _description,
 		string memory _logoURI
-	) public onlyOwner isNotNull(_user) {
+	) public isNotNull(_user) {
 		uint256 indx = organizationList.length;
 		Organization storage _org = organizationList.push();
 		_org.name = _name;
@@ -87,7 +88,6 @@ contract OrganizerHandler is Ownable {
 	///@param orgId id of the organization
 	function organizationAddAdmin(uint256 orgId, address _user)
 		public
-		onlyOwner
 		isNotNull(_user)
 	{
 		Organization storage org = organizationList[orgId];
@@ -184,6 +184,25 @@ contract OrganizerHandler is Ownable {
 		return list;
 	}
 
+	///@dev returns true if the user is admin of the organization
+	///@param organizer  index amoung organizers
+	///@param orgIndx  index amoung organizations
+	function checkorganizerisAdminOf(uint256 organizer, uint256 orgIndx)
+		public
+		view
+		returns (bool)
+	{
+		require(orgIndx < organizationList.length, "Organization not found");
+		require(organizer < organizerList.length, "Organizer not found");
+		uint256 maxL = organizationList[orgIndx].adminList.length;
+
+		for (uint256 i = 0; i < maxL; i++) {
+			if (organizationList[orgIndx].adminList[i] == organizer)
+				return true;
+		}
+		return false;
+	}
+
 	///@dev returns the address of an admin, given an id organizer
 	///@param id  id (=index) of the organizer
 	function getOrganizerAddressById(uint256 id)
@@ -222,5 +241,14 @@ contract OrganizerHandler is Ownable {
 			}
 		}
 		return result;
+	}
+
+	function organizerAddEvent(
+		uint256 organizerID,
+		uint256 organizationId,
+		uint256 eventID
+	) internal {
+		require(organizerID < organizerList.length);
+		organizationList[organizationId].EventList.push(eventID + 1);
 	}
 }

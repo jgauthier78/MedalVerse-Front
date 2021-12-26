@@ -1,8 +1,4 @@
-import React, { Fragment, Component } from "react";
-import {
-    Button, Card,
-    Badge
-} from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import 'react-toastify/dist/ReactToastify.css';
 
 import IconPeoples from '../../icons/IconPeoples';
@@ -19,7 +15,7 @@ const SecondBandeau = () => {
                     <Col lg="12">
                         <Row className="row-grid">
                             <Col lg="4">
-                                <Card className="card-lift--hover shadow border-0 cardTopMargin">
+                                <Card className="card-lift--hover shadow border-0 cardTopMargin card-rounded">
                                     <Card.Body className="py-5 text-center">
                                         <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
                                             <IconPeoples size="6" />
@@ -35,7 +31,7 @@ const SecondBandeau = () => {
                                 </Card>
                             </Col>
                             <Col lg="4">
-                                <Card className="card-lift--hover shadow border-0">
+                                <Card className="card-lift--hover shadow border-0 card-rounded">
                                     <Card.Body className="py-5 text-center">
                                         <div className="icon icon-shape icon-shape-success rounded-circle mb-4">
                                             <IconMedal size="6" />
@@ -51,7 +47,7 @@ const SecondBandeau = () => {
                                 </Card>
                             </Col>
                             <Col lg="4">
-                                <Card className="card-lift--hover shadow border-0 cardTopMargin">
+                                <Card className="card-lift--hover shadow border-0 cardTopMargin card-rounded">
                                     <Card.Body className="py-5 text-center">
                                         <div className="icon icon-shape icon-shape-warning rounded-circle mb-4">
                                             <IconDialog size="6" />

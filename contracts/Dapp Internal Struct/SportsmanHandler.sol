@@ -56,7 +56,7 @@ contract SportsmanHandler is Ownable {
 	///@param _sportsMan Address of the user sportsman
 	///@param eventId id of the event to register to
 	function registerSportsmanToEvent(address _sportsMan, uint256 eventId)
-		private
+		internal
 		onlyOwner
 		isNotNull(_sportsMan)
 	{
@@ -129,11 +129,22 @@ contract SportsmanHandler is Ownable {
 		return _desc;
 	}
 
-	function getSportsmanEventsSubscriptions(address sportsmanId)
+	///@dev returns the nb of activ events the sportsman registered to
+	///@param sportsmanId address of the sportsman
+	function getSportsManEventsNumber(address sportsmanId)
 		public
 		view
-		returns (uint256[] memory)
+		isNotNull(sportsmanId)
+		returns (uint256)
 	{
+		return allSportsman[sportsmanId].nbActivSubscriptions;
+	}
+
+	///@dev returns the list of activ events the sportsman registered to
+	///@param sportsmanId address of the sportsman
+	function getSportsmanEventsSubscriptions(
+		address sportsmanId ///@dev returns the list of activ events the sportsman registered to
+	) public view returns (uint256[] memory) {
 		// We make sure tjere are some events the user subscribed to
 		assert(allSportsman[sportsmanId].nbActivSubscriptions > 0);
 		//Allocate enogh entries for the resulting list

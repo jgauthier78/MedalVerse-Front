@@ -18,7 +18,7 @@ import { Trophy } from 'react-bootstrap-icons';
 import "../../styles/NavBar.css";
 import { Button } from "react-bootstrap";
 
-const NavBar = ({ connectedAccountAddr, loginCallBack }) => {
+const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks }) => {
   const { t } = useTranslation();
   /*
      return (
@@ -36,7 +36,7 @@ const NavBar = ({ connectedAccountAddr, loginCallBack }) => {
 
   return (
 
-    <Navbar className="colored-Nav" expand="lg"  >
+    <Navbar className={`colored-Nav ${options}`} expand="lg"  >
       <Container>
 
         <Navbar.Brand href="/" className={textStyleCentered}><Trophy style={{ verticalAlign: '-10%' }} /> {t("menu.title")}</Navbar.Brand>
@@ -69,8 +69,19 @@ const NavBar = ({ connectedAccountAddr, loginCallBack }) => {
             </NavDropdown>
           </Nav>
           <Nav className="align-items-lg-center ml-lg-auto" navbar>
+            {AppCallBacks.isConnected() ?
+
+              <Nav.Link className={textStyleCentered}>{AppCallBacks.getUserDetails().userName}</Nav.Link>
+              :
+              <></>
+            }
             <NavItem className="d-none d-lg-block ml-lg-4">
-              <Button className={textStyleRight} onClick={loginCallBack} >{t("menu.LoginButton")}</Button>
+              {AppCallBacks.isConnected() ?
+
+                <Button className={textStyleRight} onClick={AppCallBacks.disconnect} >{"Déconnecter"}</Button>
+                :
+                <Button className={textStyleRight} onClick={loginCallBack} >{t("menu.LoginButton")}</Button>
+              }
             </NavItem>
           </Nav>
 

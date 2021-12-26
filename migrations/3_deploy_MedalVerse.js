@@ -12,13 +12,13 @@ module.exports = async function (deployer) {
   console.log("Populating with Users")
 
 
-
   function generateFakeAdr() {
     var id = crypto.randomBytes(32).toString('hex');
     var privateKey = "0x" + id;
     var wallet = new ethers.Wallet(privateKey);
     return wallet.address
   }
+
 
   let indx = 3;
   const Author = 2
@@ -70,8 +70,6 @@ module.exports = async function (deployer) {
   let a = await MVerse.getUserCount({ from: accounts[0] })
   console.log(a.toString() + ' utilisateurs ajoutés')
 
-  await MVerse.addOrganization(accounts[1], "FFA", "Fédération Française d'Athlétisme", "A.jpg", { from: accounts[0] });
-  await MVerse.addOrganization(accounts[1], "FFE", "Fédération Française d'Escrime", "B.jpg", { from: accounts[0] });
   await MVerse.organizationAddAdmin(0, accounts[1]);
 
 };
