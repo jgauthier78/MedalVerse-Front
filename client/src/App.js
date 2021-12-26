@@ -9,6 +9,7 @@ import OrganizerMain from "./components/Pages/OrganizerMain";
 import SporstmanMain from "./components/Pages/SporstmanMain";
 import RedirectTo from "./components/UIElements/RedirectTo";
 import "./styles/Main.css"
+import { ROLES } from "./utils/roles_CONSTS"
 
 // Translation
 // import i18n (needs to be bundled ;))
@@ -28,13 +29,29 @@ class App extends Component {
         redirectTo: null,
         userDetails: null,
     }
+    handleSaveUserProfile = async (profile) => {
+        try {
+            console.log("App::handleSaveUserProfile name=" + profile.name)
+            // const { connectedAccountAddr } = this.state;
+            // this.ERC20_SetEventHandler( erc20ContractInstance ) ;
+            // return await erc20ContractInstance.methods.approve( vault_adr_spender, amount ).send( {from: connectedAccountAddr} );
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
 
+    } // handleSaveUserProfile
+
+    handleOrganizerSaveProfile = async (profile) => {
+        this.handleSaveUserProfile(profile)
+    } // handleOrganizerSaveProfile
 
     setIsConnected = val => this.setState({ isConnected: val })
     isConnected = () => { return this.state.isConnected; }
 
     render() {
-
+        let profilOrganisateur = { "name": "Nom de l'organisateur" }
         return (
             <BrowserRouter >
                 <Routes>
@@ -52,7 +69,8 @@ class App extends Component {
                     />
                     <Route exact path='organizer' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                            <OrganizerMain AppCallBacks={this.AppCallBacks} />
+                            {JSON.stringify(profilOrganisateur)}
+                            <OrganizerMain handleSaveProfile={this.handleOrganizerSaveProfile} profile={profilOrganisateur} />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
@@ -73,6 +91,9 @@ class App extends Component {
 
     constructor(props) {
         super(props)
+        this.handleSaveUserProfile = this.handleSaveUserProfile.bind(this);
+        this.handleOrganizerSaveProfile = this.handleOrganizerSaveProfile.bind(this);
+
         this.AppCallBacks =
         {
             setIsConnected: this.setIsConnected,
@@ -173,21 +194,21 @@ class App extends Component {
     // Redirect to the correct page after reading user details from contract
     updateUserDetails = () => {
         let role = this.state.userRole
-        if (role & 4) // Organizer
+        if (role & ROLES.ROLE_ORGANIZER) // Organizer
             this.setState({ redirectTo: "/organizer" })
-        else if (role & 8) // Sportsman
+        else if (role & ROLES.ROLE_ATHLETE) // Sportsman
             this.setState({ redirectTo: "/sportsman" })
-        else if (role & 2) // Author
+        else if (role & ROLES.ROLE_AUTHOR) // Author
             this.setState({ redirectTo: "/author" })
         else this.setState({ redirectTo: "/" }) // Not registered
     }
 
     getRoleString = () => {
         let role = this.state.userRole
-        if (role & 4) return "Organisateur"
-        else if (role & 8) // Sportsman
+        if (role & 2) return "Organisateur"
+        else if (role & ROLES.ROLE_ATHLETE) // Sportsman
             return "Sportif"
-        else if (role & 2) // Author
+        else if (role & ROLES.ROLE_AUTHOR) // Author
             return "Auteur"
     }
     disconnet = () => {
