@@ -10,7 +10,17 @@
   },
   "profilePage": {
     "title": "Profil",
-    "subtitle": "profil de {{connectedAccountAddr}}"
+    "subtitle": "profil de {{connectedAccountAddr}}",
+    "properties" :{
+      "name" : "Nom"
+    },
+    "placeHolder" :
+    {
+      "name" : "Votre nom"
+    },
+    "actions" :{
+      "save" : "Enregistrer"
+    }
   },
   "menu": {
     "title": "MedalVerse",
