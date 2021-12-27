@@ -6,18 +6,19 @@ import Row from 'react-bootstrap/Row';
 import OrganizerSideBar from "./SideBar/OrganizerSideBar";
 import ProfileBandeau from "./ProfileBandeau"
 import { Component } from "react";
+import { Navigate } from "react-router-dom";
 
 class OrganizerMain extends Component {
 
     constructor(props) {
         super(props);
-        console.log("OrganizerMain:"+JSON.stringify(this.props));
+        console.log("OrganizerMain:" + JSON.stringify(this.props));
 
         this.state = {
             nbevents: 0,
             eventsList: null
         }
-    
+
     }
 
     async componentDidMount() {
@@ -25,6 +26,9 @@ class OrganizerMain extends Component {
     }
 
     render() {
+        if (this.props.AppCallBacks === undefined || this.props.userProfile.userDetails === null) {
+            return (<Navigate to="/" />)
+        }
         return (
             <>
                 <div className="container-fluid profile-page">

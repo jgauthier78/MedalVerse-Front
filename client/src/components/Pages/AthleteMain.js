@@ -6,12 +6,12 @@ import Row from 'react-bootstrap/Row';
 import SporstmanSideBar from "./SideBar/SportsmanSideBar";
 import ProfileBandeau from "./ProfileBandeau"
 import { Component } from "react";
-
+import { Navigate } from "react-router-dom";
 class SporstmanMain extends Component {
 
     constructor(props) {
         super(props);
-        console.log("SporstmanMain:"+this.props);
+
 
         this.state = {
             nbevents: 0,
@@ -20,11 +20,12 @@ class SporstmanMain extends Component {
     }
 
 
-    async componentDidMount() {
-        let result = await this.props.AppCallBacks.getUserEvents()
-    }
 
     render() {
+        if (this.props.AppCallBacks === undefined || this.props.userProfile.userDetails === null) {
+            return (<Navigate to="/" />)
+        }
+
         return (
             <>
                 <div className="container-fluid profile-page">
@@ -35,7 +36,7 @@ class SporstmanMain extends Component {
                         <Row>
                             <SporstmanSideBar />
                             <Col >
-                                <ProfileBandeau AppCallBacks={this.props.AppCallBacks} />
+                                <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
                                 <p>...</p>
 
 

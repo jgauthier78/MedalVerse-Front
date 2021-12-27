@@ -25,21 +25,7 @@ class App extends Component {
         this.handleSaveUserProfile = this.handleSaveUserProfile.bind(this);
         this.handleOrganizerSaveProfile = this.handleOrganizerSaveProfile.bind(this);
 
-        this.setIsConnected = this.setIsConnected.bind(this);
-        this.getWeb3Cnx = this.getWeb3Cnx.bind(this);
-        this.initAccounts = this.initAccounts.bind(this);
-        this.getAccounts = this.getAccounts.bind(this);
-        this.initContract = this.initContract.bind(this);
-        this.initUserDetails = this.initUserDetails.bind(this);
-        this.resetNavigateTo = this.resetNavigateTo.bind(this);
-        this.accountsUpdated = this.accountsUpdated.bind(this);
-        this.getUserEvents = this.getUserEvents.bind(this);
-        this.getUserDetails = this.getUserDetails.bind(this);
-        
-        this.disconnect = this.disconnect.bind(this);
 
-        this.isConnected = this.isConnected.bind(this);
-        this.getRoleString = this.getRoleString.bind(this);
 
         this.DID_init = this.DID_init.bind(this);
         this.DID_showConf = this.DID_showConf.bind(this);
@@ -80,14 +66,14 @@ class App extends Component {
             userDetails: null,
         }
 
-        console.log("App:"+this.props);
+
     }
 
     setIsConnected = val => this.setState({ isConnected: val })
     isConnected = () => { return this.state.isConnected; }
 
     render() {
-        let userProfile = { address: this.state.accounts , userDetails: this.state.userDetails }
+        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails }
         return (
             <BrowserRouter >
                 <Routes>
@@ -95,7 +81,7 @@ class App extends Component {
                         {this.state.redirectTo === null ?
                             <Suspense fallback={<Loading />}>
                                 <I18nextProvider i18n={i18next}>
-                                    <LandingPage AppCallBacks={this.AppCallBacks} />
+                                    <LandingPage AppCallBacks={this.AppCallBacks} userProfile={userProfile} />
                                 </I18nextProvider>
                             </Suspense>
                             :
@@ -111,9 +97,11 @@ class App extends Component {
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
                     <Route exact path='athlete' element={this.state.redirectTo === null ?
-                        <I18nextProvider i18n={i18next}>
-                            <AthleteMain AppCallBacks={this.AppCallBacks} />
-                        </I18nextProvider>
+                        <Suspense fallback={<Loading />}>
+                            <I18nextProvider i18n={i18next}>
+                                <AthleteMain AppCallBacks={this.AppCallBacks} userProfile={userProfile} />
+                            </I18nextProvider>
+                        </Suspense>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
@@ -194,7 +182,7 @@ class App extends Component {
         try {
             // call the contract method to get infos about user
             result.detail = await this.state.contract.methods.getUserDetails(this.getAccounts()).call()
-            console.log("result.detail="+result.detail)
+            console.log("result.detail=" + result.detail)
             // result.detail["account"] = account;
             // console.log("result.detail+account="+result.detail)
             this.setState({ userRole: result.detail.role })
@@ -230,6 +218,7 @@ class App extends Component {
     }
     disconnect = () => {
         this.setState({ userDetails: null, isConnected: false, userRole: 0 })
+        this.setState({ redirectTo: "/" })
     }
 
     getUserDetails = () => {
@@ -277,7 +266,7 @@ class App extends Component {
     }
 
     DID_init = async () => {
-        await DID_init( this.state.web3, window.ethereum )
+        await DID_init(this.state.web3, window.ethereum)
     } // DID_init
 
     DID_showConf = () => {
@@ -288,8 +277,8 @@ class App extends Component {
         await DID_readProfile()
     } // DID_readProfile
 
-    DID_updateProfile = async ( data ) => {
-        await DID_updateProfile( data )
+    DID_updateProfile = async (data) => {
+        await DID_updateProfile(data)
     } // DID_updateProfile
 
     /*
