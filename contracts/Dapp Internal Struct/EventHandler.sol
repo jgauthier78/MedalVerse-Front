@@ -79,6 +79,8 @@ contract EventHandler is Ownable {
 		return eventList[eventId];
 	}
 
+	///@dev returns the winner of the event
+	///@param eventId id of the event
 	function getWinner(uint256 eventId)
 		external
 		view
@@ -88,6 +90,8 @@ contract EventHandler is Ownable {
 		return eventList[eventId].winner;
 	}
 
+	///@dev defines the winner of the event
+	///@param eventId id of the event
 	function setWinner(uint256 eventId, address winner)
 		internal
 		isNotNullUint256(eventId)
@@ -95,6 +99,8 @@ contract EventHandler is Ownable {
 		eventList[eventId].winner = winner;
 	}
 
+	///@dev Open to registration
+	///@param eventId id of the event
 	function startEvent(uint256 eventId)
 		internal
 		isInRange(eventId, eventCount)
@@ -103,6 +109,8 @@ contract EventHandler is Ownable {
 		eventList[eventId].ended = false;
 	}
 
+	///@dev The event is closed
+	///@param eventId id of the event
 	function endEvent(uint256 eventId) internal isInRange(eventId, eventCount) {
 		eventList[eventId].ended = true;
 	}
@@ -149,6 +157,8 @@ contract EventHandler is Ownable {
 		emit eventRegisterSportsman(eventId, sportsmanID);
 	}
 
+	///@dev returns the id of the event organizer
+	///@param eventId id of the event
 	function getEventOrganizer(uint256 eventId)
 		internal
 		view
