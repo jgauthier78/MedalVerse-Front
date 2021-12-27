@@ -1,4 +1,7 @@
 {
+  "OrganizerEvents": {
+    "noEvent" : "No events"
+  },
   "LandingPage" :{
     "walletConnect": {
       "title" : "Connecting to wallet",
@@ -26,13 +29,14 @@
   "profileBandeau": {
     "image": {
       "alt" : "User profile image"
-    }
-    ,
-    "role" : "Role",
+    },
+    "address" : "address",
+    "mail" : "em@il",
+    "role" : "role(s)",
     "roles" : {
-      "organizer" : "Organisateur",
-      "athlete" : "Athlète",
-      "author" : "Artiste"
+      "organizer" : "Organizer",
+      "athlete" : "Athlete",
+      "author" : "Artist"
       }
     },
   "menu": {

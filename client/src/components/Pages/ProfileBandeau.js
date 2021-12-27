@@ -34,15 +34,15 @@ class ProfileBandeauBeforeTranslation extends Component {
                                 <tbody>
                                     <tr>
 
-                                        <td colSpan="3"><pre><b>Adresse:  </b>{this.props.userProfile.address}</pre></td>
+                                        <td colSpan="3"><pre><b>{t("profileBandeau.address")} : </b>{this.props.userProfile.address}</pre></td>
                                     </tr>
                                     <tr>
-                                        <td><b>Mail</b></td>
+                                        <td><b>{t("profileBandeau.mail")} : </b></td>
                                         <td colSpan="2">{this.props.userProfile.userDetails.email} </td>
 
                                     </tr>
                                     <tr>
-                                        <td><b>{t("profileBandeau.role")}</b></td>
+                                        <td><b>{t("profileBandeau.role")} : </b></td>
                                         <td colSpan="2">{displayRoles(this.props.userProfile.userDetails.role)}</td>
                                     </tr>
 

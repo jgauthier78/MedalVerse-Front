@@ -7,12 +7,15 @@ import OrganizerSideBar from "./SideBar/OrganizerSideBar";
 import ProfileBandeau from "./ProfileBandeau"
 import { Component } from "react";
 import { Navigate } from "react-router-dom";
+import OrganizerEvents from "./Events/OrganizerEvents";
 
-class OrganizerMain extends Component {
+import { withTranslation } from 'react-i18next';
+
+class OrganizerMainBeforeTranslation extends Component {
 
     constructor(props) {
+        // console.log("OrganizerMain:" + JSON.stringify(props));
         super(props);
-        console.log("OrganizerMain:" + JSON.stringify(this.props));
 
         this.state = {
             nbevents: 0,
@@ -40,8 +43,8 @@ class OrganizerMain extends Component {
                             <OrganizerSideBar />
                             <Col >
                                 <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
-                                <p>...</p>
 
+                                <OrganizerEvents userProfile={this.props.userProfile} />
 
                                 <SimpleFooter />
                             </Col>
@@ -55,4 +58,6 @@ class OrganizerMain extends Component {
     }
 }
 
-export default OrganizerMain
+const OrganizerMain = withTranslation()(OrganizerMainBeforeTranslation);
+
+export default OrganizerMain;

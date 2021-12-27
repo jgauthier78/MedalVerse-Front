@@ -1,5 +1,8 @@
 {
-  "LandingPage" :{
+  "OrganizerEvents": {
+    "noEvent" : "Pas d'évènements"
+  },
+  "LandingPage": {
     "walletConnect": {
       "title" : "Connection au Wallet",
       "body" : "En cours"
@@ -25,7 +28,9 @@
     "image": {
       "alt" : "Image du profil utilisateur"
       },
-    "role" : "Rôle",
+    "address" : "addresse",
+    "mail" : "courriel",
+    "role" : "rôle(s)",
     "roles" : {
       "organizer" : "Organisateur",
       "athlete" : "Athlète",

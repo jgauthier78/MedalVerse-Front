@@ -149,7 +149,7 @@ contract OrganizerHandler is Ownable {
 	}
 
 	///@dev returns the number of Organizations
-	function getOragnisationCount() public view returns (uint256) {
+	function getOrganisationCount() public view returns (uint256) {
 		return organizationList.length;
 	}
 

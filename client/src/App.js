@@ -44,9 +44,10 @@ class App extends Component {
             resetNavigateTo: this.resetNavigateTo,
             accountsUpdated: this.accountsUpdated,
             getUserEvents: this.getUserEvents,
+            getOrganizerOrganisations: this.getOrganizerOrganisations,
             getUserDetails: this.getUserDetails,
             isConnected: this.isConnected,
-            getRoleString: this.getRoleString,
+            // getRoleString: this.getRoleString,
             disconnect: this.disconnect,
 
             DID_init: this.DID_init,
@@ -64,7 +65,8 @@ class App extends Component {
             roleUpdated: false,
             redirectTo: null,
             userDetails: null,
-            userEvents: null
+            userEvents: null,
+            userOrganizations: null
         }
 
 
@@ -74,7 +76,7 @@ class App extends Component {
     isConnected = () => { return this.state.isConnected; }
 
     render() {
-        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents }
+        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations : this.state.userOrganizations }
         return (
             <BrowserRouter >
                 <Routes>
@@ -201,7 +203,14 @@ class App extends Component {
     updateUserDetails = async () => {
         let role = this.state.userRole
         if (role & ROLES.ROLE_ORGANIZER) // Organizer
-            this.setState({ redirectTo: "/organizer" })
+            // this.setState({ redirectTo: "/organizer" })
+        {
+            let organizations = await this.getOrganizerOrganisations()
+            this.setState({
+                userOrganizations: organizations,
+                redirectTo: "/organizer"
+            })
+        }
         else if (role & ROLES.ROLE_ATHLETE) // Athlete
         {
             let evnts = await this.getUserEvents()
@@ -214,7 +223,7 @@ class App extends Component {
             this.setState({ redirectTo: "/author" })
         else this.setState({ redirectTo: "/" }) // Not registered
     }
-
+/*
     getRoleString = () => {
         let role = this.state.userRole
         if (role & ROLES.ROLE_ORGANIZER) return "Organisateur"
@@ -223,6 +232,7 @@ class App extends Component {
         else if (role & ROLES.ROLE_AUTHOR) // Author
             return "Auteur"
     }
+*/
     disconnect = () => {
         this.setState({ userDetails: null, isConnected: false, userRole: 0 })
         this.setState({ redirectTo: "/" })
@@ -248,12 +258,14 @@ class App extends Component {
     }
 
     /* Retourne la structure complete des évènements auxquels un user appartient */
+    // devrait être appelée get(Athlete|Sportsman)Events ?
     getUserEvents = async () => {
         let account = this.getAccounts()
         let result = { nbEvents: 0, Event: null }
         // We get the nb of events the sporsman registered to
-        result.nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
-        if (result.nbEvents > 0) {
+        let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
+        if (nbEvents > 0) {
+            result.nbEvents = nbEvents
             // We get the list of events the sporsman registered to
             let eventIndxList = await this.state.contract.methods.getSportsmanEventsSubscriptions(account).call()
             if (eventIndxList.length > 0) {
@@ -266,13 +278,90 @@ class App extends Component {
                     let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.organizedBy).call()
                     result.organisationDesc.push(organisationDesc)
                 }
-                return result
             }
-
         }
-        return null;
+        return result;
     }
 
+    getOrganizerOrganisations = async () => {
+        console.log("getOrganizerOrganisations")
+        let account = this.getAccounts()
+        let result = { organizations: null }
+        // We get the list of organization the organizer subscribed to uint256[]
+        let organisationList = await this.state.contract.methods.getOrganizerOrganisationList(account).call()
+        console.log("organisationList.length="+organisationList.length)
+        if (organisationList.length > 0) {
+            result.organizations=[];
+            // For each organization this organizer belongs to
+
+            await Promise.all(organisationList.map(async (organisationId) =>
+            {
+                console.log("organisationId="+organisationId)
+                let organization = {} ;
+                // Load ONE organization details
+                let organizationList = await this.state.contract.methods.getOrganizationsList(organisationId, organisationId).call()
+
+                // console.log("organizationList="+ JSON.stringify( organizationList ) )
+                
+                /*
+    			_desc[x - _start] = organizationDesc({
+				name: organizationList[x].name,
+				description: organizationList[x].description,
+				logoURI: organizationList[x].logoURI,
+				activ: organizationList[x].activ
+                */
+                organization["id"]=organisationId
+                organization["name"]=organizationList[0][0]
+                organization["description"]=organizationList[0][1]
+                organization["logoURI"]=organizationList[0][2]
+                organization["activ"]=organizationList[0][3]
+                organization["admins"]=[]
+
+                // console.log("organization[]="+ JSON.stringify( organization ) )
+
+                // Load organization admins ids list uint256[]
+                let adminsList = await this.state.contract.methods.getAdminList(organisationId).call()
+                // For each admin
+                adminsList.forEach(adminId => {
+                    console.log("adminId="+adminId)
+                    organization["admins"].push({id: adminId})
+                }); // For each admin
+
+                console.log("organization[]="+ JSON.stringify( organization ) )
+
+            }));
+/*
+            organisationList.forEach(organisationId => {
+                console.log("organisationId="+organisationId)
+                let organization = {} ;
+                // Load organization
+                let organizationList = await this.state.contract.methods.getOrganizationsList(organisationId).call()
+    
+    			// _desc[x - _start] = organizationDesc({
+				// name: organizationList[x].name,
+				// description: organizationList[x].description,
+				// logoURI: organizationList[x].logoURI,
+				// activ: organizationList[x].activ
+    
+                organization["name"]=""
+                organization["description"]=""
+                organization["logoURI"]=""
+                organization["activ"]=""
+
+                // Load organization admins ids list uint256[]
+                let adminsList = await this.state.contract.methods.getAdminList(organisationId).call()
+                // For each admin
+                adminsList.forEach(adminId => {
+                }); // For each admin
+                // todo
+                result.organizations.push(organization)
+            });// For each organization
+*/
+        }
+
+        return null;
+    }
+ 
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
     } // DID_init
