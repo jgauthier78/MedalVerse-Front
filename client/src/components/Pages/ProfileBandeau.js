@@ -4,40 +4,12 @@ import { Container, Row, Table } from "react-bootstrap";
 import Col from 'react-bootstrap/Col';
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
-import { ROLES } from "../../utils/roles_CONSTS"
-/* Translation */
 import { withTranslation } from 'react-i18next';
-import { t } from "i18next";
+import { displayRoles } from "./profileBandeau-js"
 
 class ProfileBandeauBeforeTranslation extends Component {
-roles = (role) => {
-    let roles = [];
-    if ( this.props.userProfile.userDetails.role & ROLES.ROLE_ORGANIZER ) {
-        roles.push(ROLES.ROLE_ORGANIZER)
-    }
-    if ( this.props.userProfile.userDetails.role & ROLES.ROLE_ATHLETE ) {
-        roles.push(ROLES.ROLE_ATHLETE)
-    }
-    if ( this.props.userProfile.userDetails.role & ROLES.ROLE_AUTHOR ) {
-        roles.push(ROLES.ROLE_AUTHOR)
-    }
-    return roles
-}
 
-roleName = (role) => {
-    switch (role) {
-        case ROLES.ROLE_ORGANIZER:
-            return t("profileBandeau.roles.organizer");
-        case ROLES.ROLE_ATHLETE:
-            return t("profileBandeau.roles.athlete");
-        case ROLES.ROLE_AUTHOR:
-            return t("profileBandeau.roles.author");
-        default:
-            return "";
-    }
-}
-
-        render() {
+    render() {
             const { t } = this.props;
 
             return (
@@ -71,7 +43,7 @@ roleName = (role) => {
                                     </tr>
                                     <tr>
                                         <td><b>{t("profileBandeau.role")}</b></td>
-                                        <td colSpan="2">{this.roles().map( profil => this.roleName(profil) ).reduce( (r, a) => r.concat(a, ", "), [", "]).slice(1, -1)  }</td>
+                                        <td colSpan="2">{ displayRoles(this.props.userProfile.userDetails.role) }</td>
                                     </tr>
 
                                 </tbody>
