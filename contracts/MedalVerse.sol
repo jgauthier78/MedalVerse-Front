@@ -40,7 +40,22 @@ contract MedalVerse is
 		_;
 	}
 
+	modifier isAdminOfEvent(uint256 eventID) {
+		uint256 organizationId = getEventOrganizer(eventID);
+
+		require(checkorganizerisAdminOf(organizationId), "you must be admin");
+		_;
+	}
+
 	// Methods -------------------------------
+
+	///@dev Add a new user to the DB, using parent classes
+	///@param _userAddress userAddr
+	///@param _iconURI Image for the UI
+	///@param _userName FName + LName
+	///@param _email email address
+	///@param _role Author / Organizer / sportsman
+	///@param _sportsCategory id of the event
 	function addNewUser(
 		address _userAddress,
 		string memory _iconURI,
@@ -56,6 +71,9 @@ contract MedalVerse is
 		if ((_role & 8) == 8) addSportsman(_userAddress, _sportsCategory);
 	}
 
+	///@dev register a user to an event and event to user
+	///@param _userAddress address of the user
+	///@param eventid id of the event
 	function LinkUserAndEvent(address _userAddress, uint256 eventid)
 		public
 		isNotNull(_userAddress)
@@ -64,6 +82,11 @@ contract MedalVerse is
 		registerSportsmanToEvent(_userAddress, eventid); // no check required, already don above
 	}
 
+	///@dev creates a new event, associated to an organization
+	///@param organizationId Id Of the Organization
+	///@param startDate starting Date
+	///@param endDate ending Date
+	///@param sportsCategory Category of sport for the event
 	function newEvent(
 		uint256 organizationId,
 		uint8 startDate,
@@ -85,5 +108,28 @@ contract MedalVerse is
 			sportsCategory
 		);
 		organizerAddEvent(organizerId, organizationId, eventID);
+	}
+
+	///@dev The event starts now
+	///@param eventID id of the event
+	function adminStartEvent(uint256 eventID) external isAdminOfEvent(eventID) {
+		startEvent(eventID);
+	}
+
+	///@dev The event ends now
+	///@param eventID id of the event
+	function adminEndEvent(uint256 eventID) external isAdminOfEvent(eventID) {
+		endEvent(eventID);
+	}
+
+	///@dev The event gets a winner and closes
+	///@param eventID id of the event
+	function adminSetWinner(uint256 eventID, address winner)
+		external
+		isAdminOfEvent(eventID)
+		isNotNull(winner)
+	{
+		setWinner(eventID, winner);
+		endEvent(eventID);
 	}
 }

@@ -4,13 +4,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract EventHandler is Ownable {
 	struct EventDesc {
-		uint256 eventId;
-		uint256 sportCategory;
-		uint256 organizedBy;
-		address[] registeredSportsMan;
+		uint256 eventId; // Index of the event in the EventList
+		uint256 sportCategory; // Category
+		uint256 organizedBy; // Id of the Organization
+		address[] registeredSportsMan; //List of sportsman that are participating to the event
+		address winner; // Winner of the Event
 		uint8 startDate;
 		uint8 endDate;
 		bool activ;
+		bool ended; // finished ?
+		bool started; // The event has started
 	}
 
 	// Data ---------------------------------
@@ -27,6 +30,11 @@ contract EventHandler is Ownable {
 		require(a != 0);
 		_;
 	}
+	modifier isInRange(uint256 a, uint256 b) {
+		require(a < b);
+		_;
+	}
+
 	// Events -------------------------------
 	event eventAdded(uint256 eventId);
 	event eventRemoved(uint256 eventId);
@@ -51,6 +59,9 @@ contract EventHandler is Ownable {
 		_event.endDate = _endDate;
 		_event.sportCategory = _sportCategory;
 		_event.activ = true;
+		_event.ended = false;
+		_event.started = false;
+		_event.winner = address(0);
 		emit eventAdded(eventCount);
 		return eventCount++;
 	}
@@ -66,6 +77,34 @@ contract EventHandler is Ownable {
 	///@param eventId id of the event
 	function getEvent(uint256 eventId) public view returns (EventDesc memory) {
 		return eventList[eventId];
+	}
+
+	function getWinner(uint256 eventId)
+		external
+		view
+		isNotNullUint256(eventId)
+		returns (address)
+	{
+		return eventList[eventId].winner;
+	}
+
+	function setWinner(uint256 eventId, address winner)
+		internal
+		isNotNullUint256(eventId)
+	{
+		eventList[eventId].winner = winner;
+	}
+
+	function startEvent(uint256 eventId)
+		internal
+		isInRange(eventId, eventCount)
+	{
+		eventList[eventId].started = true;
+		eventList[eventId].ended = false;
+	}
+
+	function endEvent(uint256 eventId) internal isInRange(eventId, eventCount) {
+		eventList[eventId].ended = true;
 	}
 
 	///@dev returns the list of Events
@@ -105,9 +144,17 @@ contract EventHandler is Ownable {
 	function EventRegisterSportsman(
 		uint256 eventId,
 		address sportsmanID // Sportsman already validated by child class
-	) internal {
-		require(eventId < eventCount);
+	) internal isInRange(eventId, eventCount) {
 		eventList[eventId].registeredSportsMan.push(sportsmanID);
 		emit eventRegisterSportsman(eventId, sportsmanID);
+	}
+
+	function getEventOrganizer(uint256 eventId)
+		internal
+		view
+		isInRange(eventId, eventCount)
+		returns (uint256)
+	{
+		return eventList[eventId].organizedBy;
 	}
 }

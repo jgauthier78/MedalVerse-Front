@@ -203,6 +203,18 @@ contract OrganizerHandler is Ownable {
 		return false;
 	}
 
+	///@dev returns true if the user is admin of the organization
+	///@param orgIndx  index amoung organizations
+	function checkorganizerisAdminOf(uint256 orgIndx)
+		public
+		view
+		returns (bool)
+	{
+		uint256 organizerId = organizerByAddress[msg.sender];
+		require(organizerId > 0, "you must be an organizer");
+		return checkorganizerisAdminOf(organizerId, orgIndx);
+	}
+
 	///@dev returns the address of an admin, given an id organizer
 	///@param id  id (=index) of the organizer
 	function getOrganizerAddressById(uint256 id)

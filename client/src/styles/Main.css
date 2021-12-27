@@ -5,8 +5,11 @@
 .carrousselCartouche {
   box-shadow: 0 25px 50px -12px rgba(87, 87, 87, 0.25);
   border-radius: 0.25rem !important;  
-  background-color: rgba(173, 173, 173, 0.294) !important;
+  background-color: rgba(31, 30, 30, 0.294) !important;
+}
 
+.carrousselImage{
+  border-radius: 0.25rem !important;  
 }
 .card-rounded{
   border-radius: 1.05rem !important;

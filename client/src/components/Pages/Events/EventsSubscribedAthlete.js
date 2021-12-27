@@ -17,11 +17,11 @@ const CarrousselItem = ({ userEvents }) => (
     <div>
         {userEvents.organisationDesc.map((ogdesc, indx) => (
             <div key={indx} className={`carousel-item ${indx === 0 ? "active" : ""}`}>
-                <img src={getImageSrcFromEvent(userEvents, indx)} alt={getImageSrcFromEvent(userEvents, indx)} className="w-100 d-block" />
+                <img src={getImageSrcFromEvent(userEvents, indx)} alt={getImageSrcFromEvent(userEvents, indx)} className="w-100 d-block carrousselImage" />
                 <div className="carousel-caption carrousselCartouche">
                     <h3 className="text-white">{getOrgNameFromEvent(userEvents, indx)}</h3>
                     <p>{getOrgDescFromEvent(userEvents, indx)}</p>
-                    <p className="text-black">Du {getEventStartDate(userEvents, indx)} au {getEventEndDate(userEvents, indx)}</p>
+                    <h5 className="text-green"><b>Du {getEventStartDate(userEvents, indx)} au {getEventEndDate(userEvents, indx)}</b></h5>
                 </div>
             </div>
         ))}
@@ -32,7 +32,7 @@ const CarrousselButtonItem = ({ userEvents }) => (
     <div>
         {userEvents.organisationDesc.map((ogdesc, indx) => (
 
-            <button type="button" key={indx} data-bs-target="#carEvents" data-bs-slide-to={indx} className={indx == 0 ? "active" : ""}></button>
+            <button type="button" key={indx} data-bs-target="#carEvents" data-bs-slide-to={indx} className={indx === 0 ? "active" : ""}></button>
         ))}
     </div>
 )
@@ -54,7 +54,7 @@ class EventsSubscribedAthlete extends Component {
             <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
                 <Card className="cardProfile shadow-sm ">
                     <CardHeader>
-                        <h6>Mes Evenements</h6>
+                        <h6>Mes Evenements:</h6> <span>{this.props.userProfile.userEvents.nbEvents} acitfs</span>
                     </CardHeader>
                     <div id="carEvents" className="carousel slide ml-3 mr-3 mt-3 mb-3" data-bs-ride="carousel">
 

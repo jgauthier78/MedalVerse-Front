@@ -79,12 +79,16 @@ module.exports = async function (deployer) {
   function bkgRef(s) { return "/img/bkg/" + s }
   await MVerse.addOrganization(accounts[1], "FFA", "Fédération Française d'Athlétisme", bkgRef("running.jpg"), { from: accounts[1] });
   await MVerse.addOrganization(accounts[1], "FFM", "Fédération Française de Motocrosse", bkgRef("motoracing.jpg"), { from: accounts[1] });
+  await MVerse.addOrganization(accounts[1], "FFT", "Fédération Française de Tennis", bkgRef("tennis.jpg"), { from: accounts[1] });
   await MVerse.organizationAddAdmin(0, accounts[1]);
   await MVerse.organizationAddAdmin(1, accounts[1]);
+  await MVerse.organizationAddAdmin(2, accounts[1]);
 
   await MVerse.newEvent(0, Time1, Time2, 2, { from: accounts[1] });
   await MVerse.newEvent(1, Time1, Time2, 4, { from: accounts[1] });
+  await MVerse.newEvent(2, Time1, Time2, 4, { from: accounts[1] });
 
+  await MVerse.LinkUserAndEvent(accounts[0], 2);
   await MVerse.LinkUserAndEvent(accounts[0], 0);
   await MVerse.LinkUserAndEvent(accounts[0], 1);
 
