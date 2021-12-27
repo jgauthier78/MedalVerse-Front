@@ -6,10 +6,11 @@ import NotFound from "./components/Pages/NotFound"
 import LandingPage from "./components/Pages/LandingPage"
 import MedalVerseContract from "./contracts/MedalVerse.json";
 import OrganizerMain from "./components/Pages/OrganizerMain";
-import SporstmanMain from "./components/Pages/SporstmanMain";
+import AthleteMain from "./components/Pages/AthleteMain";
 import RedirectTo from "./components/UIElements/RedirectTo";
 import "./styles/Main.css"
 import { ROLES } from "./utils/roles_CONSTS"
+import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from './utils/did'
 
 // Translation
 // import i18n (needs to be bundled ;))
@@ -19,39 +20,74 @@ import './utils/i18n';
 
 class App extends Component {
 
-    state = {
-        web3: null,
-        accounts: null,
-        contract: null,
-        isConnected: false,
-        userRole: -1,
-        roleUpdated: false,
-        redirectTo: null,
-        userDetails: null,
-    }
-    handleSaveUserProfile = async (profile) => {
-        try {
-            console.log("App::handleSaveUserProfile name=" + profile.name)
-            // const { connectedAccountAddr } = this.state;
-            // this.ERC20_SetEventHandler( erc20ContractInstance ) ;
-            // return await erc20ContractInstance.methods.approve( vault_adr_spender, amount ).send( {from: connectedAccountAddr} );
+    constructor(props) {
+        super(props)
+        this.handleSaveUserProfile = this.handleSaveUserProfile.bind(this);
+        this.handleOrganizerSaveProfile = this.handleOrganizerSaveProfile.bind(this);
+
+        this.setIsConnected = this.setIsConnected.bind(this);
+        this.getWeb3Cnx = this.getWeb3Cnx.bind(this);
+        this.initAccounts = this.initAccounts.bind(this);
+        this.getAccounts = this.getAccounts.bind(this);
+        this.initContract = this.initContract.bind(this);
+        this.initUserDetails = this.initUserDetails.bind(this);
+        this.resetNavigateTo = this.resetNavigateTo.bind(this);
+        this.accountsUpdated = this.accountsUpdated.bind(this);
+        this.getUserEvents = this.getUserEvents.bind(this);
+        this.getUserDetails = this.getUserDetails.bind(this);
+        
+        this.disconnect = this.disconnect.bind(this);
+
+        this.isConnected = this.isConnected.bind(this);
+        this.getRoleString = this.getRoleString.bind(this);
+
+        this.DID_init = this.DID_init.bind(this);
+        this.DID_showConf = this.DID_showConf.bind(this);
+        this.DID_readProfile = this.DID_readProfile.bind(this);
+        this.DID_updateProfile = this.DID_updateProfile.bind(this);
+
+        this.AppCallBacks =
+        {
+            setIsConnected: this.setIsConnected,
+            getWeb3Cnx: this.getWeb3Cnx,
+            initAccounts: this.initAccounts,
+            getAccounts: this.getAccounts,
+            initContract: this.initContract,
+            initUserDetails: this.initUserDetails,
+            updateUserDetails: this.updateUserDetails,
+            resetNavigateTo: this.resetNavigateTo,
+            accountsUpdated: this.accountsUpdated,
+            getUserEvents: this.getUserEvents,
+            getUserDetails: this.getUserDetails,
+            isConnected: this.isConnected,
+            getRoleString: this.getRoleString,
+            disconnect: this.disconnect,
+
+            DID_init: this.DID_init,
+            DID_showConf: this.DID_showConf,
+            DID_readProfile: this.DID_readProfile,
+            DID_updateProfile: this.DID_updateProfile
         }
-        catch (error) {
-            // Catch any errors for any of the above operations.
-            this.handleError(error, true)
-        } // catch
 
-    } // handleSaveUserProfile
+        this.state = {
+            web3: null,
+            accounts: null,
+            contract: null,
+            isConnected: false,
+            userRole: -1,
+            roleUpdated: false,
+            redirectTo: null,
+            userDetails: null,
+        }
 
-    handleOrganizerSaveProfile = async (profile) => {
-        this.handleSaveUserProfile(profile)
-    } // handleOrganizerSaveProfile
+        console.log("App:"+this.props);
+    }
 
     setIsConnected = val => this.setState({ isConnected: val })
     isConnected = () => { return this.state.isConnected; }
 
     render() {
-        let profilOrganisateur = { "name": "Nom de l'organisateur" }
+        let userProfile = { address: this.state.accounts , userDetails: this.state.userDetails }
         return (
             <BrowserRouter >
                 <Routes>
@@ -69,15 +105,14 @@ class App extends Component {
                     />
                     <Route exact path='organizer' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                            {JSON.stringify(profilOrganisateur)}
-                            <OrganizerMain handleSaveProfile={this.handleOrganizerSaveProfile} profile={profilOrganisateur} />
+                            <OrganizerMain AppCallBacks={this.AppCallBacks} userProfile={userProfile} />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
-                    <Route exact path='sportsman' element={this.state.redirectTo === null ?
+                    <Route exact path='athlete' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                            <SporstmanMain AppCallBacks={this.AppCallBacks} />
+                            <AthleteMain AppCallBacks={this.AppCallBacks} />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
@@ -87,30 +122,9 @@ class App extends Component {
             </BrowserRouter >
         )
 
-    }
+    } // render
 
-    constructor(props) {
-        super(props)
-        this.handleSaveUserProfile = this.handleSaveUserProfile.bind(this);
-        this.handleOrganizerSaveProfile = this.handleOrganizerSaveProfile.bind(this);
 
-        this.AppCallBacks =
-        {
-            setIsConnected: this.setIsConnected,
-            getWeb3Cnx: this.getWeb3Cnx,
-            initAccounts: this.initAccounts,
-            getAccounts: this.getAccounts,
-            initContract: this.initContract,
-            initUserDetails: this.initUserDetails,
-            updateUserDetails: this.updateUserDetails,
-            resetNavigateTo: this.resetNavigateTo,
-            accountsUpdated: this.accountsUpdated,
-            getUserEvents: this.getUserEvents,
-            getUserDetails: this.getUserDetails,
-            isConnected: this.isConnected,
-            getRoleString: this.getRoleString
-        }
-    }
 
     // Returns the Web3 provider
     getWeb3Cnx = async () => {
@@ -180,6 +194,9 @@ class App extends Component {
         try {
             // call the contract method to get infos about user
             result.detail = await this.state.contract.methods.getUserDetails(this.getAccounts()).call()
+            console.log("result.detail="+result.detail)
+            // result.detail["account"] = account;
+            // console.log("result.detail+account="+result.detail)
             this.setState({ userRole: result.detail.role })
             this.setState({ userDetails: result.detail })
             this.setState({ isConnected: true })
@@ -196,8 +213,8 @@ class App extends Component {
         let role = this.state.userRole
         if (role & ROLES.ROLE_ORGANIZER) // Organizer
             this.setState({ redirectTo: "/organizer" })
-        else if (role & ROLES.ROLE_ATHLETE) // Sportsman
-            this.setState({ redirectTo: "/sportsman" })
+        else if (role & ROLES.ROLE_ATHLETE) // Athlete
+            this.setState({ redirectTo: "/athlete" })
         else if (role & ROLES.ROLE_AUTHOR) // Author
             this.setState({ redirectTo: "/author" })
         else this.setState({ redirectTo: "/" }) // Not registered
@@ -205,13 +222,13 @@ class App extends Component {
 
     getRoleString = () => {
         let role = this.state.userRole
-        if (role & 2) return "Organisateur"
+        if (role & ROLES.ROLE_ORGANIZER) return "Organisateur"
         else if (role & ROLES.ROLE_ATHLETE) // Sportsman
             return "Sportif"
         else if (role & ROLES.ROLE_AUTHOR) // Author
             return "Auteur"
     }
-    disconnet = () => {
+    disconnect = () => {
         this.setState({ userDetails: null, isConnected: false, userRole: 0 })
     }
 
@@ -258,6 +275,45 @@ class App extends Component {
         }
         console.log(result)
     }
+
+    DID_init = async () => {
+        await DID_init( this.state.web3, window.ethereum )
+    } // DID_init
+
+    DID_showConf = () => {
+        DID_showConf();
+    } // DID_showConf
+
+    DID_readProfile = async () => {
+        await DID_readProfile()
+    } // DID_readProfile
+
+    DID_updateProfile = async ( data ) => {
+        await DID_updateProfile( data )
+    } // DID_updateProfile
+
+    /*
+                await DID_init(this._web3, window.ethereum)
+                DID_showConf();
+                DID_readProfile();
+
+*/
+    handleSaveUserProfile = async (profile) => {
+        try {
+            console.log("App::handleSaveUserProfile name=" + profile.name)
+            return await this.DID_updateProfile(profile)
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+
+    } // handleSaveUserProfile
+
+    handleOrganizerSaveProfile = async (profile) => {
+        this.handleSaveUserProfile(profile)
+    } // handleOrganizerSaveProfile
+
 }
 
 export default App;

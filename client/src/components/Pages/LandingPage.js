@@ -16,7 +16,7 @@ import SecondBandeau from "./Landing/SecondBandeau";
 import TroisiemeBandeau from "./Landing/TroisiemeBandeau";
 import QuatriemeBandeau from "./Landing/QuatriemeBandeau";
 
-import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from '../../utils/did'
+// import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from '../../utils/did'
 
 class LandingPageWithTranslation extends Component {
 
@@ -62,9 +62,9 @@ class LandingPageWithTranslation extends Component {
             this._accounts = await this.props.AppCallBacks.initAccounts()
             if (this._accounts != null) {
 
-                await DID_init(this._web3, window.ethereum)
-                DID_showConf();
-                DID_readProfile();
+                // await DID_init(this._web3, window.ethereum)
+                // DID_showConf();
+                // DID_readProfile();
 
                 // getting MedalVerse contract
                 result = await this.props.AppCallBacks.initContract()

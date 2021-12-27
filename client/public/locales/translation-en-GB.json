@@ -23,6 +23,18 @@
     }
 
   },
+  "profileBandeau": {
+    "image": {
+      "alt" : "User profile image"
+    }
+    ,
+    "role" : "Role",
+    "roles" : {
+      "organizer" : "Organisateur",
+      "athlete" : "Athlète",
+      "author" : "Artiste"
+      }
+    },
   "menu": {
     "title": "MedalVerse",
     "home": "Home",

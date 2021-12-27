@@ -8,20 +8,30 @@
   "homePage": {
     "welcome": "Bienvenue"
   },
-  "profilePage": {
+  "profilePage":{
     "title": "Profil",
     "subtitle": "profil de {{connectedAccountAddr}}",
     "properties" :{
-      "name" : "Nom"
-    },
-    "placeHolder" :
-    {
+        "name" : "Nom"
+        },
+    "placeHolder" :{
       "name" : "Votre nom"
-    },
-    "actions" :{
+      },
+    "actions" : {
       "save" : "Enregistrer"
     }
   },
+  "profileBandeau": {
+    "image": {
+      "alt" : "Image du profil utilisateur"
+      },
+    "role" : "Rôle",
+    "roles" : {
+      "organizer" : "Organisateur",
+      "athlete" : "Athlète",
+      "author" : "Artiste"
+    }
+    },
   "menu": {
     "title": "MedalVerse",
     "home": "Accueil",

@@ -4,18 +4,51 @@ import { Container, Row, Table } from "react-bootstrap";
 import Col from 'react-bootstrap/Col';
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
-class ProfileBandeau extends Component {
+import { ROLES } from "../../utils/roles_CONSTS"
+/* Translation */
+import { withTranslation } from 'react-i18next';
+import { t } from "i18next";
 
-    render() {
-        return (
+class ProfileBandeauBeforeTranslation extends Component {
+roles = (role) => {
+    let roles = [];
+    if ( this.props.userProfile.userDetails.role & ROLES.ROLE_ORGANIZER ) {
+        roles.push(ROLES.ROLE_ORGANIZER)
+    }
+    if ( this.props.userProfile.userDetails.role & ROLES.ROLE_ATHLETE ) {
+        roles.push(ROLES.ROLE_ATHLETE)
+    }
+    if ( this.props.userProfile.userDetails.role & ROLES.ROLE_AUTHOR ) {
+        roles.push(ROLES.ROLE_AUTHOR)
+    }
+    return roles
+}
+
+roleName = (role) => {
+    switch (role) {
+        case ROLES.ROLE_ORGANIZER:
+            return t("profileBandeau.roles.organizer");
+        case ROLES.ROLE_ATHLETE:
+            return t("profileBandeau.roles.athlete");
+        case ROLES.ROLE_AUTHOR:
+            return t("profileBandeau.roles.author");
+        default:
+            return "";
+    }
+}
+
+        render() {
+            const { t } = this.props;
+
+            return (
             <Container className="col-md-10 mt-4 ">
                 <Card className="cardProfile shadow-sm ">
                     <CardHeader>
                         <div className="d-flex justify-content-between my-auto">
                             <div className="d-flex flex-row align-items-center justify-content-center">
-                                <img src={this.props.AppCallBacks.getUserDetails().iconURI} className="profileImage mt-3 shadow" />
+                                <img src={this.props.userProfile.userDetails.iconURI} className="profileImage mt-3 shadow" alt=""/>
                                 <div className="ms-2 c-details">
-                                    <h6 className="mb-0">{this.props.AppCallBacks.getUserDetails().userName}</h6>
+                                    <h6 className="mb-0">{this.props.userProfile.userDetails.userName}</h6>
                                 </div>
                             </div>
 
@@ -29,16 +62,16 @@ class ProfileBandeau extends Component {
                                 <tbody>
                                     <tr>
 
-                                        <td colSpan="3">{this.props.AppCallBacks.getAccounts()}</td>
+                                        <td colSpan="3">{this.props.userProfile.userDetails.account}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Mail</b></td>
-                                        <td colSpan="2">{this.props.AppCallBacks.getUserDetails().email} </td>
+                                        <td colSpan="2">{this.props.userProfile.userDetails.email} </td>
 
                                     </tr>
                                     <tr>
-                                        <td><b>{"Rôle"}</b></td>
-                                        <td colSpan="2">{this.props.AppCallBacks.getRoleString()}</td>
+                                        <td><b>{t("profileBandeau.role")}</b></td>
+                                        <td colSpan="2">{this.roles().map( profil => this.roleName(profil) ).reduce( (r, a) => r.concat(a, ", "), [", "]).slice(1, -1)  }</td>
                                     </tr>
 
                                 </tbody>
@@ -51,4 +84,6 @@ class ProfileBandeau extends Component {
     }
 }
 
-export default ProfileBandeau
+const ProfileBandeau = withTranslation()(ProfileBandeauBeforeTranslation);
+
+export default ProfileBandeau;
