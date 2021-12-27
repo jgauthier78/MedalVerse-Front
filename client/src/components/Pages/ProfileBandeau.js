@@ -13,7 +13,7 @@ class ProfileBandeauBeforeTranslation extends Component {
         const { t } = this.props;
 
         return (
-            <Container className="col-md-10 mt-4 ">
+            <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 ">
                 <Card className="cardProfile shadow-sm ">
                     <CardHeader>
                         <div className="d-flex justify-content-between my-auto">
@@ -34,7 +34,7 @@ class ProfileBandeauBeforeTranslation extends Component {
                                 <tbody>
                                     <tr>
 
-                                        <td colSpan="3">{this.props.userProfile.address}</td>
+                                        <td colSpan="3"><pre><b>Adresse:  </b>{this.props.userProfile.address}</pre></td>
                                     </tr>
                                     <tr>
                                         <td><b>Mail</b></td>

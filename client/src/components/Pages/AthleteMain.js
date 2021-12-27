@@ -7,6 +7,8 @@ import SporstmanSideBar from "./SideBar/SportsmanSideBar";
 import ProfileBandeau from "./ProfileBandeau"
 import { Component } from "react";
 import { Navigate } from "react-router-dom";
+import EventsSubscribedAthlete from "./Events/EventsSubscribedAthlete"
+
 class SporstmanMain extends Component {
 
     constructor(props) {
@@ -37,9 +39,8 @@ class SporstmanMain extends Component {
                             <SporstmanSideBar />
                             <Col >
                                 <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
-                                <p>...</p>
 
-
+                                <EventsSubscribedAthlete userProfile={this.props.userProfile} />
                                 <SimpleFooter />
                             </Col>
 

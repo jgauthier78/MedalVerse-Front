@@ -76,8 +76,9 @@ module.exports = async function (deployer) {
   let a = await MVerse.getUserCount({ from: accounts[0] })
   console.log(a.toString() + ' utilisateurs ajoutés')
 
-  await MVerse.addOrganization(accounts[1], "FFA", "Fédération Française d'Athlétisme", "A.jpg", { from: accounts[1] });
-  await MVerse.addOrganization(accounts[1], "FFE", "Fédération Française d'Escrime", "B.jpg", { from: accounts[1] });
+  function bkgRef(s) { return "/img/bkg/" + s }
+  await MVerse.addOrganization(accounts[1], "FFA", "Fédération Française d'Athlétisme", bkgRef("running.jpg"), { from: accounts[1] });
+  await MVerse.addOrganization(accounts[1], "FFM", "Fédération Française de Motocrosse", bkgRef("motoracing.jpg"), { from: accounts[1] });
   await MVerse.organizationAddAdmin(0, accounts[1]);
   await MVerse.organizationAddAdmin(1, accounts[1]);
 

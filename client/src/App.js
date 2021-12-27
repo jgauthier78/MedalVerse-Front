@@ -64,6 +64,7 @@ class App extends Component {
             roleUpdated: false,
             redirectTo: null,
             userDetails: null,
+            userEvents: null
         }
 
 
@@ -73,7 +74,7 @@ class App extends Component {
     isConnected = () => { return this.state.isConnected; }
 
     render() {
-        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails }
+        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents }
         return (
             <BrowserRouter >
                 <Routes>
@@ -123,8 +124,8 @@ class App extends Component {
                 web3 = await getWeb3();
                 this.setState({ web3 })
                 let that = this
-                window.ethereum.on('accountsChanged', function (accounts) {
-                    that.accountsUpdated(accounts)
+                window.ethereum.on('accountsChanged', async function (accounts) {
+                    await that.accountsUpdated(accounts)
                 })
             }
             catch (error) {
@@ -197,12 +198,18 @@ class App extends Component {
     }
 
     // Redirect to the correct page after reading user details from contract
-    updateUserDetails = () => {
+    updateUserDetails = async () => {
         let role = this.state.userRole
         if (role & ROLES.ROLE_ORGANIZER) // Organizer
             this.setState({ redirectTo: "/organizer" })
         else if (role & ROLES.ROLE_ATHLETE) // Athlete
-            this.setState({ redirectTo: "/athlete" })
+        {
+            let evnts = await this.getUserEvents()
+            this.setState({
+                userEvents: evnts,
+                redirectTo: "/athlete"
+            })
+        }
         else if (role & ROLES.ROLE_AUTHOR) // Author
             this.setState({ redirectTo: "/author" })
         else this.setState({ redirectTo: "/" }) // Not registered
@@ -237,7 +244,7 @@ class App extends Component {
         // read new details from contract
         await this.initUserDetails()
         // redirect to the right page
-        this.updateUserDetails()
+        await this.updateUserDetails()
     }
 
     /* Retourne la structure complete des évènements auxquels un user appartient */
@@ -259,10 +266,11 @@ class App extends Component {
                     let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.organizedBy).call()
                     result.organisationDesc.push(organisationDesc)
                 }
+                return result
             }
 
         }
-        console.log(result)
+        return null;
     }
 
     DID_init = async () => {
