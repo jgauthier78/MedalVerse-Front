@@ -9,8 +9,8 @@ contract EventHandler is Ownable {
 		uint256 organizedBy; // Id of the Organization
 		address[] registeredSportsMan; //List of sportsman that are participating to the event
 		address winner; // Winner of the Event
-		uint8 startDate;
-		uint8 endDate;
+		uint256  startDate;
+		uint256  endDate;
 		bool activ;
 		bool ended; // finished ?
 		bool started; // The event has started
@@ -48,8 +48,8 @@ contract EventHandler is Ownable {
 	///@param _sportCategory Type of event
 	function addEvent(
 		uint256 _organizedBy,
-		uint8 _startDate,
-		uint8 _endDate,
+		uint256 _startDate,
+		uint256 _endDate,
 		uint256 _sportCategory
 	) public returns (uint256) {
 		EventDesc storage _event = eventList[eventCount];

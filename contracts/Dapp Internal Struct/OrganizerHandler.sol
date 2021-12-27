@@ -263,4 +263,11 @@ contract OrganizerHandler is Ownable {
 		require(organizerID < organizerList.length);
 		organizationList[organizationId].EventList.push(eventID + 1);
 	}
+
+	function getEventList( uint256 orgId ) public view returns (uint256[] memory) {
+		uint256[] memory EventList = organizationList[orgId].EventList;
+		return EventList;
+	}
+
+
 }

@@ -89,8 +89,8 @@ contract MedalVerse is
 	///@param sportsCategory Category of sport for the event
 	function newEvent(
 		uint256 organizationId,
-		uint8 startDate,
-		uint8 endDate,
+		uint256 startDate,
+		uint256 endDate,
 		uint256 sportsCategory
 	) public {
 		// We first neet to check that the sender corresponds to an organizer

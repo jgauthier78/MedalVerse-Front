@@ -294,71 +294,77 @@ class App extends Component {
             result.organizations=[];
             // For each organization this organizer belongs to
 
-            await Promise.all(organisationList.map(async (organisationId) =>
+            await Promise.all( organisationList.map(async (organisationId) =>
             {
                 console.log("organisationId="+organisationId)
                 let organization = {} ;
                 // Load ONE organization details
                 let organizationList = await this.state.contract.methods.getOrganizationsList(organisationId, organisationId).call()
-
                 // console.log("organizationList="+ JSON.stringify( organizationList ) )
-                
-                /*
-    			_desc[x - _start] = organizationDesc({
-				name: organizationList[x].name,
-				description: organizationList[x].description,
-				logoURI: organizationList[x].logoURI,
-				activ: organizationList[x].activ
-                */
                 organization["id"]=organisationId
                 organization["name"]=organizationList[0][0]
                 organization["description"]=organizationList[0][1]
                 organization["logoURI"]=organizationList[0][2]
                 organization["activ"]=organizationList[0][3]
                 organization["admins"]=[]
-
+                organization["events"]=[]
                 // console.log("organization[]="+ JSON.stringify( organization ) )
-
                 // Load organization admins ids list uint256[]
                 let adminsList = await this.state.contract.methods.getAdminList(organisationId).call()
-                // For each admin
-                adminsList.forEach(adminId => {
-                    console.log("adminId="+adminId)
-                    organization["admins"].push({id: adminId})
-                }); // For each admin
+                if (adminsList.length > 0) {
+                    // For each admin
+                    adminsList.forEach(adminId => {
+                        console.log("adminId="+adminId)
+                        organization["admins"].push({id: adminId})
+                    }); // For each admin
+                }
+                let eventsList = await this.state.contract.methods.getEventList(organisationId).call()
+                console.log("eventsList.length="+eventsList.length)
+                if (eventsList.length > 0) {
+                    await Promise.all( eventsList.map(async (eventId) =>
+                    {
+                        console.log("eventId="+eventId)
+                        let event = await this.state.contract.methods.getEvent(eventId).call()
+                        organization["events"].push({
+                            id: event[0],
+                            sportCategory: event[1],
+                            organizedBy: event[2],
+                            registeredSportsMan: event[3],
+                            winner: event[4],
+                            startDate: event[5],
+                            endDate: event[6],
+                            activ: event[7],
+                            ended: event[8],
+                            started: event[9]
+                        })
+/*
+                        uint256 eventId; // Index of the event in the EventList
+                        uint256 sportCategory; // Category
+                        uint256 organizedBy; // Id of the Organization
+                        address[] registeredSportsMan; //List of sportsman that are participating to the event
+                        address winner; // Winner of the Event
+                        uint8 startDate;
+                        uint8 endDate;
+                        bool activ;
+                        bool ended; // finished ?
+                        bool started; // The event has started
+*/
+                    }));
+/*
+                    // For each event
+                    eventsList.forEach(eventId => {
+                        console.log("eventId="+eventId)
+                        //let event = await this.state.contract.methods.getEvent(eventId).call()
+                        organization["events"].push({id: eventId})
+                        
+                    }); // For each event
+*/
+                    } // eventsList.length > 0
 
-                console.log("organization[]="+ JSON.stringify( organization ) )
+                console.log("organization["+organisationId+"]="+ JSON.stringify( organization ) )
 
             }));
-/*
-            organisationList.forEach(organisationId => {
-                console.log("organisationId="+organisationId)
-                let organization = {} ;
-                // Load organization
-                let organizationList = await this.state.contract.methods.getOrganizationsList(organisationId).call()
-    
-    			// _desc[x - _start] = organizationDesc({
-				// name: organizationList[x].name,
-				// description: organizationList[x].description,
-				// logoURI: organizationList[x].logoURI,
-				// activ: organizationList[x].activ
-    
-                organization["name"]=""
-                organization["description"]=""
-                organization["logoURI"]=""
-                organization["activ"]=""
-
-                // Load organization admins ids list uint256[]
-                let adminsList = await this.state.contract.methods.getAdminList(organisationId).call()
-                // For each admin
-                adminsList.forEach(adminId => {
-                }); // For each admin
-                // todo
-                result.organizations.push(organization)
-            });// For each organization
-*/
         }
-
         return null;
     }
  
