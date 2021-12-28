@@ -17,8 +17,6 @@ module.exports = async function (deployer, network, accounts) {
 
   console.log("-----------------------------")
   console.log("MedalVerse Deployed at " + MVerse.address )
-  console.log("Populating with data")
-  console.log("...")
 
 
   // Generates an public / private pair for fake sportsman / organizers
@@ -29,15 +27,17 @@ module.exports = async function (deployer, network, accounts) {
     return wallet.address
   }
 
-  async function createNFT(nftName, name, img, account) {
+  async function createNFT( nftOrganization, nftName, nftSymbol, name, img, account) {
     let medal = await nftMedal.new("medaille", "MDL", img)
-    let nft = await throwIn.new(nftName, medal.address, { from: ACCOUNT_CONTRACT_OWNER });
+    let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER } ); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
     await nft.mintCup({ from: ACCOUNT_CONTRACT_OWNER });
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
     return nft;
   }
 
-  let indx = 3;
+  console.log("Populating with data")
+  console.log("...")
+
   const ROLE_AUTHOR = 2
   const ROLE_ORGANIZER = 4
   const ROLE_ATHLETE = 8
@@ -64,13 +64,14 @@ module.exports = async function (deployer, network, accounts) {
   function avatarRef(s) { return "/img/avatars/" + s }
 
   async function addFakeUser(nom, mail, role, sportsCategory) {
-    await MVerse.addNewUser(generateFakeAdr(), avatarRef(indx.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); indx++
+    await MVerse.addNewUser(generateFakeAdr(), avatarRef(fakeUsersIdx.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); fakeUsersIdx++
   }
   /*************************************/
 
 
   const ACCOUNT_ORGANIZER_01 = accounts[1] // account1
   const ACCOUNT_ATHLETE_01 = accounts[2] // account0
+  let fakeUsersIdx = 3; // fake account 3 ... n
 
   const EVENT_ONE = 0;
   const EVENT_TWO = 1;
@@ -158,7 +159,8 @@ module.exports = async function (deployer, network, accounts) {
 
   // population de récompenses
   // L'organisateur 01 créée un NFT
-  let rcup = await createNFT("Running Cup", "François Coste", "/img/medals/medal0.jpg", ACCOUNT_ORGANIZER_01)
+  // createNFT( nftOrganization, nftName, nftSymbol, name, img, account)
+  let rcup = await createNFT("Running Cup", "Running Nft", "RuNFT", "François Coste", "/img/medals/medal0.jpg", ACCOUNT_ORGANIZER_01)
   // Il déclare le gagnant de l'évènement 01
   await MVerse.adminSetWinner( EVENT_ONE, ACCOUNT_ATHLETE_01, { from: ACCOUNT_ORGANIZER_01 })
   // Il affecte la médaille au sportif vainqueur de l'évènement 
