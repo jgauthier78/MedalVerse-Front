@@ -77,7 +77,7 @@ class App extends Component {
     isConnected = () => { return this.state.isConnected; }
 
     render() {
-        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations: this.state.userOrganizations, medals: this.state.userMedals }
+        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations: this.state.userOrganizations, userMedals: this.state.userMedals }
         return (
             <BrowserRouter >
                 <Routes>
