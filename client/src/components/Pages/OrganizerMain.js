@@ -58,6 +58,6 @@ class OrganizerMainBeforeTranslation extends Component {
     }
 }
 
-const OrganizerMain = withTranslation()(OrganizerMainBeforeTranslation);
+const OrganizerMain = OrganizerMainBeforeTranslation;
 
 export default OrganizerMain;

@@ -25,17 +25,13 @@ module.exports = async function (deployer) {
   const Author = 2
   const Organizer = 4
   const Sportsman = 8
-  //  const Time1 = Math.floor((new Date(2022, 01, 01)).getTime() / 1000000)
-  //  const Time2 = Math.floor((new Date(2022, 12, 31)).getTime() / 1000000)
-  let date1 = (new Date()).getTime();
-  let date2 = (new Date(2022, 12, 31)).getTime()
+  const date1 = (new Date(2021, 01, 01)).getTime()
+  const date2 = (new Date(2022, 12, 31)).getTime()
+  const date3 = (new Date(2022, 01, 01)).getTime()
 
-  console.log("date1="+date1)
-  console.log("date2="+date2)
-  console.log("Math.round(date1 / 1000)="+Math.round(date1 / 1000))
-  console.log("Math.round(date2 / 1000)="+Math.round(date2 / 1000))
-  const Time1 = ethers.BigNumber.from( Math.round(date1 / 1000) ); // Unix timestamp : millisec. -> sec.
-  const Time2 = ethers.BigNumber.from( Math.round(date2 / 1000) ); // Unix timestamp : millisec. -> sec.
+  const Time1 = ethers.BigNumber.from(Math.round(date1 / 1000)); // Unix timestamp : millisec. -> sec.
+  const Time2 = ethers.BigNumber.from(Math.round(date2 / 1000)); // Unix timestamp : millisec. -> sec.
+  const Time3 = ethers.BigNumber.from(Math.round(date3 / 1000));
 
   /* Ajouter un utilisateur */
   function avatarRef(s) { return "/img/avatars/" + s }
@@ -83,12 +79,12 @@ module.exports = async function (deployer) {
   console.log(a.toString() + ' utilisateurs ajoutés')
 
   function bkgRef(s) { return "/img/bkg/" + s }
-  await MVerse.addOrganization(accounts[1], "FFA", "Fédération Française d'Athlétisme", bkgRef("running.jpg"), { from: accounts[1] });
-  await MVerse.addOrganization(accounts[1], "FFM", "Fédération Française de Motocross", bkgRef("motoracing.jpg"), { from: accounts[1] });
-  await MVerse.addOrganization(accounts[1], "FFT", "Fédération Française de Tennis", bkgRef("tennis.jpg"), { from: accounts[1] });
-  await MVerse.organizationAddAdmin(0, accounts[1]);
-  await MVerse.organizationAddAdmin(1, accounts[1]);
-  await MVerse.organizationAddAdmin(2, accounts[1]);
+  await MVerse.addOrganization(accounts[1], "FFA", "Fédération Française d'Athlétisme", bkgRef("running.jpg"), { from: accounts[0] });
+  await MVerse.addOrganization(accounts[1], "FFM", "Fédération Française de Motocross", bkgRef("motoracing.jpg"), { from: accounts[0] });
+  await MVerse.addOrganization(accounts[1], "FFT", "Fédération Française de Tennis", bkgRef("tennis.jpg"), { from: accounts[0] });
+  await MVerse.organizationAddAdmin(0, accounts[1], { from: accounts[0] });
+  await MVerse.organizationAddAdmin(1, accounts[1], { from: accounts[0] });
+  await MVerse.organizationAddAdmin(2, accounts[1], { from: accounts[0] });
 
   await MVerse.newEvent(0, Time1, Time2, 2, { from: accounts[1] });
   await MVerse.newEvent(1, Time1, Time2, 4, { from: accounts[1] });

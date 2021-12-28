@@ -9,8 +9,10 @@ contract EventHandler is Ownable {
 		uint256 organizedBy; // Id of the Organization
 		address[] registeredSportsMan; //List of sportsman that are participating to the event
 		address winner; // Winner of the Event
-		uint256  startDate;
-		uint256  endDate;
+		uint256 startDate;
+		uint256 endDate;
+		uint256 medalID;
+		bool hasMedal;
 		bool activ;
 		bool ended; // finished ?
 		bool started; // The event has started
@@ -82,7 +84,7 @@ contract EventHandler is Ownable {
 	///@dev returns the winner of the event
 	///@param eventId id of the event
 	function getWinner(uint256 eventId)
-		external
+		public
 		view
 		isNotNullUint256(eventId)
 		returns (address)
@@ -166,5 +168,31 @@ contract EventHandler is Ownable {
 		returns (uint256)
 	{
 		return eventList[eventId].organizedBy;
+	}
+
+	function eventSetMedal(uint256 eventID, uint256 medalID)
+		internal
+		isInRange(eventID, eventCount)
+	{
+		eventList[eventID].hasMedal = true;
+		eventList[eventID].medalID = medalID;
+	}
+
+	function eventHasMedal(uint256 eventID)
+		public
+		view
+		isInRange(eventID, eventCount)
+		returns (bool)
+	{
+		return eventList[eventID].hasMedal;
+	}
+
+	function eventGetMedal(uint256 eventID)
+		public
+		view
+		isInRange(eventID, eventCount)
+		returns (uint256)
+	{
+		return eventList[eventID].medalID;
 	}
 }

@@ -6,6 +6,7 @@ import "./Dapp Internal Struct/AuthorHandler.sol";
 import "./Dapp Internal Struct/SportsmanHandler.sol";
 import "./Dapp Internal Struct/EventHandler.sol";
 import "./Dapp Internal Struct/OrganizerHandler.sol";
+import "./Dapp Internal Struct/MedalHandler.sol";
 
 contract MedalVerse is
 	Ownable,
@@ -13,7 +14,8 @@ contract MedalVerse is
 	AuthorHandler,
 	SportsmanHandler,
 	EventHandler,
-	OrganizerHandler
+	OrganizerHandler,
+	MedalHandler
 {
 	// Modifiers ----------------------------
 	modifier isNotNull(address a)
@@ -131,5 +133,26 @@ contract MedalVerse is
 	{
 		setWinner(eventID, winner);
 		endEvent(eventID);
+	}
+
+	function adminAddMedal(uint256 eventID, address _nft)
+		external
+		isAdminOfEvent(eventID)
+	{
+		address winner = getWinner(eventID);
+		require(winner != address(0), "Set a Winner First");
+		uint256 orgId = getEventOrganizer(eventID);
+		addMedal(_nft, orgId, eventID);
+		uint256 medalID = getMedalCount() - 1;
+		// If the winner is already set, then we need to affect it to the medal
+		setMedalWinner(medalID, winner);
+		// registers medal to the event and sportsman structure
+		eventSetMedal(eventID, medalID);
+		sportsmanAddMedal(winner, medalID);
+	}
+
+	function publishMedal(uint256 medalIndx, bool status) public {
+		uint256 mdID = getSportsmanMedal(msg.sender, medalIndx); // converts sportsMan->medalIndx => medalID
+		medalPublish(mdID, status);
 	}
 }

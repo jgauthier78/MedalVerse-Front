@@ -11,6 +11,7 @@ struct Sportsman {
 	mapping(uint256 => bool) eventsActivSubscription; // subscription referenced by eventsID
 	uint256 nbEventsSubscrided;
 	uint256 nbActivSubscriptions;
+	uint256[] medalList;
 	bool activ;
 }
 
@@ -34,6 +35,7 @@ contract SportsmanHandler is Ownable {
 	event sportsmanAdded(address usrAddr);
 	event sportsmanRegisterdEvent(address usrAddr, uint256 eventID);
 	event sportsmanUnregisterdEvent(address usrAddr, uint256 eventID);
+	event sportsmanMedalAdded(address sportsmanId, uint256 medalID);
 
 	// Methods -------------------------------
 	///@dev Register an author, given an address
@@ -163,5 +165,30 @@ contract SportsmanHandler is Ownable {
 				result[i++] = allSportsman[sportsmanId].eventsSubscribed[x];
 		}
 		return result;
+	}
+
+	function getSportsmanMedalList(address sportsmanId)
+		public
+		view
+		returns (uint256[] memory)
+	{
+		return allSportsman[sportsmanId].medalList;
+	}
+
+	function getSportsmanMedal(address sportsmanId, uint256 indx)
+		public
+		view
+		returns (uint256)
+	{
+		require(
+			indx < allSportsman[sportsmanId].medalList.length,
+			"indx out of range"
+		);
+		return allSportsman[sportsmanId].medalList[indx];
+	}
+
+	function sportsmanAddMedal(address sportsmanId, uint256 medalID) public {
+		allSportsman[sportsmanId].medalList.push(medalID);
+		emit sportsmanMedalAdded(sportsmanId, medalID);
 	}
 }

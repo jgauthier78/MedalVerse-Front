@@ -69,16 +69,13 @@ contract OrganizerHandler is Ownable {
 		string memory _name,
 		string memory _description,
 		string memory _logoURI
-	) public isNotNull(_user) {
+	) public isNotNull(_user) onlyOwner {
 		uint256 indx = organizationList.length;
 		Organization storage _org = organizationList.push();
 		_org.name = _name;
 		_org.description = _description;
 		_org.logoURI = _logoURI;
 		_org.activ = true;
-
-		// add the user to the list of admin
-		organizationAddAdmin(indx, _user);
 
 		emit OganizationAdded(_user, indx);
 	}
@@ -88,6 +85,7 @@ contract OrganizerHandler is Ownable {
 	///@param orgId id of the organization
 	function organizationAddAdmin(uint256 orgId, address _user)
 		public
+		onlyOwner
 		isNotNull(_user)
 	{
 		Organization storage org = organizationList[orgId];
@@ -264,10 +262,12 @@ contract OrganizerHandler is Ownable {
 		organizationList[organizationId].EventList.push(eventID + 1);
 	}
 
-	function getEventList( uint256 orgId ) public view returns (uint256[] memory) {
+	function getEventList(uint256 orgId)
+		public
+		view
+		returns (uint256[] memory)
+	{
 		uint256[] memory EventList = organizationList[orgId].EventList;
 		return EventList;
 	}
-
-
 }
