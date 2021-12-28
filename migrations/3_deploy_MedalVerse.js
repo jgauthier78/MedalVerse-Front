@@ -1,4 +1,7 @@
 var MedalVerse = artifacts.require("./MedalVerse.sol");
+const throwIn = artifacts.require('ThrowIn');
+const nftMedal = artifacts.require('NFTMedaille');
+
 const ethers = require('ethers');
 const crypto = require('crypto');
 
@@ -20,6 +23,13 @@ module.exports = async function (deployer) {
     return wallet.address
   }
 
+  async function createNFT(nftName, name, img, account) {
+    let medal = await nftMedal.new("medaille", "MDL", img)
+    let nft = await throwIn.new(nftName, medal.address, { from: accounts[0] });
+    await nft.mintCup({ from: accounts[0] });
+    await nft.addParticipant(name, account, { from: accounts[0] });
+    return nft;
+  }
 
   let indx = 3;
   const Author = 2
@@ -93,5 +103,12 @@ module.exports = async function (deployer) {
   await MVerse.LinkUserAndEvent(accounts[0], 2);
   await MVerse.LinkUserAndEvent(accounts[0], 0);
   await MVerse.LinkUserAndEvent(accounts[0], 1);
+
+
+  // population de récompenses
+  let rcup = await createNFT("Running Cup", "François Coste", "/img/medals/medal0.jpg", accounts[1])
+  await MVerse.adminSetWinner(0, accounts[0], { from: accounts[1] })
+  await MVerse.adminAddMedal(0, rcup.address, { from: accounts[1] })
+
 
 };

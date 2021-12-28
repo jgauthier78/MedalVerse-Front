@@ -103,6 +103,15 @@ contract OrganizerHandler is Ownable {
 
 	// Exposing data to the outside ---
 
+	function getOrganizationName(uint256 orgID)
+		public
+		view
+		returns (string memory)
+	{
+		require(orgID < organizationList.length, "orgID out of range");
+		return organizationList[orgID].name;
+	}
+
 	// Simplified struct used for viewing the internal states
 	struct organizationDesc {
 		string name;

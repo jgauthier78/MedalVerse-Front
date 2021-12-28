@@ -86,19 +86,20 @@ contract EventHandler is Ownable {
 	function getWinner(uint256 eventId)
 		public
 		view
-		isNotNullUint256(eventId)
+		isInRange(eventId, eventCount)
 		returns (address)
 	{
 		return eventList[eventId].winner;
 	}
 
 	///@dev defines the winner of the event
-	///@param eventId id of the event
-	function setWinner(uint256 eventId, address winner)
+	///@param eventID id of the event
+	///@param _winner address of the winner
+	function setEventWinner(uint256 eventID, address _winner)
 		internal
-		isNotNullUint256(eventId)
+		isInRange(eventID, eventCount)
 	{
-		eventList[eventId].winner = winner;
+		eventList[eventID].winner = _winner;
 	}
 
 	///@dev Open to registration

@@ -65,6 +65,7 @@ class App extends Component {
             roleUpdated: false,
             redirectTo: null,
             userDetails: null,
+            userMedals: null,
             userEvents: null,
             userOrganizations: null
         }
@@ -76,7 +77,7 @@ class App extends Component {
     isConnected = () => { return this.state.isConnected; }
 
     render() {
-        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations : this.state.userOrganizations }
+        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations: this.state.userOrganizations, medals: this.state.userMedals }
         return (
             <BrowserRouter >
                 <Routes>
@@ -203,7 +204,7 @@ class App extends Component {
     updateUserDetails = async () => {
         let role = this.state.userRole
         if (role & ROLES.ROLE_ORGANIZER) // Organizer
-            // this.setState({ redirectTo: "/organizer" })
+        // this.setState({ redirectTo: "/organizer" })
         {
             let organizations = await this.getOrganizerOrganisations()
             this.setState({
@@ -214,8 +215,10 @@ class App extends Component {
         else if (role & ROLES.ROLE_ATHLETE) // Athlete
         {
             let evnts = await this.getUserEvents()
+            let usermedals = await this.getUserMedals()
             this.setState({
                 userEvents: evnts,
+                userMedals: usermedals,
                 redirectTo: "/athlete"
             })
         }
@@ -223,16 +226,16 @@ class App extends Component {
             this.setState({ redirectTo: "/author" })
         else this.setState({ redirectTo: "/" }) // Not registered
     }
-/*
-    getRoleString = () => {
-        let role = this.state.userRole
-        if (role & ROLES.ROLE_ORGANIZER) return "Organisateur"
-        else if (role & ROLES.ROLE_ATHLETE) // Sportsman
-            return "Sportif"
-        else if (role & ROLES.ROLE_AUTHOR) // Author
-            return "Auteur"
-    }
-*/
+    /*
+        getRoleString = () => {
+            let role = this.state.userRole
+            if (role & ROLES.ROLE_ORGANIZER) return "Organisateur"
+            else if (role & ROLES.ROLE_ATHLETE) // Sportsman
+                return "Sportif"
+            else if (role & ROLES.ROLE_AUTHOR) // Author
+                return "Auteur"
+        }
+    */
     disconnect = () => {
         this.setState({ userDetails: null, isConnected: false, userRole: 0 })
         this.setState({ redirectTo: "/" })
@@ -283,47 +286,66 @@ class App extends Component {
         return result;
     }
 
+    getUserMedals = async () => {
+        let account = this.getAccounts()
+        let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [] }
+
+        result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
+        for (let i = 0; i < result.nbMedals; i++) {
+            let medalID = await this.state.contract.methods.getSportsmanMedal(account, i).call()
+            let medal = { success: null, org: null, event: null }
+            medal.succes = await this.state.contract.methods.getMedal(medalID).call()
+            medal.org = await this.state.contract.methods.getOrganizationName(medal.succes.organizationID).call()
+            medal.event = await this.state.contract.methods.getEvent(medal.succes.eventID).call()
+            result.Medals.push(medal)
+            if (medal.isInWinnerGallery) {
+                result.nbMedalsInGallery++
+                result.Gallery.push(medal)
+            }
+        }
+        console.log(result)
+        return result
+    }
+
     getOrganizerOrganisations = async () => {
         console.log("getOrganizerOrganisations")
         let account = this.getAccounts()
         let result = { organizations: null }
         // We get the list of organization the organizer subscribed to uint256[]
         let organisationList = await this.state.contract.methods.getOrganizerOrganisationList(account).call()
-        console.log("organisationList.length="+organisationList.length)
+        console.log("organisationList.length=" + organisationList.length)
         if (organisationList.length > 0) {
-            result.organizations=[];
+            result.organizations = [];
             // For each organization this organizer belongs to
 
-            await Promise.all( organisationList.map(async (organisationId) =>
-            {
-                console.log("organisationId="+organisationId)
-                let organization = {} ;
+            await Promise.all(organisationList.map(async (organisationId) => {
+                console.log("organisationId=" + organisationId)
+                let organization = {};
                 // Load ONE organization details
                 let organizationList = await this.state.contract.methods.getOrganizationsList(organisationId, organisationId).call()
                 // console.log("organizationList="+ JSON.stringify( organizationList ) )
-                organization["id"]=organisationId
-                organization["name"]=organizationList[0][0]
-                organization["description"]=organizationList[0][1]
-                organization["logoURI"]=organizationList[0][2]
-                organization["activ"]=organizationList[0][3]
-                organization["admins"]=[]
-                organization["events"]=[]
+                organization["id"] = organisationId
+                organization["name"] = organizationList[0][0]
+                organization["description"] = organizationList[0][1]
+                organization["logoURI"] = organizationList[0][2]
+                organization["activ"] = organizationList[0][3]
+                organization["admins"] = []
+                organization["events"] = []
                 // console.log("organization[]="+ JSON.stringify( organization ) )
                 // Load organization admins ids list uint256[]
                 let adminsList = await this.state.contract.methods.getAdminList(organisationId).call()
                 if (adminsList.length > 0) {
                     // For each admin
                     adminsList.forEach(adminId => {
-                        console.log("adminId="+adminId)
-                        organization["admins"].push({id: adminId})
+                        console.log("adminId=" + adminId)
+                        organization["admins"].push({ id: adminId })
                     }); // For each admin
                 }
                 let eventsList = await this.state.contract.methods.getEventList(organisationId).call()
-                console.log("eventsList.length="+eventsList.length)
+                console.log("eventsList.length=" + eventsList.length)
                 if (eventsList.length > 0) {
-                    await Promise.all( eventsList.map(async (eventId) =>
-                    {
-                        console.log("eventId="+eventId)
+                    await Promise.all(eventsList.map(async (eventId) => {
+                        console.log("eventId=" + eventId)
                         let event = await this.state.contract.methods.getEvent(eventId).call()
                         organization["events"].push({
                             id: event[0],
@@ -337,37 +359,37 @@ class App extends Component {
                             ended: event[8],
                             started: event[9]
                         })
-/*
-                        uint256 eventId; // Index of the event in the EventList
-                        uint256 sportCategory; // Category
-                        uint256 organizedBy; // Id of the Organization
-                        address[] registeredSportsMan; //List of sportsman that are participating to the event
-                        address winner; // Winner of the Event
-                        uint8 startDate;
-                        uint8 endDate;
-                        bool activ;
-                        bool ended; // finished ?
-                        bool started; // The event has started
-*/
+                        /*
+                                                uint256 eventId; // Index of the event in the EventList
+                                                uint256 sportCategory; // Category
+                                                uint256 organizedBy; // Id of the Organization
+                                                address[] registeredSportsMan; //List of sportsman that are participating to the event
+                                                address winner; // Winner of the Event
+                                                uint8 startDate;
+                                                uint8 endDate;
+                                                bool activ;
+                                                bool ended; // finished ?
+                                                bool started; // The event has started
+                        */
                     }));
-/*
-                    // For each event
-                    eventsList.forEach(eventId => {
-                        console.log("eventId="+eventId)
-                        //let event = await this.state.contract.methods.getEvent(eventId).call()
-                        organization["events"].push({id: eventId})
-                        
-                    }); // For each event
-*/
-                    } // eventsList.length > 0
+                    /*
+                                        // For each event
+                                        eventsList.forEach(eventId => {
+                                            console.log("eventId="+eventId)
+                                            //let event = await this.state.contract.methods.getEvent(eventId).call()
+                                            organization["events"].push({id: eventId})
+                                            
+                                        }); // For each event
+                    */
+                } // eventsList.length > 0
 
-                console.log("organization["+organisationId+"]="+ JSON.stringify( organization ) )
+                console.log("organization[" + organisationId + "]=" + JSON.stringify(organization))
 
             }));
         }
         return null;
     }
- 
+
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
     } // DID_init

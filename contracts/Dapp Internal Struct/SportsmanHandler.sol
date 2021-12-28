@@ -175,6 +175,14 @@ contract SportsmanHandler is Ownable {
 		return allSportsman[sportsmanId].medalList;
 	}
 
+	function getSportsmanMedalCount(address sportsmanId)
+		public
+		view
+		returns (uint256)
+	{
+		return allSportsman[sportsmanId].medalList.length;
+	}
+
 	function getSportsmanMedal(address sportsmanId, uint256 indx)
 		public
 		view

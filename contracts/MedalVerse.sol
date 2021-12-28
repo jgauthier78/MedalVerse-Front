@@ -131,7 +131,7 @@ contract MedalVerse is
 		isAdminOfEvent(eventID)
 		isNotNull(winner)
 	{
-		setWinner(eventID, winner);
+		setEventWinner(eventID, winner);
 		endEvent(eventID);
 	}
 
