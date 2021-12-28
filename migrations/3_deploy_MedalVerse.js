@@ -4,6 +4,7 @@ const nftMedal = artifacts.require('NFTMedaille');
 
 const ethers = require('ethers');
 const crypto = require('crypto');
+const { cp } = require('fs');
 
 module.exports = async function (deployer, network, accounts) {
 
@@ -50,7 +51,23 @@ module.exports = async function (deployer, network, accounts) {
 
   const date03_start =  (new Date(2022, 01, 01,   17)).getTime()
   const date03_end =    (new Date(2022, 01, 01,   23)).getTime()
+/*
+  const date = new Date(2021, 01, 01,   12)
+  console.log( "date toUTCString = " + date.toUTCString() )
+  dateTimeMs = date.getTime()
+  console.log( "dateTimeMs = date.getTime = " + dateTimeMs )
+  dateTimeS = dateTimeMs / 1000
+  console.log( "dateTimeS = dateTimeMs / 1000 = " + dateTimeS )
 
+  dateTimeS_BN = ethers.BigNumber.from(Math.round( dateTimeS ));
+  console.log( "dateTimeS_BN  = " + dateTimeS_BN  )
+
+  dateTime2Ms = dateTimeS_BN.toNumber( ) * 1000
+  console.log( "dateTime2Ms  = " + dateTime2Ms )
+  
+  const date2 = new Date( dateTime2Ms )
+  console.log( "date2 toUTCString = " + date2.toUTCString() )
+*/
   const Time01_start = ethers.BigNumber.from(Math.round(date01_start / 1000)); // Unix timestamp : millisec. -> sec.
   const Time01_end = ethers.BigNumber.from(Math.round(date01_end / 1000));
 
