@@ -8,7 +8,7 @@ import ProfileBandeau from "./ProfileBandeau"
 import { Component } from "react";
 import { Navigate } from "react-router-dom";
 import EventsSubscribedAthlete from "./Events/EventsSubscribedAthlete"
-
+import MedalAthlete from "./Medals/MedalAthlete"
 class SporstmanMain extends Component {
 
     constructor(props) {
@@ -41,6 +41,7 @@ class SporstmanMain extends Component {
                                 <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
 
                                 <EventsSubscribedAthlete userProfile={this.props.userProfile} />
+                                <MedalAthlete userProfile={this.props.userProfile} />
                                 <SimpleFooter />
                             </Col>
 
