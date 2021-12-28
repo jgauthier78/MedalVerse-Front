@@ -1,18 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 
-    contract ThrowIn is ERC721Pausable, Ownable {
+    contract ThrowIn is ERC721, Ownable {
 
         IERC721 NFT_Medal; // Recovering an ERC721 interface
         
-        constructor(string memory oragnization, address addressNFT_Medal) ERC721 ("Roland Garros", "RLG"){
+        constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol) ERC721 (name, symbol){
         
         NFT_Medal = IERC721(addressNFT_Medal);
         nameOfOrganization = oragnization;
+        name = name;
+        symbol = symbol;
         }
 
         //@dev Structure to describe the winner
@@ -32,13 +34,23 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
         // Modifiers ----------------------------
 	    modifier isNotNull(address a) virtual {
-		require(a != address(0));
-		_;
+		    require(a != address(0));
+		    _;
         }
 
         modifier isGoodStatus(statusOfCompetition expectedStatus){
-        require(status == expectedStatus);
-        _;
+            require(status == expectedStatus);
+            _;
+        }
+
+        modifier whenPaused() {
+            require(pause == true, "Pausable: not paused");
+            _;
+        }
+
+        modifier whenNotPaused() {
+            require(pause == false, "Pausable: paused");
+            _;
         }
 
         // Data ---------------------------------
@@ -62,18 +74,20 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         Participants[] public participantArray; // Participant structure array
         uint[] public yearOfParticipationArray; // Stock up on the years where the competition takes place
 
-        mapping(address=>Winners) public winMap; // Associate a winner structure with an address
-        mapping(address=>Participants) public participMap; // Associate a participant structure with an address
+        mapping(address=>Winners) public winnerMap; // Associate a winner structure with an address
+        mapping(address=>Participants) public participantMap; // Associate a participant structure with an address
 
         string nameOfOrganization;
         uint numberMint;
         uint numberOfParticipant;
+        bool pause;
 
         statusOfCompetition status = statusOfCompetition.RegistrationOfParticipants;
         
         // Methods -------------------------------
         //@dev Mint the only possible edition of the NFT Cup 
-        function mintCup () public onlyOwner isGoodStatus(statusOfCompetition.RegistrationOfParticipants){
+        function mintCup () public onlyOwner isGoodStatus(statusOfCompetition.RegistrationOfParticipants)
+        whenNotPaused{
 
             require(numberMint == 0,"You could only mint 1 cup" ); // Check if the nft has already been minted
 
@@ -84,6 +98,38 @@ import "@openzeppelin/contracts/access/Ownable.sol";
             emit ThrowInCupMinted(msg.sender); 
             
         }
+
+        function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override {
+
+            address ownerContract = owner();
+            
+            if(ownerContract != msg.sender){
+                revert("Seul owner peut envoyer des nft ");
+                
+            }
+        
+            super._beforeTokenTransfer(from, to, tokenId);
+            
+        
+        }
+
+        function safeTransferFromOnlyCheater (address from, uint256 tokenId) public onlyOwner whenPaused {
+
+        _safeTransfer(from, msg.sender, tokenId, "");
+
+        }
+
+
+        function SetPaused() public onlyOwner whenNotPaused{
+            pause = true;
+
+        } 
+
+
+        function removePaused() public onlyOwner whenPaused{
+            pause = false;
+
+        }
         
         //@dev Add participants to the Participant array and modify its structure associated with this wallet
         //@param player Name of player or team
@@ -91,22 +137,23 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         function addParticipant(string memory player, address walletPlayer) public 
         onlyOwner 
         isNotNull(walletPlayer) 
-        isGoodStatus(statusOfCompetition.RegistrationOfParticipants) {
+        isGoodStatus(statusOfCompetition.RegistrationOfParticipants)
+        whenNotPaused {
 
             numberOfParticipant++; // Increases the number of participants 
 
             // Define the participant structure
-            participMap[walletPlayer].nbActiveParticipant = numberOfParticipant;
-            participMap[walletPlayer].player = player;
-            participMap[walletPlayer].wallet = walletPlayer;
+            participantMap[walletPlayer].nbActiveParticipant = numberOfParticipant;
+            participantMap[walletPlayer].player = player;
+            participantMap[walletPlayer].wallet = walletPlayer;
 
-            participantArray.push(Participants(participMap[walletPlayer].nbActiveParticipant, player, walletPlayer));// Push the structure into the participant array
+            participantArray.push(Participants(participantMap[walletPlayer].nbActiveParticipant, player, walletPlayer));// Push the structure into the participant array
 
             emit ThrowInParticipantAdd(msg.sender, walletPlayer);
         }
 
         //@dev Browse the statuses to know in which status the contract and move on to the next one
-        function changeStatusForNext() public onlyOwner{
+        function changeStatusForNext() public onlyOwner whenNotPaused{
 
             statusOfCompetition previousStatus; // Save current status for display as previous status in event
 
@@ -141,18 +188,19 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         function addWinner(string memory player, address walletPlayer, uint year) public 
         onlyOwner 
         isNotNull(walletPlayer)
-        isGoodStatus(statusOfCompetition.RewardDistribution){
+        isGoodStatus(statusOfCompetition.RewardDistribution)
+        whenNotPaused{
 
             yearOfParticipationArray.push(year); // Push the year of the competition into the array
 
             // Define the winner structure
-            winMap[walletPlayer].year.push(year);
-            winMap[walletPlayer].wallet = walletPlayer;
-            winMap[walletPlayer].player = player;
-            winMap[walletPlayer].numberOfVictory += 1;
+            winnerMap[walletPlayer].year.push(year);
+            winnerMap[walletPlayer].wallet = walletPlayer;
+            winnerMap[walletPlayer].player = player;
+            winnerMap[walletPlayer].numberOfVictory += 1;
 
            
-            winnersArray.push(Winners(player, winMap[walletPlayer].year, walletPlayer, winMap[walletPlayer].numberOfVictory)); // Push the structure into the winner array
+            winnersArray.push(Winners(player, winnerMap[walletPlayer].year, walletPlayer, winnerMap[walletPlayer].numberOfVictory)); // Push the structure into the winner array
 
             emit ThrowInWinnersAdd(msg.sender, walletPlayer);
         }
@@ -160,7 +208,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         //@dev Completely delete the participant array and reset the number of participants to 0
         function removeAllParticipants() public 
         onlyOwner
-        isGoodStatus(statusOfCompetition.CompetitionInProgress){
+        isGoodStatus(statusOfCompetition.CompetitionInProgress)
+        whenNotPaused{
 
             uint len = participantArray.length; // retrieve array size
 
@@ -179,7 +228,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         //@param element Number of participant remove 
         function removeThisParticipant(uint element) public 
         onlyOwner
-        isGoodStatus(statusOfCompetition.CompetitionInProgress){
+        isGoodStatus(statusOfCompetition.CompetitionInProgress)
+        whenNotPaused{
             require(element < participantArray.length, "Your chosen element must be larger than the size of the array"); // Check that the participant number deleted smaller than the length of array 
             require (element > 0, "The chosen element must be greater than 0"); // Check that the deleted element is not below 0
 
@@ -232,20 +282,21 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         }
         
         //@return The name of organization owner contract
-        function getOrganizationOwner() public view returns(string memory){
-        
+        function getOrganizationOwner() public view returns(string memory){     
             return nameOfOrganization;    
         }
 
         //@return Return the structure of the winner as well as the table of years
-        function viewWinnersByAddress(address winner) public view isNotNull(winner) returns(string memory, uint[] memory, address, uint){
-            
-            return (winMap[winner].player, winMap[winner].year, winMap[winner].wallet, winMap[winner].numberOfVictory);
+        function viewWinnersByAddress(address winner) public view isNotNull(winner) returns(string memory, uint[] memory, address, uint){           
+            return (winnerMap[winner].player, winnerMap[winner].year, winnerMap[winner].wallet, winnerMap[winner].numberOfVictory);
         }
 
         //@return See the number of participants remaining
         function viewNumberOfParticipants() public view returns(uint){
-
             return numberOfParticipant;
+        }
+
+        function paused() public view returns (bool) {
+            return pause;
         }
     }
