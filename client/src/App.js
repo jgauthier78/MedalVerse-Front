@@ -361,7 +361,9 @@ class App extends Component {
                             endDate: event[6],
                             activ: event[7],
                             ended: event[8],
-                            started: event[9]
+                            started: event[9],
+                            // on rattache l'organisation à chaque event pour faciliter le traitement dans les composants
+                            organization: organization
                         })
                     }));
                 } // eventsList.length > 0

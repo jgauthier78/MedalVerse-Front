@@ -48,7 +48,7 @@ const extractOrganizerEventsFromUserOrganizations = (userOrganizations) => {
      let events = userOrganizations.map( (organization /*, index, array*/) => {
         let newEvents = organization.events.map( (event /*, index, array*/) => {
         // on rattache l'organisation à chaque event
-        event.organization=organization
+        // event.organization=organization
             return event
         })
         return newEvents 
