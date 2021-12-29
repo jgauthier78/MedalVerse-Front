@@ -31,4 +31,11 @@ yarn-error.log*
 
 *.code-workspace
 
+# configuration locale solidity
 soljson-*.js
+
+# archives
+client/*.zip
+client/*.7z
+*.zip
+*.7z
