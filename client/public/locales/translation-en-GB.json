@@ -1,6 +1,7 @@
 {
   "OrganizerEvents": {
-    "noEvent" : "No events"
+    "noEvent" : "No events",
+    "title" : "Organized events"
   },
   "LandingPage" :{
     "walletConnect": {
@@ -81,7 +82,7 @@
     "loading": "Please kindly wait while loading ..."
   },
   "Formats": {
-    "date": "fr-FR"
+    "date": "en-GB"
   },
   "Errors": {
     "contractUndefined": "Can't load contract. Wrong blockchain ?",

@@ -9,7 +9,7 @@ import { Component } from "react";
 import { Navigate } from "react-router-dom";
 import OrganizerEvents from "./Events/OrganizerEvents";
 
-import { withTranslation } from 'react-i18next';
+// import { withTranslation } from 'react-i18next';
 
 class OrganizerMainBeforeTranslation extends Component {
 
