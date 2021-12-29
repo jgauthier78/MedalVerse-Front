@@ -32,7 +32,7 @@ contract NFTMedaille is ERC721, Ownable {
 			_tokenIds.increment();
 			uint256 newItemId = _tokenIds.current();
 			_mint(msg.sender, newItemId);
-			_setTokenURI(newItemId, imageURI);
+		        URIToken[newItemId] = imageURI;
 		}
 	}
 }
