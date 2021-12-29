@@ -95,7 +95,7 @@ class App extends Component {
                     />
                     <Route exact path='organizer' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                            <OrganizerMain AppCallBacks={this.AppCallBacks} userProfile={userProfile} />
+                            <OrganizerMain AppCallBacks={this.AppCallBacks} userProfile={userProfile}  />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
@@ -277,6 +277,7 @@ class App extends Component {
                 // We now populate the structure
                 for (let i = 0; i < result.nbEvents; i++) {
                     let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
+                    console.log("val=" + val)
                     result.eventList.push(val)
                     let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.organizedBy).call()
                     result.organisationDesc.push(organisationDesc)
@@ -297,6 +298,7 @@ class App extends Component {
             medal.succes = await this.state.contract.methods.getMedal(medalID).call()
             medal.org = await this.state.contract.methods.getOrganizationName(medal.succes.organizationID).call()
             medal.event = await this.state.contract.methods.getEvent(medal.succes.eventID).call()
+            console.log("medal.event=" + medal.event)
             result.Medals.push(medal)
             if (medal.isInWinnerGallery) {
                 result.nbMedalsInGallery++
@@ -310,16 +312,17 @@ class App extends Component {
     getOrganizerOrganisations = async () => {
         console.log("getOrganizerOrganisations")
         let account = this.getAccounts()
-        let result = { organizations: null }
+        //let result = { organizations: null }
+        let result = []
         // We get the list of organization the organizer subscribed to uint256[]
         let organisationList = await this.state.contract.methods.getOrganizerOrganisationList(account).call()
-        console.log("organisationList.length=" + organisationList.length)
+        // console.log("organisationList.length=" + organisationList.length)
         if (organisationList.length > 0) {
-            result.organizations = [];
+            // result.organizations = [];
             // For each organization this organizer belongs to
 
             await Promise.all(organisationList.map(async (organisationId) => {
-                console.log("organisationId=" + organisationId)
+                // console.log("organisationId=" + organisationId)
                 let organization = {};
                 // Load ONE organization details
                 let organizationList = await this.state.contract.methods.getOrganizationsList(organisationId, organisationId).call()
@@ -342,11 +345,12 @@ class App extends Component {
                     }); // For each admin
                 }
                 let eventsList = await this.state.contract.methods.getEventList(organisationId).call()
-                console.log("eventsList.length=" + eventsList.length)
+                // console.log("eventsList.length=" + eventsList.length)
                 if (eventsList.length > 0) {
                     await Promise.all(eventsList.map(async (eventId) => {
-                        console.log("eventId=" + eventId)
+                        // console.log("eventId=" + eventId)
                         let event = await this.state.contract.methods.getEvent(eventId).call()
+                        // console.log("event=" + event)
                         organization["events"].push({
                             id: event[0],
                             sportCategory: event[1],
@@ -359,35 +363,16 @@ class App extends Component {
                             ended: event[8],
                             started: event[9]
                         })
-                        /*
-                                                uint256 eventId; // Index of the event in the EventList
-                                                uint256 sportCategory; // Category
-                                                uint256 organizedBy; // Id of the Organization
-                                                address[] registeredSportsMan; //List of sportsman that are participating to the event
-                                                address winner; // Winner of the Event
-                                                uint8 startDate;
-                                                uint8 endDate;
-                                                bool activ;
-                                                bool ended; // finished ?
-                                                bool started; // The event has started
-                        */
                     }));
-                    /*
-                                        // For each event
-                                        eventsList.forEach(eventId => {
-                                            console.log("eventId="+eventId)
-                                            //let event = await this.state.contract.methods.getEvent(eventId).call()
-                                            organization["events"].push({id: eventId})
-                                            
-                                        }); // For each event
-                    */
                 } // eventsList.length > 0
 
-                console.log("organization[" + organisationId + "]=" + JSON.stringify(organization))
-
+                // console.log("organization[" + organisationId + "]=" + JSON.stringify(organization))
+                // return organization
+                //result.organizations.push( organization )
+                result.push( organization )
             }));
         }
-        return null;
+        return result;
     }
 
     DID_init = async () => {

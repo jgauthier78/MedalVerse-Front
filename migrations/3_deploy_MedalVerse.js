@@ -36,6 +36,24 @@ module.exports = async function (deployer, network, accounts) {
     return nft;
   }
 
+  function avatarRef(s) { return "/img/avatars/" + s }
+
+  /* Ajouter un utilisateur */
+  async function addFakeUser(nom, mail, role, sportsCategory) {
+    await MVerse.addNewUser(generateFakeAdr(), avatarRef(fakeUsersIdx.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); fakeUsersIdx++
+  }
+
+  const ACCOUNT_ORGANIZER_01 = accounts[1] // account1
+  const ACCOUNT_ATHLETE_01 = accounts[2] // account0
+
+  console.log("---------------------------------")
+  console.log("Accounts")
+  console.log(" Contract owner  : " + ACCOUNT_CONTRACT_OWNER)
+  console.log(" Organizer 01 : " + ACCOUNT_ORGANIZER_01)
+  console.log(" Athlete 01      : " + ACCOUNT_ATHLETE_01)
+  console.log("---------------------------------")
+
+
   console.log("Populating with data")
   console.log("...")
 
@@ -51,23 +69,7 @@ module.exports = async function (deployer, network, accounts) {
 
   const date03_start =  (new Date(2022, 01, 01,   17)).getTime()
   const date03_end =    (new Date(2022, 01, 01,   23)).getTime()
-/*
-  const date = new Date(2021, 01, 01,   12)
-  console.log( "date toUTCString = " + date.toUTCString() )
-  dateTimeMs = date.getTime()
-  console.log( "dateTimeMs = date.getTime = " + dateTimeMs )
-  dateTimeS = dateTimeMs / 1000
-  console.log( "dateTimeS = dateTimeMs / 1000 = " + dateTimeS )
 
-  dateTimeS_BN = ethers.BigNumber.from(Math.round( dateTimeS ));
-  console.log( "dateTimeS_BN  = " + dateTimeS_BN  )
-
-  dateTime2Ms = dateTimeS_BN.toNumber( ) * 1000
-  console.log( "dateTime2Ms  = " + dateTime2Ms )
-  
-  const date2 = new Date( dateTime2Ms )
-  console.log( "date2 toUTCString = " + date2.toUTCString() )
-*/
   const Time01_start = ethers.BigNumber.from(Math.round(date01_start / 1000)); // Unix timestamp : millisec. -> sec.
   const Time01_end = ethers.BigNumber.from(Math.round(date01_end / 1000));
 
@@ -77,101 +79,89 @@ module.exports = async function (deployer, network, accounts) {
   const Time03_start = ethers.BigNumber.from(Math.round(date03_start / 1000));
   const Time03_end = ethers.BigNumber.from(Math.round(date03_end / 1000));
 
-  /* Ajouter un utilisateur */
-  function avatarRef(s) { return "/img/avatars/" + s }
-
-  async function addFakeUser(nom, mail, role, sportsCategory) {
-    await MVerse.addNewUser(generateFakeAdr(), avatarRef(fakeUsersIdx.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); fakeUsersIdx++
-  }
   /*************************************/
 
 
-  const ACCOUNT_ORGANIZER_01 = accounts[1] // account1
-  const ACCOUNT_ATHLETE_01 = accounts[2] // account0
   let fakeUsersIdx = 3; // fake account 3 ... n
 
   const EVENT_ONE = 0;
   const EVENT_TWO = 1;
   const EVENT_THREE = 2;
 
-  console.log("---------------------------------")
-  console.log("Accounts")
-  console.log(" Contract owner  : " + ACCOUNT_CONTRACT_OWNER)
-  console.log(" Organizer 01 : " + ACCOUNT_ORGANIZER_01)
-  console.log(" Athlete 01      : " + ACCOUNT_ATHLETE_01)
-  console.log("---------------------------------")
-
+  console.log(".")
 
   await MVerse.addNewUser( ACCOUNT_ORGANIZER_01, avatarRef("1.jpg"), "Paul_Henry", "pol@gmail.com", ROLE_ATHLETE + ROLE_ORGANIZER, 0, { from: ACCOUNT_CONTRACT_OWNER })
   await MVerse.addNewUser( ACCOUNT_ATHLETE_01, avatarRef("2.jpg"), "François Coste", "fcoste@free.fr", ROLE_ATHLETE, 0, { from: ACCOUNT_CONTRACT_OWNER })
 
   await addFakeUser("Sonia Legendre",   "slegendre@gmail.com",  ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
   await addFakeUser("Sandra Palin",     "spali@hotmail.com",    ROLE_ORGANIZER, 0)
   await addFakeUser("Cindy Quer ",      "cquer@icloud.com",     ROLE_ATHLETE, 0)
   await addFakeUser("Sarah Comah",      "scomah@yopmail.com",   ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
   await addFakeUser("Francois Lemin",   "flemin@yahoo.fr",      ROLE_ATHLETE, 0) //7
   await addFakeUser("Gregoire Kann",    "gkann@hotmail.com",    ROLE_ATHLETE, 0)
   await addFakeUser("Pierre Lemin",     "plemin@yahoo.fr",      ROLE_ATHLETE, 0)
   await addFakeUser("Sandrine Praut",   "spraut@free.fr",       ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
   await addFakeUser("Alain Terrieur",   "aterrieur@yahoo.fr",   ROLE_ATHLETE, 0)
   await addFakeUser("Mimi Ferraud",     "mferraud@free.fr",     ROLE_ATHLETE, 0)
   await addFakeUser("Yin Tran",         "ytran@icloud.com",     ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
   await addFakeUser("Patricia Linn",    "plinn@yahoo.fr",       ROLE_ATHLETE, 0)
   await addFakeUser("Lin Tran",         "ltran@aol.com",        ROLE_ATHLETE, 0)
   await addFakeUser("Fabien Oumal",     "foumal@icloud.com",    ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
   await addFakeUser("Farah Linn",       "flinn@free.fr",        ROLE_ATHLETE, 0)
   await addFakeUser("Inna Kassar",      "ikassar@aol.com",      ROLE_ATHLETE, 0)
   await addFakeUser("Alain Lebref",     "alebref@hotmail.com",  ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
   await addFakeUser("Tse Fan",          "tfan@aol.com",         ROLE_ATHLETE, 0)
   await addFakeUser("Paul Mickel",      "pmickel@yopmail.com",  ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
   await addFakeUser("Linn Bertram",     "lbertram@yopmail.com", ROLE_ATHLETE, 0)
   await addFakeUser("Jean Labarthe",    "jlabarthe@aol.fr",     ROLE_ATHLETE, 0)
   await addFakeUser("Fred Bert",        "fbert@yahoo.fr",       ROLE_ATHLETE, 0)
   await addFakeUser("Ahmed Karr",       "akarr@hotmail.com",    ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
   await addFakeUser("Yuri Leck",        "yleck@free.fr",        ROLE_ATHLETE, 0)
   await addFakeUser("Annie Sebbagh",    "asebbagh@icloud.com",  ROLE_ATHLETE, 0)
   await addFakeUser("Linnette Arnaud",  "larnaud@icloud.com",   ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
   await addFakeUser("Gérard Broux",     "gbroux@yahoo.fr",      ROLE_ATHLETE, 0)
   await addFakeUser("Cyril Mann",       "cmann@yopmail.com",    ROLE_ATHLETE, 0)
   await addFakeUser("Cédric Jompard",   "cjompard@hotmail.com", ROLE_ATHLETE, 0)
   await addFakeUser("Annie Hall",       "ahall@free.fr",        ROLE_ATHLETE, 0)
-  console.log("...")
+  console.log(".")
 
   let a = await MVerse.getUserCount({ from: ACCOUNT_CONTRACT_OWNER })
   console.log( a.toString() + ' users added')
+
+  console.log("Creating organizations and events")
 
   function bkgRef(s) { return "/img/bkg/" + s }
   // L'organisateur créé des organisations
   await MVerse.addOrganization( ACCOUNT_ORGANIZER_01, "FFA", "Fédération Française d'Athlétisme", bkgRef("running.jpg"), { from: ACCOUNT_CONTRACT_OWNER });
   await MVerse.addOrganization( ACCOUNT_ORGANIZER_01, "FFM", "Fédération Française de Motocross", bkgRef("motoracing.jpg"), { from: ACCOUNT_CONTRACT_OWNER });
   await MVerse.addOrganization( ACCOUNT_ORGANIZER_01, "FFT", "Fédération Française de Tennis", bkgRef("tennis.jpg"), { from: ACCOUNT_CONTRACT_OWNER });
-  console.log("...")
+  console.log(".")
   // L'organisateur créé des administateurs d'organisations
   await MVerse.organizationAddAdmin(0, ACCOUNT_ORGANIZER_01, { from: ACCOUNT_CONTRACT_OWNER });
   await MVerse.organizationAddAdmin(1, ACCOUNT_ORGANIZER_01, { from: ACCOUNT_CONTRACT_OWNER });
   await MVerse.organizationAddAdmin(2, ACCOUNT_ORGANIZER_01, { from: ACCOUNT_CONTRACT_OWNER });
-  console.log("...")
+  console.log(".")
 
   // L'organisateur 01 organise ces évènements:
   await MVerse.newEvent( EVENT_ONE, Time01_start, Time01_end, 2, { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.newEvent( EVENT_TWO, Time02_start, Time02_end, 4, { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.newEvent( EVENT_THREE, Time03_start, Time03_end, 4, { from: ACCOUNT_ORGANIZER_01 });
-  console.log("...")
+  console.log(".")
 
   // L'athlete 01 participe à ces évènements:
   await MVerse.LinkUserAndEvent( ACCOUNT_ATHLETE_01, EVENT_THREE );
   await MVerse.LinkUserAndEvent( ACCOUNT_ATHLETE_01, EVENT_ONE );
   await MVerse.LinkUserAndEvent( ACCOUNT_ATHLETE_01, EVENT_TWO );
-  console.log("...")
+  console.log(".")
 
 
   // population de récompenses
@@ -183,7 +173,6 @@ module.exports = async function (deployer, network, accounts) {
   // Il affecte la médaille au sportif vainqueur de l'évènement 
   await MVerse.adminAddMedal( EVENT_ONE, rcup.address, { from: ACCOUNT_ORGANIZER_01 })
 
-  console.log("done")
-
+  console.log("done.")
 
 };

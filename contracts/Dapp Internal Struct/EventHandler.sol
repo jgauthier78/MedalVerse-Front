@@ -65,7 +65,8 @@ contract EventHandler is Ownable {
 		_event.started = false;
 		_event.winner = address(0);
 		emit eventAdded(eventCount);
-		return eventCount++;
+		eventCount++;
+		return _event.eventId;
 	}
 
 	///@dev remove an event from the list of events

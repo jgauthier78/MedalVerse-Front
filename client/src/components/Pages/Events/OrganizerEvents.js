@@ -7,36 +7,27 @@ import { withTranslation } from 'react-i18next';
 /* Translation */
 import { useTranslation } from 'react-i18next';
 
-const getImageSrcFromEvent = (evnt, i) => {
-    return (evnt.organisationDesc[i])[0].logoURI
-}
-const getOrgNameFromEvent = (evnt, i) => { return (evnt.organisationDesc[i])[0].name }
-const getOrgDescFromEvent = (evnt, i) => { return (evnt.organisationDesc[i])[0].description }
-const getEventStartDate = (evnt, i) => { return ((evnt.eventList[i])).endDate }
-const getEventEndDate = (evnt, i) => { return ((evnt.eventList[i])).startDate }
+import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
 
-
-
-const CarrousselItem = ({ userEvents }) => (
+const CarrousselItem = ({ organizerEvents }) => (
     <div>
-        {userEvents.organisationDesc.map((ogdesc, indx) => (
-            <div key={indx} className={`carousel-item ${indx === 0 ? "active" : ""}`}>
-                <img src={getImageSrcFromEvent(userEvents, indx)} alt={getImageSrcFromEvent(userEvents, indx)} className="w-100 d-block" />
+        {organizerEvents.map((event, indx) => (
+                <div key={indx} className={`carousel-item ${indx === 0 ? "active" : ""}`}>
+                <img src={event.organization.logoURI} alt={event.organization.logoURI} className="w-100 d-block" />
                 <div className="carousel-caption carrousselCartouche">
-                    <h3 className="text-white">{getOrgNameFromEvent(userEvents, indx)}</h3>
-                    <p>{getOrgDescFromEvent(userEvents, indx)}</p>
-                    <p className="text-black">Du {getEventStartDate(userEvents, indx)} au {getEventEndDate(userEvents, indx)}</p>
+                    <h3 className="text-white">{event.organization.name}</h3>
+                    <p>{event.description}</p>
+                    <p className="text-black">Du {format_TimeStampToStartDate(event.startDate)} au {format_TimeStampToEndDate(event.endDate)}</p>
                 </div>
             </div>
         ))}
     </div>
 )
 
-const CarrousselButtonItem = ({ userEvents }) => (
+const CarrousselButtonItem = ({ organizerEvents }) => (
     <div>
-        {userEvents.organisationDesc.map((ogdesc, indx) => (
-
-            <button type="button" key={indx} data-bs-target="#carEvents" data-bs-slide-to={indx} className={indx == 0 ? "active" : ""}></button>
+        {organizerEvents.map((event, indx) => (
+            <button type="button" key={indx} data-bs-target="#carEvents" data-bs-slide-to={indx} className={indx === 0 ? "active" : ""}></button>
         ))}
     </div>
 )
@@ -50,33 +41,68 @@ const NoEvents = () => {
     )
 }
 
+// const extractOrganizerEventsFromProfile = (organizerProfile) => {
+//     return extractOrganizerEventsFromUserOrganizations(organizerProfile.userOrganizations)
+// }
+const extractOrganizerEventsFromUserOrganizations = (userOrganizations) => {
+     let events = userOrganizations.map( (organization /*, index, array*/) => {
+        let newEvents = organization.events.map( (event /*, index, array*/) => {
+        // on rattache l'organisation à chaque event
+        event.organization=organization
+            return event
+        })
+        return newEvents 
+     })
+     return events.flat()
+ }
+
+const countEvents = (userOrganizations) => {
+    // console.log( userOrganizations )
+        let events = userOrganizations.map( (organization /*, index, array*/) => {
+             return organization.events
+        })
+        return events.flat().length
+    }
+
 class OrganizerEventsBeforeTranslation extends Component {
 
     render() {
 
-        console.log(this.props.userProfile.userEvents)
+        const { t } = this.props;
 
-        if (this.props.userProfile.userEvents === undefined) {
+        //console.log(this.props.userProfile.userEvents)
+        // console.log(this.props)
+
+        if ( countEvents(this.props.userProfile.userOrganizations) <= 0 ) {
             return (
             <NoEvents/>
             )
         }
 
+
         return (
             <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
                 <Card className="cardProfile shadow-sm ">
                     <CardHeader>
-                        <h6>Mes Evenements</h6>
+                        <h6>{t("OrganizerEvents.title")}</h6>
                     </CardHeader>
                     <div id="carEvents" className="carousel slide ml-3 mr-3 mt-3 mb-3" data-bs-ride="carousel">
 
 {
-/*
+// console.log( countEvents(this.props.userProfile.userOrganizations) )
+// console.log( extractOrganizerEventsFromUserOrganizations(this.props.userProfile.userOrganizations)  )
+}
+    
+
                         <div className="carousel-indicators">
-                            <CarrousselButtonItem userEvents={this.props.userProfile.userEvents} />
+{
+                            <CarrousselButtonItem organizerEvents={extractOrganizerEventsFromUserOrganizations(this.props.userProfile.userOrganizations)} />
+}
                         </div>
                         <div className="carousel-inner" >
-                            <CarrousselItem userEvents={this.props.userProfile.userEvents} />
+{
+                            <CarrousselItem organizerEvents={extractOrganizerEventsFromUserOrganizations(this.props.userProfile.userOrganizations)} />
+}
                         </div>
                         <button className="carousel-control-prev" type="button" data-bs-target="#carEvents" data-bs-slide="prev">
                             <span className="carousel-control-prev-icon"></span>
@@ -84,8 +110,7 @@ class OrganizerEventsBeforeTranslation extends Component {
                         <button className="carousel-control-next" type="button" data-bs-target="#carEvents" data-bs-slide="next">
                             <span className="carousel-control-next-icon"></span>
                         </button>
-*/
-}
+
                     </div>
                 </Card>
             </Container>
