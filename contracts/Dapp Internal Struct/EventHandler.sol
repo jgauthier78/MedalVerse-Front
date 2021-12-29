@@ -65,8 +65,12 @@ contract EventHandler is Ownable {
 		_event.started = false;
 		_event.winner = address(0);
 		emit eventAdded(eventCount);
-		eventCount++;
-		return _event.eventId;
+		// return eventCount++;
+
+		// eventCount++;
+		// return _event.eventId;
+
+		return eventCount++;
 	}
 
 	///@dev remove an event from the list of events
@@ -79,7 +83,7 @@ contract EventHandler is Ownable {
 	///@dev returns the details of a specific event
 	///@param eventId id of the event
 	function getEvent(uint256 eventId) public view returns (EventDesc memory) {
-		return eventList[eventId];
+		return eventList[eventId-1];
 	}
 
 	///@dev returns the winner of the event
