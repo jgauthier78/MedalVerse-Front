@@ -1,7 +1,8 @@
 {
   "OrganizerEvents": {
     "noEvent" : "Pas d'évènements",
-    "title" : "Evènements organisés"
+    "title" : "Evènements organisés",
+    "details" : "Détails"
   },
   "LandingPage": {
     "walletConnect": {

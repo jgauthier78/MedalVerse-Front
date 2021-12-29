@@ -310,7 +310,7 @@ class App extends Component {
     }
 
     getOrganizerOrganisations = async () => {
-        console.log("getOrganizerOrganisations")
+        // console.log("getOrganizerOrganisations")
         let account = this.getAccounts()
         //let result = { organizations: null }
         let result = []
@@ -340,7 +340,7 @@ class App extends Component {
                 if (adminsList.length > 0) {
                     // For each admin
                     adminsList.forEach(adminId => {
-                        console.log("adminId=" + adminId)
+                        // console.log("adminId=" + adminId)
                         organization["admins"].push({ id: adminId })
                     }); // For each admin
                 }
@@ -349,28 +349,59 @@ class App extends Component {
                 if (eventsList.length > 0) {
                     await Promise.all(eventsList.map(async (eventId) => {
                         // console.log("eventId=" + eventId)
-                        let event = await this.state.contract.methods.getEvent(eventId).call()
-                        // console.log("event=" + event)
-                        organization["events"].push({
-                            id: event[0],
-                            sportCategory: event[1],
-                            organizedBy: event[2],
-                            registeredSportsMan: event[3],
-                            winner: event[4],
-                            startDate: event[5],
-                            endDate: event[6],
-                            activ: event[7],
-                            ended: event[8],
-                            started: event[9],
+                        let eventData = await this.state.contract.methods.getEvent(eventId).call()
+                        //  console.log("eventData=" + eventData)
+                        //  console.log("eventData[0]=" + eventData[0]) 
+                        //  console.log("eventData[1]=" + eventData[1]) 
+                        //  console.log("eventData[2]=" + eventData[2]) 
+                        //  console.log("eventData[3]=" + eventData[3]) 
+                        //  console.log("eventData[4]=" + eventData[4]) 
+                        //  console.log("eventData[5]=" + eventData[5]) 
+                        //  console.log("eventData[6]=" + eventData[6]) 
+                        //  console.log("eventData[7]=" + eventData[7]) 
+                        //  console.log("eventData[8]=" + eventData[8]) 
+                        //  console.log("eventData[9]=" + eventData[9]) 
+                        //  console.log("eventData[10]=" + eventData[10]) 
+                        //  console.log("eventData[11]=" + eventData[11]) 
+                         let event = {
+                            eventId: eventData[0],
+                            sportCategory: eventData[1],
+                            organizedBy: eventData[2],
+                            registeredSportsMan: eventData[3],
+                            winner: eventData[4],
+                            startDate: eventData[5],
+                            endDate: eventData[6],
+                            medalID: eventData[7],
+                            hasMedal: eventData[8],
+                            activ: eventData[9],
+                            ended: eventData[10],
+                            started: eventData[11],
+                            // struct EventDesc {
+                                // uint256 eventId; // Index of the event in the EventList
+                                // uint256 sportCategory; // Category
+                                // uint256 organizedBy; // Id of the Organization
+                                // address[] registeredSportsMan; //List of sportsman that are participating to the event
+                                // address winner; // Winner of the Event
+                                // uint256 startDate;
+                                // uint256 endDate;
+                                // uint256 medalID;
+                                // bool hasMedal;
+                                // bool activ;
+                                // bool ended; // finished ?
+                                // bool started; // The event has started
                             // on rattache l'organisation à chaque event pour faciliter le traitement dans les composants
+                            // ! crée une référence circulaire !
                             organization: organization
-                        })
+                        }
+                        // console.log("event=" + JSON.stringify(event) )
+                        organization["events"].push( event )
                     }));
                 } // eventsList.length > 0
 
                 // console.log("organization[" + organisationId + "]=" + JSON.stringify(organization))
                 // return organization
                 //result.organizations.push( organization )
+                // console.log("organization.events=" + organization["events"] )
                 result.push( organization )
             }));
         }

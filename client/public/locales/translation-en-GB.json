@@ -1,7 +1,8 @@
 {
   "OrganizerEvents": {
     "noEvent" : "No events",
-    "title" : "Organized events"
+    "title" : "Organized events",
+    "details" : "Details"
   },
   "LandingPage" :{
     "walletConnect": {
