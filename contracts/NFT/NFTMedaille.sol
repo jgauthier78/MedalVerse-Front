@@ -3,11 +3,15 @@ pragma solidity 0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract NFTMedaille is ERC721URIStorage, Ownable {
+contract NFTMedaille is ERC721, Ownable {
 	using Counters for Counters.Counter;
 	Counters.Counter private _tokenIds;
+	
+	mapping(uint=>string) public URIToken;
+	
+	string imageURI; // Store the path to find the image of the nft
 
 	constructor(
 		string memory name,
@@ -19,7 +23,7 @@ contract NFTMedaille is ERC721URIStorage, Ownable {
 		imageURI = imgURI; // Path for found the image of the nft
 	}
 
-	string imageURI; // Store the path to find the image of the nft
+	
 
 	//@dev Mint the selected number of NFT Medaille
 	//@param numberMint number to mint
