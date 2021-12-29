@@ -28,12 +28,20 @@ module.exports = async function (deployer, network, accounts) {
     return wallet.address
   }
 
-  async function createNFT( nftOrganization, nftName, nftSymbol, name, img, account) {
+  // 
+
+  async function createNFT( nftOrganization, nftName, nftSymbol, name, img, account ) {
+    // Local static counter for NFTs IDs
+    const createNFT_initial_counter_value = 1
+    createNFT.counter = createNFT.counter || createNFT_initial_counter_value;
+
     let medal = await nftMedal.new("medaille", "MDL", img)
     let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER } ); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
-    //let nft = await throwIn.new(nftOrganization, medal.address /*, nftName, nftSymbol*/, { from: ACCOUNT_CONTRACT_OWNER } ); // constructor(string memory organization, address addressNFT_Medal)
-    await nft.mintCup({ from: ACCOUNT_CONTRACT_OWNER });
+    await medal.mintNFTMedaille( createNFT.counter, { from: ACCOUNT_CONTRACT_OWNER })
+    await nft.mintCup( createNFT.counter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
+
+    createNFT.counter++
     return nft;
   }
 
@@ -41,7 +49,11 @@ module.exports = async function (deployer, network, accounts) {
 
   /* Ajouter un utilisateur */
   async function addFakeUser(nom, mail, role, sportsCategory) {
-    await MVerse.addNewUser(generateFakeAdr(), avatarRef(fakeUsersIdx.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); fakeUsersIdx++
+    // Local static counter for NFTs IDs
+    const addFakeUser_initial_counter_value = 3 // fake accounts : 3 ... n
+    addFakeUser.counter = addFakeUser.counter || addFakeUser_initial_counter_value;
+
+    await MVerse.addNewUser(generateFakeAdr(), avatarRef( addFakeUser.counter.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); addFakeUser.counter++
   }
 
   const ACCOUNT_ORGANIZER_01 = accounts[1] // account1
@@ -80,9 +92,6 @@ module.exports = async function (deployer, network, accounts) {
   const Time03_end = ethers.BigNumber.from(Math.round(date03_end / 1000));
 
   /*************************************/
-
-
-  let fakeUsersIdx = 3; // fake account 3 ... n
 
   const EVENT_ONE = 0;
   const EVENT_TWO = 1;
