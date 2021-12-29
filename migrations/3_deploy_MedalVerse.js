@@ -16,7 +16,7 @@ module.exports = async function (deployer, network, accounts) {
 
   let MVerse = await MedalVerse.deployed()
 
-  console.log("-----------------------------")
+  console.log("----------------------------------------------------------")
   console.log("MedalVerse Deployed at " + MVerse.address )
 
 
@@ -47,16 +47,15 @@ module.exports = async function (deployer, network, accounts) {
   const ACCOUNT_ORGANIZER_01 = accounts[1] // account1
   const ACCOUNT_ATHLETE_01 = accounts[2] // account0
 
-  console.log("---------------------------------")
+  console.log("----------------------------------------------------------")
   console.log("Accounts")
   console.log(" Contract owner  : " + ACCOUNT_CONTRACT_OWNER)
   console.log(" Organizer 01 : " + ACCOUNT_ORGANIZER_01)
   console.log(" Athlete 01      : " + ACCOUNT_ATHLETE_01)
-  console.log("---------------------------------")
+  console.log("----------------------------------------------------------")
 
 
-  console.log("Populating with data")
-  console.log("...")
+  console.log("Populating with data ...")
 
   const ROLE_AUTHOR = 2
   const ROLE_ORGANIZER = 4
