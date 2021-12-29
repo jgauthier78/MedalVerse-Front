@@ -30,7 +30,8 @@ module.exports = async function (deployer, network, accounts) {
 
   async function createNFT( nftOrganization, nftName, nftSymbol, name, img, account) {
     let medal = await nftMedal.new("medaille", "MDL", img)
-    let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER } ); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
+    //let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER } ); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
+    let nft = await throwIn.new(nftOrganization, medal.address /*, nftName, nftSymbol*/, { from: ACCOUNT_CONTRACT_OWNER } ); // constructor(string memory organization, address addressNFT_Medal)
     await nft.mintCup({ from: ACCOUNT_CONTRACT_OWNER });
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
     return nft;
