@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -134,7 +133,7 @@ contract ThrowIn is ERC721, Ownable {
 		_safeTransfer(from, msg.sender, tokenId, "");
 	}
 
-	function SetPaused() public onlyOwner whenNotPaused {
+	function setPaused() public onlyOwner whenNotPaused {
 		pause = true;
 	}
 
@@ -177,22 +176,20 @@ contract ThrowIn is ERC721, Ownable {
 		if (status == statusOfCompetition.RegistrationOfParticipants) {
 			status = statusOfCompetition.CompetitionInProgress;
 			previousStatus = statusOfCompetition.RegistrationOfParticipants;
-		}
-		if (status == statusOfCompetition.CompetitionInProgress) {
+		} else if (status == statusOfCompetition.CompetitionInProgress) {
 			status = statusOfCompetition.RewardDistribution;
 			previousStatus = statusOfCompetition.CompetitionInProgress;
-		}
-		if (status == statusOfCompetition.RewardDistribution) {
+		} else if (status == statusOfCompetition.RewardDistribution) {
 			status = statusOfCompetition.RewardExposed;
 			previousStatus = statusOfCompetition.RewardDistribution;
-		}
-		if (status == statusOfCompetition.RewardExposed) {
+		} else if (status == statusOfCompetition.RewardExposed) {
 			status = statusOfCompetition.RecuperationReward;
 			previousStatus = statusOfCompetition.RewardExposed;
-		}
-		if (status == statusOfCompetition.RecuperationReward) {
+		} else if (status == statusOfCompetition.RecuperationReward) {
 			status = statusOfCompetition.RegistrationOfParticipants;
 			previousStatus = statusOfCompetition.RecuperationReward;
+		} else {
+			revert("Unknow Statut");
 		}
 
 		emit ThrowInStatueChange(previousStatus, status);
@@ -331,23 +328,22 @@ contract ThrowIn is ERC721, Ownable {
 	}
 
 	//@return Return the structure of the winner as well as the table of years
-	function viewWinnersByAddress(address winner)
+	function viewAllYearVictoryByAddress(address winner)
 		public
 		view
 		isNotNull(winner)
-		returns (
-			string memory,
-			uint256[] memory,
-			address,
-			uint256
-		)
+		returns (uint256[] memory)
 	{
-		return (
-			winnerMap[winner].player,
-			winnerMap[winner].year,
-			winnerMap[winner].wallet,
-			winnerMap[winner].numberOfVictory
-		);
+		return (winnerMap[winner].year);
+	}
+
+	function viewThisVictoryByAddress(address winner, uint256 number)
+		public
+		view
+		isNotNull(winner)
+		returns (uint256)
+	{
+		return (winnerMap[winner].year[number]);
 	}
 
 	//@return See the number of participants remaining
