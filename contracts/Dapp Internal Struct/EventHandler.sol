@@ -33,7 +33,7 @@ contract EventHandler is Ownable {
 		_;
 	}
 	modifier isInRange(uint256 a, uint256 b) {
-		require(a < b);
+		require(a <= b);
 		_;
 	}
 
@@ -65,21 +65,34 @@ contract EventHandler is Ownable {
 		_event.started = false;
 		_event.winner = address(0);
 		emit eventAdded(eventCount);
-		eventCount++;
-		return _event.eventId;
+		// return eventCount++;
+
+		// eventCount++;
+		// return _event.eventId;
+
+		return eventCount++;
 	}
 
 	///@dev remove an event from the list of events
 	///@param eventId id of the event
-	function removeEvent(uint256 eventId) private onlyOwner {
-		eventList[eventCount].activ = false;
+	function removeEvent(uint256 eventId)
+		private
+		isNotNullUint256(eventId)
+		onlyOwner
+	{
+		eventList[eventId - 1].activ = false;
 		emit eventRemoved(eventId);
 	}
 
 	///@dev returns the details of a specific event
 	///@param eventId id of the event
-	function getEvent(uint256 eventId) public view returns (EventDesc memory) {
-		return eventList[eventId];
+	function getEvent(uint256 eventId)
+		public
+		view
+		isNotNullUint256(eventId)
+		returns (EventDesc memory)
+	{
+		return eventList[eventId - 1];
 	}
 
 	///@dev returns the winner of the event
@@ -90,7 +103,7 @@ contract EventHandler is Ownable {
 		isInRange(eventId, eventCount)
 		returns (address)
 	{
-		return eventList[eventId].winner;
+		return eventList[eventId - 1].winner;
 	}
 
 	///@dev defines the winner of the event
@@ -98,25 +111,32 @@ contract EventHandler is Ownable {
 	///@param _winner address of the winner
 	function setEventWinner(uint256 eventID, address _winner)
 		internal
+		isNotNullUint256(eventID)
 		isInRange(eventID, eventCount)
 	{
-		eventList[eventID].winner = _winner;
+		eventList[eventID - 1].winner = _winner;
 	}
 
 	///@dev Open to registration
 	///@param eventId id of the event
 	function startEvent(uint256 eventId)
 		internal
+		isNotNullUint256(eventId)
 		isInRange(eventId, eventCount)
 	{
+		eventId--;
 		eventList[eventId].started = true;
 		eventList[eventId].ended = false;
 	}
 
 	///@dev The event is closed
 	///@param eventId id of the event
-	function endEvent(uint256 eventId) internal isInRange(eventId, eventCount) {
-		eventList[eventId].ended = true;
+	function endEvent(uint256 eventId)
+		internal
+		isInRange(eventId, eventCount)
+		isNotNullUint256(eventId)
+	{
+		eventList[eventId - 1].ended = true;
 	}
 
 	///@dev returns the list of Events
@@ -126,8 +146,11 @@ contract EventHandler is Ownable {
 		public
 		view
 		isNotNullUint256(eventCount)
+		isNotNullUint256(_start)
 		returns (EventDesc[] memory)
 	{
+		_start--;
+		_end--;
 		require(_start <= _end); // check params
 		require(_start < eventCount, "StartIndex out of range");
 
@@ -156,8 +179,8 @@ contract EventHandler is Ownable {
 	function EventRegisterSportsman(
 		uint256 eventId,
 		address sportsmanID // Sportsman already validated by child class
-	) internal isInRange(eventId, eventCount) {
-		eventList[eventId].registeredSportsMan.push(sportsmanID);
+	) internal isInRange(eventId, eventCount) isNotNullUint256(eventId) {
+		eventList[eventId - 1].registeredSportsMan.push(sportsmanID);
 		emit eventRegisterSportsman(eventId, sportsmanID);
 	}
 
@@ -166,35 +189,39 @@ contract EventHandler is Ownable {
 	function getEventOrganizer(uint256 eventId)
 		internal
 		view
+		isNotNullUint256(eventId)
 		isInRange(eventId, eventCount)
 		returns (uint256)
 	{
-		return eventList[eventId].organizedBy;
+		return eventList[eventId - 1].organizedBy;
 	}
 
 	function eventSetMedal(uint256 eventID, uint256 medalID)
 		internal
 		isInRange(eventID, eventCount)
+		isNotNullUint256(eventID)
 	{
-		eventList[eventID].hasMedal = true;
-		eventList[eventID].medalID = medalID;
+		eventList[eventID - 1].hasMedal = true;
+		eventList[eventID - 1].medalID = medalID;
 	}
 
 	function eventHasMedal(uint256 eventID)
 		public
 		view
 		isInRange(eventID, eventCount)
+		isNotNullUint256(eventID)
 		returns (bool)
 	{
-		return eventList[eventID].hasMedal;
+		return eventList[eventID - 1].hasMedal;
 	}
 
 	function eventGetMedal(uint256 eventID)
 		public
 		view
 		isInRange(eventID, eventCount)
+		isNotNullUint256(eventID)
 		returns (uint256)
 	{
-		return eventList[eventID].medalID;
+		return eventList[eventID - 1].medalID;
 	}
 }

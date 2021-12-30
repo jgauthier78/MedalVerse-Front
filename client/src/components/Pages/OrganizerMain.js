@@ -25,7 +25,7 @@ class OrganizerMainBeforeTranslation extends Component {
     }
 
     async componentDidMount() {
-        let result = await this.props.AppCallBacks.getUserEvents()
+        let result = await this.props.AppCallBacks.getUserEvents(this.props.AppCallBacks.getAccounts())
     }
 
     render() {

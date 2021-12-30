@@ -268,7 +268,10 @@ contract OrganizerHandler is Ownable {
 		uint256 eventID
 	) internal {
 		require(organizerID < organizerList.length);
-		organizationList[organizationId].EventList.push(eventID /*+ 1*/);
+		// organizationList[organizationId].EventList.push(eventID + 1);
+
+		// organizationList[organizationId].EventList.push(eventID /*+ 1*/);
+		organizationList[organizationId].EventList.push(eventID + 1);
 	}
 
 	function getEventList(uint256 orgId)

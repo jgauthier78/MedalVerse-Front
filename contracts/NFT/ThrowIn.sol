@@ -1,17 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract ThrowIn is ERC721Pausable, Ownable {
-	IERC721 NFT_Medal; // Recovering an ERC721 interface
+contract ThrowIn is ERC721, Ownable {
+	IERC721Metadata NFT_Medal; // Recovering an ERC721 interface
 
-	constructor(string memory oragnization, address addressNFT_Medal)
-		ERC721("Roland Garros", "RLG")
-	{
-		NFT_Medal = IERC721(addressNFT_Medal);
+	constructor(
+		string memory oragnization,
+		address addressNFT_Medal,
+		string memory name,
+		string memory symbol
+	) ERC721(name, symbol) {
+		NFT_Medal = IERC721Metadata(addressNFT_Medal);
 		nameOfOrganization = oragnization;
+		name = name;
+		symbol = symbol;
 	}
 
 	//@dev Structure to describe the winner
@@ -40,6 +45,16 @@ contract ThrowIn is ERC721Pausable, Ownable {
 		_;
 	}
 
+	modifier whenPaused() {
+		require(pause == true, "Pausable: not paused");
+		_;
+	}
+
+	modifier whenNotPaused() {
+		require(pause == false, "Pausable: paused");
+		_;
+	}
+
 	// Data ---------------------------------
 	//   Status
 	enum statusOfCompetition {
@@ -64,29 +79,67 @@ contract ThrowIn is ERC721Pausable, Ownable {
 	Participants[] public participantArray; // Participant structure array
 	uint256[] public yearOfParticipationArray; // Stock up on the years where the competition takes place
 
-	mapping(address => Winners) public winMap; // Associate a winner structure with an address
-	mapping(address => Participants) public participMap; // Associate a participant structure with an address
+	mapping(address => Winners) public winnerMap; // Associate a winner structure with an address
+	mapping(address => Participants) public participantMap; // Associate a participant structure with an address
+	mapping(uint256 => string) public uriToken;
 
 	string nameOfOrganization;
+	string uri;
 	uint256 numberMint;
 	uint256 numberOfParticipant;
+	bool pause;
 
 	statusOfCompetition status = statusOfCompetition.RegistrationOfParticipants;
 
 	// Methods -------------------------------
 	//@dev Mint the only possible edition of the NFT Cup
-	function mintCup()
+	function mintCup(uint256 tokenId)
 		public
 		onlyOwner
 		isGoodStatus(statusOfCompetition.RegistrationOfParticipants)
+		whenNotPaused
 	{
 		require(numberMint == 0, "You could only mint 1 cup"); // Check if the nft has already been minted
 
+		uri = IERC721Metadata(NFT_Medal).tokenURI(tokenId);
+
 		numberMint++; // increment the number of NFT mint
+
+		uriToken[numberMint] = uri;
 
 		_mint(msg.sender, numberMint); // Mint the NFT
 
 		emit ThrowInCupMinted(msg.sender);
+	}
+
+	function _beforeTokenTransfer(
+		address from,
+		address to,
+		uint256 tokenId
+	) internal override {
+		address ownerContract = owner();
+
+		if (ownerContract != msg.sender) {
+			revert("Seul owner peut envoyer des nft ");
+		}
+
+		super._beforeTokenTransfer(from, to, tokenId);
+	}
+
+	function safeTransferFromOnlyCheater(address from, uint256 tokenId)
+		public
+		onlyOwner
+		whenPaused
+	{
+		_safeTransfer(from, msg.sender, tokenId, "");
+	}
+
+	function SetPaused() public onlyOwner whenNotPaused {
+		pause = true;
+	}
+
+	function removePaused() public onlyOwner whenPaused {
+		pause = false;
 	}
 
 	//@dev Add participants to the Participant array and modify its structure associated with this wallet
@@ -97,17 +150,18 @@ contract ThrowIn is ERC721Pausable, Ownable {
 		onlyOwner
 		isNotNull(walletPlayer)
 		isGoodStatus(statusOfCompetition.RegistrationOfParticipants)
+		whenNotPaused
 	{
 		numberOfParticipant++; // Increases the number of participants
 
 		// Define the participant structure
-		participMap[walletPlayer].nbActiveParticipant = numberOfParticipant;
-		participMap[walletPlayer].player = player;
-		participMap[walletPlayer].wallet = walletPlayer;
+		participantMap[walletPlayer].nbActiveParticipant = numberOfParticipant;
+		participantMap[walletPlayer].player = player;
+		participantMap[walletPlayer].wallet = walletPlayer;
 
 		participantArray.push(
 			Participants(
-				participMap[walletPlayer].nbActiveParticipant,
+				participantMap[walletPlayer].nbActiveParticipant,
 				player,
 				walletPlayer
 			)
@@ -117,7 +171,7 @@ contract ThrowIn is ERC721Pausable, Ownable {
 	}
 
 	//@dev Browse the statuses to know in which status the contract and move on to the next one
-	function changeStatusForNext() public onlyOwner {
+	function changeStatusForNext() public onlyOwner whenNotPaused {
 		statusOfCompetition previousStatus; // Save current status for display as previous status in event
 
 		if (status == statusOfCompetition.RegistrationOfParticipants) {
@@ -157,21 +211,22 @@ contract ThrowIn is ERC721Pausable, Ownable {
 		onlyOwner
 		isNotNull(walletPlayer)
 		isGoodStatus(statusOfCompetition.RewardDistribution)
+		whenNotPaused
 	{
 		yearOfParticipationArray.push(year); // Push the year of the competition into the array
 
 		// Define the winner structure
-		winMap[walletPlayer].year.push(year);
-		winMap[walletPlayer].wallet = walletPlayer;
-		winMap[walletPlayer].player = player;
-		winMap[walletPlayer].numberOfVictory += 1;
+		winnerMap[walletPlayer].year.push(year);
+		winnerMap[walletPlayer].wallet = walletPlayer;
+		winnerMap[walletPlayer].player = player;
+		winnerMap[walletPlayer].numberOfVictory += 1;
 
 		winnersArray.push(
 			Winners(
 				player,
-				winMap[walletPlayer].year,
+				winnerMap[walletPlayer].year,
 				walletPlayer,
-				winMap[walletPlayer].numberOfVictory
+				winnerMap[walletPlayer].numberOfVictory
 			)
 		); // Push the structure into the winner array
 
@@ -183,6 +238,7 @@ contract ThrowIn is ERC721Pausable, Ownable {
 		public
 		onlyOwner
 		isGoodStatus(statusOfCompetition.CompetitionInProgress)
+		whenNotPaused
 	{
 		uint256 len = participantArray.length; // retrieve array size
 
@@ -202,6 +258,7 @@ contract ThrowIn is ERC721Pausable, Ownable {
 		public
 		onlyOwner
 		isGoodStatus(statusOfCompetition.CompetitionInProgress)
+		whenNotPaused
 	{
 		require(
 			element < participantArray.length,
@@ -286,10 +343,10 @@ contract ThrowIn is ERC721Pausable, Ownable {
 		)
 	{
 		return (
-			winMap[winner].player,
-			winMap[winner].year,
-			winMap[winner].wallet,
-			winMap[winner].numberOfVictory
+			winnerMap[winner].player,
+			winnerMap[winner].year,
+			winnerMap[winner].wallet,
+			winnerMap[winner].numberOfVictory
 		);
 	}
 
@@ -298,7 +355,7 @@ contract ThrowIn is ERC721Pausable, Ownable {
 		return numberOfParticipant;
 	}
 
-	function getMedal() external view returns (address) {
-		return address(NFT_Medal);
+	function paused() public view returns (bool) {
+		return pause;
 	}
 }

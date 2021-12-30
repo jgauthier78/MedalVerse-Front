@@ -1,33 +1,54 @@
 import React, { Component } from "react";
-import { Card, Container } from "react-bootstrap";
+import { Button, Card, Container } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
-import { withTranslation } from 'react-i18next';
+// Router
+// import { useHistory } from 'react-router-dom';
 
-/* Translation */
+// Translation
+// Components
+import { withTranslation } from 'react-i18next';
+// Functions
 import { useTranslation } from 'react-i18next';
 
+// Utils
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
 
-const CarrousselItem = ({ organizerEvents }) => (
+/*
+//             <Athletes registeredAthletes={event.registeredSportsMan} />
+const Athletes = ({ registeredAthletes }) => (
     <div>
-        {organizerEvents.map((event, indx) => (
-                <div key={indx} className={`carousel-item ${indx === 0 ? "active" : ""}`}>
-                <img src={event.organization.logoURI} alt={event.organization.logoURI} className="w-100 d-block" />
-                <div className="carousel-caption carrousselCartouche">
-                    <h3 className="text-white">{event.organization.name}</h3>
-                    <p>{event.description}</p>
-                    <p className="text-black">Du {format_TimeStampToStartDate(event.startDate)} au {format_TimeStampToEndDate(event.endDate)}</p>
-                </div>
-            </div>
+        {registeredAthletes.map((registeredAthlete, idx) => (
+            <li key={idx}>{registeredAthlete}</li>
         ))}
     </div>
 )
+*/
+const CarrousselItem = ({ organizerEvents }) => {
+    const { t } = useTranslation();
+    // const history = useHistory();
+    return(
+    <div>
+    {organizerEvents.map((event, indx) => (
+        <div key={indx} className={`carousel-item ${indx === 0 ? "active" : ""}`}>
+            <img src={event.organization.logoURI} alt={event.organization.name} className="w-100 d-block" />
+            <div className="carousel-caption ">
+                <h3 className="text-white">{event.organization.name}</h3>
+                <p>{event.description}</p>
+                <p className="text-light bg-dark opacity-75">Du {format_TimeStampToStartDate(event.startDate)} au {format_TimeStampToEndDate(event.endDate)}</p>
+                <Button className="btn btn-dark btn-sm"  onClick={() => console.log } >{t("OrganizerEvents.details")}</Button>
+                <p/>
+            </div>
+        </div>
+    ))}
+    </div>
+    )
+}
 
 const CarrousselButtonItem = ({ organizerEvents }) => (
     <div>
         {organizerEvents.map((event, indx) => (
-            <button type="button" key={indx} data-bs-target="#carEvents" data-bs-slide-to={indx} className={indx === 0 ? "active" : ""}></button>
+            <button type="button" key={indx} data-bs-target="#carEvents" data-bs-slide-to={indx} className={indx === 0 ? "active" : ""}>{event.organization.name}</button>
         ))}
     </div>
 )
@@ -41,39 +62,79 @@ const NoEvents = () => {
     )
 }
 
-// const extractOrganizerEventsFromProfile = (organizerProfile) => {
-//     return extractOrganizerEventsFromUserOrganizations(organizerProfile.userOrganizations)
-// }
+const extractOrganizerEventsFromProfile = (organizerProfile) => {
+     return extractOrganizerEventsFromUserOrganizations(organizerProfile.userOrganizations)
+}
+// Browse User Organizations, Organization events : return all events
 const extractOrganizerEventsFromUserOrganizations = (userOrganizations) => {
-     let events = userOrganizations.map( (organization /*, index, array*/) => {
+    // Browse userOrganizations
+    let events = userOrganizations.map( (organization /*, index, array*/) => {
+        // Browse organization events
         let newEvents = organization.events.map( (event /*, index, array*/) => {
         // on rattache l'organisation à chaque event
-        event.organization=organization
-            return event
+        // event.organization=organization
+        return event
         })
-        return newEvents 
-     })
-     return events.flat()
+    return newEvents 
+    })
+    // Flatten returned events
+    return events.flat()
  }
 
-const countEvents = (userOrganizations) => {
-    // console.log( userOrganizations )
-        let events = userOrganizations.map( (organization /*, index, array*/) => {
-             return organization.events
-        })
-        return events.flat().length
-    }
+// Filter criteria
+const eventFilterCriteria = (event) => { 
+    return (
+        event.activ // === true
+        // && event.eventId > 1 // test
+    )
+}
+
+// Filter events
+const filterEvents = (events) => {
+    return events.filter ( (event /*, index, array*/) => {
+        //eventFilter(event)
+        // console.log(event)
+        return eventFilterCriteria(event)
+    })
+}
+
+
+// const countEvents = (userOrganizations) => {
+//     // console.log( userOrganizations )
+//     let events = userOrganizations.map( (organization /*, index, array*/) => {
+//             return organization.events
+//     })
+//     return events.flat().length
+// }
+
+// function reducer(accumulator, currentValue, currentIndex, array){}
+// const countEventsReducer = (previousValue, currentOrganization) => {
+//     console.log("previousValue="+previousValue)
+//     console.log("currentOrganization.events.length="+currentOrganization.events.length)
+//     return previousValue + currentOrganization.events.length
+// }
+// const countEvents = (userOrganizations) => {
+//     return userOrganizations.reduce( countEventsReducer, 0 /* initial value */ )
+// }
+
+
+
 
 class OrganizerEventsBeforeTranslation extends Component {
 
     render() {
+        const { t } = this.props; // Translation
+        
+        let events = extractOrganizerEventsFromProfile(this.props.userProfile)
+        let eventsToDisplay = filterEvents(events)
 
-        const { t } = this.props;
-
-        //console.log(this.props.userProfile.userEvents)
         // console.log(this.props)
+        // console.log(this.props.userProfile)
+        // console.log(events)
+        console.log(eventsToDisplay)
+        // console.log( "countEvents = " + countEvents(this.props.userProfile.userOrganizations) )
 
-        if ( countEvents(this.props.userProfile.userOrganizations) <= 0 ) {
+        if ( eventsToDisplay === undefined || eventsToDisplay.length <= 0 ) {
             return (
             <NoEvents/>
             )
@@ -88,21 +149,11 @@ class OrganizerEventsBeforeTranslation extends Component {
                     </CardHeader>
                     <div id="carEvents" className="carousel slide ml-3 mr-3 mt-3 mb-3" data-bs-ride="carousel">
 
-{
-// console.log( countEvents(this.props.userProfile.userOrganizations) )
-// console.log( extractOrganizerEventsFromUserOrganizations(this.props.userProfile.userOrganizations)  )
-}
-    
-
                         <div className="carousel-indicators">
-{
-                            <CarrousselButtonItem organizerEvents={extractOrganizerEventsFromUserOrganizations(this.props.userProfile.userOrganizations)} />
-}
+                            <CarrousselButtonItem organizerEvents={eventsToDisplay} />
                         </div>
                         <div className="carousel-inner" >
-{
-                            <CarrousselItem organizerEvents={extractOrganizerEventsFromUserOrganizations(this.props.userProfile.userOrganizations)} />
-}
+                            <CarrousselItem organizerEvents={eventsToDisplay} />
                         </div>
                         <button className="carousel-control-prev" type="button" data-bs-target="#carEvents" data-bs-slide="prev">
                             <span className="carousel-control-prev-icon"></span>

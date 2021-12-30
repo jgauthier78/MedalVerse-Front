@@ -16,7 +16,8 @@ module.exports = async function (deployer, network, accounts) {
 
   let MVerse = await MedalVerse.deployed()
 
-  console.log("-----------------------------")
+
+  console.log("----------------------------------------------------------")
   console.log("MedalVerse Deployed at " + MVerse.address)
 
 
@@ -28,11 +29,21 @@ module.exports = async function (deployer, network, accounts) {
     return wallet.address
   }
 
+
+  // 
+
   async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
+    // Local static counter for NFTs IDs
+    const createNFT_initial_counter_value = 1
+    createNFT.counter = createNFT.counter || createNFT_initial_counter_value;
+
     let medal = await nftMedal.new("medaille", "MDL", img)
-    let nft = await throwIn.new(nftOrganization, medal.address, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
-    await nft.mintCup({ from: ACCOUNT_CONTRACT_OWNER });
+    let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
+    await medal.mintNFTMedaille(createNFT.counter, { from: ACCOUNT_CONTRACT_OWNER })
+    await nft.mintCup(createNFT.counter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
+
+    createNFT.counter++
     return nft;
   }
 
@@ -40,22 +51,25 @@ module.exports = async function (deployer, network, accounts) {
 
   /* Ajouter un utilisateur */
   async function addFakeUser(nom, mail, role, sportsCategory) {
-    await MVerse.addNewUser(generateFakeAdr(), avatarRef(fakeUsersIdx.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); fakeUsersIdx++
+    // Local static counter for NFTs IDs
+    const addFakeUser_initial_counter_value = 3 // fake accounts : 3 ... n
+    addFakeUser.counter = addFakeUser.counter || addFakeUser_initial_counter_value;
+
+    await MVerse.addNewUser(generateFakeAdr(), avatarRef(addFakeUser.counter.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); addFakeUser.counter++
   }
 
   const ACCOUNT_ORGANIZER_01 = accounts[1] // account1
   const ACCOUNT_ATHLETE_01 = accounts[2] // account0
 
-  console.log("---------------------------------")
+  console.log("----------------------------------------------------------")
   console.log("Accounts")
   console.log(" Contract owner  : " + ACCOUNT_CONTRACT_OWNER)
   console.log(" Organizer 01 : " + ACCOUNT_ORGANIZER_01)
   console.log(" Athlete 01      : " + ACCOUNT_ATHLETE_01)
-  console.log("---------------------------------")
+  console.log("----------------------------------------------------------")
 
 
-  console.log("Populating with data")
-  console.log("...")
+  console.log("Populating with data ...")
 
   const ROLE_AUTHOR = 2
   const ROLE_ORGANIZER = 4
@@ -81,12 +95,9 @@ module.exports = async function (deployer, network, accounts) {
 
   /*************************************/
 
-
-  let fakeUsersIdx = 3; // fake account 3 ... n
-
-  const EVENT_ONE = 0;
-  const EVENT_TWO = 1;
-  const EVENT_THREE = 2;
+  const EVENT_ONE = 1;
+  const EVENT_TWO = 2;
+  const EVENT_THREE = 3;
 
   console.log(".")
 
@@ -96,7 +107,7 @@ module.exports = async function (deployer, network, accounts) {
   await addFakeUser("Sonia Legendre", "slegendre@gmail.com", ROLE_ATHLETE, 0)
   console.log(".")
   await addFakeUser("Sandra Palin", "spali@hotmail.com", ROLE_ORGANIZER, 0)
-  await addFakeUser("Cindy Quer ", "cquer@icloud.com", ROLE_ATHLETE, 0)
+  await addFakeUser("Cindy Quer", "cquer@icloud.com", ROLE_ATHLETE, 0)
   await addFakeUser("Sarah Comah", "scomah@yopmail.com", ROLE_ATHLETE, 0)
   console.log(".")
   await addFakeUser("Francois Lemin", "flemin@yahoo.fr", ROLE_ATHLETE, 0) //7
@@ -152,9 +163,9 @@ module.exports = async function (deployer, network, accounts) {
   console.log(".")
 
   // L'organisateur 01 organise ces évènements:
-  await MVerse.newEvent(EVENT_ONE, Time01_start, Time01_end, 2, { from: ACCOUNT_ORGANIZER_01 });
-  await MVerse.newEvent(EVENT_TWO, Time02_start, Time02_end, 4, { from: ACCOUNT_ORGANIZER_01 });
-  await MVerse.newEvent(EVENT_THREE, Time03_start, Time03_end, 4, { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(0, Time01_start, Time01_end, 2, { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(1, Time02_start, Time02_end, 4, { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(2, Time03_start, Time03_end, 4, { from: ACCOUNT_ORGANIZER_01 });
   console.log(".")
 
   // L'athlete 01 participe à ces évènements:

@@ -67,22 +67,25 @@ const MedalSlides = ({ web3, mdl }) => {
     )
 }
 
-const EventSlides = ({ evnt }) => (
-    <>
-        {evnt.organisationDesc.map((ogdesc, indx) => (
-            < section data-transition="slide" key={indx} >
+const EventSlides = ({ evnt }) => {
+    if (!evnt || evnt.organisationDesc.length == 0) return (<></>)
+    return (
+        <>
+            {evnt.organisationDesc.map((ogdesc, indx) => (
+                < section data-transition="slide" key={indx} >
 
-                <img src={getImageSrcFromEvent(evnt, indx)} alt={getImageSrcFromEvent(evnt, indx)} className="w-100 d-block carrousselImage" />
-                <h3 >{getOrgNameFromEvent(evnt, indx)}</h3>
-                <p>{getOrgDescFromEvent(evnt, indx)}</p>
-                <h5 ><b>Du {getEventStartDate(evnt, indx)} au {getEventEndDate(evnt, indx)}</b></h5>
+                    <img src={getImageSrcFromEvent(evnt, indx)} alt={getImageSrcFromEvent(evnt, indx)} className="w-100 d-block carrousselImage" />
+                    <h3 >{getOrgNameFromEvent(evnt, indx)}</h3>
+                    <p>{getOrgDescFromEvent(evnt, indx)}</p>
+                    <h5 >Du {getEventStartDate(evnt, indx)} au {getEventEndDate(evnt, indx)}
+                    </h5>
 
 
-            </section>
-        ))}
-    </>
-)
-
+                </section>
+            ))}
+        </>
+    )
+}
 
 export default function Gallerie({ AppCallBacks }) {
     const { id } = useParams()
