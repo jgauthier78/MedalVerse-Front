@@ -106,7 +106,7 @@ class App extends Component {
                         }
 
                     />
-                    <Route exact path='organizer' element={this.state.redirectTo === null ?
+                    <Route exact path='organizer/*' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
                             <OrganizerMain AppCallBacks={this.AppCallBacks} userProfile={userProfile} />
                         </I18nextProvider>
