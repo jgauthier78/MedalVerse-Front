@@ -1,14 +1,24 @@
-import React, { Component, Table } from "react";
+import React, { Component } from "react";
 import { Card, Container } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import ThrowInContract from "../../../contracts/ThrowIn.json";
+import MedalContract from "../../../contracts/NFTMedaille.json";
 
-function getNFTImage() {
-
+async function getNFTImage(web3, address) {
+    /*let contract = await new web3.eth.Contract(ThrowInContract.abi, address);
+    let medal = await contract.methods.getMedal.call()
+    let nft = await new web3.eth.Contract(MedalContract.abi, medal);
+    let img = await nft.methods.tokenURI.call()
+    return img*/
+    return ""
 }
 
+async function setGallery(addr, contract, indx, display) {
+    console.log(addr)
+    await contract.methods.publishMedal(indx, display).send({ from: addr[0] })
+}
 
-const TableMedalItems = ({ userMedals }) => (
+const TableMedalItems = ({ address, contract, web3, userMedals }) => (
     <tbody>
         {userMedals.Medals.map((medal, indx) => (
             <tr key={indx}>
@@ -23,10 +33,13 @@ const TableMedalItems = ({ userMedals }) => (
                 </td>
                 <td colSpan="1" className="text-center" >
                     {medal.succes.isInWinnerGallery ?
-                        <i className="fa fa-check-square-o " aria-hidden="true"></i>
+                        <button type="button" onClick={() => setGallery(address, contract, indx, false)} className="btn btn-link"><i className="fa fa-check-square-o " aria-hidden="true"></i></button>
                         :
-                        <i className="fa fa-square-o" aria-hidden="true"></i>
+                        <button type="button" onClick={() => setGallery(address, contract, indx, true)} className="btn btn-link"><i className="fa fa-square-o" aria-hidden="true"></i></button>
                     }
+                </td>
+                <td colSpan="1">
+                    <img src={getNFTImage(web3, medal.succes.throwIn)} />
                 </td>
             </tr>
         ))}
@@ -52,7 +65,7 @@ class MedalAthlete extends Component {
                                 <th scope="col">{"Image"}</th>
                             </tr>
                         </thead>
-                        <TableMedalItems userMedals={this.props.userProfile.userMedals} />
+                        <TableMedalItems userMedals={this.props.userProfile.userMedals} web3={this.props.userProfile.web3} contract={this.props.AppCallBacks.getContract()} address={this.props.userProfile.address} />
                     </table>
 
                 </Card>

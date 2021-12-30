@@ -297,4 +297,8 @@ contract ThrowIn is ERC721Pausable, Ownable {
 	function viewNumberOfParticipants() public view returns (uint256) {
 		return numberOfParticipant;
 	}
+
+	function getMedal() external view returns (address) {
+		return address(NFT_Medal);
+	}
 }
