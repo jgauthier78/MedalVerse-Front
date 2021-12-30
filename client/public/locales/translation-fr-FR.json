@@ -1,4 +1,15 @@
 {
+  "OrganizerEvent": {
+    "athlete" : {
+      "athletes" : "Athlètes",
+      "address" : "addresse",
+      "action" : "action",
+      "actions": {
+        "medal" : "médailler"
+      }
+      
+    }
+  },
   "OrganizerEvents": {
     "noEvent" : "Pas d'évènements",
     "title" : "Evènements organisés",

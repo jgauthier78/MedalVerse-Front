@@ -4,6 +4,7 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 
 // Router
 // import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Translation
 // Components
@@ -13,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 // Utils
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
+// import { extractOrganizerEventsFromProfile, extractOrganizerEventsFromUserOrganizations, filterEvents} from "./OrganizerEvents-js";
 
 /*
 //             <Athletes registeredAthletes={event.registeredSportsMan} />
@@ -24,8 +26,35 @@ const Athletes = ({ registeredAthletes }) => (
     </div>
 )
 */
+
+function EventsLayout( {/*userProfile*/ eventsToDisplay} ) {
+    //return <h1>Events</h1>;
+    // return <OrganizerEvents userProfile={userProfile} />
+    return <OrganizerEvents eventsToDisplay={eventsToDisplay} />
+  }
+
 const CarrousselItem = ({ organizerEvents }) => {
+    // const history = useHistory();
+    let navigate = useNavigate();
+
+//  event handler
+  const onHandleEventDetails = async ( event ) =>
+  {
+    try
+    {
+    //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
+    //   history.push('event')
+    // navigate('../event', {eventId:3} );
+    navigate( `../event/${event.eventId}` );
+    } // try
+    catch (error)
+    {
+        console.error(error)
+    } // catch
+  } // onHandleEventDetails
+
     const { t } = useTranslation();
+
     // const history = useHistory();
     return(
     <div>
@@ -34,9 +63,8 @@ const CarrousselItem = ({ organizerEvents }) => {
             <img src={event.organization.logoURI} alt={event.organization.name} className="w-100 d-block" />
             <div className="carousel-caption ">
                 <h3 className="text-white">{event.organization.name}</h3>
-                <p>{event.description}</p>
                 <p className="text-light bg-dark opacity-75">Du {format_TimeStampToStartDate(event.startDate)} au {format_TimeStampToEndDate(event.endDate)}</p>
-                <Button className="btn btn-dark btn-sm"  onClick={() => console.log } >{t("OrganizerEvents.details")}</Button>
+                <Button className="btn btn-dark btn-sm"  onClick={() => onHandleEventDetails( event ) } >{t("OrganizerEvents.details")}</Button>
                 <p/>
             </div>
         </div>
@@ -62,71 +90,14 @@ const NoEvents = () => {
     )
 }
 
-const extractOrganizerEventsFromProfile = (organizerProfile) => {
-     return extractOrganizerEventsFromUserOrganizations(organizerProfile.userOrganizations)
-}
-// Browse User Organizations, Organization events : return all events
-const extractOrganizerEventsFromUserOrganizations = (userOrganizations) => {
-    // Browse userOrganizations
-    let events = userOrganizations.map( (organization /*, index, array*/) => {
-        // Browse organization events
-        let newEvents = organization.events.map( (event /*, index, array*/) => {
-        // on rattache l'organisation à chaque event
-        // event.organization=organization
-        return event
-        })
-    return newEvents 
-    })
-    // Flatten returned events
-    return events.flat()
- }
-
-// Filter criteria
-const eventFilterCriteria = (event) => { 
-    return (
-        event.activ // === true
-        // && event.eventId > 1 // test
-    )
-}
-
-// Filter events
-const filterEvents = (events) => {
-    return events.filter ( (event /*, index, array*/) => {
-        //eventFilter(event)
-        // console.log(event)
-        return eventFilterCriteria(event)
-    })
-}
-
-
-// const countEvents = (userOrganizations) => {
-//     // console.log( userOrganizations )
-//     let events = userOrganizations.map( (organization /*, index, array*/) => {
-//             return organization.events
-//     })
-//     return events.flat().length
-// }
-
-// function reducer(accumulator, currentValue, currentIndex, array){}
-// const countEventsReducer = (previousValue, currentOrganization) => {
-//     console.log("previousValue="+previousValue)
-//     console.log("currentOrganization.events.length="+currentOrganization.events.length)
-//     return previousValue + currentOrganization.events.length
-// }
-// const countEvents = (userOrganizations) => {
-//     return userOrganizations.reduce( countEventsReducer, 0 /* initial value */ )
-// }
-
-
-
-
 class OrganizerEventsBeforeTranslation extends Component {
 
     render() {
         const { t } = this.props; // Translation
+        const { eventsToDisplay } = this.props
         
-        let events = extractOrganizerEventsFromProfile(this.props.userProfile)
-        let eventsToDisplay = filterEvents(events)
+        // let events = extractOrganizerEventsFromProfile(this.props.userProfile)
+        // let eventsToDisplay = filterEvents(events)
 
         // console.log(this.props)
         // console.log(this.props.userProfile)
@@ -171,4 +142,5 @@ class OrganizerEventsBeforeTranslation extends Component {
 
 const OrganizerEvents = withTranslation()(OrganizerEventsBeforeTranslation);
 
-export default OrganizerEvents;
+// export default OrganizerEvents;
+export { EventsLayout, OrganizerEvents };
