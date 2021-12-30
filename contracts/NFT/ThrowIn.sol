@@ -125,7 +125,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         }
 
 
-        function SetPaused() public onlyOwner whenNotPaused{
+        function setPaused() public onlyOwner whenNotPaused{
             pause = true;
 
         } 
@@ -166,22 +166,27 @@ import "@openzeppelin/contracts/access/Ownable.sol";
                 status = statusOfCompetition.CompetitionInProgress;
                 previousStatus = statusOfCompetition.RegistrationOfParticipants;
             }
-            if(status == statusOfCompetition.CompetitionInProgress){
+            else if(status == statusOfCompetition.CompetitionInProgress){
                 status = statusOfCompetition.RewardDistribution;
                 previousStatus = statusOfCompetition.CompetitionInProgress;
+
             }
-            if(status == statusOfCompetition.RewardDistribution){
+            else if(status == statusOfCompetition.RewardDistribution){
                 status = statusOfCompetition.RewardExposed;
                 previousStatus = statusOfCompetition.RewardDistribution;
             }
-            if(status == statusOfCompetition.RewardExposed){
+            else if(status == statusOfCompetition.RewardExposed){
                 status = statusOfCompetition.RecuperationReward;
                 previousStatus = statusOfCompetition.RewardExposed;
             }
-            if(status == statusOfCompetition.RecuperationReward){
+            else if(status == statusOfCompetition.RecuperationReward){
                 status = statusOfCompetition.RegistrationOfParticipants;
                 previousStatus = statusOfCompetition.RecuperationReward;
             }
+            else {
+                assert(false);
+            }
+            
 
             emit ThrowInStatueChange(previousStatus, status);
         }
@@ -292,8 +297,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
         }
 
         //@return Return the structure of the winner as well as the table of years
-        function viewWinnersByAddress(address winner) public view isNotNull(winner) returns(string memory, uint[] memory, address, uint){           
-            return (winnerMap[winner].player, winnerMap[winner].year, winnerMap[winner].wallet, winnerMap[winner].numberOfVictory);
+        function viewAllYearVictoryByAddress(address winner) public view isNotNull(winner) returns(uint[] memory){           
+            return (winnerMap[winner].year);
+        }
+
+        function viewThisVictoryByAddress(address winner, uint number) public view isNotNull(winner) returns(uint){           
+            return (winnerMap[winner].year[number]);
         }
 
         //@return See the number of participants remaining
