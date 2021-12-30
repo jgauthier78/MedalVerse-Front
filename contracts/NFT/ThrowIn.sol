@@ -184,7 +184,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
                 previousStatus = statusOfCompetition.RecuperationReward;
             }
             else {
-                assert(false);
+                revert("Unknow Statut");
             }
             
 
