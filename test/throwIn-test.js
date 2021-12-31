@@ -28,7 +28,7 @@ contract('ThrowIn', function (accounts) {
 
     // MINT -------------------------------
     it("Mint du NFT Coupe", async function () {
-        await this.NFTMedal.mintNFTMedaille(Uri);
+        await this.NFTMedal.mintNFTMedaille("name" ,Uri);
 
         await this.throwInInstance.mintCup(1, { from: owner });
 
