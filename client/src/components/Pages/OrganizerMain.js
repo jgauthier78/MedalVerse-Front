@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import OrganizerSideBar from "./SideBar/OrganizerSideBar";
 import ProfileBandeau from "./ProfileBandeau"
 import { Component } from "react";
+import Container from 'react-bootstrap/Container';
 // import { Navigate } from "react-router-dom";
 import { EventsLayout /*, OrganizerEvents */ } from "./Events/OrganizerEvents";
 import { extractOrganizerEventsFromProfile, filterEvents} from "./Events/OrganizerEvents-js";
@@ -27,7 +28,7 @@ import {
 class OrganizerLayout extends Component {
 
     constructor(props) {
-        console.log("OrganizerLayout:" + props);
+        // console.log("OrganizerLayout:" + props);
         super(props);
     }
 
@@ -46,9 +47,9 @@ class OrganizerLayout extends Component {
 {/*}
                             <OrganizerEvents userProfile={this.props.userProfile} />
         {*/}
-                            <div className="content">
+                            <Row className="content">
                                 <Outlet />
-                            </div>
+                            </Row>
 
                             <SimpleFooter />
                         </Col>
@@ -193,7 +194,7 @@ class OrganizerMainBeforeTranslation extends Component {
                     <Route path="events" element={<OrganizerEvents userProfile={this.props.userProfile} />} />
 {*/}
                     <Route path="events" element={<EventsLayout  eventsToDisplay={this.state.eventsToDisplay} />} />
-                    <Route path="event/:eventId"  element={<EventLayout events={this.state.eventsToDisplay} />} />
+                    <Route path="event/:eventId"  element={<EventLayout events={this.state.eventsToDisplay} AppCallBacks={this.props.AppCallBacks} />} />
                 </Route>
             </Routes>
         )

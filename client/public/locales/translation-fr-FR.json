@@ -2,6 +2,8 @@
   "OrganizerEvent": {
     "athlete" : {
       "athletes" : "Athlètes",
+      "competitors" : "Competitors",
+      "won" : "won",
       "address" : "addresse",
       "action" : "action",
       "actions": {
@@ -18,7 +20,7 @@
   "LandingPage": {
     "walletConnect": {
       "title" : "Connection au Wallet",
-      "body" : "En cours"
+      "body" : "En cours ..."
     }
   },
   "homePage": {

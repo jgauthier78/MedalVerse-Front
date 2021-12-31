@@ -34,4 +34,12 @@ const format_Date = (timestampinSeconds) => {
     return sDate
 }
 
-export { format_TimeStampToStartDate, format_TimeStampToEndDate, format_Date };
+const format_TimeMsToDate = (timestampInMs, withTZ) => {
+    const formatOptions = (withTZ ? formatOptionsWithTZ : formatOptionsWithoutTZ)
+    let jsDate = new Date(timestampInMs);
+    let sDate = new Intl.DateTimeFormat(t("Formats.date")).format(jsDate) + " " + new Intl.DateTimeFormat(t("Formats.date"), formatOptions).format(jsDate)
+    return sDate
+}
+
+
+export { format_TimeStampToStartDate, format_TimeStampToEndDate, format_Date, format_TimeMsToDate };
