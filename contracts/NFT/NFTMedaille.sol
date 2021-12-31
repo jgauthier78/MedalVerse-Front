@@ -8,9 +8,9 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract NFTMedaille is ERC721, Ownable {
 	using Counters for Counters.Counter;
 	Counters.Counter private _tokenIds;
-	
-	mapping(uint=>string) public URIToken;
-	
+
+	mapping(uint256 => string) public URIToken;
+
 	string imageURI; // Store the path to find the image of the nft
 
 	constructor(
@@ -23,8 +23,6 @@ contract NFTMedaille is ERC721, Ownable {
 		imageURI = imgURI; // Path for found the image of the nft
 	}
 
-	
-
 	//@dev Mint the selected number of NFT Medaille
 	//@param numberMint number to mint
 	function mintNFTMedaille(uint256 numberMint) public onlyOwner {
@@ -32,7 +30,7 @@ contract NFTMedaille is ERC721, Ownable {
 			_tokenIds.increment();
 			uint256 newItemId = _tokenIds.current();
 			_mint(msg.sender, newItemId);
-		        URIToken[newItemId] = imageURI;
+			URIToken[newItemId] = imageURI;
 		}
 	}
 }

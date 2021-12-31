@@ -1,4 +1,14 @@
 {
+  "OrganizerEvent": {
+    "athlete" : {
+      "athletes" : "Athletes",
+      "address" : "address",
+      "action" : "action",
+      "actions": {
+        "medal": "medal"
+      }
+    }
+  },
   "OrganizerEvents": {
     "noEvent" : "No events",
     "title" : "Organized events",

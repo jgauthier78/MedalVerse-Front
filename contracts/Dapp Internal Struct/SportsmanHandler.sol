@@ -61,11 +61,11 @@ contract SportsmanHandler is Ownable {
 		internal
 		onlyOwner
 		isNotNull(_sportsMan)
+		isNotNullUint256(eventId)
 	{
 		assert(allSportsman[_sportsMan].activ);
-		allSportsman[_sportsMan].eventsSubscribed[
-			allSportsman[_sportsMan].nbEventsSubscrided++
-		] = eventId;
+		uint256 indx = allSportsman[_sportsMan].nbEventsSubscrided++;
+		allSportsman[_sportsMan].eventsSubscribed[indx] = eventId;
 		allSportsman[_sportsMan].eventsActivSubscription[eventId] = true;
 		allSportsman[_sportsMan].nbActivSubscriptions++;
 		emit sportsmanRegisterdEvent(_sportsMan, eventId);
@@ -160,9 +160,10 @@ contract SportsmanHandler is Ownable {
 			x < allSportsman[sportsmanId].nbEventsSubscrided;
 			x++
 		) {
+			uint256 id = allSportsman[sportsmanId].eventsSubscribed[x];
 			// If the current subscription is active, then add it
-			if (allSportsman[sportsmanId].eventsActivSubscription[x])
-				result[i++] = allSportsman[sportsmanId].eventsSubscribed[x];
+			if (allSportsman[sportsmanId].eventsActivSubscription[id])
+				result[i++] = id;
 		}
 		return result;
 	}

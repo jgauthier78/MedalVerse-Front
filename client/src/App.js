@@ -3,6 +3,7 @@ import Loading from './components/Loading';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import getWeb3 from "./utils/getWeb3";
 import NotFound from "./components/Pages/NotFound"
+import Gallerie from "./components/Pages/Gallerie"
 import LandingPage from "./components/Pages/LandingPage"
 import MedalVerseContract from "./contracts/MedalVerse.json";
 import OrganizerMain from "./components/Pages/OrganizerMain";
@@ -38,12 +39,14 @@ class App extends Component {
             getWeb3Cnx: this.getWeb3Cnx,
             initAccounts: this.initAccounts,
             getAccounts: this.getAccounts,
+            getContract: this.getContract,
             initContract: this.initContract,
             initUserDetails: this.initUserDetails,
             updateUserDetails: this.updateUserDetails,
             resetNavigateTo: this.resetNavigateTo,
             accountsUpdated: this.accountsUpdated,
             getUserEvents: this.getUserEvents,
+            getUserMedals: this.getUserMedals,
             getOrganizerOrganisations: this.getOrganizerOrganisations,
             getUserDetails: this.getUserDetails,
             isConnected: this.isConnected,
@@ -75,12 +78,22 @@ class App extends Component {
 
     setIsConnected = val => this.setState({ isConnected: val })
     isConnected = () => { return this.state.isConnected; }
+    getContract = () => { return this.state.contract }
 
     render() {
-        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations: this.state.userOrganizations, userMedals: this.state.userMedals }
+        let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations: this.state.userOrganizations, userMedals: this.state.userMedals, web3: this.state.web3 }
         return (
             <BrowserRouter >
                 <Routes>
+                    <Route exact path="/Gallerie/:id" element={
+
+                        <Suspense fallback={<Loading />} >
+                            <I18nextProvider i18n={i18next}>
+                                <Gallerie AppCallBacks={this.AppCallBacks} />
+                            </I18nextProvider>
+                        </Suspense>
+                    }
+                    />
                     <Route exact path='/' element=
                         {this.state.redirectTo === null ?
                             <Suspense fallback={<Loading />}>
@@ -93,9 +106,9 @@ class App extends Component {
                         }
 
                     />
-                    <Route exact path='organizer' element={this.state.redirectTo === null ?
+                    <Route exact path='organizer/*' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
-                            <OrganizerMain AppCallBacks={this.AppCallBacks} userProfile={userProfile}  />
+                            <OrganizerMain AppCallBacks={this.AppCallBacks} userProfile={userProfile} />
                         </I18nextProvider>
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
@@ -109,6 +122,7 @@ class App extends Component {
                         :
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
+
                     <Route element={NotFound} />
                 </Routes>
             </BrowserRouter >
@@ -181,11 +195,11 @@ class App extends Component {
     }
 
     // Get details corresponding to the user address
-    initUserDetails = async () => {
+    initUserDetails = async (account) => {
         let result = { detail: null, err: null }
         try {
             // call the contract method to get infos about user
-            result.detail = await this.state.contract.methods.getUserDetails(this.getAccounts()).call()
+            result.detail = await this.state.contract.methods.getUserDetails(account).call()
             console.log("result.detail=" + result.detail)
             // result.detail["account"] = account;
             // console.log("result.detail+account="+result.detail)
@@ -214,8 +228,8 @@ class App extends Component {
         }
         else if (role & ROLES.ROLE_ATHLETE) // Athlete
         {
-            let evnts = await this.getUserEvents()
-            let usermedals = await this.getUserMedals()
+            let evnts = await this.getUserEvents(this.getAccounts())
+            let usermedals = await this.getUserMedals(this.getAccounts())
             this.setState({
                 userEvents: evnts,
                 userMedals: usermedals,
@@ -255,17 +269,17 @@ class App extends Component {
         // Directly set the state, as the callback gives us a pointer to new account
         this.setState({ accounts: account })
         // read new details from contract
-        await this.initUserDetails()
+        await this.initUserDetails(account)
         // redirect to the right page
         await this.updateUserDetails()
     }
 
     /* Retourne la structure complete des évènements auxquels un user appartient */
     // devrait être appelée get(Athlete|Sportsman)Events ?
-    getUserEvents = async () => {
-        let account = this.getAccounts()
+    getUserEvents = async (account) => {
         let result = { nbEvents: 0, Event: null }
         // We get the nb of events the sporsman registered to
+        console.log("+++Ici")
         let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
         if (nbEvents > 0) {
             result.nbEvents = nbEvents
@@ -275,24 +289,29 @@ class App extends Component {
                 result.eventList = []
                 result.organisationDesc = []
                 // We now populate the structure
+                console.log("+++++Ici")
                 for (let i = 0; i < result.nbEvents; i++) {
+
+                    console.log(eventIndxList[i])
                     let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
-                    console.log("val=" + val)
+
                     result.eventList.push(val)
-                    let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.organizedBy).call()
+                    let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.
+                        organizedBy).call()
+
                     result.organisationDesc.push(organisationDesc)
                 }
             }
         }
+        console.log("YEAHHH")
         return result;
     }
 
-    getUserMedals = async () => {
-        let account = this.getAccounts()
+    getUserMedals = async (account) => {
         let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [] }
-
         result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
         for (let i = 0; i < result.nbMedals; i++) {
+
             let medalID = await this.state.contract.methods.getSportsmanMedal(account, i).call()
             let medal = { success: null, org: null, event: null }
             medal.succes = await this.state.contract.methods.getMedal(medalID).call()
@@ -300,7 +319,8 @@ class App extends Component {
             medal.event = await this.state.contract.methods.getEvent(medal.succes.eventID).call()
             console.log("medal.event=" + medal.event)
             result.Medals.push(medal)
-            if (medal.isInWinnerGallery) {
+
+            if (medal.succes.isInWinnerGallery) {
                 result.nbMedalsInGallery++
                 result.Gallery.push(medal)
             }
@@ -363,7 +383,7 @@ class App extends Component {
                         //  console.log("eventData[9]=" + eventData[9]) 
                         //  console.log("eventData[10]=" + eventData[10]) 
                         //  console.log("eventData[11]=" + eventData[11]) 
-                         let event = {
+                        let event = {
                             eventId: eventData[0],
                             sportCategory: eventData[1],
                             organizedBy: eventData[2],
@@ -377,32 +397,31 @@ class App extends Component {
                             ended: eventData[10],
                             started: eventData[11],
                             // struct EventDesc {
-                                // uint256 eventId; // Index of the event in the EventList
-                                // uint256 sportCategory; // Category
-                                // uint256 organizedBy; // Id of the Organization
-                                // address[] registeredSportsMan; //List of sportsman that are participating to the event
-                                // address winner; // Winner of the Event
-                                // uint256 startDate;
-                                // uint256 endDate;
-                                // uint256 medalID;
-                                // bool hasMedal;
-                                // bool activ;
-                                // bool ended; // finished ?
-                                // bool started; // The event has started
+                            // uint256 eventId; // Index of the event in the EventList
+                            // uint256 sportCategory; // Category
+                            // uint256 organizedBy; // Id of the Organization
+                            // address[] registeredSportsMan; //List of sportsman that are participating to the event
+                            // address winner; // Winner of the Event
+                            // uint256 startDate;
+                            // uint256 endDate;
+                            // uint256 medalID;
+                            // bool hasMedal;
+                            // bool activ;
+                            // bool ended; // finished ?
+                            // bool started; // The event has started
                             // on rattache l'organisation à chaque event pour faciliter le traitement dans les composants
                             // ! crée une référence circulaire !
                             organization: organization
                         }
                         // console.log("event=" + JSON.stringify(event) )
-                        organization["events"].push( event )
+                        organization["events"].push(event)
                     }));
                 } // eventsList.length > 0
 
                 // console.log("organization[" + organisationId + "]=" + JSON.stringify(organization))
                 // return organization
                 //result.organizations.push( organization )
-                // console.log("organization.events=" + organization["events"] )
-                result.push( organization )
+                result.push(organization)
             }));
         }
         return result;
