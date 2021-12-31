@@ -24,9 +24,10 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 	constructor() ERC721("MedalVerse", "MDV") {
 	}
 
-	//@dev Mint the selected number of NFT Medaille
-	//@param numberMint number to mint
-	function mintNFTArtist(string memory name, string memory Uri) public onlyOwner {
+	///@dev Mint the selected number of NFT Medaille
+	///@param name Name of the structure NFT 
+    ///@param Uri Path to Image
+	function mintNFTArtist(string memory name, string memory Uri) public {
 		
 			_tokenIds.increment();
 			uint256 newNFTArtistId = _tokenIds.current();
