@@ -36,7 +36,10 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 			NFTByOwner[msg.sender][newNFTArtistId].tokenId = newNFTArtistId;
 			NFTByOwner[msg.sender][newNFTArtistId].creator = msg.sender;
 			NFTByOwner[msg.sender][newNFTArtistId].imgPath = Uri;
-			
+			// NFTs[newNFTArtistId].name = name;
+            // NFTs[newNFTArtistId].tokenId = newNFTArtistId;
+            // NFTs[newNFTArtistId].creator = msg.sender;
+            // NFTs[newNFTArtistId].imgPath = Uri;
 
 		
 	}
@@ -65,6 +68,10 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         delete  NFTByOwner[msg.sender][tokenId].tokenId;
         delete  NFTByOwner[msg.sender][tokenId].creator;
         delete  NFTByOwner[msg.sender][tokenId].imgPath;
+        // delete NFTs[newNFTArtistId].name = name;
+        // delete NFTs[newNFTArtistId].tokenId = newNFTArtistId;
+        // delete NFTs[newNFTArtistId].creator = msg.sender;
+        // delete NFTs[newNFTArtistId].imgPath = Uri;
         super._burn(tokenId);
     }
 
