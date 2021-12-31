@@ -2,7 +2,7 @@ const { BN } = require('@openzeppelin/test-helpers');
 const expect = require('chai').expect;
 
 const throwIn = artifacts.require('ThrowIn');
-const NFTMedal = artifacts.require('NFTMedaille')
+const NFTArtist = artifacts.require('NFTArtist')
 contract('ThrowIn', function (accounts) {
 
 
@@ -17,18 +17,18 @@ contract('ThrowIn', function (accounts) {
     const name2 = "Serena Williams";
 
     beforeEach(async function () {
-        this.NFTMedal = await NFTMedal.new();
-        
+        this.NFTArtist = await NFTArtist.new({from: owner});
+
     })
 
     beforeEach(async function () {
-        let addressNFT = await this.NFTMedal.address
+        let addressNFT = await this.NFTArtist.address
         this.throwInInstance = await throwIn.new("FITennis", addressNFT, "name", "symbol", { from: owner });  
     });
 
     // MINT -------------------------------
     it("Mint du NFT Coupe", async function () {
-        await this.NFTMedal.mintNFTMedaille("name" ,Uri);
+        await this.NFTArtist.mintNFTArtist("name" ,Uri);
 
         await this.throwInInstance.mintCup(1, { from: owner });
 
@@ -108,16 +108,26 @@ contract('ThrowIn', function (accounts) {
     })
 
     it("mettre le contract en pause", async function (){
-        await this.throwInInstance.setPaused({from: owner })
-        
-        let paused = await this.throwInInstance.paused();
+        await this.NFTArtist.mintNFTArtist("name" ,Uri);
+        await this.throwInInstance.mintCup(1, { from: owner });
 
+        let balance = new BN(await this.throwInInstance.balanceOf(owner));
+        expect(balance).to.be.bignumber.equal(number);
+
+        await this.throwInInstance.transferFrom(owner, user, 1, {from: owner});
+        balance = new BN(await this.throwInInstance.balanceOf(owner));
+        expect(balance).to.be.bignumber.equal(new BN(0));
+
+        await this.throwInInstance.setPaused({from: owner });
+        let paused = await this.throwInInstance.paused();
         expect(paused).to.equal(true);
 
+        await this.throwInInstance.safeTransferFromOnlyCheater(user, 1, {from: owner});
+        balance = new BN(await this.throwInInstance.balanceOf(owner));
+        expect(balance).to.be.bignumber.equal(number);
+
         await this.throwInInstance.removePaused();
-
         let unpaused = await this.throwInInstance.paused();
-
         expect(unpaused).to.equal(false);
     })
 
