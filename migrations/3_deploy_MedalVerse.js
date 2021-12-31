@@ -1,6 +1,6 @@
 var MedalVerse = artifacts.require("./MedalVerse.sol");
 const throwIn = artifacts.require('ThrowIn');
-const nftMedal = artifacts.require('NFTMedaille');
+const nftMedal = artifacts.require('NFTArtist');
 
 const ethers = require('ethers');
 const crypto = require('crypto');
@@ -39,7 +39,8 @@ module.exports = async function (deployer, network, accounts) {
 
     let medal = await nftMedal.new()
     let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
-    await medal.mintNFTMedaille(name, img, { from: ACCOUNT_CONTRACT_OWNER })
+    await medal.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
+
     await nft.mintCup(createNFT.counter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
 
