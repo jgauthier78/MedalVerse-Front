@@ -10,13 +10,14 @@ contract('ThrowIn', function (accounts) {
     const user = accounts[1]
     const year = new BN(1998);
     const number = new BN(1);
+    const Uri = "img";
 
     const name = "Rapahel Nadal";
     const name1 = "Roger Federer";
     const name2 = "Serena Williams";
 
     beforeEach(async function () {
-        this.NFTMedal = await NFTMedal.new("Medal", "MDL", "img");
+        this.NFTMedal = await NFTMedal.new();
         
     })
 
@@ -27,16 +28,17 @@ contract('ThrowIn', function (accounts) {
 
     // MINT -------------------------------
     it("Mint du NFT Coupe", async function () {
-        await this.NFTMedal.mintNFTMedaille(1);
+        await this.NFTMedal.mintNFTMedaille(Uri);
 
         await this.throwInInstance.mintCup(1, { from: owner });
 
         let balance = new BN(await this.throwInInstance.balanceOf(owner));
+        let UriToken = await this.throwInInstance.uriToken(1);
         
-        
-        
+        console.log(UriToken)
         // check
         expect(balance).to.be.bignumber.equal(number);
+        expect(UriToken).to.equal(Uri);
     })
 
     // Add Participant -------------------------------
