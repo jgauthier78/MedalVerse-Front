@@ -4,16 +4,8 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 import ThrowInContract from "../../../contracts/ThrowIn.json";
 import MedalContract from "../../../contracts/NFTMedaille.json";
 import { useEffect, useState } from 'react'
-
-async function getNFTImage(web3, address) {
-    /*let contract = await new web3.eth.Contract(ThrowInContract.abi, address);
-    let medal = await contract.methods.getMedal.call()
-    let nft = await new web3.eth.Contract(MedalContract.abi, medal);
-    let img = await nft.methods.tokenURI.call()
-    return img*/
-    return ""
-}
-
+import ReactTooltip from "react-tooltip";
+import { format_Date } from "../../../utils/dateUtils";
 async function setGallery(AppCallBacks, addr, contract, indx, display, succes) {
     try {
         await contract.methods.publishMedal(indx, display).send({ from: addr[0] })
@@ -38,17 +30,22 @@ const TableMedalItems = ({ AppCallBacks, address, contract, web3, userMedals }) 
                         {medal.org}
                     </td>
                     <td colSpan="1">
-                        {(new Date(Number(medal.event.endDate) * 1000)).toString()}
+                        {format_Date(medal.event.endDate)}
                     </td>
                     <td colSpan="1" className="text-center" >
                         {medal.succes.isInWinnerGallery ?
-                            <button type="button" onClick={() => setGallery(AppCallBacks, address, contract, indx, false, medal.succes)} className="btn btn-link"><i className="fa fa-check-square-o " aria-hidden="true"></i></button>
+                            <button type="button" onClick={async () => await setGallery(AppCallBacks, address, contract, indx, false, medal.succes)} className="btn btn-link"><i className="fa fa-check-square-o " aria-hidden="true"></i></button>
                             :
-                            <button type="button" onClick={() => setGallery(AppCallBacks, address, contract, indx, true, medal.succes)} className="btn btn-link"><i className="fa fa-square-o" aria-hidden="true"></i></button>
+                            <button type="button" onClick={async () => await setGallery(AppCallBacks, address, contract, indx, true, medal.succes)} className="btn btn-link"><i className="fa fa-square-o" aria-hidden="true"></i></button>
                         }
                     </td>
                     <td colSpan="1">
-                        <img src={getNFTImage(web3, medal.succes.throwIn)} />
+                        <img src={userMedals.uriList[indx]} style={{ width: 32 + 'px' }} data-tip data-for={"img" + indx} />
+                        <ReactTooltip id={"img" + indx} place="top" border
+                            textColor='#5F4B8BFF' backgroundColor='#E69A8DFF' borderColor='darkgreen' backgroundColor='white' borderColor='black' arrowColor='white'>
+                            <img src={userMedals.uriList[indx]} place='right' style={{ width: 128 + 'px' }}
+                            />
+                        </ReactTooltip>
                     </td>
                 </tr>
             ))}

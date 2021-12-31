@@ -13,7 +13,7 @@ import "./styles/Main.css"
 import { ROLES } from "./utils/roles_CONSTS"
 import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from './utils/did'
 import { Alerts } from "./components/Alerts";
-
+import ThrowInContract from "./contracts/ThrowIn.json";
 import { format_TimeMsToDate } from './utils/dateUtils'
 // Translation
 // import i18n (needs to be bundled ;))
@@ -314,12 +314,12 @@ class App extends Component {
                 }
             }
         }
-        console.log("YEAHHH")
+
         return result;
     }
 
     getUserMedals = async (account) => {
-        let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [] }
+        let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [] }
         result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
         for (let i = 0; i < result.nbMedals; i++) {
 
@@ -328,7 +328,11 @@ class App extends Component {
             medal.succes = await this.state.contract.methods.getMedal(medalID).call()
             medal.org = await this.state.contract.methods.getOrganizationName(medal.succes.organizationID).call()
             medal.event = await this.state.contract.methods.getEvent(medal.succes.eventID).call()
-            console.log("medal.event=" + medal.event)
+
+
+            let medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
+            let img = await medalContract.methods.uriToken(i + 1).call()
+            result.uriList.push(img)
             result.Medals.push(medal)
 
             if (medal.succes.isInWinnerGallery) {
@@ -336,7 +340,7 @@ class App extends Component {
                 result.Gallery.push(medal)
             }
         }
-        console.log(result)
+
         return result
     }
 
@@ -439,12 +443,12 @@ class App extends Component {
     } // getOrganizerOrganisations
 
     setEventWinner = async (eventId, athleteAdr) => {
-        console.log("App::setEventWinner: eventId="+eventId + " athleteAdr="+athleteAdr + " this.getAccounts()="+this.getAccounts())
+        console.log("App::setEventWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
         try {
-                await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
-                // Todo
-                // Refresh data
-            }
+            await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
+            // Todo
+            // Refresh data
+        }
         catch (error) {
             // Catch any errors for any of the above operations.
             this.handleError(error, true)
@@ -452,7 +456,7 @@ class App extends Component {
 
 
     } // setEventWinner
-    
+
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
     } // DID_init
@@ -493,81 +497,81 @@ class App extends Component {
 
 
 
-  /* ************************************
-    errorHandlers
-  
-   ************************************* */
-  /* -------------------------------
-    Smart contract errors
-   -------------------------------- */
+    /* ************************************
+      errorHandlers
+    
+     ************************************* */
+    /* -------------------------------
+      Smart contract errors
+     -------------------------------- */
 
-   handleError = (error, bLogToConsole, bshowAlertPopup) => {
-    // const { t } = this.props;
-    const { alertsList } = this.state;
-    let newAlert = {}
+    handleError = (error, bLogToConsole, bshowAlertPopup) => {
+        // const { t } = this.props;
+        const { alertsList } = this.state;
+        let newAlert = {}
 
-    let now = new Date();
-    // newAlert.time = now.toLocaleDateString(t("Formats.date")) + " " +
-    //   new Intl.DateTimeFormat(t("Formats.date"), { hour: "numeric", minute: "numeric", second: "numeric", timeZoneName: "short" }).format()
-    newAlert.time = format_TimeMsToDate(now)
+        let now = new Date();
+        // newAlert.time = now.toLocaleDateString(t("Formats.date")) + " " +
+        //   new Intl.DateTimeFormat(t("Formats.date"), { hour: "numeric", minute: "numeric", second: "numeric", timeZoneName: "short" }).format()
+        newAlert.time = format_TimeMsToDate(now)
 
-    if (bLogToConsole) {
-      console.error(error);
-    }
-    if (bshowAlertPopup) {
-      //alert(t("Errors.default.title") + "\n" + error)
-      alert("Error\n" + error)
-      return
-    }
+        if (bLogToConsole) {
+            console.error(error);
+        }
+        if (bshowAlertPopup) {
+            //alert(t("Errors.default.title") + "\n" + error)
+            alert("Error\n" + error)
+            return
+        }
 
-    if (error.code !== undefined) {
+        if (error.code !== undefined) {
 
-    //   if (error.code === 4001) {
-    //     newAlert.title = t("Errors.4001.title")
-    //     newAlert.variant = t("Errors.4001.variant")
-    //     newAlert.message = t("Errors.4001.message")
-    //   } // 4001
-    //   else {
-    //     newAlert.title = t("Errors.default.title")
-    //     newAlert.variant = t("Errors.default.variant")
-    //     newAlert.message = t("Errors.default.message")
-    //   } // default
+            //   if (error.code === 4001) {
+            //     newAlert.title = t("Errors.4001.title")
+            //     newAlert.variant = t("Errors.4001.variant")
+            //     newAlert.message = t("Errors.4001.message")
+            //   } // 4001
+            //   else {
+            //     newAlert.title = t("Errors.default.title")
+            //     newAlert.variant = t("Errors.default.variant")
+            //     newAlert.message = t("Errors.default.message")
+            //   } // default
 
-      if (error.message !== undefined) {
-        // newAlert.detail = truncateString(error.message, 50)
-        newAlert.detail = error.message
-      } // switch (error.code)
-    }
-    else {
+            if (error.message !== undefined) {
+                // newAlert.detail = truncateString(error.message, 50)
+                newAlert.detail = error.message
+            } // switch (error.code)
+        }
+        else {
 
-      if (error.title !== undefined) {
-        newAlert.title = error.title
-      }
-      else {
-        newAlert.title = "Error"//t("Errors.default.title")
-      }
+            if (error.title !== undefined) {
+                newAlert.title = error.title
+            }
+            else {
+                newAlert.title = "Error"//t("Errors.default.title")
+            }
 
-      if (error.level !== undefined) {
-        newAlert.variant = error.level
-      }
-      else {
-        newAlert.variant = "danger"//t("Errors.default.variant")
-      }
+            if (error.level !== undefined) {
+                newAlert.variant = error.level
+            }
+            else {
+                newAlert.variant = "danger"//t("Errors.default.variant")
+            }
 
-      if (error.message !== undefined) {
-        newAlert.message = error.message;
-      } // error.message !== undefined
-      else {
-        newAlert.message = "Error"//t("Errors.default.message")
-      }
-      //  newAlert.detail = truncateString(error, 100)
-      newAlert.detail = error.message
-    } // else
+            if (error.message !== undefined) {
+                newAlert.message = error.message;
+            } // error.message !== undefined
+            else {
+                newAlert.message = "Error"//t("Errors.default.message")
+            }
+            //  newAlert.detail = truncateString(error, 100)
+            newAlert.detail = error.message
+        } // else
 
-    const alertsListUpdated = [...alertsList, newAlert]
-    this.setState({ alertsList: alertsListUpdated })
+        const alertsListUpdated = [...alertsList, newAlert]
+        this.setState({ alertsList: alertsListUpdated })
 
-  } // handleError
+    } // handleError
 
 } // class App
 

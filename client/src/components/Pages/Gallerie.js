@@ -28,14 +28,7 @@ function getMedalCountString(medal) {
     return (<></>)
 }
 
-async function getNFTImage(web3, address) {
-    /*let contract = await new web3.eth.Contract(ThrowInContract.abi, address);
-    let medal = await contract.methods.getMedal.call()
-    let nft = await new web3.eth.Contract(MedalContract.abi, medal);
-    let img = await nft.methods.tokenURI.call()
-    return img*/
-    return ""
-}
+
 
 const getImageSrcFromEvent = (evnt, i) => {
     return (evnt.organisationDesc[i])[0].logoURI
@@ -48,7 +41,8 @@ const getEventEndDate = (evnt, i) => { return format_Date(((evnt.eventList[i])).
 const MedalSlides = ({ web3, mdl }) => {
 
     if (!mdl || mdl.nbMedalsInGallery == 0) return (<></>)
-
+    console.log("-------------------------")
+    console.log(mdl)
     return (
         <>
             {
@@ -56,9 +50,10 @@ const MedalSlides = ({ web3, mdl }) => {
                     return (
 
                         < section data-transition="slide" key={indx} >
-                            <h4>{ml.org}        </h4>
+                            <img src={mdl.uriList[0]} style={{ width: 128 + 'px', height: "auto" }} />
+                            <h4>{ml.org} </h4>
                             <h6>{(format_Date(ml.event.endDate)).toString()}</h6>
-                            <img src-data={getNFTImage(web3, ml.succes.throwIn)} />
+
                         </section>
                     )
                 })

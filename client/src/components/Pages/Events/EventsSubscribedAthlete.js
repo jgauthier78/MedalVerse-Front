@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Card, Container } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
-import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
+import { format_Date } from "../../../utils/dateUtils";
 
 
 const getImageSrcFromEvent = (evnt, i) => {
@@ -10,8 +10,8 @@ const getImageSrcFromEvent = (evnt, i) => {
 }
 const getOrgNameFromEvent = (evnt, i) => { return (evnt.organisationDesc[i])[0].name }
 const getOrgDescFromEvent = (evnt, i) => { return (evnt.organisationDesc[i])[0].description }
-const getEventStartDate = (evnt, i) => { return format_TimeStampToStartDate ( ((evnt.eventList[i])).endDate ) }
-const getEventEndDate = (evnt, i) => { return format_TimeStampToEndDate( ((evnt.eventList[i])).startDate ) }
+const getEventStartDate = (evnt, i) => { return format_Date(((evnt.eventList[i])).endDate) }
+const getEventEndDate = (evnt, i) => { return format_Date(((evnt.eventList[i])).startDate) }
 
 const CarrousselItem = ({ userEvents }) => (
     <div>

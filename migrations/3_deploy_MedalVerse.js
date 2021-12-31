@@ -37,9 +37,9 @@ module.exports = async function (deployer, network, accounts) {
     const createNFT_initial_counter_value = 1
     createNFT.counter = createNFT.counter || createNFT_initial_counter_value;
 
-    let medal = await nftMedal.new("medaille", "MDL", img)
+    let medal = await nftMedal.new()
     let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
-    await medal.mintNFTMedaille(createNFT.counter, { from: ACCOUNT_CONTRACT_OWNER })
+    await medal.mintNFTMedaille(name, img, { from: ACCOUNT_CONTRACT_OWNER })
     await nft.mintCup(createNFT.counter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
 
