@@ -80,6 +80,9 @@ class App extends Component {
     isConnected = () => { return this.state.isConnected; }
     getContract = () => { return this.state.contract }
 
+    cloneStruct = (stct) => {
+        return JSON.parse(JSON.stringify(stct))
+    }
     render() {
         let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations: this.state.userOrganizations, userMedals: this.state.userMedals, web3: this.state.web3 }
         return (
@@ -447,8 +450,8 @@ class App extends Component {
                 await DID_init(this._web3, window.ethereum)
                 DID_showConf();
                 DID_readProfile();
-
-*/
+    
+    */
     handleSaveUserProfile = async (profile) => {
         try {
             console.log("App::handleSaveUserProfile name=" + profile.name)

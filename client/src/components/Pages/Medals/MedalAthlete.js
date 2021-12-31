@@ -3,6 +3,7 @@ import { Card, Container } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import ThrowInContract from "../../../contracts/ThrowIn.json";
 import MedalContract from "../../../contracts/NFTMedaille.json";
+import { useEffect, useState } from 'react'
 
 async function getNFTImage(web3, address) {
     /*let contract = await new web3.eth.Contract(ThrowInContract.abi, address);
@@ -13,39 +14,47 @@ async function getNFTImage(web3, address) {
     return ""
 }
 
-async function setGallery(addr, contract, indx, display) {
-    console.log(addr)
-    await contract.methods.publishMedal(indx, display).send({ from: addr[0] })
+async function setGallery(AppCallBacks, addr, contract, indx, display, succes) {
+    try {
+        await contract.methods.publishMedal(indx, display).send({ from: addr[0] })
+        AppCallBacks.updateUserDetails()
+    }
+    catch (err) {
+        console.log(err)
+    }
+
 }
 
-const TableMedalItems = ({ address, contract, web3, userMedals }) => (
-    <tbody>
-        {userMedals.Medals.map((medal, indx) => (
-            <tr key={indx}>
-                <td colSpan="1">
-                    {indx + 1}
-                </td>
-                <td colSpan="1">
-                    {medal.org}
-                </td>
-                <td colSpan="1">
-                    {(new Date(Number(medal.event.endDate) * 1000)).toString()}
-                </td>
-                <td colSpan="1" className="text-center" >
-                    {medal.succes.isInWinnerGallery ?
-                        <button type="button" onClick={() => setGallery(address, contract, indx, false)} className="btn btn-link"><i className="fa fa-check-square-o " aria-hidden="true"></i></button>
-                        :
-                        <button type="button" onClick={() => setGallery(address, contract, indx, true)} className="btn btn-link"><i className="fa fa-square-o" aria-hidden="true"></i></button>
-                    }
-                </td>
-                <td colSpan="1">
-                    <img src={getNFTImage(web3, medal.succes.throwIn)} />
-                </td>
-            </tr>
-        ))}
-    </tbody>
-)
+const TableMedalItems = ({ AppCallBacks, address, contract, web3, userMedals }) => {
 
+    return (
+        <tbody>
+            {userMedals.Medals.map((medal, indx) => (
+                <tr key={indx}>
+                    <td colSpan="1">
+                        {indx + 1}
+                    </td>
+                    <td colSpan="1">
+                        {medal.org}
+                    </td>
+                    <td colSpan="1">
+                        {(new Date(Number(medal.event.endDate) * 1000)).toString()}
+                    </td>
+                    <td colSpan="1" className="text-center" >
+                        {medal.succes.isInWinnerGallery ?
+                            <button type="button" onClick={() => setGallery(AppCallBacks, address, contract, indx, false, medal.succes)} className="btn btn-link"><i className="fa fa-check-square-o " aria-hidden="true"></i></button>
+                            :
+                            <button type="button" onClick={() => setGallery(AppCallBacks, address, contract, indx, true, medal.succes)} className="btn btn-link"><i className="fa fa-square-o" aria-hidden="true"></i></button>
+                        }
+                    </td>
+                    <td colSpan="1">
+                        <img src={getNFTImage(web3, medal.succes.throwIn)} />
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    )
+}
 class MedalAthlete extends Component {
     render() {
         console.log(this.props.userProfile.userMedals)
@@ -65,7 +74,7 @@ class MedalAthlete extends Component {
                                 <th scope="col">{"Image"}</th>
                             </tr>
                         </thead>
-                        <TableMedalItems userMedals={this.props.userProfile.userMedals} web3={this.props.userProfile.web3} contract={this.props.AppCallBacks.getContract()} address={this.props.userProfile.address} />
+                        <TableMedalItems userMedals={this.props.userProfile.userMedals} web3={this.props.userProfile.web3} contract={this.props.AppCallBacks.getContract()} address={this.props.userProfile.address} AppCallBacks={this.props.AppCallBacks} />
                     </table>
 
                 </Card>
