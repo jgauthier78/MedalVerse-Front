@@ -13,12 +13,15 @@ module.exports = async function (deployer, network, accounts) {
   const ACCOUNT_CONTRACT_OWNER = accounts[0]
 
   await deployer.deploy(MedalVerse, { from: ACCOUNT_CONTRACT_OWNER });
+  await deployer.deploy(nftMedal, {from: ACCOUNT_CONTRACT_OWNER});
 
   let MVerse = await MedalVerse.deployed()
+  let NFTArtist = await nftMedal.deployed()
 
 
   console.log("----------------------------------------------------------")
   console.log("MedalVerse Deployed at " + MVerse.address)
+  console.log("MedalVerse Deployed at " + NFTArtist.address)
 
 
   // Generates an public / private pair for fake sportsman / organizers
