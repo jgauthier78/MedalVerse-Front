@@ -28,12 +28,22 @@ const network_id_maticMumbaiTestnet = 80001;
 // RPC Urls
 
 // Ethereum Tesnets
-const Ethereum_Tesnet__Kovan_RPC_URL    = 'https://kovan.infura.io/v3/';
-const Ethereum_Tesnet__Ropsten_RPC_URL  = 'https://ropsten.infura.io/v3/';
-const Ethereum_Tesnet__Rinkeby_RPC_URL  = 'https://rinkeby.infura.io/v3/';
+const Ethereum_Tesnet__Kovan_Infura_RPC_URL    = 'https://kovan.infura.io/v3/';
+const Ethereum_Tesnet__Ropsten_Infura_RPC_URL  = 'https://ropsten.infura.io/v3/';
+const Ethereum_Tesnet__Rinkeby_Infura_RPC_URL  = 'https://rinkeby.infura.io/v3/';
 
 // Mumbai Testnet RPC URL
-const Matic_Tesnet_RPC_URL = 'https://rpc-mumbai.maticvigil.com/v1/';
+const Matic_Tesnet_RPC_HTTPS_URL_1 = 'https://rpc-mumbai.maticvigil.com/v1/';
+// const Matic_Tesnet_RPC_HTTPS_URL_2 = 'https://rpc-mumbai.matic.today';
+// const Matic_Tesnet_RPC_HTTPS_URL_3 = 'https://matic-mumbai.chainstacklabs.com';
+// const Matic_Tesnet_RPC_HTTPS_URL_4 = 'https://matic-testnet-archive-rpc.bwarelabs.com';
+
+const Matic_Tesnet_RPC_WSS_URL_1 = 'wss://rpc-mumbai.maticvigil.com/ws/v1/';
+// const Matic_Tesnet_RPC_WSS_URL_2 = 'wss://rpc-mumbai.matic.today';
+// const Matic_Tesnet_RPC_WSS_URL_3 = 'wss://ws-matic-mumbai.chainstacklabs.com';
+// const Matic_Tesnet_RPC_WSS_URL_4 = 'wss://matic-testnet-archive-ws.bwarelabs.com';
+
+
 
 // Matic Mainnet RPC URL
 const Matic_Mainnet_RPC_URL = 'https://rpc-mainnet.maticvigil.com/v1/3d71b717df879e0f3f3d1498bd0f9c24e7c386d6';
@@ -86,7 +96,7 @@ module.exports =
 
     ropsten:
     {
-      provider: () => new HDWalletProvider( Wallet_mnemonic_LOCAL, Ethereum_Tesnet__Ropsten_RPC_URL + Infura_ProjectId ),
+      provider: () => new HDWalletProvider( Wallet_mnemonic_LOCAL, Ethereum_Tesnet__Ropsten_Infura_RPC_URL + Infura_ProjectId ),
       network_id: network_id_ropsten,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       gasPrice: Web3.utils.toWei("50", "gwei"),
@@ -97,7 +107,7 @@ module.exports =
 
     kovan:
     {
-      provider: () => new HDWalletProvider( Wallet_mnemonic_LOCAL, Ethereum_Tesnet__Kovan_RPC_URL + Infura_ProjectId ),
+      provider: () => new HDWalletProvider( Wallet_mnemonic_LOCAL, Ethereum_Tesnet__Kovan_Infura_RPC_URL + Infura_ProjectId ),
       network_id: network_id_kovan,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       gasPrice: Web3.utils.toWei("5", "gwei"),
@@ -109,7 +119,7 @@ module.exports =
 
     rinkeby:
     {
-      provider: () => new HDWalletProvider( Wallet_mnemonic_LOCAL, Ethereum_Tesnet__Rinkeby_RPC_URL + Infura_ProjectId ),
+      provider: () => new HDWalletProvider( Wallet_mnemonic_LOCAL, Ethereum_Tesnet__Rinkeby_Infura_RPC_URL + Infura_ProjectId ),
       network_id: network_id_rinkeby,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       gasPrice: Web3.utils.toWei("5", "gwei"),
@@ -122,10 +132,11 @@ module.exports =
 
     maticMumbaiTestnet:
     {
-      provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_URL + Matic_MedalVerse_Dev_01_ProjectId ),
+      provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_HTTPS_URL_1 + Matic_MedalVerse_Dev_01_ProjectId ),
       network_id: network_id_maticMumbaiTestnet,
-      confirmations: 4,
-      timeoutBlocks: 200,
+      confirmations: 6,
+      networkCheckTimeout: 30000,
+      timeoutBlocks: 30000,
       skipDryRun: true,
       gas: 6000000,
       gasPrice: 10000000000,
