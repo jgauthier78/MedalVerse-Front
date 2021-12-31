@@ -1,7 +1,7 @@
 /* React */
 import React from "react";
 
-/* Traduction */
+/* Translation */
 import { useTranslation } from 'react-i18next';
 // Changement de langue
 import i18n from '../utils/i18n';
@@ -10,7 +10,7 @@ import i18n from '../utils/i18n';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 
-/* Icônes */
+/* Icons */
 import { Flag, FlagFill } from 'react-bootstrap-icons';
 
 const Toolbar = ({ owner, connectedAccountAddr }) => {

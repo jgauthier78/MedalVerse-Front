@@ -78,7 +78,7 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks }) 
             <NavItem className="d-none d-lg-block ml-lg-4">
               {AppCallBacks.isConnected() ?
 
-                <Button className={textStyleRight} onClick={AppCallBacks.disconnect} >{"Déconnecter"}</Button>
+                <Button className={textStyleRight} onClick={AppCallBacks.disconnect} >{t("menu.LogoutButton")}</Button>
                 :
                 <Button className={textStyleRight} onClick={loginCallBack} >{t("menu.LoginButton")}</Button>
               }

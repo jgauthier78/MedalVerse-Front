@@ -16,6 +16,9 @@ import SecondBandeau from "./Landing/SecondBandeau";
 import TroisiemeBandeau from "./Landing/TroisiemeBandeau";
 import QuatriemeBandeau from "./Landing/QuatriemeBandeau";
 
+/* Icons */
+import { Wallet2 } from 'react-bootstrap-icons';
+
 // import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from '../../utils/did'
 
 class LandingPageWithTranslation extends Component {
@@ -115,8 +118,9 @@ class LandingPageWithTranslation extends Component {
 
                 </main>
                 <SimpleFooter />
-                {/*                <Dialog ref={(el) => { this.dialog = el }} /> */}
-                <SimpleModal title={t("LandingPage.walletConnect.title")} messageBody={t("LandingPage.walletConnect.body")} show={this.state.show} animation={false} />
+                {/*                <Dialog ref={(el) => { this.dialog = el }} />  t("LandingPage.walletConnect.title") */}
+                
+                <SimpleModal title={<div><Wallet2 style={{ verticalAlign: '-10%' } } /> {t("LandingPage.walletConnect.title")} </div>} messageBody={<div>{t("LandingPage.walletConnect.body")} </div>} show={this.state.show} animation={false} />
 
                 <ToastContainer />
             </Fragment >

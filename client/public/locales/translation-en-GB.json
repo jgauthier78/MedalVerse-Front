@@ -1,7 +1,15 @@
 {
+  "OrganizerSideBar" :{
+    "menu" : {
+      "organizerHome" : "Home",
+      "events" : "Events"
+    }
+  },
   "OrganizerEvent": {
     "athlete" : {
       "athletes" : "Athletes",
+      "competitors" : "Compétiteurs",
+      "won" : "won",
       "address" : "address",
       "action" : "action",
       "actions": {
@@ -17,7 +25,7 @@
   "LandingPage" :{
     "walletConnect": {
       "title" : "Connecting to wallet",
-      "body" : "loading"
+      "body" : "loading ..."
     }
   },
   "homePage": {
@@ -57,6 +65,7 @@
     "profile": "Profile",
     "simpleStorage": "Simple Storage",
     "LoginButton": "Login",
+    "LogoutButton": "Logout",
     "dropdown1": {
       "title": "Submenu",
       "home": "Home",

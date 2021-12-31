@@ -1,11 +1,12 @@
-import React, { Component } from "react";
+import React /*, { Component }*/ from "react";
 
 /* React - Bootstrap*/
 // import { Button, Card, Container } from "react-bootstrap";
-import { Card, Container, Row, Col, Table } from "react-bootstrap";
+import { Card, Container, Table } from "react-bootstrap";
+
 import Button from 'react-bootstrap/Button';
 
-import { withTranslation } from 'react-i18next';
+// import { withTranslation } from 'react-i18next';
 
 import { useParams } from "react-router-dom";
 
@@ -13,6 +14,11 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
+
+import { ZERO_ADDRESS_STRING } from  "../../../utils/CONSTS";
+
+/* Icons */
+import { Trophy } from 'react-bootstrap-icons';
 /*
 const Athletes = ({ registeredAthletes }) => (
     <div>
@@ -23,7 +29,7 @@ const Athletes = ({ registeredAthletes }) => (
 )
 */
 
-function EventLayout( { events /*userProfile, event*//*eventId*/} ) {
+function EventLayout( { events, AppCallBacks /*userProfile, event*//*eventId*/} ) {
     //   console.log(events)
     let params = useParams();
     // console.log(params.eventId)
@@ -32,14 +38,12 @@ function EventLayout( { events /*userProfile, event*//*eventId*/} ) {
     let event = events[params.eventId]
 
   //  event handler
-  const onHandleEventMedal = async ( athleteAdr ) =>
+  const onHandleEventMedalWinner = async ( eventId, athleteAdr ) =>
   {
     try
     {
-    //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
-    //   history.push('event')
-    // navigate('../event', {eventId:3} );
-    alert("onHandleEventMedal:"+athleteAdr)
+        console.log("onHandleEventMedalWinner: eventId="+eventId + " , athleteAdr= " + athleteAdr )
+        await AppCallBacks.setEventWinner(eventId, athleteAdr)
     } // try
     catch (error)
     {
@@ -65,7 +69,7 @@ function EventLayout( { events /*userProfile, event*//*eventId*/} ) {
 
     return (
         <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 ">
-            <Card>
+            <Card border="secondary">
                 <Card.Header>
                     <div className="d-flex justify-content-between my-auto">
                         <div className="d-flex flex-row align-items-center justify-content-center">
@@ -91,15 +95,18 @@ function EventLayout( { events /*userProfile, event*//*eventId*/} ) {
               </Card.Body>
 
             </Card>
-
-            <Card className="cardProfile shadow-sm ">
+            <Card border="secondary" className="cardProfile shadow-sm ">
+                <Card.Header as="h5">{t("OrganizerEvent.athlete.athletes")}</Card.Header>
                 <Card.Body>
-                    <Card.Title>{t("OrganizerEvent.athlete.athletes")}</Card.Title>
-                    <Card.Text>
-                        <Row className="container-fluid mt-4 mb-4">
+                    <Card.Title>{t("OrganizerEvent.athlete.competitors")}</Card.Title>
+
+{}
                         <Table  striped bordered hover >
                             <thead>
                                 <tr>
+                                    <th>
+                                    {t("OrganizerEvent.athlete.won")}
+                                    </th>
                                     <th>
                                     {t("OrganizerEvent.athlete.address")}
                                     </th>
@@ -111,17 +118,19 @@ function EventLayout( { events /*userProfile, event*//*eventId*/} ) {
                             <tbody>
                                 {event.registeredSportsMan.map((athleteAdr, idx) => (
                                 <tr key={idx}>
+                                    <td>{(event.winner === athleteAdr?<Trophy style={{ verticalAlign: '-10%' }} />:"")} </td>
                                     <td>{athleteAdr} </td>
-                                    <td><Button size="sm" onClick={() => onHandleEventMedal( athleteAdr ) } >{t("OrganizerEvent.athlete.actions.medal")}</Button></td>
+                                    { event.winner === ZERO_ADDRESS_STRING && // event.winner !== athleteAdr && // Display button : event has no winner
+                                    <td><Button variant="warning" size="sm" onClick={() => onHandleEventMedalWinner( event.eventId, athleteAdr ) } >{t("OrganizerEvent.athlete.actions.medal")}</Button></td>
+                                    }
                                 </tr>
                                 ))}
                             </tbody>
                         </Table>
-                        </Row>
-                    </Card.Text>
+{}
+
                 </Card.Body>
             </Card>
-
         </Container>
 
     ) 
