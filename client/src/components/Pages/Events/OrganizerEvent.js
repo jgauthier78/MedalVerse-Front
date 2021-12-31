@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
 
-//import { ZERO_ADDRESS_STRING } from  "../../../utils/CONSTS";
+import { ZERO_ADDRESS_STRING } from  "../../../utils/CONSTS";
 
 
 /* Icons */
@@ -29,7 +29,6 @@ const Athletes = ({ registeredAthletes }) => (
     </div>
 )
 */
-const ZERO_ADDRESS_STRING = "0x0"
 function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ }) {
     //   console.log(events)
     let params = useParams();
