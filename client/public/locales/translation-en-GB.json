@@ -6,6 +6,10 @@
     }
   },
   "OrganizerEvent": {
+    "actions" : {
+      "closeEvent" : "End event",
+      "medal": "medal"
+    },
     "athlete" : {
       "athletes" : "Athletes",
       "competitors" : "Compétiteurs",
@@ -13,14 +17,16 @@
       "address" : "address",
       "action" : "action",
       "actions": {
-        "medal": "medal"
+        "setWinner": "Set winner"
       }
     }
   },
   "OrganizerEvents": {
     "noEvent" : "No events",
     "title" : "Organized events",
-    "details" : "Details"
+    "details" : "Details",
+    "from" : "From",
+    "to" : "to"
   },
   "LandingPage" :{
     "walletConnect": {

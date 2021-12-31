@@ -51,7 +51,9 @@ class App extends Component {
             getUserMedals: this.getUserMedals,
             getOrganizerOrganisations: this.getOrganizerOrganisations,
             getUserDetails: this.getUserDetails,
-            setEventWinner: this.setEventWinner,
+            adminSetWinner: this.adminSetWinner,
+            adminAddMedal: this.adminAddMedal,
+            createNFT: this.createNFT,
 
             isConnected: this.isConnected,
             // getRoleString: this.getRoleString,
@@ -442,8 +444,8 @@ class App extends Component {
         return result;
     } // getOrganizerOrganisations
 
-    setEventWinner = async (eventId, athleteAdr) => {
-        console.log("App::setEventWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
+    adminSetWinner = async (eventId, athleteAdr) => {
+        console.log("App::adminSetWinner: eventId="+eventId + " athleteAdr="+ athleteAdr + " this.getAccounts()="+this.getAccounts())
         try {
             await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
             // Todo
@@ -453,9 +455,37 @@ class App extends Component {
             // Catch any errors for any of the above operations.
             this.handleError(error, true)
         } // catch
+    } // adminSetWinner
+    
+    adminAddMedal = async (eventId) => {
+        console.log("App::adminAddMedal: eventId=" +eventId + " this.getAccounts()=" + this.getAccounts() )
+        try {
+                // Create NFT
+                // await this.createNFT()
+                let adressNFT = 0
+                await this.state.contract.methods.adminAddMedal( eventId, adressNFT ).send({ from: this.getAccounts() })
+                // Todo
+                // Refresh data
+            }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+    } // adminAddMedal
 
-
-    } // setEventWinner
+    createNFT = async (/*Todo params*/) => {
+        console.log("App::createNFT: ")
+        try {
+                // Create NFT
+                await this.state.contract.methods.todo(/*Todo params*/).send({ from: this.getAccounts() })
+                // Todo
+                // Refresh data
+            }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+    } // adminAddMedal
 
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)

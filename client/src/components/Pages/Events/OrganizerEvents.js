@@ -63,8 +63,8 @@ const CarrousselItem = ({ organizerEvents }) => {
             <img src={event.organization.logoURI} alt={event.organization.name} className="w-100 d-block" />
             <div className="carousel-caption ">
                 <h3 className="text-white">{event.organization.name}</h3>
-                <div className="text-light bg-dark opacity-75 m-1">Du {format_TimeStampToStartDate(event.startDate)} au {format_TimeStampToEndDate(event.endDate)}</div>
-                <Button className="btn btn-primary btn-sm m-2" onClick={() => onHandleEventDetails( event ) } >{t("OrganizerEvents.details")}</Button>
+                <div className="text-light bg-dark opacity-75 m-1">{t("OrganizerEvents.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvents.to")} {format_TimeStampToEndDate(event.endDate)}</div>
+                <Button className="btn btn-dark btn-sm m-2 opacity-75" onClick={() => onHandleEventDetails( event ) } >{t("OrganizerEvents.details")}</Button>
             </div>
         </div>
     ))}
