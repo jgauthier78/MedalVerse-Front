@@ -438,7 +438,9 @@ class App extends Component {
     setEventWinner = async (eventId, athleteAdr) => {
         console.log("App::setEventWinner: eventId="+eventId + " athleteAdr="+athleteAdr + " this.getAccounts()="+this.getAccounts())
         try {
-            await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
+                await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
+                // Todo
+                // Refresh data
             }
         catch (error) {
             // Catch any errors for any of the above operations.

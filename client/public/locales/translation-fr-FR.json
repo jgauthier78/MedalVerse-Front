@@ -1,4 +1,10 @@
 {
+  "OrganizerSideBar" :{
+    "menu" : {
+      "organizerHome" : "Home",
+      "events" : "Evénements"
+    }
+  },
   "OrganizerEvent": {
     "athlete" : {
       "athletes" : "Athlètes",

@@ -2,8 +2,16 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container';
 // import ListGroup from 'react-bootstrap/ListGroup';
-import { NavDropdown, Nav, Navbar, NavItem } from "react-bootstrap";
-import ListGroup from 'react-bootstrap/ListGroup'
+// import { NavDropdown, Nav, Navbar, NavItem } from "react-bootstrap";
+// import ListGroup from 'react-bootstrap/ListGroup'
+import Button from 'react-bootstrap/Button'
+/* Translation */
+import { useTranslation } from 'react-i18next';
+
+
+/* Icons */
+import { PersonWorkspace, Calendar2Week } from 'react-bootstrap-icons';
+
 
 import {
     // Routes,
@@ -34,24 +42,36 @@ import {
 
 {*/}
 function OrganizerSideBarContent() {
+    const { t } = useTranslation();
     return (
-
-        <nav>
-            <ul>
-                <li>
-                    <Link to="/organizer">Organizer home</Link>
-                </li>
-                <li>
-                    <Link to="events">Evenements</Link>
-                </li>
-            </ul>
-        </nav>
-
-    );
+<Container className="d-grid gap-2">
+    <Link to="/organizer">
+            <Button size="sm" variant="secondary"><PersonWorkspace style={{verticalAlign: '-10%'}}/> {t("OrganizerSideBar.menu.organizerHome")}</Button>
+        </Link>
+        <Link to="events">
+            <Button size="sm"><Calendar2Week style={{verticalAlign: '-10%'}}/> {t("OrganizerSideBar.menu.events")}</Button>
+        </Link>
+</Container>
+);
 
 
 
 /*
+<div>
+    <div>
+        <Link to="/organizer">
+            <Button size="sm">Organizer home</Button>
+        </Link></div>
+    <div>
+        <Link to="events">
+            <Button size="sm">Evenements</Button>
+        </Link>
+    </div>
+</div>
+
+
+
+
         <Container className="text-dark" variant="bg-dark">
             <ListGroup>
             <ListGroup.Item><Link to="invoices">Evenements</Link> |{" "}</ListGroup.Item>
@@ -64,9 +84,9 @@ function OrganizerSideBarContent() {
 
 
 const OrganizerSideBar = () => (
-        <Col className="col-auto col-md-2 col-xl-1 px-sm-2 px-0 colored-Sidebar verticalSeparator-left ">
+        <Col className="col-auto  px-0 colored-Sidebar verticalSeparator-left ">
         <Row className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 sidebarText min-vh-100">
-            <Col ><OrganizerSideBarContent/></Col>
+            <OrganizerSideBarContent/>
             
         </Row>
         </Col>
