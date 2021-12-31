@@ -12,7 +12,9 @@ import RedirectTo from "./components/UIElements/RedirectTo";
 import "./styles/Main.css"
 import { ROLES } from "./utils/roles_CONSTS"
 import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from './utils/did'
+import { Alerts } from "./components/Alerts";
 
+import { format_TimeMsToDate } from './utils/dateUtils'
 // Translation
 // import i18n (needs to be bundled ;))
 import { I18nextProvider } from "react-i18next";
@@ -49,6 +51,8 @@ class App extends Component {
             getUserMedals: this.getUserMedals,
             getOrganizerOrganisations: this.getOrganizerOrganisations,
             getUserDetails: this.getUserDetails,
+            setEventWinner: this.setEventWinner,
+
             isConnected: this.isConnected,
             // getRoleString: this.getRoleString,
             disconnect: this.disconnect,
@@ -70,7 +74,10 @@ class App extends Component {
             userDetails: null,
             userMedals: null,
             userEvents: null,
-            userOrganizations: null
+            userOrganizations: null,
+            // Misc.
+            //  - Alerts
+            alertsList: []
         }
 
 
@@ -87,6 +94,7 @@ class App extends Component {
         let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations: this.state.userOrganizations, userMedals: this.state.userMedals, web3: this.state.web3 }
         return (
             <BrowserRouter >
+                <Alerts alertsList={this.state.alertsList} />
                 <Routes>
                     <Route exact path="/Gallerie/:id" element={
 
@@ -428,8 +436,23 @@ class App extends Component {
             }));
         }
         return result;
-    }
+    } // getOrganizerOrganisations
 
+    setEventWinner = async (eventId, athleteAdr) => {
+        console.log("App::setEventWinner: eventId="+eventId + " athleteAdr="+athleteAdr + " this.getAccounts()="+this.getAccounts())
+        try {
+                await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
+                // Todo
+                // Refresh data
+            }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+
+
+    } // setEventWinner
+    
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
     } // DID_init
@@ -468,6 +491,84 @@ class App extends Component {
         this.handleSaveUserProfile(profile)
     } // handleOrganizerSaveProfile
 
-}
+
+
+  /* ************************************
+    errorHandlers
+  
+   ************************************* */
+  /* -------------------------------
+    Smart contract errors
+   -------------------------------- */
+
+   handleError = (error, bLogToConsole, bshowAlertPopup) => {
+    // const { t } = this.props;
+    const { alertsList } = this.state;
+    let newAlert = {}
+
+    let now = new Date();
+    // newAlert.time = now.toLocaleDateString(t("Formats.date")) + " " +
+    //   new Intl.DateTimeFormat(t("Formats.date"), { hour: "numeric", minute: "numeric", second: "numeric", timeZoneName: "short" }).format()
+    newAlert.time = format_TimeMsToDate(now)
+
+    if (bLogToConsole) {
+      console.error(error);
+    }
+    if (bshowAlertPopup) {
+      //alert(t("Errors.default.title") + "\n" + error)
+      alert("Error\n" + error)
+      return
+    }
+
+    if (error.code !== undefined) {
+
+    //   if (error.code === 4001) {
+    //     newAlert.title = t("Errors.4001.title")
+    //     newAlert.variant = t("Errors.4001.variant")
+    //     newAlert.message = t("Errors.4001.message")
+    //   } // 4001
+    //   else {
+    //     newAlert.title = t("Errors.default.title")
+    //     newAlert.variant = t("Errors.default.variant")
+    //     newAlert.message = t("Errors.default.message")
+    //   } // default
+
+      if (error.message !== undefined) {
+        // newAlert.detail = truncateString(error.message, 50)
+        newAlert.detail = error.message
+      } // switch (error.code)
+    }
+    else {
+
+      if (error.title !== undefined) {
+        newAlert.title = error.title
+      }
+      else {
+        newAlert.title = "Error"//t("Errors.default.title")
+      }
+
+      if (error.level !== undefined) {
+        newAlert.variant = error.level
+      }
+      else {
+        newAlert.variant = "danger"//t("Errors.default.variant")
+      }
+
+      if (error.message !== undefined) {
+        newAlert.message = error.message;
+      } // error.message !== undefined
+      else {
+        newAlert.message = "Error"//t("Errors.default.message")
+      }
+      //  newAlert.detail = truncateString(error, 100)
+      newAlert.detail = error.message
+    } // else
+
+    const alertsListUpdated = [...alertsList, newAlert]
+    this.setState({ alertsList: alertsListUpdated })
+
+  } // handleError
+
+} // class App
 
 export default App;
