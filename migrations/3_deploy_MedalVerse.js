@@ -21,7 +21,7 @@ module.exports = async function (deployer, network, accounts) {
 
   console.log("----------------------------------------------------------")
   console.log("MedalVerse Deployed at " + MVerse.address)
-  console.log("MedalVerse Deployed at " + NFTArtist.address)
+  console.log("NFTArtist Deployed at " + NFTArtist.address)
 
 
   // Generates an public / private pair for fake sportsman / organizers
