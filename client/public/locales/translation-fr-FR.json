@@ -69,7 +69,8 @@
       "profile": "Profil",
       "simpleStorage": "Simple Storage"
     },
-    "LoginButton": "Se Connecter"
+    "LoginButton": "Se connecter",
+    "LogoutButton": "Se déconnecter"
   },
   "simpleStorageContract": {
     "title": "Prêt",

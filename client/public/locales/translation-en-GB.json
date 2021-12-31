@@ -65,6 +65,7 @@
     "profile": "Profile",
     "simpleStorage": "Simple Storage",
     "LoginButton": "Login",
+    "LogoutButton": "Logout",
     "dropdown1": {
       "title": "Submenu",
       "home": "Home",
