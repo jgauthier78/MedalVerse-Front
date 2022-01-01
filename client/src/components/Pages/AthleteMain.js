@@ -44,7 +44,7 @@ class SporstmanMain extends Component {
 
 
                                 <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
-                                <MedalShow />
+                                <MedalShow userProfile={this.props.userProfile} />
                                 <EventsSubscribedAthlete userProfile={this.props.userProfile} />
                                 <MedalAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
                                 <GallerieAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />

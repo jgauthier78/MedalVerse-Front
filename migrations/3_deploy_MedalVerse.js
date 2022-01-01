@@ -13,7 +13,7 @@ module.exports = async function (deployer, network, accounts) {
   const ACCOUNT_CONTRACT_OWNER = accounts[0]
 
   await deployer.deploy(MedalVerse, { from: ACCOUNT_CONTRACT_OWNER });
-  await deployer.deploy(nftMedal, {from: ACCOUNT_CONTRACT_OWNER});
+  await deployer.deploy(nftMedal, { from: ACCOUNT_CONTRACT_OWNER });
 
   let MVerse = await MedalVerse.deployed()
   let NFTArtist = await nftMedal.deployed()
@@ -34,20 +34,20 @@ module.exports = async function (deployer, network, accounts) {
 
 
   // 
-
+  let nftCounter = 1
   async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
     // Local static counter for NFTs IDs
-    const createNFT_initial_counter_value = 1
-    createNFT.counter = createNFT.counter || createNFT_initial_counter_value;
+
+
 
     let medal = await nftMedal.new()
     let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
     await medal.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
 
-    await nft.mintCup(createNFT.counter, { from: ACCOUNT_CONTRACT_OWNER });
+    await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
 
-    createNFT.counter++
+    nftCounter++
     return nft;
   }
 
@@ -179,14 +179,30 @@ module.exports = async function (deployer, network, accounts) {
   console.log(".")
 
 
+  async function setWinner(rcup, eventId, sporsmanId, organizerId) {
+    await MVerse.adminSetWinner(eventId, sporsmanId, { from: organizerId })
+    // Il affecte la médaille au sportif vainqueur de l'évènement 
+    await MVerse.adminAddMedal(eventId, rcup.address, { from: organizerId })
+  }
+
   // population de récompenses
   // L'organisateur 01 créée un NFT
   // createNFT( nftOrganization, nftName, nftSymbol, name, img, account)
   let rcup = await createNFT("Running Cup", "Running Nft", "RuNFT", "François Coste", "/img/medals/medal0.jpg", ACCOUNT_ORGANIZER_01)
+  await setWinner(rcup, EVENT_ONE, ACCOUNT_ATHLETE_01, ACCOUNT_ORGANIZER_01)
+
+  let rcup1 = await createNFT("Motocross Cup", "Motocross Nft", "McNFT", "François Coste", "/img/medals/medal1.jpg", ACCOUNT_ORGANIZER_01)
+  await setWinner(rcup1, EVENT_TWO, ACCOUNT_ATHLETE_01, ACCOUNT_ORGANIZER_01)
+
+  /*  let rcup2 = await createNFT("Tennis Cup", "Tennis Nft", "TNFT", "François Coste", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
+    await setWinner(rcup2, EVENT_THREE, ACCOUNT_ATHLETE_01, ACCOUNT_ORGANIZER_01)
+  */
+
+
   // Il déclare le gagnant de l'évènement 01
-  await MVerse.adminSetWinner(EVENT_ONE, ACCOUNT_ATHLETE_01, { from: ACCOUNT_ORGANIZER_01 })
+  // await MVerse.adminSetWinner(EVENT_ONE, ACCOUNT_ATHLETE_01, { from: ACCOUNT_ORGANIZER_01 })
   // Il affecte la médaille au sportif vainqueur de l'évènement 
-  await MVerse.adminAddMedal(EVENT_ONE, rcup.address, { from: ACCOUNT_ORGANIZER_01 })
+  // await MVerse.adminAddMedal(EVENT_ONE, rcup.address, { from: ACCOUNT_ORGANIZER_01 })
 
   console.log("done.")
 
