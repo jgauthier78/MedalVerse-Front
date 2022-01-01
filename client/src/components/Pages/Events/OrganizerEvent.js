@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
 
-import { ZERO_ADDRESS_STRING } from "../../../utils/consts";
+import { ZERO_ADDRESS_STRING } from "../../../utils/CONSTS";
 
 
 /* Icons */
