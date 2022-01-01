@@ -10,12 +10,7 @@
     "web3": "^1.6.1"
   },
   "dependencies": {
-    "@3id/connect": "^0.2.5",
-    "@ceramicnetwork/3id-did-resolver": "^1.4.12",
-    "@ceramicnetwork/http-client": "^1.5.3",
-    "@ceramicstudio/idx": "^0.12.2",
     "crypto": "^1.0.1",
-    "dids": "^2.4.3",
     "ethers": "^5.5.2",
     "i": "^0.3.7",
     "npm": "^8.3.0"
