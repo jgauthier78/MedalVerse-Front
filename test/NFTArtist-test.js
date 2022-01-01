@@ -16,12 +16,16 @@ contract('NFTArtist', function (accounts) {
     })
     // Mint --------------
     it("mint D'un NFT Artiste et vérification de ça structure", async function () {
+        // Mint NFTArtist
         await this.NFTArtistInstance.mintNFTArtist(name, Uri, {from: user});
+
+        // Define the variables to be checked
         let balance = new BN(await this.NFTArtistInstance.balanceOf(user)); 
 
         //Check 
         expect(balance).to.be.bignumber.equal(number)
 
+        // Define the variables to be checked
         let NFT = await this.NFTArtistInstance.NFTByOwner(user, number);
 
         //Check
