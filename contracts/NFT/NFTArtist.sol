@@ -11,50 +11,72 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 	using Counters for Counters.Counter;
 	Counters.Counter private _tokenIds;
 
+    constructor() ERC721("MedalVerse", "MDV") {
+	}
+
 	struct NFT {
-		string name;
-		uint tokenId;
-		address creator;
-		string imgPath;
+		string name; // Name of NFT
+		uint tokenId; // TokenID of NFT
+		address creator; // Creator of NFT
+		string imgPath; // Image path for nft
 	}
 
+    // Data --------------------------------
 	// mapping(uint=>NFT) public NFTs;
-    mapping(address=>mapping(uint=>NFT)) public NFTByOwner;
+    mapping(address=>mapping(uint=>NFT)) public NFTByOwner; // Associate the owner address with the token id associated with the NFT structure
 
-	constructor() ERC721("MedalVerse", "MDV") {
+    // Events ---------------------------------
+    event nftMint(address owner, string name, uint tokenId );
+
+    // Modifiers ----------------------------
+    ///@dev Check that the address is not zero
+    modifier isNotNull(address a) virtual {
+		require(a != address(0));
+		_;
 	}
-
-	///@dev Mint the selected number of NFT Medaille
+	
+    // Methods -------------------------------
+	///@dev Mint NFTArtist
 	///@param name Name of the structure NFT 
     ///@param Uri Path to Image
 	function mintNFTArtist(string memory name, string memory Uri) public {
 		
-			_tokenIds.increment();
-			uint256 newNFTArtistId = _tokenIds.current();
-			_mint(msg.sender, newNFTArtistId);
-			_setTokenURI(newNFTArtistId, Uri);
-			NFTByOwner[msg.sender][newNFTArtistId].name = name;
-			NFTByOwner[msg.sender][newNFTArtistId].tokenId = newNFTArtistId;
-			NFTByOwner[msg.sender][newNFTArtistId].creator = msg.sender;
-			NFTByOwner[msg.sender][newNFTArtistId].imgPath = Uri;
+			_tokenIds.increment(); // Define the TokenId
+			uint256 NFTArtistId = _tokenIds.current(); // Define the id of the NFTArtist in relation to this variable TokenIds
+			_mint(msg.sender, NFTArtistId); // Mint the NFT 
+			_setTokenURI(NFTArtistId, Uri); // Set URI for this id
+
+            // Defined the structure of the NFT by are id associated with the owner address
+			NFTByOwner[msg.sender][NFTArtistId].name = name;
+			NFTByOwner[msg.sender][NFTArtistId].tokenId = NFTArtistId;
+			NFTByOwner[msg.sender][NFTArtistId].creator = msg.sender;
+			NFTByOwner[msg.sender][NFTArtistId].imgPath = Uri;
 			// NFTs[newNFTArtistId].name = name;
             // NFTs[newNFTArtistId].tokenId = newNFTArtistId;
             // NFTs[newNFTArtistId].creator = msg.sender;
             // NFTs[newNFTArtistId].imgPath = Uri;
 
+            emit nftMint(msg.sender, name, NFTArtistId);
 		
 	}
 
+    ///@dev Modifies the structure and the mapping after a transfer
+    ///@param from NFT owner address
+    ///@param to address receiving the NFT
+    ///@param tokenId Token ID to transfer
 	function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
-        override(ERC721, ERC721Enumerable)
+        override(ERC721, ERC721Enumerable) isNotNull(to)
     {
         super._beforeTokenTransfer(from, to, tokenId);
+
+        // Modify the mapping
         NFTByOwner[to][tokenId].name = NFTByOwner[from][tokenId].name;
         NFTByOwner[to][tokenId].tokenId = NFTByOwner[from][tokenId].tokenId;
         NFTByOwner[to][tokenId].creator =  NFTByOwner[from][tokenId].creator;
         NFTByOwner[to][tokenId].imgPath = NFTByOwner[from][tokenId].imgPath;
 
+        // remove the old mapping
         delete  NFTByOwner[from][tokenId].name;
         delete  NFTByOwner[from][tokenId].tokenId;
         delete  NFTByOwner[from][tokenId].creator;
@@ -76,6 +98,8 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         super._burn(tokenId);
     }
 
+    ///@return Returns the URI of the NFT associated with its ID
+    ///@param tokenId Token ID to view
     function tokenURI(uint256 tokenId)
         public
         view
