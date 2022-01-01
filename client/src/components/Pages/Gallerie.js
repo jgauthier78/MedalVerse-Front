@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Reveal from "reveal.js"
 import { Markdown } from "reveal.js/plugin/markdown/markdown"
 import "reveal.js/dist/reveal.css"
-import "reveal.js/dist/theme/black.css"
+import "reveal.js/dist/theme/sky.css"
 import Appearance from "reveal.js-appearance/plugin/appearance/appearance"
 import { format_Date } from "../../utils/dateUtils";
 

@@ -10,6 +10,7 @@ import { Navigate } from "react-router-dom";
 import EventsSubscribedAthlete from "./Events/EventsSubscribedAthlete"
 import MedalAthlete from "./Medals/MedalAthlete"
 import GallerieAthlete from "./Medals/GallerieAthlete"
+import MedalShow from "./Medals/MedalShow";
 class SporstmanMain extends Component {
 
     constructor(props) {
@@ -39,11 +40,15 @@ class SporstmanMain extends Component {
                         <Row>
                             <SporstmanSideBar />
                             <Col >
-                                <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
 
+
+
+                                <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
+                                <MedalShow />
                                 <EventsSubscribedAthlete userProfile={this.props.userProfile} />
                                 <MedalAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
                                 <GallerieAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
+
                                 <SimpleFooter />
                             </Col>
 

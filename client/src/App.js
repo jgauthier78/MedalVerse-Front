@@ -445,7 +445,7 @@ class App extends Component {
     } // getOrganizerOrganisations
 
     adminSetWinner = async (eventId, athleteAdr) => {
-        console.log("App::adminSetWinner: eventId="+eventId + " athleteAdr="+ athleteAdr + " this.getAccounts()="+this.getAccounts())
+        console.log("App::adminSetWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
         try {
             await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
             // Todo
@@ -456,17 +456,17 @@ class App extends Component {
             this.handleError(error, true)
         } // catch
     } // adminSetWinner
-    
+
     adminAddMedal = async (eventId) => {
-        console.log("App::adminAddMedal: eventId=" +eventId + " this.getAccounts()=" + this.getAccounts() )
+        console.log("App::adminAddMedal: eventId=" + eventId + " this.getAccounts()=" + this.getAccounts())
         try {
-                // Create NFT
-                // await this.createNFT()
-                let adressNFT = 0
-                await this.state.contract.methods.adminAddMedal( eventId, adressNFT ).send({ from: this.getAccounts() })
-                // Todo
-                // Refresh data
-            }
+            // Create NFT
+            // await this.createNFT()
+            let adressNFT = 0
+            await this.state.contract.methods.adminAddMedal(eventId, adressNFT).send({ from: this.getAccounts() })
+            // Todo
+            // Refresh data
+        }
         catch (error) {
             // Catch any errors for any of the above operations.
             this.handleError(error, true)
@@ -476,11 +476,11 @@ class App extends Component {
     createNFT = async (/*Todo params*/) => {
         console.log("App::createNFT: ")
         try {
-                // Create NFT
-                await this.state.contract.methods.todo(/*Todo params*/).send({ from: this.getAccounts() })
-                // Todo
-                // Refresh data
-            }
+            // Create NFT
+            await this.state.contract.methods.todo(/*Todo params*/).send({ from: this.getAccounts() })
+            // Todo
+            // Refresh data
+        }
         catch (error) {
             // Catch any errors for any of the above operations.
             this.handleError(error, true)
