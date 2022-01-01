@@ -58,7 +58,7 @@ contract('MedalVerse', function (accounts) {
 
     let details = await this.MedalVerseInstance.getCreationList(0, 0);
     // check
-    expect(new BN(1200)).to.be.bignumber.equal(price);
+    expect(new BN(details.price)).to.be.bignumber.equal(price);
     expect(details.URI).to.equal(URI);
     expect(details.author).to.equal(recipient);
   });
