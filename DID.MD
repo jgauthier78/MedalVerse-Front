@@ -39,13 +39,13 @@ definitionID -> enregistrement (record) + schema JSON (definition)
 tout ces objets sont des "stream" enregistrés sur Ceramic
 
 
-npm i @3id/connect --save-dev
-npm i @ceramicnetwork/3id-did-resolver --save-dev
-npm i @ceramicnetwork/http-client --save-dev
-npm i dids --save-dev
+npm i @3id/connect
+npm i @ceramicnetwork/3id-did-resolver
+npm i @ceramicnetwork/http-client
+npm i dids
 
 encore valable mais déprécié:
-npm i @ceramicstudio/idx --save-dev
+npm i @ceramicstudio/idx
 
 a remplacer par
 @datamodels
@@ -53,7 +53,7 @@ a remplacer par
 Nécessite ES2020 -> Utiliser React avec le template Typescript
 https://github.com/facebook/create-react-app/releases/tag/v3.3.0
 
-npm i @3id/connect npm i @ceramicnetwork/3id-did-resolver npm i @ceramicnetwork/http-client npm i dids npm i @ceramicstudio/idx --save-dev
+npm i @3id/connect @ceramicnetwork/3id-did-resolver @ceramicnetwork/http-client dids @ceramicstudio/idx
 
 
 https://blog.ceramic.network/the-next-architecture-for-building-web3-data-applications/
