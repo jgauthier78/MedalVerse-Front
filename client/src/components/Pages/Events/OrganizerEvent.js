@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
 
-import { ZERO_ADDRESS_STRING } from  "../../../utils/CONSTS";
+import { ZERO_ADDRESS_STRING } from "../../../utils/consts";
 
 
 /* Icons */
@@ -37,54 +37,45 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
     const { t } = useTranslation();
     let event = events[params.eventId]
 
-  //  event handler
-  const onHandleEventMedalWinner = async ( eventId, athleteAdr ) =>
-  {
-    try
-    {
-        console.log("onHandleEventMedalWinner: eventId=" + eventId + " , athleteAdr= " + athleteAdr )
-        await AppCallBacks.adminSetWinner(eventId, athleteAdr)
-    } // try
-    catch (error)
-    {
-        console.error(error)
-    } // catch
-  } // onHandleEventMedal
+    //  event handler
+    const onHandleEventMedalWinner = async (eventId, athleteAdr) => {
+        try {
+            console.log("onHandleEventMedalWinner: eventId=" + eventId + " , athleteAdr= " + athleteAdr)
+            await AppCallBacks.adminSetWinner(eventId, athleteAdr)
+        } // try
+        catch (error) {
+            console.error(error)
+        } // catch
+    } // onHandleEventMedal
 
-  //  event handler
-  const onHandleEventClose = async ( eventId ) =>
-  {
-    try
-    {
-    //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
-    //   history.push('event')
-    // navigate('../event', {eventId:3} );
-    alert("onHandleEventClose:"+eventId)
-    } // try
-    catch (error)
-    {
-        console.error(error)
-    } // catch
-  } // onHandleEventDetails
+    //  event handler
+    const onHandleEventClose = async (eventId) => {
+        try {
+            //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
+            //   history.push('event')
+            // navigate('../event', {eventId:3} );
+            alert("onHandleEventClose:" + eventId)
+        } // try
+        catch (error) {
+            console.error(error)
+        } // catch
+    } // onHandleEventDetails
 
-  //  event handler
-  const onHandleEventAddMedal = async ( eventId ) =>
-  {
-    try
-    {
-        console.log("onHandleEventAddMedal: eventId=" + eventId  )
-        await AppCallBacks.adminAddMedal(eventId,)
-        
-    //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
-    //   history.push('event')
-    // navigate('../event', {eventId:3} );
-    alert("onHandleEventClose:"+eventId)
-    } // try
-    catch (error)
-    {
-        console.error(error)
-    } // catch
-  } // onHandleEventAddMedal
+    //  event handler
+    const onHandleEventAddMedal = async (eventId) => {
+        try {
+            console.log("onHandleEventAddMedal: eventId=" + eventId)
+            await AppCallBacks.adminAddMedal(eventId,)
+
+            //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
+            //   history.push('event')
+            // navigate('../event', {eventId:3} );
+            alert("onHandleEventClose:" + eventId)
+        } // try
+        catch (error) {
+            console.error(error)
+        } // catch
+    } // onHandleEventAddMedal
 
     return (
         <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 ">
@@ -99,52 +90,52 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
                             </div>
                         </div>
                     </div>
-              </Card.Header>
+                </Card.Header>
 
-              <Card.Body>
-                <Card.Title>Actions</Card.Title>
-                <Card.Text>
-                {
-                    // event.activ && event.started && !event.ended 
-                    true
-                    &&
-                    <Button className="ml-1" variant="warning" onClick={() => onHandleEventClose( event.eventId ) }>{t("OrganizerEvent.actions.closeEvent")}</Button>
-                }
-                {
-                    // event.activ && event.started && event.ended 
-                    true
-                    &&
-                    <Button className="ml-1" variant="warning" onClick={() => onHandleEventAddMedal( event.eventId ) }>{t("OrganizerEvent.actions.medal")}</Button>
-                }
-                </Card.Text>
-              </Card.Body>
+                <Card.Body>
+                    <Card.Title>Actions</Card.Title>
+                    <Card.Text>
+                        {
+                            // event.activ && event.started && !event.ended 
+                            true
+                            &&
+                            <Button className="ml-1" variant="warning" onClick={() => onHandleEventClose(event.eventId)}>{t("OrganizerEvent.actions.closeEvent")}</Button>
+                        }
+                        {
+                            // event.activ && event.started && event.ended 
+                            true
+                            &&
+                            <Button className="ml-1" variant="warning" onClick={() => onHandleEventAddMedal(event.eventId)}>{t("OrganizerEvent.actions.medal")}</Button>
+                        }
+                    </Card.Text>
+                </Card.Body>
 
             </Card>
-            <br/>
+            <br />
             <Card border="secondary" className="cardProfile shadow-sm ">
                 <Card.Header as="h5">{t("OrganizerEvent.athlete.athletes")}</Card.Header>
                 <Card.Body>
                     <Card.Title>{t("OrganizerEvent.athlete.competitors")}</Card.Title>
-                        <Table striped bordered hover variant="secondary" size="sm">
-                            <thead>
-                                <tr>
-                                    <th>{t("OrganizerEvent.athlete.won")}</th>
-                                  <th>{t("OrganizerEvent.athlete.address")}</th>
-                                    <th>{t("OrganizerEvent.athlete.action")}</th>
-                                </tr>
-                            </thead>
+                    <Table striped bordered hover variant="secondary" size="sm">
+                        <thead>
+                            <tr>
+                                <th>{t("OrganizerEvent.athlete.won")}</th>
+                                <th>{t("OrganizerEvent.athlete.address")}</th>
+                                <th>{t("OrganizerEvent.athlete.action")}</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             {event.registeredSportsMan.map((athleteAdr, idx) => (
                                 <tr key={idx}>
                                     <td>{(event.winner === athleteAdr ? <Trophy style={{ verticalAlign: '-10%' }} /> : "")} </td>
                                     <td>{athleteAdr} </td>
-                                    { event.winner === ZERO_ADDRESS_STRING && // event.winner !== athleteAdr && // Display button : event has no winner
-                                    <td><Button variant="warning" size="sm" onClick={() => onHandleEventMedalWinner( event.eventId, athleteAdr ) } >{t("OrganizerEvent.athlete.actions.setWinner")}</Button></td>
+                                    {event.winner === ZERO_ADDRESS_STRING && // event.winner !== athleteAdr && // Display button : event has no winner
+                                        <td><Button variant="warning" size="sm" onClick={() => onHandleEventMedalWinner(event.eventId, athleteAdr)} >{t("OrganizerEvent.athlete.actions.setWinner")}</Button></td>
                                     }
                                 </tr>
-                                ))}
-                            </tbody>
-                        </Table>
+                            ))}
+                        </tbody>
+                    </Table>
                 </Card.Body>
             </Card>
         </Container>
