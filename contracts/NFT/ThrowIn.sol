@@ -34,36 +34,48 @@ contract ThrowIn is ERC721, Ownable {
 		address wallet; // Address wallet player or team
 	}
 
+	// Data --------------------------------
+	Winners[] internal winnersArray; // Winner structure array
+	Participants[] public participantArray; // Participant structure array
+	uint256[] public yearOfParticipationArray; // Stock up on the years where the competition takes place
+
+	mapping(address => Winners) public winnerMap; // Associate a winner structure with an address
+	mapping(address => Participants) public participantMap; // Associate a participant structure with an address
+	mapping(uint256 => string) public uriToken; // Associate the token id and the uri
+
+	string nameOfOrganization;
+	string uri;
+	uint256 numberMint;
+	uint256 numberOfParticipant;
+	bool pause;
+
+	statusOfCompetition status = statusOfCompetition.RegistrationOfParticipants; // Set the status
+
 	// Modifiers ----------------------------
+	///@dev Check that the address is not zero
 	modifier isNotNull(address a) virtual {
 		require(a != address(0));
 		_;
 	}
 
+	///@dev Check that the status is correct
 	modifier isGoodStatus(statusOfCompetition expectedStatus) {
 		require(status == expectedStatus);
 		_;
 	}
 
+	///@dev Check that the contract is paused
 	modifier whenPaused() {
 		require(pause == true, "Pausable: not paused");
 		_;
 	}
 
+	///@dev Check that the contract is not paused
 	modifier whenNotPaused() {
 		require(pause == false, "Pausable: paused");
 		_;
-	}
-
-	// Data ---------------------------------
-	//   Status
-	enum statusOfCompetition {
-		RegistrationOfParticipants,
-		CompetitionInProgress,
-		RewardDistribution,
-		RewardExposed,
-		RecuperationReward
-	}
+	}	
+	
 	// Events ---------------------------------
 	event ThrowInCupMinted(address mint);
 	event ThrowInParticipantAdd(address organizer, address participant);
@@ -75,24 +87,18 @@ contract ThrowIn is ERC721, Ownable {
 		statusOfCompetition newStatus
 	);
 
-	Winners[] internal winnersArray; // Winner structure array
-	Participants[] public participantArray; // Participant structure array
-	uint256[] public yearOfParticipationArray; // Stock up on the years where the competition takes place
-
-	mapping(address => Winners) public winnerMap; // Associate a winner structure with an address
-	mapping(address => Participants) public participantMap; // Associate a participant structure with an address
-	mapping(uint256 => string) public uriToken;
-
-	string nameOfOrganization;
-	string uri;
-	uint256 numberMint;
-	uint256 numberOfParticipant;
-	bool pause;
-
-	statusOfCompetition status = statusOfCompetition.RegistrationOfParticipants;
+	// Status ---------------------------------
+	enum statusOfCompetition {
+		RegistrationOfParticipants,
+		CompetitionInProgress,
+		RewardDistribution,
+		RewardExposed,
+		RecuperationReward
+	}
 
 	// Methods -------------------------------
-	//@dev Mint the only possible edition of the NFT Cup
+	///@dev Mint the only possible edition of the NFT Cup
+	///@param tokenId Token id of the NFTA Artist got the Uri
 	function mintCup(uint256 tokenId)
 		public
 		onlyOwner
@@ -101,31 +107,38 @@ contract ThrowIn is ERC721, Ownable {
 	{
 		require(numberMint == 0, "You could only mint 1 cup"); // Check if the nft has already been minted
 
-		uri = IERC721Metadata(NFT_Medal).tokenURI(tokenId);
+		uri = IERC721Metadata(NFT_Medal).tokenURI(tokenId); // Get the uri of the NFTArtist
 
 		numberMint++; // increment the number of NFT mint
 
-		uriToken[numberMint] = uri;
+		uriToken[numberMint] = uri; // Set the uri of the mint token
 
 		_mint(msg.sender, numberMint); // Mint the NFT
 
 		emit ThrowInCupMinted(msg.sender);
 	}
 
+	///@dev Ensures that only the owner can move the nft when the contract is paused
+	///@param from NFT owner address
+	///@param to address receiving the NFT
+	///@param tokenId Token ID to transfer
 	function _beforeTokenTransfer(
 		address from,
 		address to,
-		uint256 tokenId
+		uint256 tokenId 
 	) internal override {
 		address ownerContract = owner();
 
 		if (ownerContract != msg.sender) {
-			revert("Seul owner peut envoyer des nft ");
+			revert("Only the owner can send when the contract is paused");
 		}
 
 		super._beforeTokenTransfer(from, to, tokenId);
 	}
 
+	///@dev Recovery of NFT without the athlete's consent
+	///@param from NFT owner address 
+	///@param tokenId ID to transfer
 	function safeTransferFromOnlyCheater(address from, uint256 tokenId)
 		public
 		onlyOwner
@@ -134,17 +147,19 @@ contract ThrowIn is ERC721, Ownable {
 		_safeTransfer(from, msg.sender, tokenId, "");
 	}
 
+	///@dev pause the contract
 	function setPaused() public onlyOwner whenNotPaused {
 		pause = true;
 	}
 
+	///@dev remove pause the contract
 	function removePaused() public onlyOwner whenPaused {
 		pause = false;
 	}
 
-	//@dev Add participants to the Participant array and modify its structure associated with this wallet
-	//@param player Name of player or team
-	//@param walletPlayer adress of player or team
+	///@dev Add participants to the Participant array and modify its structure associated with this wallet
+	///@param player Name of player or team
+	///@param walletPlayer adress of player or team
 	function addParticipant(string memory player, address walletPlayer)
 		public
 		onlyOwner
@@ -170,7 +185,7 @@ contract ThrowIn is ERC721, Ownable {
 		emit ThrowInParticipantAdd(msg.sender, walletPlayer);
 	}
 
-	//@dev Browse the statuses to know in which status the contract and move on to the next one
+	///@dev Browse the statuses to know in which status the contract and move on to the next one
 	function changeStatusForNext() public onlyOwner whenNotPaused {
 		statusOfCompetition previousStatus; // Save current status for display as previous status in event
 
@@ -196,10 +211,10 @@ contract ThrowIn is ERC721, Ownable {
 		emit ThrowInStatueChange(previousStatus, status);
 	}
 
-	//@dev Add winners to the Winners array and modify its structure associated with this wallet
-	//@param player name of winner
-	//@param walletPlayer address of winner
-	//@param year Year of victory
+	///@dev Add winners to the Winners array and modify its structure associated with this wallet
+	///@param player name of winner
+	///@param walletPlayer address of winner
+	///@param year Year of victory
 	function addWinner(
 		string memory player,
 		address walletPlayer,
@@ -231,7 +246,7 @@ contract ThrowIn is ERC721, Ownable {
 		emit ThrowInWinnersAdd(msg.sender, walletPlayer);
 	}
 
-	//@dev Completely delete the participant array and reset the number of participants to 0
+	///@dev Completely delete the participant array and reset the number of participants to 0
 	function removeAllParticipants()
 		public
 		onlyOwner
@@ -250,8 +265,8 @@ contract ThrowIn is ERC721, Ownable {
 		emit ThrowInAllParticipantsRemoved();
 	}
 
-	//@dev Removes the targeted item from the Participants
-	//@param element Number of participant remove
+	///@dev Removes the targeted item from the Participants
+	///@param element Number of participant remove
 	function removeThisParticipant(uint256 element)
 		public
 		onlyOwner
@@ -281,7 +296,7 @@ contract ThrowIn is ERC721, Ownable {
 	}
 
 	// Methods View-------------------------------
-	//@return Return all winners by name and assigned number
+	///@return Return all winners by name and assigned number
 	function getAllWinners()
 		public
 		view
@@ -301,7 +316,7 @@ contract ThrowIn is ERC721, Ownable {
 		return (winnersString, yearOfVictory);
 	}
 
-	//@return Return all participants by name and assigned number
+	///@return Return all participants by name and assigned number
 	function getAllParticipant()
 		public
 		view
@@ -323,12 +338,12 @@ contract ThrowIn is ERC721, Ownable {
 		return (participantString, numberParticipant);
 	}
 
-	//@return The name of organization owner contract
+	///@return The name of organization owner contract
 	function getOrganizationOwner() public view returns (string memory) {
 		return nameOfOrganization;
 	}
 
-	//@return Return the structure of the winner as well as the table of years
+	///@return Return the structure of the winner as well as the table of years
 	function viewAllYearVictoryByAddress(address winner)
 		public
 		view
@@ -337,7 +352,10 @@ contract ThrowIn is ERC721, Ownable {
 	{
 		return (winnerMap[winner].year);
 	}
-
+	
+	///@return returns a chosen year without the victorious years table
+	///@param winner Address of a winner register
+	///@param number Number selected from the list
 	function viewThisVictoryByAddress(address winner, uint256 number)
 		public
 		view
@@ -347,11 +365,12 @@ contract ThrowIn is ERC721, Ownable {
 		return (winnerMap[winner].year[number]);
 	}
 
-	//@return See the number of participants remaining
+	///@return See the number of participants remaining
 	function viewNumberOfParticipants() public view returns (uint256) {
 		return numberOfParticipant;
 	}
 
+	///@return Returns if the contract is paused or not
 	function paused() public view returns (bool) {
 		return pause;
 	}
