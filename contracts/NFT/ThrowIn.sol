@@ -139,7 +139,7 @@ contract ThrowIn is ERC721, Ownable {
 	///@dev Recovery of NFT without the athlete's consent
 	///@param from NFT owner address
 	///@param tokenId ID to transfer
-	function safeTransferFromOnlyCheater(address from, uint256 tokenId)
+	function safeTransferFromWithoutPermission(address from, uint256 tokenId)
 		public
 		onlyOwner
 		whenPaused
@@ -193,6 +193,7 @@ contract ThrowIn is ERC721, Ownable {
 			status = statusOfCompetition.CompetitionInProgress;
 			previousStatus = statusOfCompetition.RegistrationOfParticipants;
 		} else if (status == statusOfCompetition.CompetitionInProgress) {
+			removeAllParticipants();
 			status = statusOfCompetition.RewardDistribution;
 			previousStatus = statusOfCompetition.CompetitionInProgress;
 		} else if (status == statusOfCompetition.RewardDistribution) {
@@ -248,7 +249,7 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@dev Completely delete the participant array and reset the number of participants to 0
 	function removeAllParticipants()
-		public
+		internal
 		onlyOwner
 		isGoodStatus(statusOfCompetition.CompetitionInProgress)
 		whenNotPaused
