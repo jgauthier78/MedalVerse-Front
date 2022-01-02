@@ -50,7 +50,7 @@ const MedalSlides = ({ web3, mdl }) => {
                     return (
 
                         < section data-transition="slide" key={indx} >
-                            <img src={mdl.uriList[0]} style={{ width: 128 + 'px', height: "auto" }} />
+                            <img src={mdl.uriList[indx]} style={{ width: 256 + 'px', height: "auto" }} />
                             <h4>{ml.org} </h4>
                             <h6>{(format_Date(ml.event.endDate)).toString()}</h6>
 

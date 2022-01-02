@@ -333,7 +333,7 @@ class App extends Component {
 
 
             let medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
-            let img = await medalContract.methods.uriToken(i + 1).call()
+            let img = await medalContract.methods.uriToken(1).call()
             result.uriList.push(img)
             result.Medals.push(medal)
 

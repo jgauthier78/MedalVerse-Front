@@ -50,13 +50,16 @@ function AnimStack({ usrProfile, setString }) {
                 </div>
             </div>
             <div className="MedalShow-PlayField">
-                {props.map(({ x, y, rot, scale }, i) => (
+                {props.map(({ x, y, rot, scale }, i) => {
+                    console.log(usrProfile.userMedals.uriList)
+                    return (
 
-                    <animated.div className="MedalShow-Container" key={i} style={{ transform: interpolate([x, y], (x, y) => `translate3d(${x}px,${y}px,0)`) }}>
+                        <animated.div className="MedalShow-Container" key={i} style={{ transform: interpolate([x, y], (x, y) => `translate3d(${x}px,${y}px,0)`) }}>
 
-                        <animated.div className="MedalShow-Stack" {...bind(i)} style={{ transform: interpolate([rot, scale], trans), backgroundImage: `url(${usrProfile.userMedals.uriList[i]})` }} />
-                    </animated.div>
-                ))}
+                            <animated.div className="MedalShow-Stack" {...bind(i)} style={{ transform: interpolate([rot, scale], trans), backgroundImage: `url(${usrProfile.userMedals.uriList[i]})` }} />
+                        </animated.div>
+                    )
+                })}
             </div>
         </div>)
 }

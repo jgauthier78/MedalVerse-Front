@@ -1,6 +1,6 @@
 var MedalVerse = artifacts.require("./MedalVerse.sol");
 const throwIn = artifacts.require('ThrowIn');
-const nftMedal = artifacts.require('NFTArtist');
+const nftArtist = artifacts.require('NFTArtist');
 
 const ethers = require('ethers');
 const crypto = require('crypto');
@@ -13,10 +13,10 @@ module.exports = async function (deployer, network, accounts) {
   const ACCOUNT_CONTRACT_OWNER = accounts[0]
 
   await deployer.deploy(MedalVerse, { from: ACCOUNT_CONTRACT_OWNER });
-  await deployer.deploy(nftMedal, { from: ACCOUNT_CONTRACT_OWNER });
+  await deployer.deploy(nftArtist, { from: ACCOUNT_CONTRACT_OWNER });
 
   let MVerse = await MedalVerse.deployed()
-  let NFTArtist = await nftMedal.deployed()
+  let NFTArtist = await nftArtist.deployed()
 
 
   console.log("----------------------------------------------------------")
@@ -38,16 +38,14 @@ module.exports = async function (deployer, network, accounts) {
   async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
     // Local static counter for NFTs IDs
 
-
-
-    let medal = await nftMedal.new()
+    let medal = await nftArtist.new()
     let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
     await medal.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
 
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
 
-    nftCounter++
+    //nftCounter++
     return nft;
   }
 
@@ -194,9 +192,9 @@ module.exports = async function (deployer, network, accounts) {
   let rcup1 = await createNFT("Motocross Cup", "Motocross Nft", "McNFT", "François Coste", "/img/medals/medal1.jpg", ACCOUNT_ORGANIZER_01)
   await setWinner(rcup1, EVENT_TWO, ACCOUNT_ATHLETE_01, ACCOUNT_ORGANIZER_01)
 
-  /*  let rcup2 = await createNFT("Tennis Cup", "Tennis Nft", "TNFT", "François Coste", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
-    await setWinner(rcup2, EVENT_THREE, ACCOUNT_ATHLETE_01, ACCOUNT_ORGANIZER_01)
-  */
+  let rcup2 = await createNFT("Tennis Cup", "Tennis Nft", "TNFT", "François Coste", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
+  await setWinner(rcup2, EVENT_THREE, ACCOUNT_ATHLETE_01, ACCOUNT_ORGANIZER_01)
+
 
 
   // Il déclare le gagnant de l'évènement 01
