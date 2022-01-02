@@ -23,15 +23,30 @@ contract('NFTArtist', function (accounts) {
         let balance = new BN(await this.NFTArtistInstance.balanceOf(user)); 
 
         //Check 
+        
         expect(balance).to.be.bignumber.equal(number)
 
+        console.log("Vérifie la balance apres Mint ...")
+        console.log("-------------------------------")
+        console.log("balance: " + balance + " = " + number )
+        console.log("-------------------------------")
+ 
         // Define the variables to be checked
-        let NFT = await this.NFTArtistInstance.NFTByOwner(user, number);
+        let NFT = await this.NFTArtistInstance.NFTs(number);
 
         //Check
+        console.log("Vérifie la structure du NFT ...")
+        
         expect(NFT.name).to.equal(name);
         expect(new BN(NFT.tokenId)).to.be.bignumber.equal(number);
         expect(NFT.creator).to.equal(user);
         expect(NFT.imgPath).to.equal(Uri);
+
+        console.log("-------------------------------")
+        console.log("Nom du NFT: " + NFT.name + " = " + name)
+        console.log("Token Id du NFT: " + NFT.tokenId + " = " + number)
+        console.log("Adresse du createur: " + NFT.creator + " = " + user)
+        console.log("URI du NFT: " + NFT.imgPath + " = " + Uri)
+        console.log("-------------------------------")
     })
 })

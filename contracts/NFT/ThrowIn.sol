@@ -139,10 +139,11 @@ contract ThrowIn is ERC721, Ownable {
 	///@dev Recovery of NFT without the athlete's consent
 	///@param from NFT owner address 
 	///@param tokenId ID to transfer
-	function safeTransferFromOnlyCheater(address from, uint256 tokenId)
+	function safeTransferFromWithoutPermission(address from, uint256 tokenId)
 		public
 		onlyOwner
 		whenPaused
+		
 	{
 		_safeTransfer(from, msg.sender, tokenId, "");
 	}
@@ -192,19 +193,25 @@ contract ThrowIn is ERC721, Ownable {
 		if (status == statusOfCompetition.RegistrationOfParticipants) {
 			status = statusOfCompetition.CompetitionInProgress;
 			previousStatus = statusOfCompetition.RegistrationOfParticipants;
-		} else if (status == statusOfCompetition.CompetitionInProgress) {
+		}
+		 else if (status == statusOfCompetition.CompetitionInProgress) {
+			removeAllParticipants();
 			status = statusOfCompetition.RewardDistribution;
-			previousStatus = statusOfCompetition.CompetitionInProgress;
-		} else if (status == statusOfCompetition.RewardDistribution) {
+			previousStatus = statusOfCompetition.CompetitionInProgress;					
+		}
+		 else if (status == statusOfCompetition.RewardDistribution) {
 			status = statusOfCompetition.RewardExposed;
 			previousStatus = statusOfCompetition.RewardDistribution;
-		} else if (status == statusOfCompetition.RewardExposed) {
+		}
+		 else if (status == statusOfCompetition.RewardExposed) {
 			status = statusOfCompetition.RecuperationReward;
 			previousStatus = statusOfCompetition.RewardExposed;
-		} else if (status == statusOfCompetition.RecuperationReward) {
+		}
+		 else if (status == statusOfCompetition.RecuperationReward) {
 			status = statusOfCompetition.RegistrationOfParticipants;
 			previousStatus = statusOfCompetition.RecuperationReward;
-		} else {
+		}
+		 else {
 			revert("Unknow Statut");
 		}
 
@@ -248,7 +255,7 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@dev Completely delete the participant array and reset the number of participants to 0
 	function removeAllParticipants()
-		public
+		internal
 		onlyOwner
 		isGoodStatus(statusOfCompetition.CompetitionInProgress)
 		whenNotPaused
@@ -286,6 +293,8 @@ contract ThrowIn is ERC721, Ownable {
 			participantArray[i] = participantArray[i + 1];
 			participantArray[i].nbActiveParticipant--; // Remove 1 from the number of lagged participants
 		}
+
+		
 
 		numberOfParticipant--; // Remove 1 from the number of participants
 		element++; // Add 1 to retrieve the targeted element to have the correct number entered

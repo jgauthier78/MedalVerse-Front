@@ -22,8 +22,8 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 	}
 
     // Data --------------------------------
-	// mapping(uint=>NFT) public NFTs;
-    mapping(address=>mapping(uint=>NFT)) public NFTByOwner; // Associate the owner address with the token id associated with the NFT structure
+	mapping(uint=>NFT) public NFTs;
+    // mapping(address=>mapping(uint=>NFT)) public NFTByOwner; // Associate the owner address with the token id associated with the NFT structure
 
     // Events ---------------------------------
     event nftMint(address owner, string name, uint tokenId );
@@ -47,14 +47,14 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 			_setTokenURI(NFTArtistId, Uri); // Set URI for this id
 
             // Defined the structure of the NFT by are id associated with the owner address
-			NFTByOwner[msg.sender][NFTArtistId].name = name;
-			NFTByOwner[msg.sender][NFTArtistId].tokenId = NFTArtistId;
-			NFTByOwner[msg.sender][NFTArtistId].creator = msg.sender;
-			NFTByOwner[msg.sender][NFTArtistId].imgPath = Uri;
-			// NFTs[newNFTArtistId].name = name;
-            // NFTs[newNFTArtistId].tokenId = newNFTArtistId;
-            // NFTs[newNFTArtistId].creator = msg.sender;
-            // NFTs[newNFTArtistId].imgPath = Uri;
+			// NFTByOwner[msg.sender][NFTArtistId].name = name;
+			// NFTByOwner[msg.sender][NFTArtistId].tokenId = NFTArtistId;
+			// NFTByOwner[msg.sender][NFTArtistId].creator = msg.sender;
+			// NFTByOwner[msg.sender][NFTArtistId].imgPath = Uri;
+			NFTs[NFTArtistId].name = name;
+            NFTs[NFTArtistId].tokenId = NFTArtistId;
+            NFTs[NFTArtistId].creator = msg.sender;
+            NFTs[NFTArtistId].imgPath = Uri;
 
             emit nftMint(msg.sender, name, NFTArtistId);
 		
@@ -71,30 +71,31 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         super._beforeTokenTransfer(from, to, tokenId);
 
         // Modify the mapping
-        NFTByOwner[to][tokenId].name = NFTByOwner[from][tokenId].name;
-        NFTByOwner[to][tokenId].tokenId = NFTByOwner[from][tokenId].tokenId;
-        NFTByOwner[to][tokenId].creator =  NFTByOwner[from][tokenId].creator;
-        NFTByOwner[to][tokenId].imgPath = NFTByOwner[from][tokenId].imgPath;
+        // NFTByOwner[to][tokenId].name = NFTByOwner[from][tokenId].name;
+        // NFTByOwner[to][tokenId].tokenId = NFTByOwner[from][tokenId].tokenId;
+        // NFTByOwner[to][tokenId].creator =  NFTByOwner[from][tokenId].creator;
+        // NFTByOwner[to][tokenId].imgPath = NFTByOwner[from][tokenId].imgPath;
 
         // remove the old mapping
-        delete  NFTByOwner[from][tokenId].name;
-        delete  NFTByOwner[from][tokenId].tokenId;
-        delete  NFTByOwner[from][tokenId].creator;
-        delete  NFTByOwner[from][tokenId].imgPath;
+        // delete  NFTByOwner[from][tokenId].name;
+        // delete  NFTByOwner[from][tokenId].tokenId;
+        // delete  NFTByOwner[from][tokenId].creator;
+        // delete  NFTByOwner[from][tokenId].imgPath;
+        
 
         
     }
 
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         
-        delete  NFTByOwner[msg.sender][tokenId].name;
-        delete  NFTByOwner[msg.sender][tokenId].tokenId;
-        delete  NFTByOwner[msg.sender][tokenId].creator;
-        delete  NFTByOwner[msg.sender][tokenId].imgPath;
-        // delete NFTs[newNFTArtistId].name = name;
-        // delete NFTs[newNFTArtistId].tokenId = newNFTArtistId;
-        // delete NFTs[newNFTArtistId].creator = msg.sender;
-        // delete NFTs[newNFTArtistId].imgPath = Uri;
+        // delete  NFTByOwner[msg.sender][tokenId].name;
+        // delete  NFTByOwner[msg.sender][tokenId].tokenId;
+        // delete  NFTByOwner[msg.sender][tokenId].creator;
+        // delete  NFTByOwner[msg.sender][tokenId].imgPath;
+        delete NFTs[tokenId].name;
+        delete NFTs[tokenId].tokenId;
+        delete NFTs[tokenId].creator;
+        delete NFTs[tokenId].imgPath;
         super._burn(tokenId);
     }
 
