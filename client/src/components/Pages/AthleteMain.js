@@ -19,36 +19,54 @@ class SporstmanMain extends Component {
 
         this.state = {
             nbevents: 0,
-            eventsList: null
+            eventsList: null,
+            curPannel: 0
         }
+    }
+
+    setPannel = (u) => {
+        this.setState({ curPannel: u })
     }
 
 
 
     render() {
         if (this.props.AppCallBacks === undefined || this.props.userProfile.userDetails === null) {
+
             return (<Navigate to="/" />)
         }
 
         return (
             <>
-                <div className="container-fluid profile-page">
+                <div className="container-fluid profile-page" >
                     <Row className="flex-nowrap">
                         <NavBar AppCallBacks={this.props.AppCallBacks} />
                     </Row>
                     <Row className="flex-nowrap">
                         <Row>
-                            <SporstmanSideBar />
+                            <SporstmanSideBar setPannel={this.setPannel} />
                             <Col >
 
 
-
-                                <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
-                                <MedalShow userProfile={this.props.userProfile} />
-                                <EventsSubscribedAthlete userProfile={this.props.userProfile} />
-                                <MedalAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
-                                <GallerieAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
-
+                                {this.state.curPannel === 0 ?
+                                    <>
+                                        <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
+                                        <MedalShow userProfile={this.props.userProfile} />
+                                    </>
+                                    : <></>
+                                }
+                                {this.state.curPannel === 1 ?
+                                    <>
+                                        <EventsSubscribedAthlete userProfile={this.props.userProfile} />
+                                    </>
+                                    : <></>
+                                }
+                                {this.state.curPannel === 2 ?
+                                    <>
+                                        <MedalAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
+                                        <GallerieAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
+                                    </>
+                                    : <></>}
                                 <SimpleFooter />
                             </Col>
 

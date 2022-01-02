@@ -253,16 +253,7 @@ class App extends Component {
             this.setState({ redirectTo: "/author" })
         else this.setState({ redirectTo: "/" }) // Not registered
     }
-    /*
-        getRoleString = () => {
-            let role = this.state.userRole
-            if (role & ROLES.ROLE_ORGANIZER) return "Organisateur"
-            else if (role & ROLES.ROLE_ATHLETE) // Sportsman
-                return "Sportif"
-            else if (role & ROLES.ROLE_AUTHOR) // Author
-                return "Auteur"
-        }
-    */
+
     disconnect = () => {
         this.setState({ userDetails: null, isConnected: false, userRole: 0 })
         this.setState({ redirectTo: "/" })
@@ -292,7 +283,6 @@ class App extends Component {
     getUserEvents = async (account) => {
         let result = { nbEvents: 0, Event: null }
         // We get the nb of events the sporsman registered to
-        console.log("+++Ici")
         let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
         if (nbEvents > 0) {
             result.nbEvents = nbEvents
@@ -302,7 +292,7 @@ class App extends Component {
                 result.eventList = []
                 result.organisationDesc = []
                 // We now populate the structure
-                console.log("+++++Ici")
+
                 for (let i = 0; i < result.nbEvents; i++) {
 
                     console.log(eventIndxList[i])
@@ -321,7 +311,7 @@ class App extends Component {
     }
 
     getUserMedals = async (account) => {
-        let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [] }
+        let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [], nftDesc: [] }
         result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
         for (let i = 0; i < result.nbMedals; i++) {
 
@@ -333,6 +323,19 @@ class App extends Component {
 
 
             let medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
+            // We get the list of winners for the medal
+            let allWinners = await medalContract.methods.getAllWinners().call()
+            let { 0: winnersString, 1: yearsOfVictory } = allWinners
+            let nfdesc = {
+                name: await medalContract.methods.name().call(),
+                symbol: await medalContract.methods.symbol().call(),
+                orgName: await medalContract.methods.getOrganizationName().call(),
+                winnersString,
+                yearsOfVictory,
+
+            }
+            result.nftDesc.push(nfdesc)
+            // We get the uri of the medal
             let img = await medalContract.methods.uriToken(1).call()
             result.uriList.push(img)
             result.Medals.push(medal)

@@ -74,8 +74,8 @@ contract ThrowIn is ERC721, Ownable {
 	modifier whenNotPaused() {
 		require(pause == false, "Pausable: paused");
 		_;
-	}	
-	
+	}
+
 	// Events ---------------------------------
 	event ThrowInCupMinted(address mint);
 	event ThrowInParticipantAdd(address organizer, address participant);
@@ -125,7 +125,7 @@ contract ThrowIn is ERC721, Ownable {
 	function _beforeTokenTransfer(
 		address from,
 		address to,
-		uint256 tokenId 
+		uint256 tokenId
 	) internal override {
 		address ownerContract = owner();
 
@@ -137,7 +137,7 @@ contract ThrowIn is ERC721, Ownable {
 	}
 
 	///@dev Recovery of NFT without the athlete's consent
-	///@param from NFT owner address 
+	///@param from NFT owner address
 	///@param tokenId ID to transfer
 	function safeTransferFromOnlyCheater(address from, uint256 tokenId)
 		public
@@ -205,7 +205,7 @@ contract ThrowIn is ERC721, Ownable {
 			status = statusOfCompetition.RegistrationOfParticipants;
 			previousStatus = statusOfCompetition.RecuperationReward;
 		} else {
-			revert("Unknow Statut");
+			revert("Unknow Status");
 		}
 
 		emit ThrowInStatueChange(previousStatus, status);
@@ -303,17 +303,17 @@ contract ThrowIn is ERC721, Ownable {
 		returns (string[] memory, uint256[] memory)
 	{
 		string[] memory winnersString = new string[](winnersArray.length); // Instantiate a string array the length of the winners array
-		uint256[] memory yearOfVictory = new uint256[](
+		uint256[] memory yearsOfVictory = new uint256[](
 			yearOfParticipationArray.length
 		); // Instantiate a uint array the length of the yearOfParticipationArray
 
 		// Loop that goes through all the name of the winner and copies it as well as the production years of the competition
 		for (uint256 i = 0; i < winnersArray.length; i++) {
 			winnersString[i] = winnersArray[i].player;
-			yearOfVictory[i] = yearOfParticipationArray[i];
+			yearsOfVictory[i] = yearOfParticipationArray[i];
 		}
 
-		return (winnersString, yearOfVictory);
+		return (winnersString, yearsOfVictory);
 	}
 
 	///@return Return all participants by name and assigned number
@@ -352,7 +352,7 @@ contract ThrowIn is ERC721, Ownable {
 	{
 		return (winnerMap[winner].year);
 	}
-	
+
 	///@return returns a chosen year without the victorious years table
 	///@param winner Address of a winner register
 	///@param number Number selected from the list
@@ -373,5 +373,11 @@ contract ThrowIn is ERC721, Ownable {
 	///@return Returns if the contract is paused or not
 	function paused() public view returns (bool) {
 		return pause;
+	}
+
+	///@dev Get the org who created the NFT
+	///@return return the organization name
+	function getOrganizationName() external view returns (string memory) {
+		return nameOfOrganization;
 	}
 }
