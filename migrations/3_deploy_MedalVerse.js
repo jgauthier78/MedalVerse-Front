@@ -38,14 +38,14 @@ module.exports = async function (deployer, network, accounts) {
   async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
     // Local static counter for NFTs IDs
 
-    let medal = await nftArtist.new()
-    let nft = await throwIn.new(nftOrganization, medal.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
-    await medal.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
+    
+    let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
+    await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
 
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
 
-    //nftCounter++
+    nftCounter++
     return nft;
   }
   async function setWinner(rcup, eventId, sporsmanId, organizerId) {
