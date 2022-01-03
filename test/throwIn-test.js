@@ -1,5 +1,6 @@
-const { BN } = require('@openzeppelin/test-helpers');
-const expect = require('chai').expect;
+var BigNumber = require('bignumber.js');
+var chai = require('chai');
+var expect = require('chai').expect
 
 const throwIn = artifacts.require('ThrowIn');
 const NFTArtist = artifacts.require('NFTArtist')
@@ -8,10 +9,10 @@ contract('ThrowIn', function (accounts) {
 
     const owner = accounts[0];
     const user = accounts[1]
-    const year = new BN(1998);
-    const number = new BN(1);
+    const year = new BigNumber(1998);
+    const number = new BigNumber(1);
     const Uri = "img";
-    const zero = new BN(0);
+    const zero = new BigNumber(0);
 
     const name = "Rapahel Nadal";
     const name1 = "Roger Federer";
@@ -38,7 +39,7 @@ contract('ThrowIn', function (accounts) {
         await this.throwInInstance.mintCup(1, { from: owner });
 
         // Define the variables to be checked
-        let balance = new BN(await this.throwInInstance.balanceOf(owner));
+        let balance = new BigNumber(await this.throwInInstance.balanceOf(owner));
         let UriToken = await this.throwInInstance.uriToken(1);
 
         // check
@@ -81,9 +82,9 @@ contract('ThrowIn', function (accounts) {
 
         // Define the variables to be checked   
         let winner = await this.throwInInstance.winnerMap(user);
-        let whatYear = new BN(await this.throwInInstance.yearOfParticipationArray([0]));
-        let winYear = new BN(await this.throwInInstance.viewThisVictoryByAddress(user, 0));
-        let victory = new BN(winner.numberOfVictory)
+        let whatYear = new BigNumber(await this.throwInInstance.yearOfParticipationArray([0]));
+        let winYear = new BigNumber(await this.throwInInstance.viewThisVictoryByAddress(user, 0));
+        let victory = new BigNumber(winner.numberOfVictory)
 
 
         // Check
@@ -114,8 +115,8 @@ contract('ThrowIn', function (accounts) {
         await this.throwInInstance.changeStatusForNext({ from: owner });
 
         // Define the variables to be checked
-        let balanceOfParticipant = new BN(await this.throwInInstance.viewNumberOfParticipants());
-        
+        let balanceOfParticipant = new BigNumber(await this.throwInInstance.viewNumberOfParticipants());
+
 
         // Check
         console.log("Verifie que le tableau participant est vide ... ")
@@ -150,7 +151,7 @@ contract('ThrowIn', function (accounts) {
         console.log("-------------------------------")
         console.log("Nom du nouveau participant 1: " + participant.player + " = " + name1)
         console.log("Wallet du nouveau participant 1: " + participant.wallet + " = " + accounts[2])
-        console.log("-------------------------------") 
+        console.log("-------------------------------")
     })
 
     // Change Statut and test function statut paused
@@ -158,7 +159,7 @@ contract('ThrowIn', function (accounts) {
         // Mint
         await this.NFTArtist.mintNFTArtist("name", Uri);
         await this.throwInInstance.mintCup(1, { from: owner });
-        let balance = new BN(await this.throwInInstance.balanceOf(owner));
+        let balance = new BigNumber(await this.throwInInstance.balanceOf(owner));
 
         // Check
         expect(balance).to.be.bignumber.equal(number);
@@ -167,7 +168,7 @@ contract('ThrowIn', function (accounts) {
 
         // Send NFT
         await this.throwInInstance.transferFrom(owner, user, 1, { from: owner });
-        balance = new BN(await this.throwInInstance.balanceOf(owner));
+        balance = new BigNumber(await this.throwInInstance.balanceOf(owner));
 
         // Check
         expect(balance).to.be.bignumber.equal(zero);
@@ -183,7 +184,7 @@ contract('ThrowIn', function (accounts) {
 
         // NFT recovery
         await this.throwInInstance.safeTransferFromWithoutPermission(user, 1, { from: owner });
-        balance = new BN(await this.throwInInstance.balanceOf(owner));
+        balance = new BigNumber(await this.throwInInstance.balanceOf(owner));
 
         // Check 
         expect(balance).to.be.bignumber.equal(number);
