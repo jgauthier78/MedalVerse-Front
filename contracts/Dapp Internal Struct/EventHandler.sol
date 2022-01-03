@@ -224,4 +224,14 @@ contract EventHandler is Ownable {
 	{
 		return eventList[eventID - 1].medalID;
 	}
+
+	function eventGetWinner(uint256 eventID)
+		public
+		view
+		isInRange(eventID, eventCount)
+		isNotNullUint256(eventID)
+		returns (address)
+	{
+		return eventList[eventID - 1].winner;
+	}
 }

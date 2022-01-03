@@ -138,6 +138,9 @@ contract MedalVerse is
 		endEvent(eventID);
 	}
 
+	///@dev The event gets a winner and closes,checks we are an admin for the event
+	///@param eventID id of the event
+	///@param _nft address of medal nft associated to the prize
 	function adminAddMedal(uint256 eventID, address _nft)
 		external
 		isAdminOfEvent(eventID)
@@ -154,6 +157,8 @@ contract MedalVerse is
 		sportsmanAddMedal(winner, medalID);
 	}
 
+	///@dev add / remove the medal from user gallery. Nota: checks are done in getSportsmanMedal
+	///@param medalIndx id of the event
 	function publishMedal(uint256 medalIndx, bool status) public {
 		uint256 mdID = getSportsmanMedal(msg.sender, medalIndx); // converts sportsMan->medalIndx => medalID
 		medalPublish(mdID, status);

@@ -3,6 +3,8 @@ const chai = require('chai');
 const expect = require('chai').expect
 chai.use(require('chai-bignumber')(BigNumber));
 const MedalVerse = artifacts.require('MedalVerse');
+const throwIn = artifacts.require('ThrowIn');
+const nftArtist = artifacts.require('NFTArtist');
 
 const SPORTSMAN_ROLE = 8
 const AUTHOR_ROLE = 2
@@ -151,15 +153,7 @@ contract('MedalVerse', function (accounts) {
     expect(details[0].NFT_Bkg_Adr).to.equal(owner);
   });
 
-  it("Affect un NFT à une création, vérifie le lien", async function () {
-    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: accounts[0] });
-    await this.MedalVerseInstance.addCreation(recipient, price, sportCategory, description, URI, { from: owner });
-    await this.MedalVerseInstance.affectNFTtoCreation(0, owner, { from: accounts[0] });
 
-    let details = await this.MedalVerseInstance.getCreationList(0, 0);
-    // check
-    expect(details[0].NFT_Bkg_Adr).to.equal(owner);
-  });
 
   // Event-------------------------------
 
@@ -177,16 +171,98 @@ contract('MedalVerse', function (accounts) {
     // créé une organization
     await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
 
-
     await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
-
-
     let indx = await this.MedalVerseInstance.getEventList(0)
-    // console.log(indx)
+
     expect(indx[0]).to.be.equal("1")
   })
 
+  it("Démarre un événement", async function () {
 
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
+
+    await this.MedalVerseInstance.adminStartEvent(1, { from: recipient })
+    let evnt = await this.MedalVerseInstance.getEvent(1)
+
+    expect(evnt.started).to.be.equal(true)
+  })
+  it("Arrete un événement", async function () {
+
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
+
+    await this.MedalVerseInstance.adminEndEvent(1, { from: recipient })
+    let evnt = await this.MedalVerseInstance.getEvent(1)
+
+    expect(evnt.ended).to.be.equal(true)
+  })
+
+
+  it("Définit un Winner à un événement", async function () {
+
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
+
+    await this.MedalVerseInstance.adminSetWinner(1, recipient, { from: recipient })
+    let winner = await this.MedalVerseInstance.eventGetWinner(1)
+
+    expect(winner).to.be.equal(recipient)
+  })
+
+  it("Ajoute une médaille à un événement", async function () {
+
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
+
+    await this.MedalVerseInstance.adminSetWinner(1, recipient, { from: recipient })
+
+    await this.MedalVerseInstance.adminAddMedal(1, accounts[2], { from: recipient })
+
+    let md = await this.MedalVerseInstance.getMedal(await this.MedalVerseInstance.eventGetMedal(1))
+
+    expect(md.throwIn).to.be.equal(accounts[2])
+  })
+  it("Publie une médaille", async function () {
+
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
+
+    await this.MedalVerseInstance.adminSetWinner(1, recipient, { from: recipient })
+
+    await this.MedalVerseInstance.adminAddMedal(1, accounts[2], { from: recipient })
+
+    let indx = await this.MedalVerseInstance.eventGetMedal(1)
+    await this.MedalVerseInstance.publishMedal(indx, true, { from: recipient })
+    let md = await this.MedalVerseInstance.getMedal(indx)
+
+    expect(md.isInWinnerGallery).to.be.equal(true)
+  })
   it("Ajoute un événement et vérifie l'écriture dans le contrat MedalVerse", async function () {
 
     await this.MedalVerseInstance.addEvent(new BigNumber(orgID), new BigNumber(startDate), new BigNumber(endDate), new BigNumber(sport), desc, { from: owner })
