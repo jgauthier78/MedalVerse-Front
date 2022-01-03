@@ -196,7 +196,7 @@ contract SportsmanHandler is Ownable {
 		return allSportsman[sportsmanId].medalList[indx];
 	}
 
-	function sportsmanAddMedal(address sportsmanId, uint256 medalID) public {
+	function sportsmanAddMedal(address sportsmanId, uint256 medalID) internal {
 		allSportsman[sportsmanId].medalList.push(medalID);
 		emit sportsmanMedalAdded(sportsmanId, medalID);
 	}

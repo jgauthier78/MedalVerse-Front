@@ -27,7 +27,7 @@ contract MedalVerse is
 			EventHandler,
 			OrganizerHandler
 		) {
-		require(a != address(0));
+		require(a != address(0), "should not be null");
 		_;
 	}
 	modifier isNotNullUint256(uint256 a)
@@ -38,7 +38,7 @@ contract MedalVerse is
 			EventHandler,
 			AuthorHandler
 		) {
-		require(a != 0);
+		require(a != 0, "value must not be null");
 		_;
 	}
 
@@ -100,11 +100,11 @@ contract MedalVerse is
 		// We first neet to check that the sender corresponds to an organizer
 		uint256 organizerId = organizerByAddress[msg.sender];
 		require(organizerId > 0, "you must be an organizer");
-
 		require(
 			checkorganizerisAdminOf(organizerId, organizationId),
 			"you must be admin"
 		);
+
 		uint256 eventID = addEvent(
 			organizationId,
 			startDate,
@@ -112,22 +112,22 @@ contract MedalVerse is
 			sportsCategory,
 			eventDesc
 		);
-		organizerAddEvent(organizerId, organizationId, eventID);
+		organizerAddEvent(organizerId, organizationId, eventID + 1);
 	}
 
-	///@dev The event starts now
+	///@dev The event starts now, checks we are an admin for the event
 	///@param eventID id of the event
 	function adminStartEvent(uint256 eventID) external isAdminOfEvent(eventID) {
 		startEvent(eventID);
 	}
 
-	///@dev The event ends now
+	///@dev The event ends now,checks we are an admin for the event
 	///@param eventID id of the event
 	function adminEndEvent(uint256 eventID) external isAdminOfEvent(eventID) {
 		endEvent(eventID);
 	}
 
-	///@dev The event gets a winner and closes
+	///@dev The event gets a winner and closes,checks we are an admin for the event
 	///@param eventID id of the event
 	function adminSetWinner(uint256 eventID, address winner)
 		external

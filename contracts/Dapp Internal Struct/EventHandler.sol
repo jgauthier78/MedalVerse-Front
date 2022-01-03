@@ -34,7 +34,7 @@ contract EventHandler is Ownable {
 		_;
 	}
 	modifier isInRange(uint256 a, uint256 b) {
-		require(a <= b);
+		require(a <= b, "not in range");
 		_;
 	}
 
@@ -69,10 +69,6 @@ contract EventHandler is Ownable {
 		_event.winner = address(0);
 		_event.eventDescription = _eventDescription;
 		emit eventAdded(eventCount);
-		// return eventCount++;
-
-		// eventCount++;
-		// return _event.eventId;
 
 		return eventCount++;
 	}

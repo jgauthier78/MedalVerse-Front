@@ -109,7 +109,7 @@ module.exports = async function (deployer, network, accounts) {
   const Time03_start = ethers.BigNumber.from(Math.round(date03_start / 1000));
   const Time03_end = ethers.BigNumber.from(Math.round(date03_end / 1000));
 
-  /*************************************/
+
 
   const EVENT_ONE = 1;
   const EVENT_TWO = 2;
@@ -172,11 +172,6 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.addOrganization(ACCOUNT_ORGANIZER_01, "FFM", "Fédération Française de Motocross", bkgRef("motoracing.jpg"), { from: ACCOUNT_CONTRACT_OWNER });
   await MVerse.addOrganization(ACCOUNT_ORGANIZER_01, "FFT", "Fédération Française de Tennis", bkgRef("tennis.jpg"), { from: ACCOUNT_CONTRACT_OWNER });
   console.log(".")
-  // L'organisateur créé des administateurs d'organisations
-  await MVerse.organizationAddAdmin(0, ACCOUNT_ORGANIZER_01, { from: ACCOUNT_CONTRACT_OWNER });
-  await MVerse.organizationAddAdmin(1, ACCOUNT_ORGANIZER_01, { from: ACCOUNT_CONTRACT_OWNER });
-  await MVerse.organizationAddAdmin(2, ACCOUNT_ORGANIZER_01, { from: ACCOUNT_CONTRACT_OWNER });
-  console.log(".")
 
   // L'organisateur 01 organise ces évènements:
   await MVerse.newEvent(0, Time01_start, Time01_end, 2, "Saison 14, ville deLyons", { from: ACCOUNT_ORGANIZER_01 });
@@ -208,10 +203,6 @@ module.exports = async function (deployer, network, accounts) {
 
 
 
-  // Il déclare le gagnant de l'évènement 01
-  // await MVerse.adminSetWinner(EVENT_ONE, ACCOUNT_ATHLETE_01, { from: ACCOUNT_ORGANIZER_01 })
-  // Il affecte la médaille au sportif vainqueur de l'évènement 
-  // await MVerse.adminAddMedal(EVENT_ONE, rcup.address, { from: ACCOUNT_ORGANIZER_01 })
 
   console.log("done.")
 

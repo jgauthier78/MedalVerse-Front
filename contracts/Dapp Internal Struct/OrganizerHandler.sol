@@ -76,6 +76,7 @@ contract OrganizerHandler is Ownable {
 		_org.description = _description;
 		_org.logoURI = _logoURI;
 		_org.activ = true;
+		organizationAddAdmin(indx, _user);
 
 		emit OganizationAdded(_user, indx);
 	}
@@ -200,7 +201,7 @@ contract OrganizerHandler is Ownable {
 		returns (bool)
 	{
 		require(orgIndx < organizationList.length, "Organization not found");
-		require(organizer < organizerList.length, "Organizer not found");
+		require(organizer <= organizerList.length, "Organizer Invalid Id");
 		uint256 maxL = organizationList[orgIndx].adminList.length;
 
 		for (uint256 i = 0; i < maxL; i++) {
@@ -262,18 +263,21 @@ contract OrganizerHandler is Ownable {
 		return result;
 	}
 
+	event organizerAddedEvent();
+
 	function organizerAddEvent(
 		uint256 organizerID,
 		uint256 organizationId,
 		uint256 eventID
 	) internal {
-		require(organizerID < organizerList.length);
-		// organizationList[organizationId].EventList.push(eventID + 1);
+		require(organizerID <= organizerList.length, "wrong Id");
 
-		// organizationList[organizationId].EventList.push(eventID /*+ 1*/);
-		organizationList[organizationId].EventList.push(eventID + 1);
+		organizationList[organizationId].EventList.push(eventID);
+		emit organizerAddedEvent();
 	}
 
+	///@dev return the list of events associated to an organization
+	///@param orgId id of the org
 	function getEventList(uint256 orgId)
 		public
 		view
