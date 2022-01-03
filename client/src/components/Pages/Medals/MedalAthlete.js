@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { Card, Container } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-import ThrowInContract from "../../../contracts/ThrowIn.json";
-import MedalContract from "../../../contracts/NFTMedaille.json";
-import { useEffect, useState } from 'react'
 import ReactTooltip from "react-tooltip";
 import { format_Date } from "../../../utils/dateUtils";
 async function setGallery(AppCallBacks, addr, contract, indx, display, succes) {
