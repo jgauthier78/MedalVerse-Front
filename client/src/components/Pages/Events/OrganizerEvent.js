@@ -49,12 +49,43 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
     } // onHandleEventMedal
 
     //  event handler
+    const ThrowIn_getStatus = async (ThrowInContractAddress) => {
+        console.log("EventLayout::ThrowIn_getStatus:ThrowInContractAddress="+ThrowInContractAddress)
+        try {
+            //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
+            //   history.push('event')
+            // navigate('../event', {eventId:3} );
+            // alert("onHandleEventClose:" + eventId)
+            await AppCallBacks.ThrowIn_getStatus()
+        } // try
+        catch (error) {
+            console.error(error)
+        } // catch
+    } // ThrowIn_getStatus
+
+    //  event handler
+    const ThrowIn_changeStatusToRewardExposed = async (ThrowInContractAddress) => {
+        console.log("EventLayout::ThrowIn_changeStatusToRewardExposed:ThrowInContractAddress="+ThrowInContractAddress)
+        try {
+            //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
+            //   history.push('event')
+            // navigate('../event', {eventId:3} );
+            // alert("onHandleEventClose:" + eventId)
+            await AppCallBacks.ThrowIn_changeStatusToRewardExposed()
+        } // try
+        catch (error) {
+            console.error(error)
+        } // catch
+    } // ThrowIn_getStatus
+    
+    //  event handler
     const onHandleEventClose = async (eventId) => {
         try {
             //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
             //   history.push('event')
             // navigate('../event', {eventId:3} );
-            alert("onHandleEventClose:" + eventId)
+            // alert("onHandleEventClose:" + eventId)
+            await AppCallBacks.ThrowIn_getStatus()
         } // try
         catch (error) {
             console.error(error)
@@ -65,7 +96,7 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
     const onHandleEventAddMedal = async (eventId) => {
         try {
             console.log("onHandleEventAddMedal: eventId=" + eventId)
-            await AppCallBacks.adminAddMedal(eventId,)
+            await AppCallBacks.adminAddMedal(eventId)
 
             //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
             //   history.push('event')
@@ -95,6 +126,10 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
                 <Card.Body>
                     <Card.Title>Actions</Card.Title>
                     <Card.Text>
+
+                        <Button className="ml-1" variant="warning" onClick={() => ThrowIn_getStatus(event.medal.throwInContractAddr)}>{"ThrowIn_getStatus"}</Button>
+                        <Button className="ml-1" variant="warning" onClick={() => ThrowIn_changeStatusToRewardExposed(event.medal.throwInContractAddr)}>{"ThrowIn_changeStatusToRewardExposed"}</Button>
+                        
                         {
                             // event.activ && event.started && !event.ended 
                             true

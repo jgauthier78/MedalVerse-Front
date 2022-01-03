@@ -59,6 +59,13 @@ class App extends Component {
             // getRoleString: this.getRoleString,
             disconnect: this.disconnect,
 
+            ThrowIn_getStatus: this.ThrowIn_getStatus,
+            ThrowIn_changeStatusToCompetitionInProgress: this.ThrowIn_changeStatusToCompetitionInProgress,
+            ThrowIn_changeStatusToRewardDistribution: this.ThrowIn_changeStatusToRewardDistribution,
+            ThrowIn_changeStatusToRewardExposed: this.ThrowIn_changeStatusToRewardExposed,
+            ThrowIn_changeStatusToRecuperationReward: this.ThrowIn_changeStatusToRecuperationReward,
+            ThrowIn_changeStatusToRegistrationOfParticipants: this.ThrowIn_changeStatusToRegistrationOfParticipants,
+
             DID_init: this.DID_init,
             DID_showConf: this.DID_showConf,
             DID_readProfile: this.DID_readProfile,
@@ -390,50 +397,37 @@ class App extends Component {
                     await Promise.all(eventsList.map(async (eventId) => {
                         // console.log("eventId=" + eventId)
                         let eventData = await this.state.contract.methods.getEvent(eventId).call()
-                        //  console.log("eventData=" + eventData)
-                        //  console.log("eventData[0]=" + eventData[0]) 
-                        //  console.log("eventData[1]=" + eventData[1]) 
-                        //  console.log("eventData[2]=" + eventData[2]) 
-                        //  console.log("eventData[3]=" + eventData[3]) 
-                        //  console.log("eventData[4]=" + eventData[4]) 
-                        //  console.log("eventData[5]=" + eventData[5]) 
-                        //  console.log("eventData[6]=" + eventData[6]) 
-                        //  console.log("eventData[7]=" + eventData[7]) 
-                        //  console.log("eventData[8]=" + eventData[8]) 
-                        //  console.log("eventData[9]=" + eventData[9]) 
-                        //  console.log("eventData[10]=" + eventData[10]) 
-                        //  console.log("eventData[11]=" + eventData[11]) 
                         let event = {
-                            eventId: eventData[0],
-                            sportCategory: eventData[1],
-                            organizedBy: eventData[2],
-                            registeredSportsMan: eventData[3],
-                            winner: eventData[4],
-                            startDate: eventData[5],
-                            endDate: eventData[6],
-                            medalID: eventData[7],
-                            hasMedal: eventData[8],
-                            activ: eventData[9],
-                            ended: eventData[10],
-                            started: eventData[11],
-                            // struct EventDesc {
-                            // uint256 eventId; // Index of the event in the EventList
-                            // uint256 sportCategory; // Category
-                            // uint256 organizedBy; // Id of the Organization
-                            // address[] registeredSportsMan; //List of sportsman that are participating to the event
-                            // address winner; // Winner of the Event
-                            // uint256 startDate;
-                            // uint256 endDate;
-                            // uint256 medalID;
-                            // bool hasMedal;
-                            // bool activ;
-                            // bool ended; // finished ?
-                            // bool started; // The event has started
-                            // on rattache l'organisation à chaque event pour faciliter le traitement dans les composants
+                            eventId: eventData.eventId,
+                            sportCategory: eventData.sportCategory,
+                            organizedBy: eventData.organizedBy,
+                            registeredSportsMan: eventData.registeredSportsMan,
+                            winner: eventData.winner,
+                            startDate: eventData.startDate,
+                            endDate: eventData.startDate,
+                            medalID: eventData.medalID,
+                            eventDescription: eventData.eventDescription,
+                            hasMedal: eventData.hasMedal,
+                            activ: eventData.activ,
+                            ended: eventData.ended,
+                            started: eventData.started,
                             // ! crée une référence circulaire !
                             organization: organization
                         }
-                        // console.log("event=" + JSON.stringify(event) )
+                        //  console.log("event=" + JSON.stringify(event) )
+
+                        // Medal data
+                        let medal = {}
+                        let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
+                        // Instanciate throwIn contract
+                        medal.throwInContractAddr = medalData.throwIn
+                        //medal.throwInContractInstance = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
+                        medal.winner = medalData.winner
+                        medal.isInWinnerGallery = medalData.isInWinnerGallery
+
+                        event.medal = medal
+
+                        // Add event to organization
                         organization["events"].push(event)
                     }));
                 } // eventsList.length > 0
@@ -489,6 +483,118 @@ class App extends Component {
             this.handleError(error, true)
         } // catch
     } // adminAddMedal
+
+    // -----------------------------------------------------
+    // ThrowIn Methods
+    ThrowIn_getInstance = async (ThrowInContractAddress) =>
+    {
+        console.log("ThrowIn_getInstance")
+        /*
+        if ( this.ThrowIn_getInstance.instances === undefined )
+        {
+            console.log("ThrowIn_getInstance.instances === undefined")
+            this.ThrowIn_getInstance.instances = []
+        }
+        // const ThrowIn_getInstance_initial_value = null
+        console.log("this.ThrowIn_getInstance.instances="+this.ThrowIn_getInstance.instances)
+        console.log("this.ThrowIn_getInstance.instances[ThrowInContractAddress]="+this.ThrowIn_getInstance.instances[ThrowInContractAddress])
+        if (this.ThrowIn_getInstance.instances[ThrowInContractAddress] === undefined)
+        {
+            console.log("UNDEFINED")
+            console.log("create instance")
+            this.ThrowIn_getInstance.instances[ThrowInContractAddress] = await new this.state.web3.eth.Contract(ThrowInContract.abi, ThrowInContractAddress);
+        }
+        else
+        {
+            console.log("en 'cache'")
+        }
+
+        console.log("this.ThrowIn_getInstance.instances[ThrowInContractAddress]=" + JSON.stringify( this.ThrowIn_getInstance.instances[ThrowInContractAddress] ) )
+        return this.ThrowIn_getInstance.instances[ThrowInContractAddress]
+        */
+       return await new this.state.web3.eth.Contract(ThrowInContract.abi, ThrowInContractAddress)
+    }
+
+
+    ThrowIn_getStatus = async (ThrowInContractAddress) =>
+    {
+        console.log("this.ThrowIn_getInstance(ThrowInContractAddress)="+this.ThrowIn_getInstance(ThrowInContractAddress))
+        console.log("this.ThrowIn_getInstance(ThrowInContractAddress).options.address"+this.ThrowIn_getInstance(ThrowInContractAddress).options.address)
+        
+     let val = await this.ThrowIn_getInstance(ThrowInContractAddress).methods.status().call()
+     const status_val = parseInt( val, 10 )
+     return status_val
+    }
+   
+    ThrowIn_changeStatusToCompetitionInProgress = async (ThrowInContractAddress) =>
+    {
+        try {
+            // Change status
+            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToCompetitionInProgress().send({ from: this.getAccounts() })
+            // Todo
+            // Refresh data
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+    }
+
+    ThrowIn_changeStatusToRewardDistribution = async (ThrowInContractAddress) =>
+    {
+        try {
+            // Change status
+            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToRewardDistribution().send({ from: this.getAccounts() })
+            // Todo
+            // Refresh data
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+    }
+
+    ThrowIn_changeStatusToRewardExposed = async (ThrowInContractAddress) =>
+    {
+        try {
+            // Change status
+            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToRewardExposed().send({ from: this.getAccounts() })
+            // Todo
+            // Refresh data
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+    }
+
+    ThrowIn_changeStatusToRecuperationReward = async (ThrowInContractAddress) =>
+    {
+        try {
+            // Change status
+            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToRecuperationReward().send({ from: this.getAccounts() })
+            // Todo
+            // Refresh data
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+    }
+
+    ThrowIn_changeStatusToRegistrationOfParticipants = async (ThrowInContractAddress) =>
+    {
+        try {
+            // Change status
+            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToRegistrationOfParticipants().send({ from: this.getAccounts() })
+            // Todo
+            // Refresh data
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+    }
 
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
