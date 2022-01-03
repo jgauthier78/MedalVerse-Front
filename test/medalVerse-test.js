@@ -47,22 +47,30 @@ contract('MedalVerse', function (accounts) {
   // Author-------------------------------
 
   it("Créé un user de type AUTHOR, vérifie la bonne écriture dans le contrat", async function () {
-    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: accounts[0] });
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: owner });
     let details = await this.MedalVerseInstance.getAuthor(recipient);
     // check
     expect(details.userAddress).to.equal(recipient);
     expect(details.activ).to.equal(true);
   });
 
-  it("Créé une Creation, vérifie la bonne écriture dans le contrat", async function () {
-    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: accounts[0] });
+  it("Vérifie qu'un user non author retourne une structure nulle", async function () {
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 0, 0, { from: owner });
+    let details = await this.MedalVerseInstance.getAuthor(recipient);
+    // check
+    expect(details.activ).to.equal(false);
+  });
+
+
+  it("Ajoute une Creation à un author, vérifie la bonne écriture dans la liste des créations", async function () {
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: owner });
     await this.MedalVerseInstance.addCreation(recipient, price, sportCategory, description, URI, { from: owner });
 
     let details = await this.MedalVerseInstance.getCreationList(0, 0);
-    // check---- TODO
-    // expect(new BigNumber(details.price)).to.be.bignumber.equal(price);
-    // expect(details.URI).to.equal(URI);
-    // expect(details.author).to.equal(recipient);
+    // check
+    expect(new BigNumber(details[0].price)).to.be.bignumber.equal(price);
+    expect(details[0].URI).to.equal(URI);
+    expect(details[0].author).to.equal(recipient);
   });
 
 
@@ -71,9 +79,18 @@ contract('MedalVerse', function (accounts) {
     await this.MedalVerseInstance.addCreation(recipient, price, sportCategory, description, URI, { from: owner });
 
     let details = await this.MedalVerseInstance.getAuthorCreationsList(recipient);
+    creationIndx = new BigNumber(details[0])
+    // check
+    expect(creationIndx).to.be.bignumber.equal(0);
+  });
 
-    // check TODO
-    ////expect(details[0]).to.be.bignumber.equal(new BigNumber(0));
+  it("Affect un NFT à une création, vérifie le lien", async function () {
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: accounts[0] });
+    await this.MedalVerseInstance.addCreation(recipient, price, sportCategory, description, URI, { from: owner });
+    await this.MedalVerseInstance.affectNFTtoCreation(0, owner, { from: accounts[0] });
+    // check
+    let details = await this.MedalVerseInstance.getCreationList(0, 0);
+    expect(details[0].NFT_Bkg_Adr).to.equal(owner);
   });
 
   it("Affect un NFT à une création, vérifie le lien", async function () {
@@ -82,18 +99,8 @@ contract('MedalVerse', function (accounts) {
     await this.MedalVerseInstance.affectNFTtoCreation(0, owner, { from: accounts[0] });
 
     let details = await this.MedalVerseInstance.getCreationList(0, 0);
-    // check TODO
-    //expect(details.NFT_Bkg_Adr).to.equal(owner);
-  });
-
-  it("Affect un NFT à une création, vérifie le lien", async function () {
-    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: accounts[0] });
-    await this.MedalVerseInstance.addCreation(recipient, price, sportCategory, description, URI, { from: owner });
-    await this.MedalVerseInstance.affectNFTtoCreation(0, owner, { from: accounts[0] });
-
-    let details = await this.MedalVerseInstance.getCreationList(0, 0);
-    // check TODO
-    //expect(details.NFT_Bkg_Adr).to.equal(owner);
+    // check
+    expect(details[0].NFT_Bkg_Adr).to.equal(owner);
   });
 
 })
