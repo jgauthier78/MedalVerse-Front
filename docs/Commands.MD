@@ -15,7 +15,7 @@
 ### deploy
 
 #### testnet
--  truffle deploy --reset --network maticMumbaiTestnet
+-  truffle deploy --reset --compile-none --network maticMumbaiTestnet
 -  truffle deploy --reset --network kovan
 -  truffle deploy --reset --network ropsten
 
