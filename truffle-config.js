@@ -43,6 +43,8 @@ const Matic_Tesnet_RPC_WSS_URL_1 = 'wss://rpc-mumbai.maticvigil.com/ws/v1/';
 // const Matic_Tesnet_RPC_WSS_URL_3 = 'wss://ws-matic-mumbai.chainstacklabs.com';
 // const Matic_Tesnet_RPC_WSS_URL_4 = 'wss://matic-testnet-archive-ws.bwarelabs.com';
 
+const Matic_Tesnet_Infura_RPC = 'https://polygon-mumbai.infura.io/v3/'
+
 
 
 // Matic Mainnet RPC URL
@@ -132,11 +134,12 @@ module.exports =
 
     maticMumbaiTestnet:
     {
-      provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_HTTPS_URL_1 + Matic_MedalVerse_Dev_01_ProjectId ),
+      // provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_HTTPS_URL_1 + Matic_MedalVerse_Dev_01_ProjectId ),
+      provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_Infura_RPC + Infura_ProjectId ),
       network_id: network_id_maticMumbaiTestnet,
-      confirmations: 6,
-      networkCheckTimeout: 30000,
-      timeoutBlocks: 30000,
+      confirmations: 4,
+      networkCheckTimeout: 5000,
+      timeoutBlocks: 5000,
       skipDryRun: true,
       gas: 6000000,
       gasPrice: 10000000000,
