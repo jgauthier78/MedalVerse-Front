@@ -1,6 +1,7 @@
 var BigNumber = require('bignumber.js');
 var chai = require('chai');
 var expect = require('chai').expect
+chai.use(require('chai-bignumber')(BigNumber));
 
 const throwIn = artifacts.require('ThrowIn');
 const NFTArtist = artifacts.require('NFTArtist')
@@ -200,4 +201,56 @@ contract('ThrowIn', function (accounts) {
         console.log("-------------------------------")
     })
 
+    
+    //Error Test
+    it("Mint plusieurs NFT ", async function () {
+        console.log("Test des erreur ...")
+        // Mint NftArtiste 
+        await this.NFTArtist.mintNFTArtist("name", Uri);
+        // Mint NftCup with Uri NftArtist 
+        await this.throwInInstance.mintCup(1, { from: owner });
+
+        // Mint NftArtiste 
+        await this.NFTArtist.mintNFTArtist("name1", "img1");
+        // Mint NftCup with Uri NftArtist 
+        await this.throwInInstance.mintCup(2, { from: owner });
+    })
+
+    it("Utilisez une function quand c'est pas le bon status", async function () {
+        await this.throwInInstance.addWinner(name, user, year, { from: owner });
+    })
+
+    it("Utilisez transferFromWithoutPermission sans etre l'owner", async function () {
+        // Mint NftArtiste 
+        await this.NFTArtist.mintNFTArtist("name", Uri);
+        // Mint NftCup with Uri NftArtist 
+        await this.throwInInstance.mintCup(1, { from: owner });
+
+        await this.throwInInstance.setPaused({ from: owner });
+        await this.throwInInstance.safeTransferFromWithoutPermission(owner, 1, { from: user });
+    })
+
+    it("Mettre pause si on est pas l'owner", async function () {
+        await this.throwInInstance.setPaused({ from: user });
+    })
+
+    it("Changez de statut si on es pas Owner", async function () {
+        await this.throwInInstance.changeStatusForNext({ from: user });
+    })
+
+    it("Utilisé une fonction pause quand le contrat n'est pas en pause ", async function () {
+        // Mint NftArtiste 
+        await this.NFTArtist.mintNFTArtist("name", Uri);
+        // Mint NftCup with Uri NftArtist 
+        await this.throwInInstance.mintCup(1, { from: owner });
+
+        await this.throwInInstance.transferFrom(owner, user, 1, { from: owner });
+
+        await this.throwInInstance.safeTransferFromWithoutPermission(user, 1, { from: owner });
+    })
+    
+    it("Utilisé une fonction qui neccesite que le contrat ne soit pas en pause quand le contrat est en pause ", async function () {
+        await this.throwInInstance.setPaused({ from: owner });
+        await this.throwInInstance.changeStatusForNext({ from: owner });
+    })
 })
