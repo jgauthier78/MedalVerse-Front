@@ -12,6 +12,7 @@ contract EventHandler is Ownable {
 		uint256 startDate;
 		uint256 endDate;
 		uint256 medalID;
+		string eventDescription; // String describing the event
 		bool hasMedal;
 		bool activ;
 		bool ended; // finished ?
@@ -48,11 +49,13 @@ contract EventHandler is Ownable {
 	///@param _startDate Date for the event to start
 	///@param _endDate Date for the event to finish
 	///@param _sportCategory Type of event
+	///@param _eventDescription Desc of the evnt
 	function addEvent(
 		uint256 _organizedBy,
 		uint256 _startDate,
 		uint256 _endDate,
-		uint256 _sportCategory
+		uint256 _sportCategory,
+		string memory _eventDescription
 	) public returns (uint256) {
 		EventDesc storage _event = eventList[eventCount];
 		_event.eventId = eventCount;
@@ -64,6 +67,7 @@ contract EventHandler is Ownable {
 		_event.ended = false;
 		_event.started = false;
 		_event.winner = address(0);
+		_event.eventDescription = _eventDescription;
 		emit eventAdded(eventCount);
 		// return eventCount++;
 

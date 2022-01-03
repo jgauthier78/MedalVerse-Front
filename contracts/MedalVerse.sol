@@ -89,11 +89,13 @@ contract MedalVerse is
 	///@param startDate starting Date
 	///@param endDate ending Date
 	///@param sportsCategory Category of sport for the event
+	///@param eventDesc Description for the event
 	function newEvent(
 		uint256 organizationId,
 		uint256 startDate,
 		uint256 endDate,
-		uint256 sportsCategory
+		uint256 sportsCategory,
+		string memory eventDesc
 	) public {
 		// We first neet to check that the sender corresponds to an organizer
 		uint256 organizerId = organizerByAddress[msg.sender];
@@ -107,7 +109,8 @@ contract MedalVerse is
 			organizationId,
 			startDate,
 			endDate,
-			sportsCategory
+			sportsCategory,
+			eventDesc
 		);
 		organizerAddEvent(organizerId, organizationId, eventID);
 	}
