@@ -54,7 +54,7 @@ module.exports = async function (deployer, network, accounts) {
     // End of Event
     await rcup.changeStatusToRewardDistribution({ from: ACCOUNT_CONTRACT_OWNER })
 
-    await rcup.addWinner("François Coste", ACCOUNT_ATHLETE_01, 2020, { from: ACCOUNT_CONTRACT_OWNER })
+    await rcup.addWinner( ACCOUNT_ATHLETE_01, 2020, { from: ACCOUNT_CONTRACT_OWNER })
 
 
 
