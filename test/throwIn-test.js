@@ -201,9 +201,10 @@ contract('ThrowIn', function (accounts) {
         console.log("-------------------------------")
     })
 
-    console.log("Test des erreur ...")
+    
     //Error Test
     it("Mint plusieurs NFT ", async function () {
+        console.log("Test des erreur ...")
         // Mint NftArtiste 
         await this.NFTArtist.mintNFTArtist("name", Uri);
         // Mint NftCup with Uri NftArtist 
