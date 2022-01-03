@@ -134,7 +134,7 @@ module.exports =
 
     maticMumbaiTestnet:
     {
-      // provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_HTTPS_URL_1 + Matic_MedalVerse_Dev_01_ProjectId ),
+      //provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_HTTPS_URL_1 + Matic_MedalVerse_Dev_01_ProjectId ),
       provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_Infura_RPC + Infura_ProjectId ),
       network_id: network_id_maticMumbaiTestnet,
       confirmations: 4,
