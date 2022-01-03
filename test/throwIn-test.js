@@ -56,87 +56,62 @@ contract('ThrowIn', function (accounts) {
 
     // Add Participant -------------------------------
     it("ajout de participants", async function () {
-        await this.throwInInstance.addParticipant(name, accounts[1], { from: owner });
+        await this.throwInInstance.setYear(year, { from: owner })
+        await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: owner })
+
+        await this.throwInInstance.addParticipant(name, user, { from: owner });
 
         // Define the variables to be checked
         let participant = await this.throwInInstance.participantMap(user);
 
         // check
         console.log("Check la structure du participant ...")
-        expect(participant.player).to.equal(name);
-        expect(participant.wallet).to.equal(user);
+        expect(participant.playerName).to.equal(name);
 
         console.log("-------------------------------")
-        console.log("Nom du participant: " + participant.player + " = " + name);
-        console.log("Wallet du participant: " + participant.wallet + " = " + user);
+        console.log("Nom du participant: " + participant.playerName + " = " + name);
         console.log("-------------------------------")
     })
 
     // Add Winner -------------------------------
     it("ajout d'un Winner", async function () {
+        await this.throwInInstance.setYear(year, { from: owner });
         // Change statut for the next 
-        await this.throwInInstance.changeStatusForNext({ from: owner });
-        await this.throwInInstance.changeStatusForNext({ from: owner });
+        await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: owner })
+        await this.throwInInstance.addParticipant(name, user, { from: owner });
+
+        await this.throwInInstance.changeStatusToCompetitionInProgress({ from: owner });
+        await this.throwInInstance.changeStatusToRewardDistribution({ from: owner });
 
         // Add Winner
-        await this.throwInInstance.addWinner(name, user, year, { from: owner });
+        await this.throwInInstance.addWinner(user, { from: owner });
 
         // Define the variables to be checked   
-        let winner = await this.throwInInstance.winnerMap(user);
-        let whatYear = new BigNumber(await this.throwInInstance.yearOfParticipationArray([0]));
+        let winner = new BigNumber(await this.throwInInstance.winnerMap(user));
+        let whatYear = new BigNumber(await this.throwInInstance.getYearOfCompetition());
         let winYear = new BigNumber(await this.throwInInstance.viewThisVictoryByAddress(user, 0));
-        let victory = new BigNumber(winner.numberOfVictory)
-
+        
 
         // Check
         console.log("Check la structure du gagnant ...")
-        expect(winner.player).to.equal(name);
-        expect(winner.wallet).to.equal(user);
         expect(winYear).to.be.bignumber.equal(whatYear);
-        expect(victory).to.be.bignumber.equal(number);
+        expect(winner).to.be.bignumber.equal(number);
 
         console.log("-------------------------------")
-        console.log("Nom du gagnant: " + winner.player + " = " + name);
-        console.log("Wallet du gagnant: " + winner.wallet + " = " + user);
         console.log("Année de victoire: " + winYear + " = " + whatYear);
-        console.log("Nombre de victoire: " + victory + " = " + number);
-        console.log("-------------------------------")
-    })
-
-    // Remove All Participant -------------------------------
-    it("Supprime tous les participant", async function () {
-        // Add participants
-        await this.throwInInstance.addParticipant(name, user, { from: owner });
-        await this.throwInInstance.addParticipant(name1, accounts[2], { from: owner });
-
-        // Change statut for next
-        await this.throwInInstance.changeStatusForNext({ from: owner });
-
-        // Remove all participant
-        await this.throwInInstance.changeStatusForNext({ from: owner });
-
-        // Define the variables to be checked
-        let balanceOfParticipant = new BigNumber(await this.throwInInstance.viewNumberOfParticipants());
-
-
-        // Check
-        console.log("Verifie que le tableau participant est vide ... ")
-        expect(balanceOfParticipant).to.be.bignumber.equal(zero);
-
-        console.log("-------------------------------")
-        console.log("Nombre de participant dans le tableau est de : " + balanceOfParticipant + " = " + zero)
+        console.log("Nombre de victoire: " + winner + " = " + number);
         console.log("-------------------------------")
     })
 
     // Remove This Participant -------------------------------
     it("Supprime un participant", async function () {
+        await this.throwInInstance.setYear(year, { from: owner })
+
+        await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: owner })
         // Add participants
         await this.throwInInstance.addParticipant(name, user, { from: owner });
         await this.throwInInstance.addParticipant(name1, accounts[2], { from: owner });
         await this.throwInInstance.addParticipant(name2, accounts[3], { from: owner });
-
-        // Change statut for next
-        await this.throwInInstance.changeStatusForNext({ from: owner });
 
         // Remove participant number 1
         await this.throwInInstance.removeThisParticipant(1, { from: owner });
@@ -146,11 +121,11 @@ contract('ThrowIn', function (accounts) {
 
         // Check
         console.log("Verifie le changement de position du participant numéro 2 ...")
-        expect(participant.player).to.equal(name1);
+        expect(participant.playerName).to.equal(name1);
         expect(participant.wallet).to.equal(accounts[2]);
 
         console.log("-------------------------------")
-        console.log("Nom du nouveau participant 1: " + participant.player + " = " + name1)
+        console.log("Nom du nouveau participant 1: " + participant.playerName + " = " + name1)
         console.log("Wallet du nouveau participant 1: " + participant.wallet + " = " + accounts[2])
         console.log("-------------------------------")
     })
@@ -217,7 +192,7 @@ contract('ThrowIn', function (accounts) {
     })
 
     it("Utilisez une function quand c'est pas le bon status", async function () {
-        await this.throwInInstance.addWinner(name, user, year, { from: owner });
+        await this.throwInInstance.addWinner(user, { from: owner });
     })
 
     it("Utilisez transferFromWithoutPermission sans etre l'owner", async function () {
@@ -235,7 +210,8 @@ contract('ThrowIn', function (accounts) {
     })
 
     it("Changez de statut si on es pas Owner", async function () {
-        await this.throwInInstance.changeStatusForNext({ from: user });
+        await this.throwInInstance.setYear(year, { from: owner })
+        await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: user });
     })
 
     it("Utilisé une fonction pause quand le contrat n'est pas en pause ", async function () {
@@ -251,6 +227,6 @@ contract('ThrowIn', function (accounts) {
     
     it("Utilisé une fonction qui neccesite que le contrat ne soit pas en pause quand le contrat est en pause ", async function () {
         await this.throwInInstance.setPaused({ from: owner });
-        await this.throwInInstance.changeStatusForNext({ from: owner });
+        await this.throwInInstance.setYear(year, { from: owner })
     })
 })
