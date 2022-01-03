@@ -41,8 +41,9 @@ module.exports = async function (deployer, network, accounts) {
     
     let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
     await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
-
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
+    await nft.setYear(2022, { from: ACCOUNT_CONTRACT_OWNER })
+    await nft.changeStatusToRegistrationOfParticipants({ from: ACCOUNT_CONTRACT_OWNER })   
     await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
 
     nftCounter++
@@ -54,7 +55,7 @@ module.exports = async function (deployer, network, accounts) {
     // End of Event
     await rcup.changeStatusToRewardDistribution({ from: ACCOUNT_CONTRACT_OWNER })
 
-    await rcup.addWinner( ACCOUNT_ATHLETE_01, 2020, { from: ACCOUNT_CONTRACT_OWNER })
+    await rcup.addWinner( ACCOUNT_ATHLETE_01, { from: ACCOUNT_CONTRACT_OWNER })
 
 
 

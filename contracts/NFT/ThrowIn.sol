@@ -21,9 +21,7 @@ contract ThrowIn is ERC721, Ownable {
 
 	//@dev Structure to describe the winner
 	struct Winner {
-		// string playerName; // Winning player or team's name
 		uint256[] year; // All the years of victory
-		address wallet; // Address wallet player or team
 		uint256 numberOfVictory; // Number of victory of player or team
 	}
 
@@ -31,25 +29,27 @@ contract ThrowIn is ERC721, Ownable {
 	struct Participant {
 		uint256 participantId; // The number in array of participants
 		string playerName; // Name of player or team winner
-		address wallet; // Address wallet player or team
+		address wallet; // Wallet of player or team winner
 	}
 
 	// Data --------------------------------
-	Winner[] internal winnersArray; // Winner structure array
+	Winner[] public winnersArray; // Winner structure array
 	Participant[] public participantArray; // Participant structure array
-	uint256[] public yearOfParticipationArray; // Stock up on the years where the competition takes place
+	uint16[] public yearOfParticipationArray; // Stock up on the years where the competition takes place
 
 	mapping(address => Winner) public winnerMap; // Associate a winner structure with an address
 	mapping(address => Participant) public participantMap; // Associate a participant structure with an address
 	mapping(uint256 => string) public uriToken; // Associate the token id and the uri
+    mapping(uint16 => address) public winnerByYearMap; // Year -> Winners array
 
 	string nameOfOrganization;
 	string uri;
 	uint256 numberMint;
 	uint256 totalNumberOfParticipants;
+	uint16 year;
 	bool pause;
 
-	statusOfCompetition public status = statusOfCompetition.RegistrationOfParticipants; // Set the initial status
+	statusOfCompetition public status = statusOfCompetition.CompetitionPreparation; // Set the initial status
 
 	// Modifiers ----------------------------
 	///@dev Check that the address is not zero
@@ -89,12 +89,10 @@ contract ThrowIn is ERC721, Ownable {
 
 	// Status ---------------------------------
 	enum statusOfCompetition {
-        // NewCompetitionYear
+		CompetitionPreparation,
 		RegistrationOfParticipants,
 		CompetitionInProgress,
-		RewardDistribution,
-		RewardExposed,
-		RecuperationReward
+		RewardDistribution
 	}
 
 	// Methods -------------------------------
@@ -103,7 +101,7 @@ contract ThrowIn is ERC721, Ownable {
 	function mintCup(uint256 tokenId)
 		public
 		onlyOwner
-		isGoodStatus(statusOfCompetition.RegistrationOfParticipants)
+		isGoodStatus(statusOfCompetition.CompetitionPreparation)
 		whenNotPaused
 	{
 		require(numberMint == 0, "Only one single cup can be minted"); // Check if the nft has already been minted
@@ -158,6 +156,11 @@ contract ThrowIn is ERC721, Ownable {
 		pause = false;
 	}
 
+	function setYear(uint16 competYear) public onlyOwner isGoodStatus(statusOfCompetition.CompetitionPreparation) whenNotPaused {
+		year = competYear;
+		yearOfParticipationArray.push(year);
+	}
+
 	///@dev Add participants to the Participant array and modify its structure associated with this wallet
 	///@param playerName player or team's name
 	///@param walletPlayer adress of player or team
@@ -177,7 +180,7 @@ contract ThrowIn is ERC721, Ownable {
 		// Define the participant structure
 		participantMap[walletPlayer].participantId = totalNumberOfParticipants;
 		participantMap[walletPlayer].playerName = playerName;
-		// participantMap[walletPlayer].wallet = walletPlayer;
+		participantMap[walletPlayer].wallet = walletPlayer;
 
 		totalNumberOfParticipants++; // Increases the number of participants
 
@@ -185,40 +188,12 @@ contract ThrowIn is ERC721, Ownable {
 			Participant(
 				participantMap[walletPlayer].participantId,
 				playerName,
-				walletPlayer
-			)
+				walletPlayer)
 		); // Push the structure into the participant array
 
 		emit ThrowInParticipantAdd(msg.sender, walletPlayer);
 	}
 
-    /*
-	///@dev Browse the statuses to know in which status the contract and move on to the next one
-	function changeStatusForNext() public onlyOwner whenNotPaused {
-		statusOfCompetition previousStatus; // Save current status for display as previous status in event
-
-		if (status == statusOfCompetition.RegistrationOfParticipants) {
-			status = statusOfCompetition.CompetitionInProgress;
-			previousStatus = statusOfCompetition.RegistrationOfParticipants;
-		} else if (status == statusOfCompetition.CompetitionInProgress) {
-			removeAllParticipants();
-			status = statusOfCompetition.RewardDistribution;
-			previousStatus = statusOfCompetition.CompetitionInProgress;
-		} else if (status == statusOfCompetition.RewardDistribution) {
-			status = statusOfCompetition.RewardExposed;
-			previousStatus = statusOfCompetition.RewardDistribution;
-		} else if (status == statusOfCompetition.RewardExposed) {
-			status = statusOfCompetition.RecuperationReward;
-			previousStatus = statusOfCompetition.RewardExposed;
-		} else if (status == statusOfCompetition.RecuperationReward) {
-			status = statusOfCompetition.RegistrationOfParticipants;
-			previousStatus = statusOfCompetition.RecuperationReward;
-		} else {
-			revert("Unknow Status");
-		}
-		emit ThrowInStatueChange(previousStatus, status);
-	}
-    */
 
     ///@dev Change status from RegistrationOfParticipants to CompetitionInProgress
     function changeStatusToCompetitionInProgress() public onlyOwner whenNotPaused isGoodStatus(statusOfCompetition.RegistrationOfParticipants) {
@@ -233,42 +208,30 @@ contract ThrowIn is ERC721, Ownable {
 		emit ThrowInStatueChange(statusOfCompetition.CompetitionInProgress, status);
     }
 
-    ///@dev Change status from RewardDistribution to RewardExposed
-    function changeStatusToRewardExposed() public onlyOwner whenNotPaused isGoodStatus(statusOfCompetition.RewardExposed) {
-        status = statusOfCompetition.RewardExposed;
-		emit ThrowInStatueChange(statusOfCompetition.RewardExposed, status);
-    }
 
     ///@dev Change status from RewardExposed to RecuperationReward
-    function changeStatusToRecuperationReward() public onlyOwner whenNotPaused isGoodStatus(statusOfCompetition.RewardExposed) {
-        status = statusOfCompetition.RecuperationReward;
-		emit ThrowInStatueChange(statusOfCompetition.RewardExposed, status);
+    function changeStatusToCompetitionPreparation() public onlyOwner whenNotPaused isGoodStatus(statusOfCompetition.RewardDistribution) {
+		require(totalNumberOfParticipants == 0, " Empty participant array");
+        status = statusOfCompetition.CompetitionPreparation;
+		year = 0;
+		emit ThrowInStatueChange(statusOfCompetition.RewardDistribution, status);
     }
-/*
-    ///@dev Change status from RecuperationReward to NewCompetitionYear
-    function changeStatusToNewCompetitionYear public onlyOwner whenNotPaused isGoodStatus(statusOfCompetition.RewardExposed) {
-        status = statusOfCompetition.NewCompetitionYear
-		emit ThrowInStatueChange(statusOfCompetition.RewardExposed, status);
-    }
-*/
+
     
     ///@dev Change status from x to RegistrationOfParticipants
-    // function changeStatusToRegistrationOfParticipants() public onlyOwner whenNotPaused isGoodStatus(statusOfCompetition.NewCompetitionYear) {
-    function changeStatusToRegistrationOfParticipants() public onlyOwner whenNotPaused isGoodStatus(statusOfCompetition.RecuperationReward) {
+    
+    function changeStatusToRegistrationOfParticipants() public onlyOwner whenNotPaused isGoodStatus(statusOfCompetition.CompetitionPreparation) {
+		require(year > 0);
         status = statusOfCompetition.RegistrationOfParticipants;
-		emit ThrowInStatueChange(statusOfCompetition.RecuperationReward, status);
+		emit ThrowInStatueChange(statusOfCompetition.CompetitionPreparation, status);
     }
 
 
 
 	///@dev Add winners to the Winners array and modify its structure associated with this wallet
-/*	// @param playerName winner's name */
 	///@param walletPlayer winner's address
-	///@param year Year of victory
 	function addWinner(
-		// string memory playerName,
-		address walletPlayer,
-		uint256 year
+		address walletPlayer
 	)
 		public
 		onlyOwner
@@ -276,19 +239,14 @@ contract ThrowIn is ERC721, Ownable {
 		isGoodStatus(statusOfCompetition.RewardDistribution)
 		whenNotPaused
 	{
-		yearOfParticipationArray.push(year); // Push the year of the competition into the array
-
+		
 		// Define the winner structure
 		winnerMap[walletPlayer].year.push(year);
-		winnerMap[walletPlayer].wallet = walletPlayer;
-		// winnerMap[walletPlayer].playerName = playerName;
-		winnerMap[walletPlayer].numberOfVictory += 1;
+		winnerMap[walletPlayer].numberOfVictory += 1 ;
 
 		winnersArray.push(
 			Winner(
-				// playerName,
 				winnerMap[walletPlayer].year,
-				walletPlayer,
 				winnerMap[walletPlayer].numberOfVictory
 			)
 		); // Push the structure into the winner array
@@ -296,56 +254,35 @@ contract ThrowIn is ERC721, Ownable {
 		emit ThrowInWinnersAdd(msg.sender, walletPlayer);
 	}
 
-	///@dev Completely delete the participant array and reset the number of participants to 0
-	function removeAllParticipants()
-		internal
-		onlyOwner
-		isGoodStatus(statusOfCompetition.CompetitionInProgress)
-		whenNotPaused
-	{
-		uint256 len = participantArray.length; // retrieve array size
-
-		for (uint256 i; i < len; i++) {
-			// loop that traverses the array
-			participantArray.pop(); // Remove all participant
-        // TODO : Clear mappings
-        //
-		}
-
-
-		totalNumberOfParticipants = 0; // Participant counter reset to 0
-
-		emit ThrowInAllParticipantsRemoved();
-	}
 
 	///@dev Removes the targeted item from the Participants
 	///@param element Number of participant remove
-	function removeThisParticipant(uint256 element)
+	function removeThisParticipant(uint8 element)
 		public
 		onlyOwner
-		isGoodStatus(statusOfCompetition.CompetitionInProgress) // TOTO : Pourquoi seulement quand la compétition est commencée ? Si j'ajoute un participant lors de l'enregistrement je en peux pa sle retirer avant que la compétition ait commencé
+		isGoodStatus(statusOfCompetition.RegistrationOfParticipants)
 		whenNotPaused
 	{
 		require(
 			element < participantArray.length,
 			"Your chosen element must be larger than the size of the array"
 		); // Check that the participant number deleted smaller than the length of array
-        // TODO : on ne peut pas supprimer le premier participant ?
 		require(element > 0, "The chosen element must be greater than 0"); // Check that the deleted element is not below 0
 
 		element--; // Remove 1 from the element to be removed to match the array
+		address wallet = participantArray[element].wallet;
 
 		// Loop that selects the targeted element and overwrites the next one until it reaches the end of the array
 		for (uint256 i = element; i < participantArray.length - 1; i++) {
 			participantArray[i] = participantArray[i + 1];
 			participantArray[i].participantId--; // Remove 1 from the number of lagged participants
-		}
-
-        // TODO : 
-        // // Clear mapping
-        // participantMap[participantWalletToRemove].participantId = 0; // Useless
-        // participantMap[participantWalletToRemove].playerName = "";
-        // // participantMap[participantWalletToRemove].wallet = address(0);
+		}	
+		 
+        // Clear mapping
+        participantMap[wallet].participantId = 0; // Useless
+        participantMap[wallet].playerName = "";
+		participantMap[wallet].wallet = address(0);
+        
 
 		totalNumberOfParticipants--; // Remove 1 from the number of participants
 		element++; // Add 1 to retrieve the targeted element to have the correct number entered
@@ -385,7 +322,7 @@ contract ThrowIn is ERC721, Ownable {
         // Clear mapping
         participantMap[participantWalletToRemove].participantId = 0; // Useless
         participantMap[participantWalletToRemove].playerName = "";
-        // participantMap[participantWalletToRemove].wallet = address(0);
+        participantMap[participantWalletToRemove].wallet = address(0);
 
 		totalNumberOfParticipants--; // Remove 1 from the number of participants
 
@@ -407,7 +344,7 @@ contract ThrowIn is ERC721, Ownable {
 		// Loop that goes through all the name of the winner and copies it as well as the production years of the competition
 		for (uint256 i = 0; i < winnersArray.length; i++) {
 			// winnersString[i] = winnersArray[i].playerName;
-            winnersString[i] =  participantMap[ winnersArray[i].wallet ].playerName ;
+            winnersString[i] =  participantMap[ participantArray[i].wallet ].playerName ;
 			yearsOfVictory[i] = yearOfParticipationArray[i];
 		}
 
@@ -464,7 +401,7 @@ contract ThrowIn is ERC721, Ownable {
 	}
 
 	///@return See the number of participants remaining
-	function viewtotalNumberOfParticipantss() public view returns (uint256) {
+	function viewTotalNumberOfParticipants() public view returns (uint256) {
 		return totalNumberOfParticipants;
 	}
 
@@ -477,5 +414,9 @@ contract ThrowIn is ERC721, Ownable {
 	///@return return the organization name
 	function getOrganizationName() external view returns (string memory) {
 		return nameOfOrganization;
+	}
+
+	function getYearOfCompetition() public view returns(uint16) {
+		return year;
 	}
 }
