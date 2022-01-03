@@ -50,9 +50,9 @@ module.exports = async function (deployer, network, accounts) {
   }
   async function setWinner(rcup, eventId, sporsmanId, organizerId) {
     //End of registration
-    await rcup.changeStatusForNext({ from: ACCOUNT_CONTRACT_OWNER })
+    await rcup.changeStatusToCompetitionInProgress({ from: ACCOUNT_CONTRACT_OWNER })
     // End of Event
-    await rcup.changeStatusForNext({ from: ACCOUNT_CONTRACT_OWNER })
+    await rcup.changeStatusToRewardDistribution({ from: ACCOUNT_CONTRACT_OWNER })
 
     await rcup.addWinner("François Coste", ACCOUNT_ATHLETE_01, 2020, { from: ACCOUNT_CONTRACT_OWNER })
 
