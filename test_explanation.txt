@@ -1,0 +1,4 @@
+
+Coverage:
+
+- MedalVerse expose la majorité des fonctionnalités disponibles, seules quelques fonctions provenant des classes
