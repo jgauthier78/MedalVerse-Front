@@ -36,7 +36,8 @@ Gestion d'erreurs
   F-Vérifier qu'une exception est générée lorsque l'on lit en dehors de la plage des sportifs créés
   G-Vérifier qu'une exception est générée lorsque l'on lit en dehors de la plage des organizers créés
   H-Vérifier qu'un user non auteur retourne un auteur vide
-contrat AuthorHandler:
+  
+Contrat AuthorHandler:
 
 Cas de bon Fonctionnement
   I-Ajouter une création à un auteur, vérifier la bonne écriture dans la base
@@ -47,3 +48,22 @@ Gestion d'errreurs
   L-Vérifier une exception si ajout d'une création à un utilisateur non auteur
   M-Accéder à la liste des créations d'un auteur non existant
   N-Récupérer une liste de créations en dehors des ranges
+  
+Contrat EventHandler:
+
+Cas de bon Fonctionnement:
+  O-Ajoute un événement sur une organization valide
+  P-Démarre un événement
+  Q-Arrete un événement
+  R-Définit un Winner à un événement
+  S-Ajoute une médaille à un événement
+  T-Publie une médaille
+  U-Ajoute un événement et vérifie l'écriture dans le contrat MedalVerse
+  
+Gestion d'erreurs
+  V-Ajouter un événement sur une organization invalide
+  W-Accèdér à un événement avec un id d'événement invalide
+  X-Démarrer/Terminer un événement non existant
+  Y-Démarrer/Terminer un événement quand on en est pas admin
+  Z-
+  
