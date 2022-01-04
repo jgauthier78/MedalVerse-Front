@@ -48,8 +48,8 @@ contract('MedalVerse', function (accounts) {
 
   // USER -------------------------------
 
-  it("Créé un USER, l'enregistre, lit dans la base le résultat", async function () {
-    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, role, 0, { from: accounts[0] });
+  it("A-Créé un USER, l'enregistre, vérifie l'état de la base", async function () {
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, role, 0, { from: owner });
     let details = await this.MedalVerseInstance.getUserDetails(recipient);
 
     // check
@@ -60,8 +60,12 @@ contract('MedalVerse', function (accounts) {
     expect(details.activ).to.equal(true);
   });
 
+  it("B-not Owner Créé un USER doit échouer", async function () {
+    await catchException(this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, role, 0, { from: recipient }), errTypes.revert)
 
-  it("Créé un USER, SPORTIF et vérifie qu'il est bien enregistré en sportif", async function () {
+  });
+
+  it("C-Créé un USER, SPORTIF et vérifie qu'il est bien enregistré en sportif", async function () {
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, SPORTSMAN_ROLE, sport, { from: owner });
     let details = await this.MedalVerseInstance.getSportsmanList(0, 0, { from: owner });
 
@@ -70,14 +74,7 @@ contract('MedalVerse', function (accounts) {
     expect(details[0].sportCategory).to.equal("4");
   });
 
-
-  it("Essai de lire une liste de sportifs en dehors de la plage disponible ", async function () {
-    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, SPORTSMAN_ROLE, sport, { from: owner });
-    await catchException(this.MedalVerseInstance.getSportsmanList(1, 1, { from: owner }), errTypes.revert);
-
-  });
-
-  it("Créé un USER, ORGANIZER et vérifie qu'il est bien enregistré en sportif", async function () {
+  it("D-Créé un USER, ORGANIZER et vérifie qu'il est bien enregistré en Organizer", async function () {
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
     let details = await this.MedalVerseInstance.getOrganizerAddressById(0);
 
@@ -86,12 +83,7 @@ contract('MedalVerse', function (accounts) {
 
   });
 
-
-
-  // Author-------------------------------
-
-  console.log(' Author-------------------------------')
-  it("Créé un user de type AUTHOR, vérifie la bonne écriture dans le contrat", async function () {
+  it("E-Créé un user de type AUTHOR, vérifie la bonne écriture dans le contrat", async function () {
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: owner });
     let details = await this.MedalVerseInstance.getAuthor(recipient);
     // check
@@ -99,7 +91,15 @@ contract('MedalVerse', function (accounts) {
     expect(details.activ).to.equal(true);
   });
 
-  it("Vérifie qu'un user non author retourne une structure nulle", async function () {
+
+  it("F-Essai de lire une liste de sportifs en dehors de la plage disponible ", async function () {
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, SPORTSMAN_ROLE, sport, { from: owner });
+    await catchException(this.MedalVerseInstance.getSportsmanList(1, 1, { from: owner }), errTypes.revert);
+
+  });
+
+
+  it("G-Vérifie qu'un user non author retourne une structure auteur nulle", async function () {
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 0, 0, { from: owner });
     let details = await this.MedalVerseInstance.getAuthor(recipient);
     // check
@@ -107,7 +107,15 @@ contract('MedalVerse', function (accounts) {
   });
 
 
-  it("Ajoute une Creation à un author, vérifie la bonne écriture dans la liste des créations", async function () {
+  it("H-Essai de lire un organizer en dehors de la plage disponible ", async function () {
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+    await catchException(this.MedalVerseInstance.getOrganizerAddressById(5, { from: owner }), errTypes.revert);
+
+  });
+
+  // Author----------------------------
+
+  it("I-Ajoute une Creation à un author, vérifie la bonne écriture dans la liste des créations", async function () {
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: owner });
     await this.MedalVerseInstance.addCreation(recipient, price, sportCategory, description, URI, { from: owner });
 
@@ -119,7 +127,7 @@ contract('MedalVerse', function (accounts) {
   });
 
 
-  it("Créé une Creation, vérifie le lien avec AUTHOR", async function () {
+  it("J-Créé une Creation, vérifie le lien avec AUTHOR", async function () {
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: accounts[0] });
     await this.MedalVerseInstance.addCreation(recipient, price, sportCategory, description, URI, { from: owner });
 
@@ -129,7 +137,7 @@ contract('MedalVerse', function (accounts) {
     expect(creationIndx).to.be.bignumber.equal(0);
   });
 
-  it("Affect un NFT à une création, vérifie le lien", async function () {
+  it("K-Affect un NFT à une création, vérifie le lien", async function () {
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, 2, 0, { from: accounts[0] });
     await this.MedalVerseInstance.addCreation(recipient, price, sportCategory, description, URI, { from: owner });
     await this.MedalVerseInstance.affectNFTtoCreation(0, owner, { from: accounts[0] });
@@ -138,6 +146,21 @@ contract('MedalVerse', function (accounts) {
     expect(details[0].NFT_Bkg_Adr).to.equal(owner);
   });
 
+  it("L-Ajoute une Creation à un author qui n'en est pas un", async function () {
+
+    await catchException(this.MedalVerseInstance.addCreation(recipient, price, sportCategory, description, URI, { from: owner }), errTypes.revert)
+
+  });
+  it("M-Essaie d'accéder à une création d'un auteur qui n'existe pas", async function () {
+
+    await catchException(this.MedalVerseInstance.getAuthorCreationsList(recipient), errTypes.revert)
+  });
+  it("N-Récupère liste de créations en dehors des ranges corrects", async function () {
+
+    await catchException(this.MedalVerseInstance.getCreationList(3, 4), errTypes.revert)
+    await catchException(this.MedalVerseInstance.getCreationList(0, 0), errTypes.revert)
+    await catchException(this.MedalVerseInstance.getCreationList(4, 3), errTypes.revert)
+  });
 
 
   // Event-------------------------------

@@ -58,7 +58,7 @@ contract AuthorHandler is Ownable {
 		string memory _URI
 	) public onlyOwner isNotNull(_user) {
 		Author storage _author = allAuthors[_user];
-		require(_author.activ, "Author must be activ to add Creation");
+		require(_author.activ, "Invalid User");
 		uint256 allCreationCount = allCreations.length;
 		allCreations.push();
 		// Register the creation in the global list of creations

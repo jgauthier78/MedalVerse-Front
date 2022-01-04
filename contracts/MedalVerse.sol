@@ -67,7 +67,6 @@ contract MedalVerse is
 		uint256 _sportsCategory
 	) public onlyOwner isNotNull(_userAddress) {
 		addUser(_userAddress, _iconURI, _userName, _email, _role);
-
 		if ((_role & 2) == 2) addAuthor(_userAddress);
 		if ((_role & 4) == 4) addOrganizer(_userAddress);
 		if ((_role & 8) == 8) addSportsman(_userAddress, _sportsCategory);
