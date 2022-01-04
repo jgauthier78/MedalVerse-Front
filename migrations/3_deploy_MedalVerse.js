@@ -48,21 +48,22 @@ module.exports = async function (deployer, network, accounts) {
     return nft;
   }
 
+  /*
   async function mintCupNFT(nftOrganization, nftName, nftSymbol, img, year, participants) {
     let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
     await NFTArtist.mintNFTArtist(nftName, img, { from: ACCOUNT_CONTRACT_OWNER })
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER })
     await nft.setYear(year, { from: ACCOUNT_CONTRACT_OWNER })
-    await nft.changeStatusToRegistrationOfParticipants({ from: ACCOUNT_CONTRACT_OWNER })
-    const promises = participants.map((participant) => {
-      nft.addParticipant(participant.name, participant.account, { from: ACCOUNT_CONTRACT_OWNER })
-    })
-    const results = await Promise.all(promises)
+    // await nft.changeStatusToRegistrationOfParticipants({ from: ACCOUNT_CONTRACT_OWNER })
+    // const promises = participants.map((participant) => {
+    //   nft.addParticipant(participant.name, participant.account, { from: ACCOUNT_CONTRACT_OWNER })
+    // })
+    // const results = await Promise.all(promises)
 
     nftCounter++;
     return nft;
   } // mintCupNFT
-
+*/
 
   async function setWinner(rcup, eventId, sporsmanId, organizerId) {
     //End of registration
@@ -90,8 +91,8 @@ module.exports = async function (deployer, network, accounts) {
     await MVerse.addNewUser(generateFakeAdr(), avatarRef(addFakeUser.counter.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); addFakeUser.counter++
   }
 
-  const ACCOUNT_ORGANIZER_01 = accounts[1] // account1
-  const ACCOUNT_ATHLETE_01 = accounts[2] // account0
+  const ACCOUNT_ORGANIZER_01 = accounts[1]
+  const ACCOUNT_ATHLETE_01 = accounts[2]
 
   console.log("----------------------------------------------------------")
   console.log("Accounts")
@@ -226,12 +227,14 @@ module.exports = async function (deployer, network, accounts) {
   let rcup2 = await createNFT("Tennis Cup", "Tennis Nft", "TNFT", "Gauthier Germain", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
   await setWinner(rcup2, EVENT_THREE, ACCOUNT_ATHLETE_01, ACCOUNT_ORGANIZER_01)
 
+  console.log(".")
+
   // Create a competition reward but no winner
   // let rcup3 = await mintNFT("Tennis Cup", "Tennis Nft", "TNFT", "Gauthier Germain", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
   // mintCupNFT(nftOrganization, nftName, nftSymbol, name, img, year, account) {
-  let participants_04 = []
-  participants_04.push( { "account" : ACCOUNT_ATHLETE_01, "name" : ATHLETE_01_NAME} )
-  let x = await mintCupNFT("Tennis Cup", "Tennis Nft", "TNFT", "/img/medals/medal3.jpg", 2022, participants_04)
+  // let participants_04 = []
+  // participants_04.push( { "account" : ACCOUNT_ATHLETE_01, "name" : ATHLETE_01_NAME} )
+  // let rcup3 = await mintCupNFT("Tennis Cup", "Tennis Nft", "TNFT", "/img/medals/medal3.jpg", 2022, participants_04)
 
 
   console.log("done.")
