@@ -1,1 +1,39 @@
 
+
+
+MedalVerse.sol
+
+Ré-entrance:
+-----------
+MedalVerse n'effectue pas de transfert, encapsule les NFT dans une structure, mais n'appelle pas de fonction sur ces derniers.
+Pas de soucis de ré-entrance
+
+
+OverFlow: 
+---------
+Variables sensibles: 
+- Dates d'événement soumises à medalVerse, ajout de check pour vérifier qu'elles sont logiques (endtime> startTime && endTime>0), mais pas de manipulation de ces dernieres en solidity donc 
+- Toutes les données de référence (identifiant dans la base) sont checkées pour être dans les bonnes ranges de tableaux/map, on vérifie qu'elles ne générerent pas d'erreur ou d'échec innatendu.
+- 
+
+Unexpected Ether: 
+----------------
+MedalVerse n'est pas payable, mais prend des NFT en paramètres qui eux peuvent déjà être mintés: check à prévoir
+
+Visibilité:
+-----------
+MedalVerse est très sensible à la visibilté, en effet:
+- Chaque contrat (Organizer,event,medal..) gère son métier de façon unilatérale, MedalVerse gère la synchronisation des différentes contrats en en assurant la bonne intégrité. Si une fonction des contrats Handler pouvait être appelée indépendemment des autres Handler, la base pourrait être rendue inutilisable.
+Aussi on définit la règle suivante:
+
+Pour les handlers, seules les getters sont public (toute fonction view) 
+
+Référence à un contrat externe: Si l’adresse d’un contrat appelé est défini par variable alors il est potentiellement vulnérable. Mettre les adresses en dur dans le contrat pour éviter tout soucis. Un contrat peut etre casté en n’importe quel autre contrat. Préférer utiliser Library plutot qu’un contrat externe pour faire une lib
+
+Envoyer une adresse incomplete: Un padding de 00 est ajouté à la fin si une adresse est incomplète, ce qui signifie qu’on peut envoyer vers un autre contrat que soit même sans que cela ne soit évident. Toujours tester les inputs
+
+Success de call: Si le check n’est pas fait, des états modifiés restent en cas de failure provoquée et du coup mettre le contrat dans un état imprévu
+
+Timestamp: le timestamp peut etre modifié par un mineur et n’est donc pas fiable
+
+tx.origin: Si on utilise tx.origin dans la une fonction payable, on a la possibilité de mettre en place du phishing, en ajoutant une indirection: envoi de l’argent ici pour obtenir ceci, mais en fait le ‘ici’ n’est pas la bonne cible
