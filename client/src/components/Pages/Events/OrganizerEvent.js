@@ -1,12 +1,7 @@
-import React /*, { Component }*/ from "react";
-
 /* React - Bootstrap*/
-// import { Button, Card, Container } from "react-bootstrap";
 import { Card, Container, Table } from "react-bootstrap";
 
 import Button from 'react-bootstrap/Button';
-
-// import { withTranslation } from 'react-i18next';
 
 import { useParams } from "react-router-dom";
 
@@ -16,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
 
 import { ZERO_ADDRESS_STRING, THROWIN_STATUSES_VALUES } from "../../../utils/consts";
-
 
 /* Icons */
 import { Trophy } from 'react-bootstrap-icons';
@@ -30,10 +24,10 @@ const Athletes = ({ registeredAthletes }) => (
 )
 */
 function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ }) {
-    //   console.log(events)
     let params = useParams();
     const { t } = useTranslation();
     let event = events[params.eventId]
+    // console.log("params.eventId="+params.eventId)
 
     //  event handler
     const onHandleEventMedalWinner = async (eventId, athleteAdr) => {
@@ -47,6 +41,7 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
     } // onHandleEventMedalWinner
 
     //  event handler
+    /*
     const ThrowIn_getStatus = async (ThrowInContractAddress) => {
         console.log("EventLayout::ThrowIn_getStatus:ThrowInContractAddress="+ThrowInContractAddress)
         try {
@@ -57,6 +52,7 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
             console.error(error)
         } // catch
     } // ThrowIn_getStatus
+    */
 
     // event handler
     const onHandle_ThrowIn_changeStatusToRegistrationOfParticipants = async (ThrowInContractAddress) => {
@@ -124,9 +120,11 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
                             <img src={event.organization.logoURI} className="profileImage mt-3 shadow" alt="" />
                             <div className="ms-2 c-details">
                                 <h5 className="mb-0">{event.organization.description}</h5>
+                                <h5 className="mb-0">{event.eventDescription}</h5>
                                 <h6>{t("OrganizerEvent.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvent.to")} {format_TimeStampToEndDate(event.endDate)}</h6>
                             </div>
                             <div className="ms-2 c-details">
+<h6>{event.throwIn.status}</h6>
                                 <h6>{t(`ThrowIn.statuses.${event.throwIn.status}`)}</h6>
                             </div>
                         </div>
