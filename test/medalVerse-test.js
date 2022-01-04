@@ -1,3 +1,4 @@
+const exceptionHandler = require("../scripts/CatchException")
 const BigNumber = require('bignumber.js');
 const chai = require('chai');
 const expect = require('chai').expect
@@ -6,32 +7,16 @@ const MedalVerse = artifacts.require('MedalVerse');
 const throwIn = artifacts.require('ThrowIn');
 const nftArtist = artifacts.require('NFTArtist');
 
+
+
+
 const SPORTSMAN_ROLE = 8
 const AUTHOR_ROLE = 2
 const ORGANIZER_ROLE = 4
 
-errTypes = {
-  revert: "revert",
-  outOfGas: "out of gas",
-  invalidJump: "invalid JUMP",
-  invalidOpcode: "invalid opcode",
-  stackOverflow: "stack overflow",
-  stackUnderflow: "stack underflow",
-  staticStateChange: "static state change"
-}
 
-tryCatch = async function (promise, errType) {
-  try {
-    await promise;
-    throw null;
-  }
-  catch (error) {
-    assert(error, "Expected an error but did not get one");
-    assert(error.message.startsWith(PREFIX + errType), "Expected an error starting with '" + PREFIX + errType + "' but got '" + error.message + "' instead");
-  }
-};
-
-const PREFIX = "Returned error: VM Exception while processing transaction: ";
+const errTypes = exceptionHandler.errTypes
+const catchException = exceptionHandler.catchException
 
 
 
@@ -88,7 +73,7 @@ contract('MedalVerse', function (accounts) {
 
   it("Essai de lire une liste de sportifs en dehors de la plage disponible ", async function () {
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, SPORTSMAN_ROLE, sport, { from: owner });
-    await tryCatch(this.MedalVerseInstance.getSportsmanList(1, 1, { from: owner }), errTypes.revert);
+    await catchException(this.MedalVerseInstance.getSportsmanList(1, 1, { from: owner }), errTypes.revert);
 
   });
 
@@ -160,7 +145,7 @@ contract('MedalVerse', function (accounts) {
   console.log(' Event-------------------------------')
   it("Ajoute un événement sur une organization invalide", async function () {
 
-    await tryCatch(this.MedalVerseInstance.newEvent(new BigNumber(0), new BigNumber(startDate), new BigNumber(endDate), new BigNumber(sport), desc, { from: owner }), errTypes.revert)
+    await catchException(this.MedalVerseInstance.newEvent(new BigNumber(0), new BigNumber(startDate), new BigNumber(endDate), new BigNumber(sport), desc, { from: owner }), errTypes.revert)
   })
 
   it("Ajoute un événement sur une organization valide", async function () {
@@ -281,7 +266,7 @@ contract('MedalVerse', function (accounts) {
     await this.MedalVerseInstance.addEvent(new BigNumber(orgID), new BigNumber(startDate), new BigNumber(endDate), new BigNumber(sport), desc, { from: owner })
 
     // on attend un revert
-    await tryCatch(this.MedalVerseInstance.getEvent(0, { from: owner }), errTypes.revert);
+    await catchException(this.MedalVerseInstance.getEvent(0, { from: owner }), errTypes.revert);
     let indx = await this.MedalVerseInstance.getEvent(10, { from: owner })
 
     // check
