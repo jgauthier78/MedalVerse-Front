@@ -3,7 +3,6 @@ import { Button, Card, Container } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
 // Router
-// import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 // Translation
@@ -14,38 +13,21 @@ import { useTranslation } from 'react-i18next';
 
 // Utils
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
-// import { extractOrganizerEventsFromProfile, extractOrganizerEventsFromUserOrganizations, filterEvents} from "./OrganizerEvents-js";
-
-/*
-//             <Athletes registeredAthletes={event.registeredSportsMan} />
-const Athletes = ({ registeredAthletes }) => (
-    <div>
-        {registeredAthletes.map((registeredAthlete, idx) => (
-            <li key={idx}>{registeredAthlete}</li>
-        ))}
-    </div>
-)
-*/
+// import { extractOrgan
 
 function EventsLayout( {/*userProfile*/ eventsToDisplay} ) {
-    //return <h1>Events</h1>;
-    // return <OrganizerEvents userProfile={userProfile} />
     return <OrganizerEvents eventsToDisplay={eventsToDisplay} />
   }
 
 const CarrousselItem = ({ organizerEvents }) => {
-    // const history = useHistory();
     let navigate = useNavigate();
 
-//  event handler
+   // event handler
   const onHandleEventDetails = async ( event ) =>
   {
     try
     {
-    //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
-    //   history.push('event')
-    // navigate('../event', {eventId:3} );
-    navigate( `../event/${event.eventId}` );
+        navigate( `../event/${event.eventId}` );
     } // try
     catch (error)
     {
@@ -55,7 +37,6 @@ const CarrousselItem = ({ organizerEvents }) => {
 
     const { t } = useTranslation();
 
-    // const history = useHistory();
     return(
     <div>
     {organizerEvents.map((event, indx) => (
@@ -95,22 +76,13 @@ class OrganizerEventsBeforeTranslation extends Component {
     render() {
         const { t } = this.props; // Translation
         const { eventsToDisplay } = this.props
-        
-        // let events = extractOrganizerEventsFromProfile(this.props.userProfile)
-        // let eventsToDisplay = filterEvents(events)
-
-        // console.log(this.props)
-        // console.log(this.props.userProfile)
-        // console.log(events)
-        console.log(eventsToDisplay)
-        // console.log( "countEvents = " + countEvents(this.props.userProfile.userOrganizations) )
+        // console.log(eventsToDisplay)
 
         if ( eventsToDisplay === undefined || eventsToDisplay.length <= 0 ) {
             return (
             <NoEvents/>
             )
         }
-
 
         return (
             <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
