@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
 
-import { ZERO_ADDRESS_STRING } from "../../../utils/consts";
+import { ZERO_ADDRESS_STRING, THROWIN_STATUSES_VALUES } from "../../../utils/consts";
 
 
 /* Icons */
@@ -32,8 +32,6 @@ const Athletes = ({ registeredAthletes }) => (
 function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ }) {
     //   console.log(events)
     let params = useParams();
-    // console.log(params.eventId)
-    // return <h1>Event {params.eventId}</h1>;
     const { t } = useTranslation();
     let event = events[params.eventId]
 
@@ -46,62 +44,71 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
         catch (error) {
             console.error(error)
         } // catch
-    } // onHandleEventMedal
+    } // onHandleEventMedalWinner
 
     //  event handler
     const ThrowIn_getStatus = async (ThrowInContractAddress) => {
         console.log("EventLayout::ThrowIn_getStatus:ThrowInContractAddress="+ThrowInContractAddress)
         try {
-            //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
-            //   history.push('event')
-            // navigate('../event', {eventId:3} );
-            // alert("onHandleEventClose:" + eventId)
-            await AppCallBacks.ThrowIn_getStatus()
+            let status = await AppCallBacks.ThrowIn_getStatus(ThrowInContractAddress)
+            console.log("status = "+status)
         } // try
         catch (error) {
             console.error(error)
         } // catch
     } // ThrowIn_getStatus
 
-    //  event handler
-    const ThrowIn_changeStatusToRewardExposed = async (ThrowInContractAddress) => {
-        console.log("EventLayout::ThrowIn_changeStatusToRewardExposed:ThrowInContractAddress="+ThrowInContractAddress)
+    // event handler
+    const onHandle_ThrowIn_changeStatusToRegistrationOfParticipants = async (ThrowInContractAddress) => {
         try {
-            //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
-            //   history.push('event')
-            // navigate('../event', {eventId:3} );
-            // alert("onHandleEventClose:" + eventId)
-            await AppCallBacks.ThrowIn_changeStatusToRewardExposed()
+            console.log("EventLayout::onHandle_ThrowIn_changeStatusToRegistrationOfParticipants:ThrowInContractAddress="+ThrowInContractAddress)
+            await AppCallBacks.ThrowIn_changeStatusToRegistrationOfParticipants(ThrowInContractAddress)
         } // try
         catch (error) {
             console.error(error)
         } // catch
-    } // ThrowIn_getStatus
-    
-    //  event handler
-    const onHandleEventClose = async (eventId) => {
+    } // onHandle_ThrowIn_changeStatusToRegistrationOfParticipants
+
+    // event handler
+    const onHandle_ThrowIn_changeStatusToCompetitionInProgress = async (ThrowInContractAddress) => {
         try {
-            //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
-            //   history.push('event')
-            // navigate('../event', {eventId:3} );
-            // alert("onHandleEventClose:" + eventId)
-            await AppCallBacks.ThrowIn_getStatus()
+            console.log("EventLayout::ThrowIn_changeStatusToCompetitionInProgress:ThrowInContractAddress="+ThrowInContractAddress)
+            await AppCallBacks.ThrowIn_changeStatusToCompetitionInProgress(ThrowInContractAddress)
         } // try
         catch (error) {
             console.error(error)
         } // catch
-    } // onHandleEventDetails
+    } // onHandle_ThrowIn_changeStatusToCompetitionInProgress
+
+    // event handler
+    const onHandle_ThrowIn_changeStatusToRewardDistribution = async (ThrowInContractAddress) => {
+        try {
+            console.log("EventLayout::onHandle_ThrowIn_changeStatusToRewardDistribution:ThrowInContractAddress="+ThrowInContractAddress)
+            await AppCallBacks.ThrowIn_changeStatusToRewardDistribution(ThrowInContractAddress)
+        } // try
+        catch (error) {
+            console.error(error)
+        } // catch
+    } // onHandle_ThrowIn_changeStatusToRewardDistribution
+
+    // event handler
+    const onHandle_ThrowIn_changeStatusToCompetitionPreparation = async (ThrowInContractAddress) => {
+        try {
+            console.log("EventLayout::ThrowIn_changeStatusToCompetitionPreparation:ThrowInContractAddress="+ThrowInContractAddress)
+            await AppCallBacks.ThrowIn_changeStatusToCompetitionPreparation(ThrowInContractAddress)
+        } // try
+        catch (error) {
+            console.error(error)
+        } // catch
+    } // ThrowIn_changeStatusToRewardExposed
+
+
 
     //  event handler
     const onHandleEventAddMedal = async (eventId) => {
         try {
-            console.log("onHandleEventAddMedal: eventId=" + eventId)
+            console.log("EventLayout::onHandleEventAddMedal: eventId="+eventId)
             await AppCallBacks.adminAddMedal(eventId)
-
-            //   console.log("CarrousselItem::onHandleEventDetails: event.eventId=" + event.eventId + " event.organization.name = " + event.organization.name  );
-            //   history.push('event')
-            // navigate('../event', {eventId:3} );
-            alert("onHandleEventClose:" + eventId)
         } // try
         catch (error) {
             console.error(error)
@@ -117,7 +124,10 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
                             <img src={event.organization.logoURI} className="profileImage mt-3 shadow" alt="" />
                             <div className="ms-2 c-details">
                                 <h5 className="mb-0">{event.organization.description}</h5>
-                                <h6>Du {format_TimeStampToStartDate(event.startDate)} au {format_TimeStampToEndDate(event.endDate)}</h6>
+                                <h6>{t("OrganizerEvent.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvent.to")} {format_TimeStampToEndDate(event.endDate)}</h6>
+                            </div>
+                            <div className="ms-2 c-details">
+                                <h6>{t(`ThrowIn.statuses.${event.throwIn.status}`)}</h6>
                             </div>
                         </div>
                     </div>
@@ -126,21 +136,26 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
                 <Card.Body>
                     <Card.Title>Actions</Card.Title>
                     <Card.Text>
+                        {/*
+                        //event.activ && event.started && event.ended 
+                        <Button className="ml-1" variant="warning" onClick={() => ThrowIn_getStatus(event.throwIn.address)}>{"ThrowIn_getStatus"}</Button>
+                        */}
 
-                        <Button className="ml-1" variant="warning" onClick={() => ThrowIn_getStatus(event.medal.throwInContractAddr)}>{"ThrowIn_getStatus"}</Button>
-                        <Button className="ml-1" variant="warning" onClick={() => ThrowIn_changeStatusToRewardExposed(event.medal.throwInContractAddr)}>{"ThrowIn_changeStatusToRewardExposed"}</Button>
-                        
-                        {
-                            // event.activ && event.started && !event.ended 
-                            true
+                        {event.throwIn.status === THROWIN_STATUSES_VALUES.STATUS_00_COMPETITIONPREPARATION
                             &&
-                            <Button className="ml-1" variant="warning" onClick={() => onHandleEventClose(event.eventId)}>{t("OrganizerEvent.actions.closeEvent")}</Button>
+                        <Button className="ml-1" variant="warning" onClick={() => onHandle_ThrowIn_changeStatusToRegistrationOfParticipants(event.throwIn.address)}>{"ThrowIn_changeStatusToRegistrationOfParticipants"}</Button>
                         }
-                        {
-                            // event.activ && event.started && event.ended 
-                            true
+                        {event.throwIn.status === THROWIN_STATUSES_VALUES.STATUS_01_REGISTRATIONOFPARTICIPANTS
                             &&
-                            <Button className="ml-1" variant="warning" onClick={() => onHandleEventAddMedal(event.eventId)}>{t("OrganizerEvent.actions.medal")}</Button>
+                        <Button className="ml-1" variant="warning" onClick={() => onHandle_ThrowIn_changeStatusToCompetitionInProgress(event.throwIn.address)}>{"ThrowIn_changeStatusToCompetitionInProgress"}</Button>
+                        }
+                        {event.throwIn.status === THROWIN_STATUSES_VALUES.STATUS_02_COMPETITIONINPROGRESS
+                            &&
+                        <Button className="ml-1" variant="warning" onClick={() => onHandle_ThrowIn_changeStatusToRewardDistribution(event.throwIn.address)}>{"ThrowIn_changeStatusToRewardDistribution"}</Button>
+                        }
+                        {event.throwIn.status === THROWIN_STATUSES_VALUES.STATUS_03_REWARDDISTRIBUTION
+                            &&
+                        <Button className="ml-1" variant="warning" onClick={() => onHandle_ThrowIn_changeStatusToCompetitionPreparation(event.throwIn.address)}>{"ThrowIn_changeStatusToCompetitionPreparation"}</Button>
                         }
                     </Card.Text>
                 </Card.Body>

@@ -1,4 +1,69 @@
+---------
+-Outils:-
+---------
+
+
+catchException(Promise, errType) 
+Utilisé pour tester qu'une exception a bien été levée. Permet de tester la bonne implémentation de modifiers / assert /require
+
+
+--------------------
+Structures Internes:
+--------------------
+
 
 Coverage:
+---------
 
-- MedalVerse expose la majorité des fonctionnalités disponibles, seules quelques fonctions provenant des classes
+MedalVerse expose la majorité des fonctionnalités disponibles, seules quelques fonctions provenant des classes (AuthorHandler, EventHandler, MedalHandler, OrganizerHandler, SportsmanHandler, UserHandler) sont publiques et utilisables par un autre utilisateur que Owner
+Les tests suivent le schéma de la User Story et ne couvrent pas les fonctionnalités hors de ce contexte  (NFT_Medal_Bkg, suppression de sportifs / événements / organisateurs / Admin, et AuthorHandler n'est pas utilisé)
+
+
+
+
+Tests de medalVerse
+
+contrat UserHandler:
+
+Cas de bon Fonctionnement
+  A-Enregistrer un utilisateur dans la base et vérifier le stockage des paramètres
+  C-Créer un User de type sportif, et vérifier qu'un SportsMan a été créé
+  D-Creer un User de type organisateur, vérifier qu'un Organizer est créé
+  E-Creer un User de type auteur, vérifier qu'un Author est créé
+
+Gestion d'erreurs
+  B-Vérifier qu'un utilisateur autre que owner ne peut pas enregistrer de User
+  F-Vérifier qu'une exception est générée lorsque l'on lit en dehors de la plage des sportifs créés
+  G-Vérifier qu'une exception est générée lorsque l'on lit en dehors de la plage des organizers créés
+  H-Vérifier qu'un user non auteur retourne un auteur vide
+  
+Contrat AuthorHandler:
+
+Cas de bon Fonctionnement
+  I-Ajouter une création à un auteur, vérifier la bonne écriture dans la base
+  J-Vérifier qu'un création a bien un lien avec son auteur
+  K-Affecte un descriptif de NFT à une création et vérifie le lien
+ 
+Gestion d'errreurs
+  L-Vérifier une exception si ajout d'une création à un utilisateur non auteur
+  M-Accéder à la liste des créations d'un auteur non existant
+  N-Récupérer une liste de créations en dehors des ranges
+  
+Contrat EventHandler:
+
+Cas de bon Fonctionnement:
+  O-Ajoute un événement sur une organization valide
+  P-Démarre un événement
+  Q-Arrete un événement
+  R-Définit un Winner à un événement
+  S-Ajoute une médaille à un événement
+  T-Publie une médaille
+  U-Ajoute un événement et vérifie l'écriture dans le contrat MedalVerse
+  
+Gestion d'erreurs
+  V-Ajouter un événement sur une organization invalide
+  W-Accèdér à un événement avec un id d'événement invalide
+  X-Démarrer/Terminer un événement non existant
+  Y-Démarrer/Terminer un événement quand on en est pas admin
+  Z-
+  

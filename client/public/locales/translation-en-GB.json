@@ -9,7 +9,9 @@
     "actions" : {
       "closeEvent" : "End event",
       "medal": "medal"
-    },
+      },
+    "from" : "From",
+    "to" : "to",
     "athlete" : {
       "athletes" : "Athletes",
       "competitors" : "Compétiteurs",
@@ -103,6 +105,14 @@
   },
   "account": {
     "address": "address : "
+  },
+  "ThrowIn":{
+    "statuses" : {
+      "0" : "Event preparation ",
+      "1" : "Competitors registration",
+      "2" : "Competition in progress",
+      "3" : "Rewards distribution"
+    }
   },
   "Web3": {
     "loading": "Please kindly wait while loading ..."

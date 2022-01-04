@@ -10,6 +10,8 @@
       "closeEvent" : "Terminer l'évènement",
       "medal" : "médailler"
     },
+    "from" : "Du",
+    "to" : "au",
     "athlete" : {
       "athletes" : "Athlètes",
       "competitors" : "Competitors",
@@ -19,7 +21,6 @@
       "actions": {
         "setWinner": "Déclarer vainqueur"
       }
-      
     }
   },
   "OrganizerEvents": {
@@ -105,6 +106,14 @@
   },
   "Web3": {
     "loading": "Merci de patienter pendant le chargement ..."
+  },
+  "ThrowIn":{
+    "statuses" : {
+      "0" : "Compétition en préparation",
+      "1" : "Enregistrement des participants",
+      "2" : "Compétition en cours",
+      "3" : "Distribution des récompenses"
+    }
   },
   "Formats": {
     "date": "fr-FR"
