@@ -62,8 +62,7 @@ class App extends Component {
             ThrowIn_getStatus: this.ThrowIn_getStatus,
             ThrowIn_changeStatusToCompetitionInProgress: this.ThrowIn_changeStatusToCompetitionInProgress,
             ThrowIn_changeStatusToRewardDistribution: this.ThrowIn_changeStatusToRewardDistribution,
-            ThrowIn_changeStatusToRewardExposed: this.ThrowIn_changeStatusToRewardExposed,
-            ThrowIn_changeStatusToRecuperationReward: this.ThrowIn_changeStatusToRecuperationReward,
+            ThrowIn_changeStatusToCompetitionPreparation: this.ThrowIn_changeStatusToCompetitionPreparation,
             ThrowIn_changeStatusToRegistrationOfParticipants: this.ThrowIn_changeStatusToRegistrationOfParticipants,
 
             DID_init: this.DID_init,
@@ -330,6 +329,13 @@ class App extends Component {
 
 
             let medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
+
+            console.log("---------------------------------------------")
+            console.log("medalContract.options.address="+medalContract.options.address)
+            console.log("this.ThrowIn_getInstance( medal.succes.throwIn ).options.address = "+ ( await (this.ThrowIn_getInstance( medal.succes.throwIn )) ).options.address )
+            // console.log("this.ThrowIn_getInstance( medal.succes.throwIn ).options.address = "+ await (this.ThrowIn_getInstance( medal.succes.throwIn )) .options.address )
+            console.log("---------------------------------------------")
+
             // We get the list of winners for the medal
             let allWinners = await medalContract.methods.getAllWinners().call()
             let { 0: winnersString, 1: yearsOfVictory } = allWinners
@@ -411,21 +417,20 @@ class App extends Component {
                             activ: eventData.activ,
                             ended: eventData.ended,
                             started: eventData.started,
-                            // ! crée une référence circulaire !
+                            // -> crée une référence circulaire : ne pas utiliser stringify pour débugger
                             organization: organization
                         }
-                        //  console.log("event=" + JSON.stringify(event) )
-
                         // Medal data
-                        let medal = {}
+                        let throwIn = {}
                         let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
-                        // Instanciate throwIn contract
-                        medal.throwInContractAddr = medalData.throwIn
-                        //medal.throwInContractInstance = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
-                        medal.winner = medalData.winner
-                        medal.isInWinnerGallery = medalData.isInWinnerGallery
-
-                        event.medal = medal
+                        // ThrowIn contract data
+                        throwIn.address = medalData.throwIn
+                        throwIn.winner = medalData.winner
+                        throwIn.isInWinnerGallery = medalData.isInWinnerGallery
+                        throwIn.status = await this.ThrowIn_getStatus(throwIn.address)
+                        // console.log("throwIn.status ="+throwIn.status )
+                        // Set
+                        event.throwIn = throwIn
 
                         // Add event to organization
                         organization["events"].push(event)
@@ -486,42 +491,46 @@ class App extends Component {
 
     // -----------------------------------------------------
     // ThrowIn Methods
+
+    // ThrowIn_getInstance : caches contract instances
     ThrowIn_getInstance = async (ThrowInContractAddress) =>
     {
-        console.log("ThrowIn_getInstance")
-        /*
+        // console.log("App::ThrowIn_getInstance:ThrowInContractAddress="+ThrowInContractAddress)
         if ( this.ThrowIn_getInstance.instances === undefined )
         {
-            console.log("ThrowIn_getInstance.instances === undefined")
+            // console.log("ThrowIn_getInstance.instances === undefined")
             this.ThrowIn_getInstance.instances = []
         }
-        // const ThrowIn_getInstance_initial_value = null
-        console.log("this.ThrowIn_getInstance.instances="+this.ThrowIn_getInstance.instances)
-        console.log("this.ThrowIn_getInstance.instances[ThrowInContractAddress]="+this.ThrowIn_getInstance.instances[ThrowInContractAddress])
+        // console.log("this.ThrowIn_getInstance.instances="+this.ThrowIn_getInstance.instances)
+        // console.log("this.ThrowIn_getInstance.instances[ThrowInContractAddress]="+this.ThrowIn_getInstance.instances[ThrowInContractAddress])
         if (this.ThrowIn_getInstance.instances[ThrowInContractAddress] === undefined)
         {
-            console.log("UNDEFINED")
-            console.log("create instance")
+            // console.log("UNDEFINED INSTANCE")
+            // console.log("create instance")
             this.ThrowIn_getInstance.instances[ThrowInContractAddress] = await new this.state.web3.eth.Contract(ThrowInContract.abi, ThrowInContractAddress);
         }
-        else
-        {
-            console.log("en 'cache'")
-        }
+        // else
+        // {
+        //     console.log("INSTANCE en 'cache'")
+        // }
 
-        console.log("this.ThrowIn_getInstance.instances[ThrowInContractAddress]=" + JSON.stringify( this.ThrowIn_getInstance.instances[ThrowInContractAddress] ) )
+        // console.log("this.ThrowIn_getInstance.instances[ThrowInContractAddress]=" + JSON.stringify( this.ThrowIn_getInstance.instances[ThrowInContractAddress] ) )
         return this.ThrowIn_getInstance.instances[ThrowInContractAddress]
+
+        /*
+        const medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, ThrowInContractAddress);
+        // console.log("App::ThrowIn_getInstance:medalContract.options.address="+medalContract.options.address)
+        return medalContract
         */
-       return await new this.state.web3.eth.Contract(ThrowInContract.abi, ThrowInContractAddress)
     }
 
 
     ThrowIn_getStatus = async (ThrowInContractAddress) =>
     {
-        console.log("this.ThrowIn_getInstance(ThrowInContractAddress)="+this.ThrowIn_getInstance(ThrowInContractAddress))
-        console.log("this.ThrowIn_getInstance(ThrowInContractAddress).options.address"+this.ThrowIn_getInstance(ThrowInContractAddress).options.address)
+        // console.log("this.ThrowIn_getInstance(ThrowInContractAddress)="+ await this.ThrowIn_getInstance(ThrowInContractAddress))
+        console.log("this.ThrowIn_getInstance(ThrowInContractAddress).options.address"+ (await this.ThrowIn_getInstance(ThrowInContractAddress)).options.address)
         
-     let val = await this.ThrowIn_getInstance(ThrowInContractAddress).methods.status().call()
+     let val = await ((await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.status().call())
      const status_val = parseInt( val, 10 )
      return status_val
     }
@@ -530,7 +539,7 @@ class App extends Component {
     {
         try {
             // Change status
-            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToCompetitionInProgress().send({ from: this.getAccounts() })
+            await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToCompetitionInProgress().send({ from: this.getAccounts() }) )
             // Todo
             // Refresh data
         }
@@ -544,7 +553,7 @@ class App extends Component {
     {
         try {
             // Change status
-            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToRewardDistribution().send({ from: this.getAccounts() })
+            await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRewardDistribution().send({ from: this.getAccounts() }) ) 
             // Todo
             // Refresh data
         }
@@ -554,25 +563,11 @@ class App extends Component {
         } // catch
     }
 
-    ThrowIn_changeStatusToRewardExposed = async (ThrowInContractAddress) =>
+    ThrowIn_changeStatusToCompetitionPreparation = async (ThrowInContractAddress) =>
     {
         try {
             // Change status
-            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToRewardExposed().send({ from: this.getAccounts() })
-            // Todo
-            // Refresh data
-        }
-        catch (error) {
-            // Catch any errors for any of the above operations.
-            this.handleError(error, true)
-        } // catch
-    }
-
-    ThrowIn_changeStatusToRecuperationReward = async (ThrowInContractAddress) =>
-    {
-        try {
-            // Change status
-            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToRecuperationReward().send({ from: this.getAccounts() })
+            await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToCompetitionPreparation().send({ from: this.getAccounts() }) ) 
             // Todo
             // Refresh data
         }
@@ -586,7 +581,7 @@ class App extends Component {
     {
         try {
             // Change status
-            await this.ThrowIn_getInstance(ThrowInContractAddress).methods.changeStatusToRegistrationOfParticipants().send({ from: this.getAccounts() })
+            await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRegistrationOfParticipants().send({ from: this.getAccounts() }) ) 
             // Todo
             // Refresh data
         }
