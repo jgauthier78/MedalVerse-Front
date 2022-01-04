@@ -14,7 +14,7 @@ OverFlow:
 Variables sensibles: 
 - Dates d'événement soumises à medalVerse, ajout de check pour vérifier qu'elles sont logiques (endtime> startTime && endTime>0), mais pas de manipulation de ces dernieres en solidity donc 
 - Toutes les données de référence (identifiant dans la base) sont checkées pour être dans les bonnes ranges de tableaux/map, on vérifie qu'elles ne générerent pas d'erreur ou d'échec innatendu.
-- 
+
 
 Unexpected Ether: 
 ----------------
@@ -23,17 +23,49 @@ MedalVerse n'est pas payable, mais prend des NFT en paramètres qui eux peuvent 
 Visibilité:
 -----------
 MedalVerse est très sensible à la visibilté, en effet:
+
 - Chaque contrat (Organizer,event,medal..) gère son métier de façon unilatérale, MedalVerse gère la synchronisation des différentes contrats en en assurant la bonne intégrité. Si une fonction des contrats Handler pouvait être appelée indépendemment des autres Handler, la base pourrait être rendue inutilisable.
-Aussi on définit la règle suivante:
 
-Pour les handlers, seules les getters sont public (toute fonction view) 
+Aussi on définit les règles suivantes:
+**************************************
+Pour les contrats handlers :
+- Toutes les fonctions view peuvent-être publiques
+- Toutes les fonctions nécessitant une intéraction ou ayant une dépendance avec un autre Handler sont en internal et une fonction de Medalverse gère la synchronisation.
+- Tous les setters qui ont un role de fonction interne à la DAPP sont en owner
 
-Référence à un contrat externe: Si l’adresse d’un contrat appelé est défini par variable alors il est potentiellement vulnérable. Mettre les adresses en dur dans le contrat pour éviter tout soucis. Un contrat peut etre casté en n’importe quel autre contrat. Préférer utiliser Library plutot qu’un contrat externe pour faire une lib
+Pour le contrat MedalVerse:
+- Les fonctions ne correspondant pas à des fonctionnalités utilisateurs (mais nécessaires aux fonctionnement de la DAPP) sont en onlyOwner
 
-Envoyer une adresse incomplete: Un padding de 00 est ajouté à la fin si une adresse est incomplète, ce qui signifie qu’on peut envoyer vers un autre contrat que soit même sans que cela ne soit évident. Toujours tester les inputs
 
-Success de call: Si le check n’est pas fait, des états modifiés restent en cas de failure provoquée et du coup mettre le contrat dans un état imprévu
+Référence à un contrat externe:
+-------------------------------
 
-Timestamp: le timestamp peut etre modifié par un mineur et n’est donc pas fiable
+- les deux contrats NFT et ThrowIn sont encapsulés dans les structures, mais aucun appel n'est effectué sur ces derniers, ils sont transmis au JS.
+- Throwin est minté indépendamment de MedalVerse, et le contrat affecte le NFT via:
 
-tx.origin: Si on utilise tx.origin dans la une fonction payable, on a la possibilité de mettre en place du phishing, en ajoutant une indirection: envoi de l’argent ici pour obtenir ceci, mais en fait le ‘ici’ n’est pas la bonne cible
+MedalVerse.sol : adminAddMedal(uint256 eventID, address _nft)
+
+-> on vérifie la bonne implémentation de l'interface
+IERC721(_nft).supportsInterface(type(IERC721).interfaceId);
+
+
+Envoyer une adresse incomplete: 
+-------------------------------
+
+msg.sender est utilisé pour les enregistrements d'utilisateur et les addresses sont checkées
+
+
+Success de call:
+----------------
+
+Pas de Call dans les classes
+
+
+Timestamp:
+----------
+
+Les dates utilisées sont en universal time, et gérée par le front. Pas d'interaction avec le contrat.
+
+tx.origin:
+----------
+Pas d'exploitation de "tx"
