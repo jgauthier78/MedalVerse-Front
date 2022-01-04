@@ -106,12 +106,14 @@
   "account": {
     "address": "address : "
   },
-  "ThrowIn":{
-    "statuses" : {
-      "0" : "Event preparation ",
-      "1" : "Competitors registration",
-      "2" : "Competition in progress",
-      "3" : "Rewards distribution"
+  "MedalVerse":{
+    "event":{
+      "states" : {
+      "0" : "Competitors registration ",
+      "1" : "Competition in progress",
+      "2" : "Rewards distribution",
+      "3" : "Rewards distributed"
+      }
     }
   },
   "Web3": {

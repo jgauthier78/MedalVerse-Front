@@ -107,12 +107,14 @@
   "Web3": {
     "loading": "Merci de patienter pendant le chargement ..."
   },
-  "ThrowIn":{
-    "statuses" : {
-      "0" : "Compétition en préparation",
-      "1" : "Enregistrement des participants",
-      "2" : "Compétition en cours",
-      "3" : "Distribution des récompenses"
+  "MedalVerse":{
+    "event":{
+      "states" : {
+        "0" : "Enregistrement des participants",
+        "1" : "Compétition en cours",
+        "2" : "Distribution des récompenses",
+        "3" : "Récompenses distribuées"
+      }
     }
   },
   "Formats": {
