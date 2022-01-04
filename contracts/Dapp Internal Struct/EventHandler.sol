@@ -2,6 +2,13 @@
 pragma solidity ^0.8;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+enum stateOfCompetition {
+	RegistrationOfParticipants,
+	CompetitionInProgress,
+	RewardDistribution,
+	RewardDistributed
+}
+
 contract EventHandler is Ownable {
 	struct EventDesc {
 		uint256 eventId; // Index of the event in the EventList
@@ -17,14 +24,23 @@ contract EventHandler is Ownable {
 		bool activ;
 		bool ended; // finished ?
 		bool started; // The event has started
+		stateOfCompetition eventState;
 	}
 
 	// Data ---------------------------------
+
 	//   Events
 	mapping(uint256 => EventDesc) eventList; // List of events already registered
 	uint256 eventCount; // Index for events
 
 	// Modifiers ----------------------------
+	modifier eventIsInState(uint256 eventId, stateOfCompetition _state) {
+		require(
+			eventList[eventId - 1].eventState == _state,
+			"Not possible in current state of the Event"
+		);
+		_;
+	}
 	modifier isNotNull(address a) virtual {
 		require(a != address(0));
 		_;
@@ -42,6 +58,7 @@ contract EventHandler is Ownable {
 	event eventAdded(uint256 eventId);
 	event eventRemoved(uint256 eventId);
 	event eventRegisterSportsman(uint256 eventId, address sportsmanId);
+	event eventStatusChanged(uint256 eventID, stateOfCompetition newStatus);
 
 	// Methods -------------------------------
 	///@dev add an event to the list of events
@@ -64,13 +81,22 @@ contract EventHandler is Ownable {
 		_event.endDate = _endDate;
 		_event.sportCategory = _sportCategory;
 		_event.activ = true;
-		_event.ended = false;
-		_event.started = false;
 		_event.winner = address(0);
 		_event.eventDescription = _eventDescription;
+		_event.eventState = stateOfCompetition.RegistrationOfParticipants;
 		emit eventAdded(eventCount);
 
 		return eventCount++;
+	}
+
+	///@dev returns the current state of the event
+	///@param evntID index of the event
+	function getEventCurrentState(uint256 evntID)
+		public
+		view
+		returns (stateOfCompetition)
+	{
+		return eventList[evntID - 1].eventState;
 	}
 
 	///@dev remove an event from the list of events
@@ -113,6 +139,7 @@ contract EventHandler is Ownable {
 		internal
 		isNotNullUint256(eventID)
 		isInRange(eventID, eventCount)
+		eventIsInState(eventID, stateOfCompetition.RewardDistribution)
 	{
 		eventList[eventID - 1].winner = _winner;
 	}
@@ -123,10 +150,15 @@ contract EventHandler is Ownable {
 		internal
 		isNotNullUint256(eventId)
 		isInRange(eventId, eventCount)
+		eventIsInState(eventId, stateOfCompetition.RegistrationOfParticipants)
 	{
-		eventId--;
-		eventList[eventId].started = true;
-		eventList[eventId].ended = false;
+		// start the competition
+		eventList[eventId - 1].eventState = stateOfCompetition
+			.CompetitionInProgress;
+		emit eventStatusChanged(
+			eventId + 1,
+			stateOfCompetition.CompetitionInProgress
+		);
 	}
 
 	///@dev The event is closed
@@ -135,8 +167,11 @@ contract EventHandler is Ownable {
 		internal
 		isInRange(eventId, eventCount)
 		isNotNullUint256(eventId)
+		eventIsInState(eventId, stateOfCompetition.CompetitionInProgress)
 	{
-		eventList[eventId - 1].ended = true;
+		eventList[eventId - 1].eventState = stateOfCompetition
+			.RewardDistribution;
+		emit eventStatusChanged(eventId, stateOfCompetition.RewardDistribution);
 	}
 
 	///@dev returns the list of Events
@@ -200,9 +235,16 @@ contract EventHandler is Ownable {
 		internal
 		isInRange(eventID, eventCount)
 		isNotNullUint256(eventID)
+		eventIsInState(eventID, stateOfCompetition.RewardDistribution)
 	{
-		eventList[eventID - 1].hasMedal = true;
-		eventList[eventID - 1].medalID = medalID;
+		eventID--;
+		eventList[eventID].hasMedal = true;
+		eventList[eventID].medalID = medalID;
+		eventList[eventID].eventState = stateOfCompetition.RewardDistributed;
+		emit eventStatusChanged(
+			eventID + 1,
+			stateOfCompetition.RewardDistributed
+		);
 	}
 
 	function eventHasMedal(uint256 eventID)

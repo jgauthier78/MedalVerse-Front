@@ -135,8 +135,11 @@ contract MedalVerse is
 		isAdminOfEvent(eventID)
 		isNotNull(winner)
 	{
+		if (
+			getEventCurrentState(eventID) ==
+			stateOfCompetition.CompetitionInProgress
+		) endEvent(eventID);
 		setEventWinner(eventID, winner);
-		endEvent(eventID);
 	}
 
 	///@dev The event gets a winner and closes,checks we are an admin for the event
