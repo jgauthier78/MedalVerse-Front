@@ -49,14 +49,27 @@ module.exports = async function (deployer, network, accounts) {
   }
 
   async function mintCupNFT(nftOrganization, nftName, nftSymbol, img, year, participants) {
+    console.log("mintCupNFT 01")
     let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
-    await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
+    console.log("mintCupNFT 02")
+    await NFTArtist.mintNFTArtist(nftName, img, { from: ACCOUNT_CONTRACT_OWNER })
+    console.log("mintCupNFT 03")
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER })
+    console.log("mintCupNFT 04")
     await nft.setYear(year, { from: ACCOUNT_CONTRACT_OWNER })
+    console.log("mintCupNFT 05")
     await nft.changeStatusToRegistrationOfParticipants({ from: ACCOUNT_CONTRACT_OWNER })
-    participants.forEach(participant => {
-      await nft.addParticipant(participant.name, participant.account, { from: ACCOUNT_CONTRACT_OWNER })
+    // participants.forEach(participant => {
+    //   await nft.addParticipant(participant.name, participant.account, { from: ACCOUNT_CONTRACT_OWNER })
+    // })
+    console.log("mintCupNFT 06")
+    const promises = participants.map((participant) => {
+      console.log("mintCupNFT 07")
+      nft.addParticipant(participant.name, participant.account, { from: ACCOUNT_CONTRACT_OWNER })
     })
+    console.log("mintCupNFT 08")
+    const results = await Promise.all(promises)
+    console.log("mintCupNFT 09")
 
     nftCounter++;
     return nft;
@@ -201,6 +214,7 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.newEvent(0, Time01_start, Time01_end, 2, "Saison 14, ville deLyons", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.newEvent(1, Time02_start, Time02_end, 4, "Mx Moto-Station", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.newEvent(2, Time03_start, Time03_end, 4, "Trophé des Champions, Arcueil", { from: ACCOUNT_ORGANIZER_01 });
+  console.log("MVerse.newEvent(3")
   await MVerse.newEvent(3, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes", { from: ACCOUNT_ORGANIZER_01 });
   console.log(".")
 
