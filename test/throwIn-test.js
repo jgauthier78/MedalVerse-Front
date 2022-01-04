@@ -54,74 +54,31 @@ contract('ThrowIn', function (accounts) {
         // Uri du token: UriToken = Uri
     })
 
-    // Add Participant 
-    it("B-ajout de participants", async function () {
-        await this.throwInInstance.setYear(year, { from: owner })
-        await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: owner })
-
-        await this.throwInInstance.addParticipant(name, user, { from: owner });
-
-        // Define the variables to be checked
-        let participant = await this.throwInInstance.participantMap(user);
-
-        // Check la structure du participant
-        expect(participant.playerName).to.equal(name);
-        // Nom du participant: participant.playerName = name);
-        
-    })
 
     // Add Winner 
-    it("C-ajout d'un Winner", async function () {
+    it("B-ajout d'un Winner", async function () {
         await this.throwInInstance.setYear(year, { from: owner });
-        // Change statut for the next 
-        await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: owner })
-        await this.throwInInstance.addParticipant(name, user, { from: owner });
-
-        await this.throwInInstance.changeStatusToCompetitionInProgress({ from: owner });
-        await this.throwInInstance.changeStatusToRewardDistribution({ from: owner });
 
         // Add Winner
-        await this.throwInInstance.addWinner(user, { from: owner });
+        await this.throwInInstance.addWinner(name, user, { from: owner });
 
         // Define the variables to be checked   
-        let winner = new BigNumber(await this.throwInInstance.winnerMap(user));
+        let winner = await this.throwInInstance.winnerMap(user);
         let whatYear = new BigNumber(await this.throwInInstance.getYearOfCompetition());
         let winYear = new BigNumber(await this.throwInInstance.viewThisVictoryByAddress(user, 0));
         
         // Check la structure du gagnant
+        expect(winner.playerName).to.equal(name);
         expect(winYear).to.be.bignumber.equal(whatYear);
-        expect(winner).to.be.bignumber.equal(number);
+        expect(new BigNumber(winner.numberOfVictory)).to.be.bignumber.equal(number);
+        // Nom du gagnant: winner.playerName = name 
         // Année de victoire:  winYear = whatYear
         // Nombre de victoire: winner =  number
         
     })
 
-    // Remove This Participant 
-    it("D-Supprime un participant", async function () {
-        await this.throwInInstance.setYear(year, { from: owner })
-
-        await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: owner })
-        // Add participants
-        await this.throwInInstance.addParticipant(name, user, { from: owner });
-        await this.throwInInstance.addParticipant(name1, accounts[2], { from: owner });
-        await this.throwInInstance.addParticipant(name2, accounts[3], { from: owner });
-
-        // Remove participant number 1
-        await this.throwInInstance.removeThisParticipant(1, { from: owner });
-
-        // Define the variables to be checked
-        participant = await this.throwInInstance.participantMap(accounts[2]);
-
-        // Check le changement de position du participant numéro 2
-        expect(participant.playerName).to.equal(name1);
-        expect(participant.wallet).to.equal(accounts[2]);
-
-        // Nom du nouveau participant 1: participant.playerName = name1
-        // Wallet du nouveau participant 1: participant.wallet = accounts[2]
-    })
-
     // Change Statut and test function statut paused
-    it("E-mettre le contract en pause et verifié les fonction de pause ", async function () {
+    it("C-mettre le contract en pause et verifié les fonction de pause ", async function () {
         // Mint
         await this.NFTArtist.mintNFTArtist("name", Uri);
         await this.throwInInstance.mintCup(1, { from: owner });
@@ -165,9 +122,8 @@ contract('ThrowIn', function (accounts) {
         
     })
 
-    
     //Error Test
-    it("F-Mint plusieurs NFT ", async function () {
+    it("D-Mint plusieurs NFT ", async function () {
         console.log("Test des erreur ...")
         // Mint NftArtiste 
         await this.NFTArtist.mintNFTArtist("name", Uri, { from: user });
@@ -184,17 +140,7 @@ contract('ThrowIn', function (accounts) {
         expect(balance).to.be.bignumber.equal(number);
     })
 
-    
-    it("G-Utiliser une function quand c'est pas le bon status", async function () {
-        await catchException(this.throwInInstance.addParticipant(name, user, { from: owner }), errTypes.revert );
-
-        let numberParticipant = new BigNumber(await this.throwInInstance.viewTotalNumberOfParticipants());
-
-        expect(numberParticipant).to.be.bignumber.equal(zero);
-    })
-      
-
-    it("H-Utiliser transferFromWithoutPermission sans etre l'owner", async function () {
+    it("E-Utiliser transferFromWithoutPermission sans etre l'owner", async function () {
         // Mint NftArtiste 
         await this.NFTArtist.mintNFTArtist("name", Uri);
         // Mint NftCup with Uri NftArtist 
@@ -208,7 +154,7 @@ contract('ThrowIn', function (accounts) {
         expect(balance).to.be.bignumber.equal(zero);
     })
 
-    it("I-Mettre pause si on est pas l'owner", async function () {
+    it("F-Mettre pause si on est pas l'owner", async function () {
         await catchException(this.throwInInstance.setPaused({ from: user }), errTypes.revert);
 
         let pause = await this.throwInInstance.paused()
@@ -216,18 +162,7 @@ contract('ThrowIn', function (accounts) {
         expect(pause).to.equal(false)
     })
 
-    it("J-Changer de statut si on es pas Owner", async function () {
-        await this.throwInInstance.setYear(year, { from: owner })
-        await catchException(this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: user }), errTypes.revert);
-
-        await catchException(this.throwInInstance.addParticipant(name, user, { from: owner }), errTypes.revert)
-
-        let numberParticipant = new BigNumber(await this.throwInInstance.viewTotalNumberOfParticipants());
-
-        expect(numberParticipant).to.be.bignumber.equal(zero);
-    })
-
-    it("K-Utiliser une fonction qui neccesite que le contrat soit en pause quand le contrat n'est pas en pause ", async function () {
+    it("G-Utiliser une fonction qui neccesite que le contrat soit en pause quand le contrat n'est pas en pause ", async function () {
         // Mint NftArtiste 
         await this.NFTArtist.mintNFTArtist("name", Uri);
         // Mint NftCup with Uri NftArtist 
@@ -244,7 +179,7 @@ contract('ThrowIn', function (accounts) {
         expect(balance1).to.be.bignumber.equal(number);
     })
     
-    it("L-Utiliser une fonction qui neccesite que le contrat ne soit pas en pause quand le contrat est en pause ", async function () {
+    it("H-Utiliser une fonction qui neccesite que le contrat ne soit pas en pause quand le contrat est en pause ", async function () {
         await this.throwInInstance.setPaused({ from: owner });
         await catchException(this.throwInInstance.setYear(year, { from: owner }), errTypes.revert)
 

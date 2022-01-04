@@ -69,3 +69,56 @@ Les dates utilisées sont en universal time, et gérée par le front. Pas d'inte
 tx.origin:
 ----------
 Pas d'exploitation de "tx"
+
+..........................................................
+
+ThrowIn.sol
+
+Ré-entrance:
+------------
+
+ThrowIn n'effectue pas de transfert, encapsule les NFT dans une structure, mais n'appelle pas de fonction sur ces derniers.
+Pas de soucis de ré-entrance
+
+
+OverFlow: 
+---------
+
+
+Unexpected Ether: 
+----------------
+
+ThrowIn n'est pas payable, mais prend des NFT en paramètres qui eux peuvent déjà être mintés: check à prévoir
+
+
+Visibilité:
+-----------
+
+
+
+
+Référence à un contrat externe:
+-------------------------------
+
+
+Envoyer une adresse incomplete: 
+-------------------------------
+
+msg.sender est utilisé pour les enregistrements d'utilisateur et les addresses sont checkées
+
+
+Success de call:
+----------------
+
+Pas de Call dans les classes
+
+
+Timestamp:
+----------
+
+Les dates utilisées sont en universal time, et gérée par le front. Pas d'interaction avec le contrat.
+
+
+tx.origin:
+----------
+Pas d'exploitation de "tx"

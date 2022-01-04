@@ -41,8 +41,7 @@ module.exports = async function (deployer, network, accounts) {
     await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.setYear(2022, { from: ACCOUNT_CONTRACT_OWNER })
-    await nft.changeStatusToRegistrationOfParticipants({ from: ACCOUNT_CONTRACT_OWNER })
-    await nft.addParticipant(name, account, { from: ACCOUNT_CONTRACT_OWNER });
+    
 
     nftCounter++
     return nft;
@@ -66,12 +65,8 @@ module.exports = async function (deployer, network, accounts) {
 */
 
   async function setWinner(rcup, eventId, sporsmanId, organizerId) {
-    //End of registration
-    await rcup.changeStatusToCompetitionInProgress({ from: ACCOUNT_CONTRACT_OWNER })
-    // End of Event
-    await rcup.changeStatusToRewardDistribution({ from: ACCOUNT_CONTRACT_OWNER })
 
-    await rcup.addWinner(ACCOUNT_ATHLETE_01, { from: ACCOUNT_CONTRACT_OWNER })
+    await rcup.addWinner("François Coste", ACCOUNT_ATHLETE_01, { from: ACCOUNT_CONTRACT_OWNER })
 
 
 
