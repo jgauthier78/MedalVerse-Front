@@ -215,7 +215,7 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.newEvent(1, Time02_start, Time02_end, 4, "Mx Moto-Station", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.newEvent(2, Time03_start, Time03_end, 4, "Trophé des Champions, Arcueil", { from: ACCOUNT_ORGANIZER_01 });
   console.log("MVerse.newEvent(3")
-  await MVerse.newEvent(3, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes", { from: ACCOUNT_ORGANIZER_01 });
   console.log(".")
 
   // L'athlete 01 participe à ces évènements:
