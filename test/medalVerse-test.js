@@ -18,7 +18,21 @@ const ORGANIZER_ROLE = 4
 const errTypes = exceptionHandler.errTypes
 const catchException = exceptionHandler.catchException
 
+let nftCounter = 1
+async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
+  // Local static counter for NFTs IDs
 
+  let NFTArtist = await nftArtist.deployed()
+  let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: account }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
+  await NFTArtist.mintNFTArtist(name, img, { from: account })
+  await nft.mintCup(nftCounter, { from: account });
+  await nft.setYear(2022, { from: account })
+  await nft.changeStatusToRegistrationOfParticipants({ from: account })
+  await nft.addParticipant(name, account, { from: account });
+
+  nftCounter++
+  return nft;
+}
 
 contract('MedalVerse', function (accounts) {
 
@@ -229,8 +243,10 @@ contract('MedalVerse', function (accounts) {
   })
 
 
-  it("S-Ajoute une médaille à un événement", async function () {
+  it("S-Ajoute une médaille  à un événement", async function () {
 
+    // créé une médaille
+    let rcup = await createNFT("Running Cup", "Running Nft", "RuNFT", "Athus Keller", "/img/medals/medal0.jpg", owner)
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
 
@@ -241,14 +257,14 @@ contract('MedalVerse', function (accounts) {
 
     await this.MedalVerseInstance.adminSetWinner(1, recipient, { from: recipient })
 
-    await this.MedalVerseInstance.adminAddMedal(1, accounts[2], { from: recipient })
+    await this.MedalVerseInstance.adminAddMedal(1, rcup.address, { from: recipient })
 
     let md = await this.MedalVerseInstance.getMedal(await this.MedalVerseInstance.eventGetMedal(1))
 
-    expect(md.throwIn).to.be.equal(accounts[2])
+    expect(md.throwIn).to.be.equal(rcup.address)
   })
   it("T-Publie une médaille", async function () {
-
+    let rcup = await createNFT("Running Cup", "Running Nft", "RuNFT", "Athus Keller", "/img/medals/medal0.jpg", owner)
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
 
@@ -259,7 +275,7 @@ contract('MedalVerse', function (accounts) {
 
     await this.MedalVerseInstance.adminSetWinner(1, recipient, { from: recipient })
 
-    await this.MedalVerseInstance.adminAddMedal(1, accounts[2], { from: recipient })
+    await this.MedalVerseInstance.adminAddMedal(1, rcup.address, { from: recipient })
 
     let indx = await this.MedalVerseInstance.eventGetMedal(1)
     await this.MedalVerseInstance.publishMedal(indx, true, { from: recipient })

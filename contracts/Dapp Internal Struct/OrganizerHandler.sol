@@ -2,7 +2,9 @@
 pragma solidity ^0.8;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+// The structure that handles the organization, organizers and admins
 contract OrganizerHandler is Ownable {
+	// An organizer is an admin of an organization
 	struct Organizer {
 		address _user;
 		uint256[] organizationList; // id of orgs users subscribed to (id+1)
@@ -10,6 +12,7 @@ contract OrganizerHandler is Ownable {
 		bool activ;
 	}
 
+	// an Organization is a strucure that can create events
 	struct Organization {
 		uint256[] adminList;
 		uint256[] EventList;

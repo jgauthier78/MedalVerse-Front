@@ -7,6 +7,7 @@ import "./Dapp Internal Struct/SportsmanHandler.sol";
 import "./Dapp Internal Struct/EventHandler.sol";
 import "./Dapp Internal Struct/OrganizerHandler.sol";
 import "./Dapp Internal Struct/MedalHandler.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract MedalVerse is
 	Ownable,
@@ -95,7 +96,8 @@ contract MedalVerse is
 		uint256 endDate,
 		uint256 sportsCategory,
 		string memory eventDesc
-	) public {
+	) public isNotNullUint256(startDate) isNotNullUint256(endDate) {
+		require(endDate > startDate, "invalid dates");
 		// We first neet to check that the sender corresponds to an organizer
 		uint256 organizerId = organizerByAddress[msg.sender];
 		require(organizerId > 0, "you must be an organizer");
@@ -144,8 +146,13 @@ contract MedalVerse is
 		external
 		isAdminOfEvent(eventID)
 	{
+		// Check we have a IERC21 contract
+		IERC721(_nft).supportsInterface(type(IERC721).interfaceId);
+
+		// Gets the id og the winner to associate the medal
 		address winner = getWinner(eventID);
 		require(winner != address(0), "Set a Winner First");
+		// Find the organizer corresponding to the event
 		uint256 orgId = getEventOrganizer(eventID);
 		addMedal(_nft, orgId, eventID);
 		uint256 medalID = getMedalCount() - 1;
