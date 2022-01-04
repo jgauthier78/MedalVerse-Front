@@ -17,7 +17,7 @@ contract('NFTArtist', function (accounts) {
 
     })
     // Mint --------------
-    it("mint D'un NFT Artiste et vérification de ça structure", async function () {
+    it("A-mint D'un NFT Artiste et vérification de ça structure", async function () {
         // Mint NFTArtist
         await this.NFTArtistInstance.mintNFTArtist(name, Uri, { from: user });
 

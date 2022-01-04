@@ -13,11 +13,11 @@
  - npm i chai-bignumber --save-dev
 
  DID
- - npm i @3id/connect --save-dev
- - npm i @ceramicnetwork/3id-did-resolver --save-dev
- - npm i @ceramicnetwork/http-client --save-dev
- - npm i dids --save-dev
- - npm i @ceramicstudio/idx --save-dev (encore valable mais déprécié)
+ - npm i @3id/connect
+ - npm i @ceramicnetwork/3id-did-resolver
+ - npm i @ceramicnetwork/http-client
+ - npm i dids
+ - npm i @ceramicstudio/idx (encore valable mais déprécié)
 
  ! npm i ~~@openzeppelin/test-helpers~~ --save-dev ! <- installe ethereumjs-* qui ajoute des dépendances à webpack 3.12.0
   -> CONFLIT avec webpack 4.44.2 dont dépend react-scripts dans le projet client

@@ -36,7 +36,7 @@ contract('ThrowIn', function (accounts) {
     });
 
     // MINT 
-    it("Mint du NFT Coupe", async function () {
+    it("A-Mint du NFT Coupe", async function () {
         // Mint NftArtiste 
         await this.NFTArtist.mintNFTArtist("name", Uri, { from: user });
 
@@ -55,7 +55,7 @@ contract('ThrowIn', function (accounts) {
     })
 
     // Add Participant 
-    it("ajout de participants", async function () {
+    it("B-ajout de participants", async function () {
         await this.throwInInstance.setYear(year, { from: owner })
         await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: owner })
 
@@ -71,7 +71,7 @@ contract('ThrowIn', function (accounts) {
     })
 
     // Add Winner 
-    it("ajout d'un Winner", async function () {
+    it("C-ajout d'un Winner", async function () {
         await this.throwInInstance.setYear(year, { from: owner });
         // Change statut for the next 
         await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: owner })
@@ -97,7 +97,7 @@ contract('ThrowIn', function (accounts) {
     })
 
     // Remove This Participant 
-    it("Supprime un participant", async function () {
+    it("D-Supprime un participant", async function () {
         await this.throwInInstance.setYear(year, { from: owner })
 
         await this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: owner })
@@ -121,7 +121,7 @@ contract('ThrowIn', function (accounts) {
     })
 
     // Change Statut and test function statut paused
-    it("mettre le contract en pause et verifié les fonction de pause ", async function () {
+    it("E-mettre le contract en pause et verifié les fonction de pause ", async function () {
         // Mint
         await this.NFTArtist.mintNFTArtist("name", Uri);
         await this.throwInInstance.mintCup(1, { from: owner });
@@ -167,7 +167,7 @@ contract('ThrowIn', function (accounts) {
 
     
     //Error Test
-    it("Mint plusieurs NFT ", async function () {
+    it("F-Mint plusieurs NFT ", async function () {
         console.log("Test des erreur ...")
         // Mint NftArtiste 
         await this.NFTArtist.mintNFTArtist("name", Uri, { from: user });
@@ -185,7 +185,7 @@ contract('ThrowIn', function (accounts) {
     })
 
     
-    it("Utiliser une function quand c'est pas le bon status", async function () {
+    it("G-Utiliser une function quand c'est pas le bon status", async function () {
         await catchException(this.throwInInstance.addParticipant(name, user, { from: owner }), errTypes.revert );
 
         let numberParticipant = new BigNumber(await this.throwInInstance.viewTotalNumberOfParticipants());
@@ -194,7 +194,7 @@ contract('ThrowIn', function (accounts) {
     })
       
 
-    it("Utiliser transferFromWithoutPermission sans etre l'owner", async function () {
+    it("H-Utiliser transferFromWithoutPermission sans etre l'owner", async function () {
         // Mint NftArtiste 
         await this.NFTArtist.mintNFTArtist("name", Uri);
         // Mint NftCup with Uri NftArtist 
@@ -208,7 +208,7 @@ contract('ThrowIn', function (accounts) {
         expect(balance).to.be.bignumber.equal(zero);
     })
 
-    it("Mettre pause si on est pas l'owner", async function () {
+    it("I-Mettre pause si on est pas l'owner", async function () {
         await catchException(this.throwInInstance.setPaused({ from: user }), errTypes.revert);
 
         let pause = await this.throwInInstance.paused()
@@ -216,7 +216,7 @@ contract('ThrowIn', function (accounts) {
         expect(pause).to.equal(false)
     })
 
-    it("Changer de statut si on es pas Owner", async function () {
+    it("J-Changer de statut si on es pas Owner", async function () {
         await this.throwInInstance.setYear(year, { from: owner })
         await catchException(this.throwInInstance.changeStatusToRegistrationOfParticipants({ from: user }), errTypes.revert);
 
@@ -227,7 +227,7 @@ contract('ThrowIn', function (accounts) {
         expect(numberParticipant).to.be.bignumber.equal(zero);
     })
 
-    it("Utiliser une fonction qui neccesite que le contrat soit en pause quand le contrat n'est pas en pause ", async function () {
+    it("K-Utiliser une fonction qui neccesite que le contrat soit en pause quand le contrat n'est pas en pause ", async function () {
         // Mint NftArtiste 
         await this.NFTArtist.mintNFTArtist("name", Uri);
         // Mint NftCup with Uri NftArtist 
@@ -244,7 +244,7 @@ contract('ThrowIn', function (accounts) {
         expect(balance1).to.be.bignumber.equal(number);
     })
     
-    it("Utiliser une fonction qui neccesite que le contrat ne soit pas en pause quand le contrat est en pause ", async function () {
+    it("L-Utiliser une fonction qui neccesite que le contrat ne soit pas en pause quand le contrat est en pause ", async function () {
         await this.throwInInstance.setPaused({ from: owner });
         await catchException(this.throwInInstance.setYear(year, { from: owner }), errTypes.revert)
 

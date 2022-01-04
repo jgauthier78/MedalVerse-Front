@@ -35,10 +35,8 @@ module.exports = async function (deployer, network, accounts) {
 
   // 
   let nftCounter = 1
-  async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
-    // Local static counter for NFTs IDs
 
-    
+  async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
     let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
     await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
@@ -49,6 +47,35 @@ module.exports = async function (deployer, network, accounts) {
     nftCounter++
     return nft;
   }
+
+  async function mintCupNFT(nftOrganization, nftName, nftSymbol, img, year, participants) {
+    console.log("mintCupNFT 01")
+    let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
+    console.log("mintCupNFT 02")
+    await NFTArtist.mintNFTArtist(nftName, img, { from: ACCOUNT_CONTRACT_OWNER })
+    console.log("mintCupNFT 03")
+    await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER })
+    console.log("mintCupNFT 04")
+    await nft.setYear(year, { from: ACCOUNT_CONTRACT_OWNER })
+    console.log("mintCupNFT 05")
+    await nft.changeStatusToRegistrationOfParticipants({ from: ACCOUNT_CONTRACT_OWNER })
+    // participants.forEach(participant => {
+    //   await nft.addParticipant(participant.name, participant.account, { from: ACCOUNT_CONTRACT_OWNER })
+    // })
+    console.log("mintCupNFT 06")
+    const promises = participants.map((participant) => {
+      console.log("mintCupNFT 07")
+      nft.addParticipant(participant.name, participant.account, { from: ACCOUNT_CONTRACT_OWNER })
+    })
+    console.log("mintCupNFT 08")
+    const results = await Promise.all(promises)
+    console.log("mintCupNFT 09")
+
+    nftCounter++;
+    return nft;
+  } // mintCupNFT
+
+
   async function setWinner(rcup, eventId, sporsmanId, organizerId) {
     //End of registration
     await rcup.changeStatusToCompetitionInProgress({ from: ACCOUNT_CONTRACT_OWNER })
@@ -92,6 +119,8 @@ module.exports = async function (deployer, network, accounts) {
   const ROLE_ORGANIZER = 4
   const ROLE_ATHLETE = 8
 
+  const ATHLETE_01_NAME = "François Coste"
+
   const date01_start = (new Date(2021, 01, 01, 12)).getTime()
   const date01_end = (new Date(2021, 01, 01, 14)).getTime()
 
@@ -100,6 +129,9 @@ module.exports = async function (deployer, network, accounts) {
 
   const date03_start = (new Date(2022, 01, 01, 17)).getTime()
   const date03_end = (new Date(2022, 01, 01, 23)).getTime()
+
+  const date04_start = (new Date(2022, 01, 06, 15)).getTime()
+  const date04_end = (new Date(2022, 01, 06, 19)).getTime()
 
   const Time01_start = ethers.BigNumber.from(Math.round(date01_start / 1000)); // Unix timestamp : millisec. -> sec.
   const Time01_end = ethers.BigNumber.from(Math.round(date01_end / 1000));
@@ -110,16 +142,19 @@ module.exports = async function (deployer, network, accounts) {
   const Time03_start = ethers.BigNumber.from(Math.round(date03_start / 1000));
   const Time03_end = ethers.BigNumber.from(Math.round(date03_end / 1000));
 
+  const Time04_start = ethers.BigNumber.from(Math.round(date04_start / 1000));
+  const Time04_end = ethers.BigNumber.from(Math.round(date04_end / 1000));
 
 
   const EVENT_ONE = 1;
   const EVENT_TWO = 2;
   const EVENT_THREE = 3;
+  const EVENT_FOUR = 4;
 
   console.log(".")
 
   await MVerse.addNewUser(ACCOUNT_ORGANIZER_01, avatarRef("1.jpg"), "Paul_Henry", "pol@gmail.com", ROLE_ATHLETE + ROLE_ORGANIZER, 0, { from: ACCOUNT_CONTRACT_OWNER })
-  await MVerse.addNewUser(ACCOUNT_ATHLETE_01, avatarRef("2.jpg"), "François Coste", "fcoste@free.fr", ROLE_ATHLETE, 0, { from: ACCOUNT_CONTRACT_OWNER })
+  await MVerse.addNewUser(ACCOUNT_ATHLETE_01, avatarRef("2.jpg"), ATHLETE_01_NAME, "fcoste@free.fr", ROLE_ATHLETE, 0, { from: ACCOUNT_CONTRACT_OWNER })
 
   await addFakeUser("Sonia Legendre", "slegendre@gmail.com", ROLE_ATHLETE, 0)
   console.log(".")
@@ -175,18 +210,20 @@ module.exports = async function (deployer, network, accounts) {
   console.log(".")
 
   // L'organisateur 01 organise ces évènements:
+  // newEvent( organizationId, startDate, endDate, sportsCategory, eventDesc )
   await MVerse.newEvent(0, Time01_start, Time01_end, 2, "Saison 14, ville deLyons", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.newEvent(1, Time02_start, Time02_end, 4, "Mx Moto-Station", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.newEvent(2, Time03_start, Time03_end, 4, "Trophé des Champions, Arcueil", { from: ACCOUNT_ORGANIZER_01 });
+  console.log("MVerse.newEvent(3")
+  await MVerse.newEvent(3, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes", { from: ACCOUNT_ORGANIZER_01 });
   console.log(".")
 
   // L'athlete 01 participe à ces évènements:
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_THREE);
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_ONE);
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_TWO);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_FOUR);
   console.log(".")
-
-
 
 
   // population de récompenses
@@ -202,7 +239,12 @@ module.exports = async function (deployer, network, accounts) {
   let rcup2 = await createNFT("Tennis Cup", "Tennis Nft", "TNFT", "Gauthier Germain", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
   await setWinner(rcup2, EVENT_THREE, ACCOUNT_ATHLETE_01, ACCOUNT_ORGANIZER_01)
 
-
+  // Create a competition reward but no winner
+  // let rcup3 = await mintNFT("Tennis Cup", "Tennis Nft", "TNFT", "Gauthier Germain", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
+  // mintCupNFT(nftOrganization, nftName, nftSymbol, name, img, year, account) {
+  let participants_04 = []
+  participants_04.push( { "account" : ACCOUNT_ATHLETE_01, "name" : ATHLETE_01_NAME} )
+  let x = await mintCupNFT("Tennis Cup", "Tennis Nft", "TNFT", "/img/medals/medal3.jpg", 2022, participants_04)
 
 
   console.log("done.")
