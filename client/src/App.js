@@ -409,10 +409,12 @@ class App extends Component {
                             activ: eventData.activ,
                             ended: eventData.ended,
                             started: eventData.started,
-                            // -> crée une référence circulaire : ne pas utiliser stringify pour débugger
+                            stateOfCompetition: await this.state.contract.methods.getEventCurrentState(eventId).call(), // eventData.stateOfCompetition, <- undefined
+                            // -> crée une référence circulaire
                             organization: organization
                         }
-                        // console.log("event="+JSON.stringify(event))
+                        //  console.log("event="+JSON.stringify(event))
+                         console.log("stateOfCompetition="+event.stateOfCompetition)
                         // Medal data
                         let throwIn = {}
                         let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
@@ -420,7 +422,7 @@ class App extends Component {
                         throwIn.address = medalData.throwIn
                         throwIn.winner = medalData.winner
                         throwIn.isInWinnerGallery = medalData.isInWinnerGallery
-                        throwIn.status = await this.ThrowIn_getStatus(throwIn.address)
+                        // throwIn.status = await this.ThrowIn_getStatus(throwIn.address)
                         // console.log("throwIn.status ="+throwIn.status )
                         // Set
                         event.throwIn = throwIn
