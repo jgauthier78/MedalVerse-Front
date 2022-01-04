@@ -326,15 +326,7 @@ class App extends Component {
             medal.succes = await this.state.contract.methods.getMedal(medalID).call()
             medal.org = await this.state.contract.methods.getOrganizationName(medal.succes.organizationID).call()
             medal.event = await this.state.contract.methods.getEvent(medal.succes.eventID).call()
-
-
             let medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
-
-            console.log("---------------------------------------------")
-            console.log("medalContract.options.address="+medalContract.options.address)
-            console.log("this.ThrowIn_getInstance( medal.succes.throwIn ).options.address = "+ ( await (this.ThrowIn_getInstance( medal.succes.throwIn )) ).options.address )
-            // console.log("this.ThrowIn_getInstance( medal.succes.throwIn ).options.address = "+ await (this.ThrowIn_getInstance( medal.succes.throwIn )) .options.address )
-            console.log("---------------------------------------------")
 
             // We get the list of winners for the medal
             let allWinners = await medalContract.methods.getAllWinners().call()
@@ -528,7 +520,7 @@ class App extends Component {
     ThrowIn_getStatus = async (ThrowInContractAddress) =>
     {
         // console.log("this.ThrowIn_getInstance(ThrowInContractAddress)="+ await this.ThrowIn_getInstance(ThrowInContractAddress))
-        console.log("this.ThrowIn_getInstance(ThrowInContractAddress).options.address"+ (await this.ThrowIn_getInstance(ThrowInContractAddress)).options.address)
+        // console.log("this.ThrowIn_getInstance(ThrowInContractAddress).options.address"+ (await this.ThrowIn_getInstance(ThrowInContractAddress)).options.address)
         
      let val = await ((await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.status().call())
      const status_val = parseInt( val, 10 )
