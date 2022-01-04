@@ -165,13 +165,8 @@ contract('MedalVerse', function (accounts) {
 
   // Event-------------------------------
 
-  console.log(' Event-------------------------------')
-  it("Ajoute un événement sur une organization invalide", async function () {
 
-    await catchException(this.MedalVerseInstance.newEvent(new BigNumber(0), new BigNumber(startDate), new BigNumber(endDate), new BigNumber(sport), desc, { from: owner }), errTypes.revert)
-  })
-
-  it("Ajoute un événement sur une organization valide", async function () {
+  it("O-Ajoute un événement sur une organization valide", async function () {
 
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
@@ -185,7 +180,7 @@ contract('MedalVerse', function (accounts) {
     expect(indx[0]).to.be.equal("1")
   })
 
-  it("Démarre un événement", async function () {
+  it("P-Démarre un événement", async function () {
 
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
@@ -200,7 +195,7 @@ contract('MedalVerse', function (accounts) {
 
     expect(evnt.started).to.be.equal(true)
   })
-  it("Arrete un événement", async function () {
+  it("Q-Arrete un événement", async function () {
 
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
@@ -217,7 +212,7 @@ contract('MedalVerse', function (accounts) {
   })
 
 
-  it("Définit un Winner à un événement", async function () {
+  it("R-Définit un Winner à un événement", async function () {
 
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
@@ -233,7 +228,8 @@ contract('MedalVerse', function (accounts) {
     expect(winner).to.be.equal(recipient)
   })
 
-  it("Ajoute une médaille à un événement", async function () {
+
+  it("S-Ajoute une médaille à un événement", async function () {
 
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
@@ -251,7 +247,7 @@ contract('MedalVerse', function (accounts) {
 
     expect(md.throwIn).to.be.equal(accounts[2])
   })
-  it("Publie une médaille", async function () {
+  it("T-Publie une médaille", async function () {
 
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
@@ -271,7 +267,7 @@ contract('MedalVerse', function (accounts) {
 
     expect(md.isInWinnerGallery).to.be.equal(true)
   })
-  it("Ajoute un événement et vérifie l'écriture dans le contrat MedalVerse", async function () {
+  it("U-Ajoute un événement et vérifie l'écriture dans le contrat MedalVerse", async function () {
 
     await this.MedalVerseInstance.addEvent(new BigNumber(orgID), new BigNumber(startDate), new BigNumber(endDate), new BigNumber(sport), desc, { from: owner })
     let evtDesc = await this.MedalVerseInstance.getEvent(1)
@@ -284,7 +280,12 @@ contract('MedalVerse', function (accounts) {
     expect(evtDesc.endDate).to.be.bignumber.equal(endDate)
     expect(evtDesc.eventDescription).to.be.equal(desc)
   })
-  it("Essai d'accéder à un événement qui n'existe pas, ou id invalide", async function () {
+
+  it("V-Ajoute un événement sur une organization invalide", async function () {
+
+    await catchException(this.MedalVerseInstance.newEvent(new BigNumber(0), new BigNumber(startDate), new BigNumber(endDate), new BigNumber(sport), desc, { from: owner }), errTypes.revert)
+  })
+  it("W-Essai d'accéder à un événement qui n'existe pas, ou id invalide", async function () {
 
     await this.MedalVerseInstance.addEvent(new BigNumber(orgID), new BigNumber(startDate), new BigNumber(endDate), new BigNumber(sport), desc, { from: owner })
 
@@ -295,9 +296,70 @@ contract('MedalVerse', function (accounts) {
     // check
     expect(indx.activ).to.be.equal(false);
   })
+  it("X-démarre/stop un événement invalide", async function () {
+
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
+    await this.MedalVerseInstance.adminStartEvent(1, { from: recipient })
+
+    await catchException(this.MedalVerseInstance.adminStartEvent(2, { from: recipient }), errTypes.revert);
+    await catchException(this.MedalVerseInstance.adminEndEvent(2, { from: recipient }), errTypes.revert);
+
+  })
+  it("Y-démarre/stoppe un événement dont on est pas l'admin", async function () {
+
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
+    await this.MedalVerseInstance.adminStartEvent(1, { from: recipient })
+
+    await catchException(this.MedalVerseInstance.adminStartEvent(1, { from: owner }), errTypes.revert);
+    await catchException(this.MedalVerseInstance.adminEndEvent(1, { from: owner }), errTypes.revert);
+  })
+
+  it("Z-Ajoute une médaille sans déclarer de gagnant", async function () {
+
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville de Lyons", { from: recipient })
 
 
+    await catchException(this.MedalVerseInstance.adminAddMedal(1, accounts[2], { from: recipient }), errTypes.revert)
+  })
 
+  it("ZA-Ajoute une médaille sans être admin", async function () {
+
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
+    await this.MedalVerseInstance.adminSetWinner(1, recipient, { from: recipient })
+
+    //owner n'est pas l'admin, une exception doit être générée
+    await catchException(this.MedalVerseInstance.adminAddMedal(1, accounts[2], { from: owner }), errTypes.revert)
+  })
+
+  it("ZB-Déclare vainqueur sans être admin", async function () {
+
+    // créé un organizateur
+    await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
+
+    // créé une organization
+    await this.MedalVerseInstance.addOrganization(recipient, "FFA", "Fédération Française d'Athlétisme", "running.jpg", { from: owner });
+    await this.MedalVerseInstance.newEvent(0, startDate, endDate, 2, "Saison 14, ville deLyons", { from: recipient })
+    // owner n'est pas admin
+    await catchException(this.MedalVerseInstance.adminSetWinner(1, recipient, { from: owner }), errTypes.revert)
+  })
 
 
 })
