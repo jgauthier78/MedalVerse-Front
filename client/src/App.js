@@ -60,10 +60,10 @@ class App extends Component {
             disconnect: this.disconnect,
 
             ThrowIn_getStatus: this.ThrowIn_getStatus,
-            ThrowIn_changeStatusToCompetitionInProgress: this.ThrowIn_changeStatusToCompetitionInProgress,
-            ThrowIn_changeStatusToRewardDistribution: this.ThrowIn_changeStatusToRewardDistribution,
-            ThrowIn_changeStatusToCompetitionPreparation: this.ThrowIn_changeStatusToCompetitionPreparation,
-            ThrowIn_changeStatusToRegistrationOfParticipants: this.ThrowIn_changeStatusToRegistrationOfParticipants,
+            // ThrowIn_changeStatusToCompetitionInProgress: this.ThrowIn_changeStatusToCompetitionInProgress,
+            // ThrowIn_changeStatusToRewardDistribution: this.ThrowIn_changeStatusToRewardDistribution,
+            // ThrowIn_changeStatusToCompetitionPreparation: this.ThrowIn_changeStatusToCompetitionPreparation,
+            // ThrowIn_changeStatusToRegistrationOfParticipants: this.ThrowIn_changeStatusToRegistrationOfParticipants,
 
             DID_init: this.DID_init,
             DID_showConf: this.DID_showConf,
@@ -412,6 +412,7 @@ class App extends Component {
                             // -> crée une référence circulaire : ne pas utiliser stringify pour débugger
                             organization: organization
                         }
+                        // console.log("event="+JSON.stringify(event))
                         // Medal data
                         let throwIn = {}
                         let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
@@ -516,7 +517,6 @@ class App extends Component {
         */
     }
 
-
     ThrowIn_getStatus = async (ThrowInContractAddress) =>
     {
         // console.log("this.ThrowIn_getInstance(ThrowInContractAddress)="+ await this.ThrowIn_getInstance(ThrowInContractAddress))
@@ -527,6 +527,7 @@ class App extends Component {
      return status_val
     }
    
+/*
     ThrowIn_changeStatusToCompetitionInProgress = async (ThrowInContractAddress) =>
     {
         try {
@@ -582,7 +583,7 @@ class App extends Component {
             this.handleError(error, true)
         } // catch
     }
-
+*/
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
     } // DID_init
