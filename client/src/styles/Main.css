@@ -197,6 +197,15 @@ section::after {
   background: #e4e4e8;
 }
 
+.EventMap {
+  height: 400px;
+  width: 100%;
+  
+}
+.leaflet-container {
+  height: 400px;
+  width: 100%;
+}
 .bg-light-gray {
   background-color: #f4f5f7 !important; }
 

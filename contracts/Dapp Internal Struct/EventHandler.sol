@@ -20,6 +20,8 @@ contract EventHandler is Ownable {
 		uint256 endDate;
 		uint256 medalID;
 		string eventDescription; // String describing the event
+		string positionX;
+		string positionY;
 		bool hasMedal;
 		bool activ;
 		bool ended; // finished ?
@@ -288,5 +290,34 @@ contract EventHandler is Ownable {
 		returns (address)
 	{
 		return eventList[eventID - 1].winner;
+	}
+
+	function eventSetPosition(
+		uint256 eventID,
+		string memory posX,
+		string memory posY
+	) internal isInRange(eventID, eventCount) isNotNullUint256(eventID) {
+		eventList[eventID - 1].positionX = posX;
+		eventList[eventID - 1].positionY = posY;
+	}
+
+	function eventGetPositionX(uint256 eventID)
+		public
+		view
+		isInRange(eventID, eventCount)
+		isNotNullUint256(eventID)
+		returns (string memory)
+	{
+		return eventList[eventID - 1].positionX;
+	}
+
+	function eventGetPositionY(uint256 eventID)
+		public
+		view
+		isInRange(eventID, eventCount)
+		isNotNullUint256(eventID)
+		returns (string memory)
+	{
+		return eventList[eventID - 1].positionY;
 	}
 }

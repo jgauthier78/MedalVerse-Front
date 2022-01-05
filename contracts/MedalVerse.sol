@@ -180,4 +180,14 @@ contract MedalVerse is
 		uint256 mdID = getSportsmanMedal(msg.sender, medalIndx); // converts sportsMan->medalIndx => medalID
 		medalPublish(mdID, status);
 	}
+
+	///@dev Set the geographic position of the Event
+	///@param eventID id of the event
+	function adminSetEventPosition(
+		uint256 eventID,
+		string memory posX,
+		string memory posY
+	) external isAdminOfEvent(eventID) {
+		eventSetPosition(eventID, posX, posY);
+	}
 }

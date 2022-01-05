@@ -14,6 +14,7 @@ import MedalShow from "./Medals/MedalShow";
 import { Container } from "react-bootstrap";
 import ImageContainer from "../UIElements/ImageContainer";
 import TimelineMedals from "./Medals/TimelineMedals";
+import EventMaps from "./Events/EventMaps";
 class SporstmanMain extends Component {
 
     constructor(props) {
@@ -68,6 +69,7 @@ class SporstmanMain extends Component {
                             {this.state.curPannel === 1 ?
                                 <>
                                     <EventsSubscribedAthlete userProfile={this.props.userProfile} />
+                                    <EventMaps userProfile={this.props.userProfile} />
                                 </>
                                 : <></>
                             }

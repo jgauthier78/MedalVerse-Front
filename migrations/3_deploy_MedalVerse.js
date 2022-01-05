@@ -196,10 +196,18 @@ module.exports = async function (deployer, network, accounts) {
 
   // L'organisateur 01 organise ces évènements:
   // newEvent( organizationId, startDate, endDate, sportsCategory, eventDesc )
-  await MVerse.newEvent(0, Time01_start, Time01_end, 2, "Saison 14, ville deLyons", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(0, Time01_start, Time01_end, 2, "Saison 14, Paris", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(1, "48.9239455", "2.3536833", { from: ACCOUNT_ORGANIZER_01 })
+
   await MVerse.newEvent(1, Time02_start, Time02_end, 4, "Mx Moto-Station", { from: ACCOUNT_ORGANIZER_01 });
-  await MVerse.newEvent(2, Time03_start, Time03_end, 4, "Trophé des Champions, Arcueil", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(2, "48.9335885", "2.3873314", { from: ACCOUNT_ORGANIZER_01 })
+
+  await MVerse.newEvent(2, Time03_start, Time03_end, 4, "Trophé des Champions, Saint-Denis", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(3, "48.9192245", "2.36705", { from: ACCOUNT_ORGANIZER_01 })
+
   await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(4, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
   console.log(".")
 
   // L'athlete 01 participe à ces évènements:

@@ -58,7 +58,7 @@ const MedalItems = ({ userMedals }) => {
         <>
             {
                 userMedals.Medals.map((medal, indx) => (
-                    <ImageEvent
+                    <ImageEvent key={indx}
                         date={format_Date(medal.event.endDate)}
                         text={userMedals.nftDesc[indx].name}
                         src={userMedals.uriList[indx]}
