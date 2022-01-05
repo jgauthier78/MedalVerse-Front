@@ -30,7 +30,7 @@ contract ThrowIn is ERC721, Ownable {
 
 	// Data --------------------------------
 	Winner[] public winnersArray; // Winner structure array
-	uint16[] public yearOfParticipationArray; // Stock up on the years where the competition takes place
+	uint16[] public yearOfEditionArray; // Stock up on the years where the competition takes place
 
 	mapping(address => Winner) public winnerMap; // Associate a winner structure with an address
 	mapping(uint256 => string) public uriToken; // Associate the token id and the uri
@@ -140,8 +140,8 @@ contract ThrowIn is ERC721, Ownable {
 	function setYear(uint16 competYear) public onlyOwner whenNotPaused {
 
 		year = competYear;
-		yearOfParticipationArray.push(year);
 
+		emit throwInSetYear(competYear);
 	}
 
 	///@dev Add winners to the Winners array and modify its structure associated with this wallet
@@ -155,12 +155,15 @@ contract ThrowIn is ERC721, Ownable {
 		isNotNull(walletPlayer)
 		whenNotPaused
 	{
+
 		require(year != 0, "Define a year");
 		
 		// Define the winner structure
 		winnerMap[walletPlayer].playerName = name;
 		winnerMap[walletPlayer].year.push(year);
 		winnerMap[walletPlayer].numberOfVictory += 1;
+
+		yearOfEditionArray.push(year);
 
 		winnersArray.push(
 			Winner(
@@ -181,17 +184,15 @@ contract ThrowIn is ERC721, Ownable {
 	function getAllWinners()
 		public
 		view
-		returns (string[] memory, uint256[] memory)
+		returns (string[] memory, uint16[] memory)
 	{
 		string[] memory winnersString = new string[](winnersArray.length); // Instantiate a string array the length of the winners array
-		uint256[] memory yearsOfVictory = new uint256[](
-			yearOfParticipationArray.length
-		); // Instantiate a uint array the length of the yearOfParticipationArray
+		uint16[] memory yearsOfVictory = new uint16[](yearOfEditionArray.length); // Instantiate a uint array the length of the yearOfParticipationArray
 
 		// Loop that goes through all the name of the winner and copies it as well as the production years of the competition
 		for (uint256 i = 0; i < winnersArray.length; i++) {
 			winnersString[i] = winnersArray[i].playerName;
-			yearsOfVictory[i] = yearOfParticipationArray[i];
+			yearsOfVictory[i] = yearOfEditionArray[i];
 		}
 
 		return (winnersString, yearsOfVictory);
