@@ -3,7 +3,7 @@ import { Component } from "react";
 
 class ImageContainer extends Component {
     state = {
-        bkgImg: "/img/bkg/ball.jpg",
+        bkgImg: "",
     }
 
 
@@ -33,10 +33,10 @@ class ImageContainer extends Component {
         return (
             <>
                 <CacheImages Images={this.bkgImages} />
-                <div id="bkgImage" className={`absolute t-0 Title-Image  bg-center Image-Container bkg-transition ${this.props.options}`}
+                <div id="bkgImage" className={`absolute t-0 Title-Image  bg-center Image-Container bkg-transition b-color ${this.props.options}`}
                     style={{ backgroundImage: `url(${this.state.bkgImg})` }}
                 >
-                    <span className="Image-Container-Darken" />
+
                     {this.props.children}
 
                     {/* L'image en fond */}
@@ -49,6 +49,6 @@ class ImageContainer extends Component {
     }
 }
 
-
+// <span className="Image-Container-Darken" />
 
 export default ImageContainer

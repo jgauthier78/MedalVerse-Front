@@ -5,7 +5,8 @@ import {
     UrlButton,
     ImageEvent,
     TextEvent,
-    YouTubeEvent,
+    YouTubeEvent, themes,
+    createTheme,
 } from '@merc/react-timeline';
 import { format_Date } from "../../../utils/dateUtils";
 
@@ -17,6 +18,40 @@ function getDate() {
 
     return day + "/" + month + "/" + year;
 }
+const theme = createTheme(themes.default, {
+    timeline: {
+        color: "#dddddd",
+        a: { color: 'yellow' },
+
+    },
+    timelineTrack: {
+
+        width: '2px',
+        color: "#dddddd",
+        backgroundColor: '#bbbbbb',
+    },
+    date: {
+        backgroundColor: '#2570c8',
+        color: '#fff',
+    },
+    imageAtom: {
+
+        width: 'auto',
+        height: '50%',
+    },
+    marker: {
+        backgroundColor: '#ffffff',
+        border: '2px solid #bbbbbb',
+        color: "#ffffff",
+        borderRadius: '50%',
+        width: '20px',
+        height: '20px',
+    },
+    button: {
+        backgroundColor: '#000958',
+    },
+});
+
 const MedalItems = ({ userMedals }) => {
 
     return (
@@ -38,20 +73,17 @@ const MedalItems = ({ userMedals }) => {
 
 const TimelineMedals = ({ userProfile }) => {
     return (
-        <Timeline>
-            <Events>
-                <TextEvent date={getDate()} text="**Aujourd'hui:** pas de nouvelle médaille" />
+        <div className='mt-4'>
+            <Timeline theme={theme}>
+                <Events>
+                    <TextEvent date={getDate()} text="**Aujourd'hui:** pas de nouvelle médaille" />
 
-                <MedalItems userMedals={userProfile.userMedals} />
+                    <MedalItems userMedals={userProfile.userMedals} />
 
-                <YouTubeEvent
-                    date="6/18/19"
-                    id="6UnRHtwHGSE"
-                    name="General Tso's Chicken recipe"
-                    text="... and YouTube videos!"
-                />
-            </Events>
-        </Timeline>
+                    <TextEvent date="08/12/2019" text="*Inscription à MedalVerse*" />
+                </Events>
+            </Timeline>
+        </div>
     )
 }
 

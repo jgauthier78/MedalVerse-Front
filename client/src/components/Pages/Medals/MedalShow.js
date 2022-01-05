@@ -108,7 +108,7 @@ function AnimStack({ usrProfile, setString }) {
 let MedalShow = ({ userProfile }) => {
 
     return (
-        <Container className="col-md-9 col-lg-8 col-xl-8 mt-6">
+        <Container className="col-md-9 col-lg-8 col-xl-8 mb-4">
             <Card >
                 <CardHeader>Liste des Médailles</CardHeader>
 

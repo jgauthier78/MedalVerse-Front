@@ -57,9 +57,10 @@ class SporstmanMain extends Component {
                                         <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
                                     </ImageContainer>
                                     <section className="ss-style-triangles  row No-Left-Margin mt">
-                                        <MedalShow userProfile={this.props.userProfile} />
+                                        <TimelineMedals userProfile={this.props.userProfile} />
+
                                     </section>
-                                    <TimelineMedals userProfile={this.props.userProfile} />
+                                    <MedalShow userProfile={this.props.userProfile} />
 
                                 </>
                                 : <></>
