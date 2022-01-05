@@ -85,7 +85,8 @@ Pas de soucis de ré-entrance
 OverFlow: 
 ---------
 
-ThrowIn n'est pas affecté par l'attaque d'overFlow car les incrementation ne sont pas modifiable par l'utilisateur 
+ThrowIn n'est pas affecté par l'attaque d'overflow car les valeurs ne sont pas modifiable par l'utilisateur, la seul incrementation est dans la fonction mint qui est limité àa une seul utilisations
+
 
 Unexpected Ether: 
 ----------------
@@ -96,7 +97,7 @@ ThrowIn n'est pas payable, mais prend dun NFT en paramètres qui lui peut déjà
 Visibilité:
 -----------
 
-ThrowIn n'est pas tres visible a la visibilité , en effet: 
+ThrowIn n'est pas tres affecté par ça visibilité , en effet: 
 
 Beaucoup de fonction public mais seulement utilisable par le owner 
 Exepté les fonctions view qui ont la possibilité d'etre utilisé par tous
@@ -112,7 +113,6 @@ ThrowIn.sol : IERC721Metadata NFT_Medal;
 
 -> on vérifie la bonne implémentation de l'interface dans le constructor
 IERC721(addressNFT_Medal).supportsInterface(type(IERC721).interfaceId);
-
 
 
 Envoyer une adresse incomplete: 
