@@ -27,8 +27,6 @@ async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account
   await NFTArtist.mintNFTArtist(name, img, { from: account })
   await nft.mintCup(nftCounter, { from: account });
   await nft.setYear(2022, { from: account })
-  await nft.changeStatusToRegistrationOfParticipants({ from: account })
-  await nft.addParticipant(name, account, { from: account });
 
   nftCounter++
   return nft;
