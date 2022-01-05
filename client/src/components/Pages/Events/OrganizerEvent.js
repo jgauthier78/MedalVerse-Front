@@ -1,3 +1,6 @@
+/* React - Hooks*/
+import /*React,*/ { /*useState,*/ useEffect/*, useRef*/, useCallback } from "react";
+
 /* React - Bootstrap*/
 import { Card, Container, Table } from "react-bootstrap";
 
@@ -14,6 +17,7 @@ import { ZERO_ADDRESS_STRING, MEDALVERSE_STATES_VALUES } from "../../../utils/co
 
 /* Icons */
 import { Trophy } from 'react-bootstrap-icons';
+
 /*
 const Athletes = ({ registeredAthletes }) => (
     <div>
@@ -23,11 +27,30 @@ const Athletes = ({ registeredAthletes }) => (
     </div>
 )
 */
-function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ }) {
+function EventLayout( { events, AppCallBacks /*userProfile*/ } )
+{
     let params = useParams();
     const { t } = useTranslation();
     // console.log("params.eventId="+params.eventId)
     let event = events[params.eventId-1] // Event id starts at 1 : remove 1 to find it in the array
+
+    const init = useCallback( async() => {
+        // console.log(">init")
+        await AppCallBacks.MedalVerse_SetEventHandler(event.eventId)
+        // console.log("init<")
+      }, /*[NO dependencies]*/)
+
+    useEffect(
+        () =>
+        {   
+            // console.log("useEffect:call init()");
+            init()
+        },
+        [init/*NO dependencies*/]);
+
+      
+
+
 
     //  event handler
     const onHandleEventMedalWinner = async (eventId, athleteAdr) => {
@@ -80,7 +103,7 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
     const onHandle_changeStateToRewardDistributed = async () => {
         try {
             console.log("EventLayout::onHandle_changeStateToRewardDistributed")
-            await AppCallBacks.Event_changeStateToRewardDistributed(event.eventId)
+            await AppCallBacks.Event_changeStateToRewardDistributed(event/*event.eventId, event.winner*/)
         } // try
         catch (error) {
             console.error(error)
@@ -121,21 +144,13 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
                 <Card.Body>
                     <Card.Title>Actions</Card.Title>
                     <Card.Text>
-                        {/*
-                        //event.activ && event.started && event.ended 
-                        <Button className="ml-1" variant="warning" onClick={() => ThrowIn_getStatus(event.throwIn.address)}>{"ThrowIn_getStatus"}</Button>
-                        */}
                         {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATE_00_REGISTRATIONOFPARTICIPANTS
-                            &&
+                         &&
                         <Button className="ml-1" variant="warning" onClick={() => onHandle_changeStateToCompetitionInProgress(event.throwIn.address)}>{t("OrganizerEvent.actions.changeStateToCompetitionInProgress")}</Button>
                         }
                         {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATUS_01_COMPETITIONINPROGRESS
-                            &&
+                         &&
                         <Button className="ml-1" variant="warning" onClick={() => onHandle_changeStateToRewardDistribution(event.throwIn.address)}>{t("OrganizerEvent.actions.changeStateToRewardDistribution")} <Trophy style={{ verticalAlign: '-10%' }} /></Button>
-                        }
-                        {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATUS_02_REWARDDISTRIBUTION
-                            &&
-                        <Button className="ml-1" variant="warning" onClick={() =>  onHandle_changeStateToRewardDistributed(event.throwIn.address)}>{t("OrganizerEvent.actions.changeStateToRewardDistributed")}</Button>
                         }
                     </Card.Text>
                 </Card.Body>
@@ -161,8 +176,10 @@ function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ })
                                     <td>{athleteAdr} </td>
                                     {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATUS_02_REWARDDISTRIBUTION
                                         &&
-                                     event.winner === ZERO_ADDRESS_STRING && // event.winner !== athleteAdr && // Display button : event has no winner
-                                        <td><Button variant="warning" size="sm" onClick={() => onHandleEventMedalWinner(event.eventId, athleteAdr)} >{t("OrganizerEvent.athlete.actions.setWinner")}</Button></td>
+                                     event.winner === ZERO_ADDRESS_STRING && // event.winner !== athleteAdr && // Display button : Reward distribution state AND event has no winner
+                                        <td>
+                                            <Button className="ml-1" variant="warning" onClick={() =>  onHandle_changeStateToRewardDistributed(event.throwIn.address)}><Trophy style={{ verticalAlign: '-10%' }} /> {t("OrganizerEvent.athlete.actions.setWinner")}</Button>
+                                        </td>
                                     }
                                 </tr>
                             ))}
