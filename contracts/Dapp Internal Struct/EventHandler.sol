@@ -118,7 +118,10 @@ contract EventHandler is Ownable {
 		isNotNullUint256(eventId)
 		returns (EventDesc memory)
 	{
-		return eventList[eventId - 1];
+		// return eventList[eventId - 1];
+		EventDesc memory dsc = eventList[eventId - 1];
+		dsc.eventId+=1;
+		return dsc;
 	}
 
 	///@dev returns the winner of the event
@@ -198,6 +201,7 @@ contract EventHandler is Ownable {
 		uint256 x = _start;
 		while (x <= _end) {
 			_result[x] = eventList[x];
+			_result[x].eventId +=1;
 			x++;
 		}
 		return _result;
