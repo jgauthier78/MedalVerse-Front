@@ -391,8 +391,9 @@ class App extends Component {
                 // console.log("eventsList.length=" + eventsList.length)
                 if (eventsList.length > 0) {
                     await Promise.all(eventsList.map(async (eventId) => {
-                        // console.log("eventId=" + eventId)
+                        // console.log("eventsList:eventId=" + eventId)
                         let eventData = await this.state.contract.methods.getEvent(eventId).call()
+                        // console.log("eventData:eventId=" + eventData.eventId)
                         let event = {
                             eventId: eventData.eventId,
                             sportCategory: eventData.sportCategory,

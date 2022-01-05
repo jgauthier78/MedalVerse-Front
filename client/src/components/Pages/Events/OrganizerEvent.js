@@ -26,10 +26,8 @@ const Athletes = ({ registeredAthletes }) => (
 function EventLayout({ events, AppCallBacks /*userProfile, event*//*eventId*/ }) {
     let params = useParams();
     const { t } = useTranslation();
-    let event = events[params.eventId]
     // console.log("params.eventId="+params.eventId)
-    debugger
-    console.log("event="+event)
+    let event = events[params.eventId-1] // Event id starts at 1 : remove 1 to find it in the array
 
     //  event handler
     const onHandleEventMedalWinner = async (eventId, athleteAdr) => {

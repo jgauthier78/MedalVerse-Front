@@ -27,6 +27,7 @@ const CarrousselItem = ({ organizerEvents }) => {
   {
     try
     {
+        // console.log("CarrousselItem::onHandleEventDetails:event.eventId="+event.eventId)
         navigate( `../event/${event.eventId}` );
     } // try
     catch (error)
