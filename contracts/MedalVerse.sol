@@ -163,7 +163,17 @@ contract MedalVerse is
 		setMedalWinner(medalID, winner);
 		// registers medal to the event and sportsman structure
 		eventSetMedal(eventID, medalID);
-		sportsmanAddMedal(winner, medalID);
+	}
+
+	function adminGiveMedalToWinner(uint256 eventID)
+		external
+		isAdminOfEvent(eventID)
+	{
+		// Gets the id og the winner to associate the medal
+		address winner = getWinner(eventID);
+		require(winner != address(0), "Set a Winner First");
+		eventDistributeMedal(eventID);
+		sportsmanAddMedal(winner, eventGetMedal(eventID));
 	}
 
 	///@dev add / remove the medal from user gallery. Nota: checks are done in getSportsmanMedal

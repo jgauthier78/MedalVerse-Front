@@ -278,7 +278,7 @@ contract('MedalVerse', function (accounts) {
     await this.MedalVerseInstance.adminSetWinner(1, recipient, { from: recipient })
 
     await this.MedalVerseInstance.adminAddMedal(1, rcup.address, { from: recipient })
-
+    await this.MedalVerseInstance.adminGiveMedalToWinner(1, { from: recipient })
     let indx = await this.MedalVerseInstance.eventGetMedal(1)
     await this.MedalVerseInstance.publishMedal(indx, true, { from: recipient })
     let md = await this.MedalVerseInstance.getMedal(indx)

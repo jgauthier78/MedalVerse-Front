@@ -118,7 +118,9 @@ contract EventHandler is Ownable {
 		isNotNullUint256(eventId)
 		returns (EventDesc memory)
 	{
-		return eventList[eventId - 1];
+		EventDesc memory dsc = eventList[eventId - 1];
+		dsc.eventId += 1;
+		return dsc;
 	}
 
 	///@dev returns the winner of the event
@@ -198,6 +200,7 @@ contract EventHandler is Ownable {
 		uint256 x = _start;
 		while (x <= _end) {
 			_result[x] = eventList[x];
+			_result[x].eventId += 1;
 			x++;
 		}
 		return _result;
@@ -240,11 +243,21 @@ contract EventHandler is Ownable {
 		eventID--;
 		eventList[eventID].hasMedal = true;
 		eventList[eventID].medalID = medalID;
-		eventList[eventID].eventState = stateOfCompetition.RewardDistributed;
-		emit eventStatusChanged(
-			eventID + 1,
-			stateOfCompetition.RewardDistributed
+	}
+
+	function eventDistributeMedal(uint256 eventID)
+		internal
+		isInRange(eventID, eventCount)
+		isNotNullUint256(eventID)
+		eventIsInState(eventID, stateOfCompetition.RewardDistribution)
+	{
+		require(
+			eventList[eventID - 1].hasMedal == true,
+			"no medal affected to the event"
 		);
+		eventList[eventID - 1].eventState = stateOfCompetition
+			.RewardDistributed;
+		emit eventStatusChanged(eventID, stateOfCompetition.RewardDistributed);
 	}
 
 	function eventHasMedal(uint256 eventID)

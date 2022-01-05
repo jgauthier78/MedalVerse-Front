@@ -41,7 +41,7 @@ module.exports = async function (deployer, network, accounts) {
     await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.setYear(2022, { from: ACCOUNT_CONTRACT_OWNER })
-    
+
 
     nftCounter++
     return nft;
@@ -73,6 +73,7 @@ module.exports = async function (deployer, network, accounts) {
     await MVerse.adminSetWinner(eventId, sporsmanId, { from: organizerId })
     // Il affecte la médaille au sportif vainqueur de l'évènement 
     await MVerse.adminAddMedal(eventId, rcup.address, { from: organizerId })
+    await MVerse.adminGiveMedalToWinner(eventId, { from: organizerId })
   }
 
   function avatarRef(s) { return "/img/avatars/" + s }

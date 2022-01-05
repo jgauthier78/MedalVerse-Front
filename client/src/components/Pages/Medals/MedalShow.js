@@ -92,7 +92,7 @@ function AnimStack({ usrProfile, setString }) {
             </div>
             <div className="MedalShow-PlayField">
                 {props.map(({ x, y, rot, scale }, i) => {
-                    console.log(usrProfile.userMedals.uriList)
+
                     return (
 
                         <animated.div className="MedalShow-Container" key={i} style={{ transform: interpolate([x, y], (x, y) => `translate3d(${x}px,${y}px,0)`) }}>
@@ -108,8 +108,8 @@ function AnimStack({ usrProfile, setString }) {
 let MedalShow = ({ userProfile }) => {
 
     return (
-        <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 ">
-            <Card>
+        <Container className="col-md-9 col-lg-8 col-xl-8 mt-6">
+            <Card >
                 <CardHeader>Liste des Médailles</CardHeader>
 
                 <AnimStack usrProfile={userProfile} />

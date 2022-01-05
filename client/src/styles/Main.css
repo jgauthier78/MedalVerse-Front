@@ -5,8 +5,52 @@
 .reveal [hidden] {
   display: block !important;
 }
+.colored-Sidebar{
+  margin-left: -8px;
+}
+.Profile-Card{
+  
+  border: solid 1px;
+  border-radius: 15px;
+  border-color: #e4e5e6;
+  background-color: #fff
+  
+}
+.hiddenImage{
+  position:absolute;
+  left:-6000%;
+}
 
 
+.Image-Container {
+  position:relative;
+}
+.Image-Container-Darken {
+  width: 100%;
+  height: 100%;
+  background: rgba(110, 110, 110, 0.5);
+  position: absolute;
+  }
+.Card-Image {
+  height: 160px;
+  width: auto;      
+  border-radius: 5px;
+}
+.full-width {
+  width:100% !important;
+}
+.bkg-transition {
+  transition: background 1s linear;
+}
+.Title-Row {
+  background-color:rgb(134, 125, 125)
+}
+.Title-Image{
+  width: 100%;
+  height: auto;
+  background-size: cover;
+  background-position: center;
+}
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -94,6 +138,10 @@
   box-shadow: 0 25px 50px -12px rgba(87, 87, 87, 0.25);
   border-radius: 1.25rem !important; 
 }
+.No-Left-Margin{
+ padding-left: 0px!important;
+ margin-left: 0px!important;
+}
 .verticalSeparator-left {
   border-right: 1px solid rgba(90, 89, 89, 0.2);
 }
@@ -113,6 +161,9 @@
   background-color: white !important;
 
 }
+.b-color{
+  background-color: #1c49a3;
+}
 .profile-page {
   background-color: #F2F3F5;
 }
@@ -122,6 +173,28 @@
 
 .mediumSizeImage{
   max-width: 320px;
+}
+section {
+  position: relative;
+}
+section::before,
+section::after {
+  position: absolute;
+  content: '';
+  pointer-events: none;
+}
+.ss-style-triangles::before,
+.ss-style-triangles::after {
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  -webkit-transform: translateX(-50%) rotate(45deg);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.ss-style-triangles::before {
+  top: -20px;
+  background: #F2F3F5;
 }
 
 .bg-light-gray {
@@ -599,16 +672,12 @@ pre {
 
 .container-fluid {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto; }
+}
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px; }
+}
 
 .no-gutters {
   margin-right: 0;
@@ -632,7 +701,8 @@ pre {
 .col {
   flex-basis: 0;
   flex-grow: 1;
-  max-width: 100%; }
+  max-width: 100%;
+ }
 
 .col-auto {
   flex: 0 0 auto;

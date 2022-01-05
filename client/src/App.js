@@ -330,6 +330,9 @@ class App extends Component {
 
             // We get the list of winners for the medal
             let allWinners = await medalContract.methods.getAllWinners().call()
+            console.log("--------------")
+            console.log(allWinners)
+            console.log("--------------")
             let { 0: winnersString, 1: yearsOfVictory } = allWinners
             let nfdesc = {
                 name: await medalContract.methods.name().call(),
@@ -414,7 +417,7 @@ class App extends Component {
                             organization: organization
                         }
                         //  console.log("event="+JSON.stringify(event))
-                         console.log("stateOfCompetition="+event.stateOfCompetition)
+                        console.log("stateOfCompetition=" + event.stateOfCompetition)
                         // Medal data
                         let throwIn = {}
                         let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
@@ -488,18 +491,15 @@ class App extends Component {
     // ThrowIn Methods
 
     // ThrowIn_getInstance : caches contract instances
-    ThrowIn_getInstance = async (ThrowInContractAddress) =>
-    {
+    ThrowIn_getInstance = async (ThrowInContractAddress) => {
         // console.log("App::ThrowIn_getInstance:ThrowInContractAddress="+ThrowInContractAddress)
-        if ( this.ThrowIn_getInstance.instances === undefined )
-        {
+        if (this.ThrowIn_getInstance.instances === undefined) {
             // console.log("ThrowIn_getInstance.instances === undefined")
             this.ThrowIn_getInstance.instances = []
         }
         // console.log("this.ThrowIn_getInstance.instances="+this.ThrowIn_getInstance.instances)
         // console.log("this.ThrowIn_getInstance.instances[ThrowInContractAddress]="+this.ThrowIn_getInstance.instances[ThrowInContractAddress])
-        if (this.ThrowIn_getInstance.instances[ThrowInContractAddress] === undefined)
-        {
+        if (this.ThrowIn_getInstance.instances[ThrowInContractAddress] === undefined) {
             // console.log("UNDEFINED INSTANCE")
             // console.log("create instance")
             this.ThrowIn_getInstance.instances[ThrowInContractAddress] = await new this.state.web3.eth.Contract(ThrowInContract.abi, ThrowInContractAddress);
@@ -519,73 +519,72 @@ class App extends Component {
         */
     }
 
-    ThrowIn_getStatus = async (ThrowInContractAddress) =>
-    {
+    ThrowIn_getStatus = async (ThrowInContractAddress) => {
         // console.log("this.ThrowIn_getInstance(ThrowInContractAddress)="+ await this.ThrowIn_getInstance(ThrowInContractAddress))
         // console.log("this.ThrowIn_getInstance(ThrowInContractAddress).options.address"+ (await this.ThrowIn_getInstance(ThrowInContractAddress)).options.address)
-        
-     let val = await ((await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.status().call())
-     const status_val = parseInt( val, 10 )
-     return status_val
-    }
-   
-/*
-    ThrowIn_changeStatusToCompetitionInProgress = async (ThrowInContractAddress) =>
-    {
-        try {
-            // Change status
-            await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToCompetitionInProgress().send({ from: this.getAccounts() }) )
-            // Todo
-            // Refresh data
-        }
-        catch (error) {
-            // Catch any errors for any of the above operations.
-            this.handleError(error, true)
-        } // catch
+
+        let val = await ((await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.status().call())
+        const status_val = parseInt(val, 10)
+        return status_val
     }
 
-    ThrowIn_changeStatusToRewardDistribution = async (ThrowInContractAddress) =>
-    {
-        try {
-            // Change status
-            await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRewardDistribution().send({ from: this.getAccounts() }) ) 
-            // Todo
-            // Refresh data
+    /*
+        ThrowIn_changeStatusToCompetitionInProgress = async (ThrowInContractAddress) =>
+        {
+            try {
+                // Change status
+                await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToCompetitionInProgress().send({ from: this.getAccounts() }) )
+                // Todo
+                // Refresh data
+            }
+            catch (error) {
+                // Catch any errors for any of the above operations.
+                this.handleError(error, true)
+            } // catch
         }
-        catch (error) {
-            // Catch any errors for any of the above operations.
-            this.handleError(error, true)
-        } // catch
-    }
-
-    ThrowIn_changeStatusToCompetitionPreparation = async (ThrowInContractAddress) =>
-    {
-        try {
-            // Change status
-            await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToCompetitionPreparation().send({ from: this.getAccounts() }) ) 
-            // Todo
-            // Refresh data
+    
+        ThrowIn_changeStatusToRewardDistribution = async (ThrowInContractAddress) =>
+        {
+            try {
+                // Change status
+                await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRewardDistribution().send({ from: this.getAccounts() }) ) 
+                // Todo
+                // Refresh data
+            }
+            catch (error) {
+                // Catch any errors for any of the above operations.
+                this.handleError(error, true)
+            } // catch
         }
-        catch (error) {
-            // Catch any errors for any of the above operations.
-            this.handleError(error, true)
-        } // catch
-    }
-
-    ThrowIn_changeStatusToRegistrationOfParticipants = async (ThrowInContractAddress) =>
-    {
-        try {
-            // Change status
-            await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRegistrationOfParticipants().send({ from: this.getAccounts() }) ) 
-            // Todo
-            // Refresh data
+    
+        ThrowIn_changeStatusToCompetitionPreparation = async (ThrowInContractAddress) =>
+        {
+            try {
+                // Change status
+                await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToCompetitionPreparation().send({ from: this.getAccounts() }) ) 
+                // Todo
+                // Refresh data
+            }
+            catch (error) {
+                // Catch any errors for any of the above operations.
+                this.handleError(error, true)
+            } // catch
         }
-        catch (error) {
-            // Catch any errors for any of the above operations.
-            this.handleError(error, true)
-        } // catch
-    }
-*/
+    
+        ThrowIn_changeStatusToRegistrationOfParticipants = async (ThrowInContractAddress) =>
+        {
+            try {
+                // Change status
+                await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRegistrationOfParticipants().send({ from: this.getAccounts() }) ) 
+                // Todo
+                // Refresh data
+            }
+            catch (error) {
+                // Catch any errors for any of the above operations.
+                this.handleError(error, true)
+            } // catch
+        }
+    */
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
     } // DID_init
