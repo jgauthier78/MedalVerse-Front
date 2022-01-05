@@ -786,23 +786,26 @@ class App extends Component {
 
                     // REFRESH DATA
                     console.log("event.returnValues.eventID=" + event.returnValues.eventID)
+                    if (event.returnValues !== undefined && event.returnValues.eventID!==undefined)
+                    {
+                        userOrganizations.forEach(userOrganization => {
+                            console.log("userOrganization.id=" + userOrganization.id)
+                            userOrganization.events.forEach(event => {
+                                console.log("event.eventId=" + event.eventId)
+                                
+                                if (event.returnValues.eventID===event.eventId)
+                                {
+                                    // Update event
+                                    event = this.getEventData(event.eventId,userOrganization)
+                                }
+                            }); // For each event
+                        }); // For each organization
+                        
+                        // Update state
+                        const newUserOrganizations = [...userOrganizations]
+                        this.setState({ userOrganizations: newUserOrganizations })
+                    } // event.returnValues.eventID!==undefined
 
-                    userOrganizations.forEach(userOrganization => {
-                        console.log("userOrganization.id=" + userOrganization.id)
-                        userOrganization.events.forEach(event => {
-                            console.log("event.eventId=" + event.eventId)
-                            
-                            if (event.returnValues.eventID===event.eventId)
-                            {
-                                // Update event
-                                event = this.getEventData(event.eventId,userOrganization)
-                            }
-                        }); // For each event
-                    }); // For each organization
-                    
-                    // Update state
-                    const newUserOrganizations = [...userOrganizations]
-                    this.setState({ userOrganizations: newUserOrganizations })
                 }
                 else if ( event.event === "MedalAdded" )
                 {
