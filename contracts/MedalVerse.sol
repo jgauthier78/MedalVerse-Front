@@ -152,16 +152,11 @@ contract MedalVerse is
 		// Check we have a IERC21 contract
 		IERC721(_nft).supportsInterface(type(IERC721).interfaceId);
 
-		// Gets the id og the winner to associate the medal
-		address winner = getWinner(eventID);
-		require(winner != address(0), "Set a Winner First");
 		// Find the organizer corresponding to the event
 		uint256 orgId = getEventOrganizer(eventID);
 		addMedal(_nft, orgId, eventID);
 		uint256 medalID = getMedalCount() - 1;
-		// If the winner is already set, then we need to affect it to the medal
-		setMedalWinner(medalID, winner);
-		// registers medal to the event and sportsman structure
+		// registers medal to the event structure
 		eventSetMedal(eventID, medalID);
 	}
 
@@ -172,6 +167,9 @@ contract MedalVerse is
 		// Gets the id og the winner to associate the medal
 		address winner = getWinner(eventID);
 		require(winner != address(0), "Set a Winner First");
+		require(eventHasMedal(eventID));
+
+		setMedalWinner(eventGetMedal(eventID), winner);
 		eventDistributeMedal(eventID);
 		sportsmanAddMedal(winner, eventGetMedal(eventID));
 	}
