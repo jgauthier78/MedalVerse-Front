@@ -230,6 +230,9 @@ module.exports = async function (deployer, network, accounts) {
 
   console.log(".")
 
+  // Competition 4
+  await MVerse.adminStartEvent(EVENT_FOUR, { from: ACCOUNT_ORGANIZER_01 })
+
   // Create a competition reward but no winner
   // let rcup3 = await mintNFT("Tennis Cup", "Tennis Nft", "TNFT", "Gauthier Germain", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
   // mintCupNFT(nftOrganization, nftName, nftSymbol, name, img, year, account) {

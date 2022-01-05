@@ -1,25 +1,43 @@
-import React, { Component, Suspense } from "react";
+// React
+import /*React,*/ { Component, Suspense } from "react";
+
+// Components
 import Loading from './components/Loading';
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import getWeb3 from "./utils/getWeb3";
 import NotFound from "./components/Pages/NotFound"
 import Gallerie from "./components/Pages/Gallerie"
 import LandingPage from "./components/Pages/LandingPage"
-import MedalVerseContract from "./contracts/MedalVerse.json";
 import OrganizerMain from "./components/Pages/OrganizerMain";
 import AthleteMain from "./components/Pages/AthleteMain";
 import RedirectTo from "./components/UIElements/RedirectTo";
-import "./styles/Main.css"
-import { ROLES } from "./utils/roles_CONSTS"
-import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from './utils/did'
 import { Alerts } from "./components/Alerts";
-import ThrowInContract from "./contracts/ThrowIn.json";
-import { format_TimeMsToDate } from './utils/dateUtils'
+
+// React router
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
+
 // Translation
 // import i18n (needs to be bundled ;))
 import { I18nextProvider } from "react-i18next";
 import i18next from "i18next";
 import './utils/i18n';
+
+// Web3
+import getWeb3 from "./utils/getWeb3";
+
+// Contracts
+import MedalVerseContract from "./contracts/MedalVerse.json";
+import ThrowInContract from "./contracts/ThrowIn.json";
+import NFTArtist from "./contracts/NFTArtist.json";
+
+// CONSTS
+import { ROLES } from "./utils/roles_CONSTS"
+
+// Utils
+import { format_TimeMsToDate } from './utils/dateUtils'
+import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from './utils/did'
+
+// CSS
+import "./styles/Main.css"
 
 class App extends Component {
 
@@ -56,19 +74,20 @@ class App extends Component {
             createNFT: this.createNFT,
 
             isConnected: this.isConnected,
-            // getRoleString: this.getRoleString,
             disconnect: this.disconnect,
 
-            ThrowIn_getStatus: this.ThrowIn_getStatus,
-            // ThrowIn_changeStatusToCompetitionInProgress: this.ThrowIn_changeStatusToCompetitionInProgress,
-            // ThrowIn_changeStatusToRewardDistribution: this.ThrowIn_changeStatusToRewardDistribution,
-            // ThrowIn_changeStatusToCompetitionPreparation: this.ThrowIn_changeStatusToCompetitionPreparation,
-            // ThrowIn_changeStatusToRegistrationOfParticipants: this.ThrowIn_changeStatusToRegistrationOfParticipants,
+            Event_getState: this.Event_getState,
+            Event_changeStateToCompetitionInProgress: this.Event_changeStateToCompetitionInProgress,
+            Event_changeStateToRewardDistribution: this.Event_changeStateToRewardDistribution,
+            Event_changeStateToRewardDistributed: this.Event_changeStateToRewardDistributed,
 
             DID_init: this.DID_init,
             DID_showConf: this.DID_showConf,
             DID_readProfile: this.DID_readProfile,
-            DID_updateProfile: this.DID_updateProfile
+            DID_updateProfile: this.DID_updateProfile,
+
+            MedalVerse_SetEventHandler: this.MedalVerse_SetEventHandler,
+
         }
 
         this.state = {
@@ -396,8 +415,9 @@ class App extends Component {
                 // console.log("eventsList.length=" + eventsList.length)
                 if (eventsList.length > 0) {
                     await Promise.all(eventsList.map(async (eventId) => {
-                        // console.log("eventId=" + eventId)
+                        // console.log("eventsList:eventId=" + eventId)
                         let eventData = await this.state.contract.methods.getEvent(eventId).call()
+                        // console.log("eventData:eventId=" + eventData.eventId)
                         let event = {
                             eventId: eventData.eventId,
                             sportCategory: eventData.sportCategory,
@@ -412,12 +432,12 @@ class App extends Component {
                             activ: eventData.activ,
                             ended: eventData.ended,
                             started: eventData.started,
-                            stateOfCompetition: await this.state.contract.methods.getEventCurrentState(eventId).call(), // eventData.stateOfCompetition, <- undefined
+                            stateOfCompetition: await this.Event_getState(eventId), // eventData.stateOfCompetition, <- undefined
                             // -> crée une référence circulaire
                             organization: organization
                         }
                         //  console.log("event="+JSON.stringify(event))
-                        console.log("stateOfCompetition=" + event.stateOfCompetition)
+                        //  console.log("stateOfCompetition="+event.stateOfCompetition)
                         // Medal data
                         let throwIn = {}
                         let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
@@ -519,15 +539,69 @@ class App extends Component {
         */
     }
 
-    ThrowIn_getStatus = async (ThrowInContractAddress) => {
-        // console.log("this.ThrowIn_getInstance(ThrowInContractAddress)="+ await this.ThrowIn_getInstance(ThrowInContractAddress))
-        // console.log("this.ThrowIn_getInstance(ThrowInContractAddress).options.address"+ (await this.ThrowIn_getInstance(ThrowInContractAddress)).options.address)
-
-        let val = await ((await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.status().call())
+    Event_getState = async (eventId) => {
+        let val = await this.state.contract.methods.getEventCurrentState(eventId).call()
         const status_val = parseInt(val, 10)
+        console.log("Event_getState:status_val=" + status_val)
         return status_val
     }
 
+    // 
+    Event_changeStateToCompetitionInProgress = async (eventId) => {
+        console.log("App::Event_changeStateToCompetitionInProgress: eventId=" + eventId)
+        await this.state.contract.methods.adminStartEvent(eventId).send({ from: this.getAccounts() })
+        // Event
+    }
+
+    Event_changeStateToRewardDistribution = async (eventId) => {
+        console.log("App::Event_changeStateToRewardDistribution: eventId=" + eventId)
+        await this.state.contract.methods.adminEndEvent(eventId).send({ from: this.getAccounts() })
+        // Event
+    }
+
+    Event_changeStateToRewardDistributed = async (event) => {
+        const connectedAccount = this.getAccounts();
+        // 1 - Create NFT
+
+        // let rcup2 = await createNFT("Tennis Cup", "Tennis Nft", "TNFT", "Gauthier Germain", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
+
+        //    let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
+        // 1.1 Create NEW ThrowIn instance
+        let newThrowInContractInstance_medal = await new this.state.web3.eth.Contract(ThrowInContract.abi, { from: connectedAccount })
+        console.log("newThrowInContractInstance_medal.options.address=" + newThrowInContractInstance_medal.options.address)
+        //    await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
+        // 1.2 Create NEW NFT contract
+        // Network
+        const networkId = await this.state.web3.eth.net.getId();
+        const contractNFTArtist_deployedNetwork = NFTArtist.networks[networkId];
+
+        const newNFTArtistInstance = new this.state.web3.eth.Contract(
+            NFTArtist.abi,
+            contractNFTArtist_deployedNetwork && contractNFTArtist_deployedNetwork.address,
+        );
+        debugger
+        newNFTArtistInstance.methods.mintNFTArtist("Mon NFT artist", "/img/medals/medal3.jpg").send({ from: connectedAccount })
+
+        //    await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
+        // 1.3 Mint NFT
+        // await newThrowInContractInstance_medal.mintCup()
+
+
+        //    await nft.setYear(2022, { from: ACCOUNT_CONTRACT_OWNER })
+
+
+
+        // console.log("App::Event_changeStateToRewardDistributed: eventId="+eventId+" , winnerAddress="+winnerAddress)
+        // await this.state.contract.methods.adminSetWinner(eventId, winnerAddress).send({ from: connectedAccount })
+
+    }
+    /*
+        Event_changeStateToRewardDistributed = async (eventId) =>
+        {
+            await this.state.contract.methods.AdminSetMedal(eventId).send({ from: this.getAccounts() })
+            // Event
+        }
+    */
     /*
         ThrowIn_changeStatusToCompetitionInProgress = async (ThrowInContractAddress) =>
         {
@@ -541,50 +615,66 @@ class App extends Component {
                 // Catch any errors for any of the above operations.
                 this.handleError(error, true)
             } // catch
+    
         }
     
-        ThrowIn_changeStatusToRewardDistribution = async (ThrowInContractAddress) =>
-        {
-            try {
-                // Change status
-                await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRewardDistribution().send({ from: this.getAccounts() }) ) 
-                // Todo
-                // Refresh data
+        /*
+            ThrowIn_changeStatusToCompetitionInProgress = async (ThrowInContractAddress) =>
+            {
+                try {
+                    // Change status
+                    await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToCompetitionInProgress().send({ from: this.getAccounts() }) )
+                    // Todo
+                    // Refresh data
+                }
+                catch (error) {
+                    // Catch any errors for any of the above operations.
+                    this.handleError(error, true)
+                } // catch
             }
-            catch (error) {
-                // Catch any errors for any of the above operations.
-                this.handleError(error, true)
-            } // catch
-        }
-    
-        ThrowIn_changeStatusToCompetitionPreparation = async (ThrowInContractAddress) =>
-        {
-            try {
-                // Change status
-                await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToCompetitionPreparation().send({ from: this.getAccounts() }) ) 
-                // Todo
-                // Refresh data
+        
+            ThrowIn_changeStatusToRewardDistribution = async (ThrowInContractAddress) =>
+            {
+                try {
+                    // Change status
+                    await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRewardDistribution().send({ from: this.getAccounts() }) ) 
+                    // Todo
+                    // Refresh data
+                }
+                catch (error) {
+                    // Catch any errors for any of the above operations.
+                    this.handleError(error, true)
+                } // catch
             }
-            catch (error) {
-                // Catch any errors for any of the above operations.
-                this.handleError(error, true)
-            } // catch
-        }
-    
-        ThrowIn_changeStatusToRegistrationOfParticipants = async (ThrowInContractAddress) =>
-        {
-            try {
-                // Change status
-                await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRegistrationOfParticipants().send({ from: this.getAccounts() }) ) 
-                // Todo
-                // Refresh data
+        
+            ThrowIn_changeStatusToCompetitionPreparation = async (ThrowInContractAddress) =>
+            {
+                try {
+                    // Change status
+                    await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToCompetitionPreparation().send({ from: this.getAccounts() }) ) 
+                    // Todo
+                    // Refresh data
+                }
+                catch (error) {
+                    // Catch any errors for any of the above operations.
+                    this.handleError(error, true)
+                } // catch
             }
-            catch (error) {
-                // Catch any errors for any of the above operations.
-                this.handleError(error, true)
-            } // catch
-        }
-    */
+        
+            ThrowIn_changeStatusToRegistrationOfParticipants = async (ThrowInContractAddress) =>
+            {
+                try {
+                    // Change status
+                    await( (await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.changeStatusToRegistrationOfParticipants().send({ from: this.getAccounts() }) ) 
+                    // Todo
+                    // Refresh data
+                }
+                catch (error) {
+                    // Catch any errors for any of the above operations.
+                    this.handleError(error, true)
+                } // catch
+            }
+        */
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
     } // DID_init
@@ -700,6 +790,109 @@ class App extends Component {
         this.setState({ alertsList: alertsListUpdated })
 
     } // handleError
+
+    // -------------------------------------------------------------------------------------
+
+    MedalVerse_SetEventHandler = (_eventID) => {
+        console.log("App::MedalVerse_SetEventHandler:_eventID=" + _eventID)
+        const connectedAccountAddr = this.getAccounts()
+        const medalVerseContractInstance = this.state.contract
+        //   const { t } = this.props;
+
+        let eventID = parseInt(_eventID)
+        if (isNaN(eventID)) {
+            const error = "MedalVerse_SetEventHandler:eventID is not a number"
+            console.log(error)
+            throw error
+        }
+        if (medalVerseContractInstance === undefined) {
+            const error = "MedalVerse_SetEventHandler:medalVerseContractInstance is undefined"
+            console.log(error)
+            throw error
+        }
+
+
+        // Mise en place du handler pour les évènements du contrat
+        // https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#events-allevents
+
+
+        if (medalVerseContractInstance.medalVerseContractEvents === undefined) {
+            var medalVerseContractEvents = medalVerseContractInstance.events.allEvents
+                (
+                    { fromBlock: 'latest' },
+                    (error, result) => {
+                        if (error) {
+                            console.error("medalVerseContractInstance: %s error: %s", medalVerseContractInstance.options.address, error);
+                            // debug
+                            alert(error)
+                        }
+                        else {
+                            debugger
+                            console.log("medalVerseContractInstance: %s result: " + result, medalVerseContractInstance.options.address);
+                        }
+                    }
+                ); // erc20ContractInstance.events.allEvents
+
+            // Set property to avoid creating event handler twice
+            medalVerseContractInstance.medalVerseContractEvents = medalVerseContractEvents;
+
+            medalVerseContractEvents.on('data', event => {
+                alert("event.event=" + event.event)
+                // Event
+                if (event.event === "eventStatusChanged") {
+                    alert("eventStatusChanged")
+                    console.log("event.returnValues= " + event.returnValues);
+                    debugger
+                    // console.log( "event.returnValues.owner= " + event.returnValues.owner );
+                    // console.log( "event.returnValues.spender= " + event.returnValues.spender );
+                    // console.log( "event.returnValues.value= " + event.returnValues.value );
+                    // alert("Approval : " + event.returnValues.owner + " approved spending  " + event.returnValues.value + "  " + erc20ContractInstance.erc20Symbol + "  by " + event.returnValues.spender );
+                    /*
+                    if ( event.returnValues.owner === connectedAccountAddr // && erc20VaultsAdresses.includes( event.returnValues.spender )
+                       )
+                      {
+                        let newEvent =
+                        {
+                          title:    "eventStatusChanged",
+                          message:  event.returnValues.owner + ,
+                          level :   "success",
+                        };
+          
+                        this.showEvent( newEvent, true )
+                      }
+                      */
+
+                }
+                // Event
+                /*
+                        else if ( event.event === "eventRegisterSportsman" )
+                            {
+                                alert("eventRegisterSportsman")
+                
+                              if ( event.returnValues.from === connectedAccountAddr && erc20VaultsAdresses.includes( event.returnValues.to ) )
+                                {
+                                  // alert("Transfer")
+                                  let newEvent =
+                                      {
+                                        title:    t("erc20VaultContract.app.user.events.spending.title"),
+                                        message:  event.returnValues.spender + t("erc20VaultContract.app.user.events.spending.spent") ,
+                                        level :   "success",
+                                      };
+                                  this.showEvent( newEvent, true )
+                                }
+                            }
+                            */
+                else {
+                    // this.ERC20Vault_UpdateData() ;
+                    console.error("Unknown event : %s", event.event)
+                }
+
+            }); // medalVerseContractEvents.on
+
+        } // erc20ContractInstance.medalVerseContractEvents === undefined
+
+    }; // MedalVerse_SetEventHandler
+
 
 } // class App
 

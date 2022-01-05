@@ -73,10 +73,32 @@ contract('ThrowIn', function (accounts) {
         expect(new BigNumber(winner.numberOfVictory)).to.be.bignumber.equal(number);
         // Nom du gagnant: winner.playerName = name 
         // Année de victoire:  winYear = whatYear
-        // Nombre de victoire: winner =  number
-        
+        // Nombre de victoire: winner =  number  
     })
 
+    // Add Winner and Year, check the storage in their array
+    it("I-Verification de la fonction getAllWinners", async function () {
+        // Add year
+        await this.throwInInstance.setYear(year, { from: owner });
+
+        // Add winners
+        await this.throwInInstance.addWinner(name, user, { from: owner });
+        await this.throwInInstance.addWinner(name1, accounts[2], { from: owner });
+        await this.throwInInstance.addWinner(name2, accounts[3], { from: owner });
+
+        let winner = await this.throwInInstance.getAllWinners()
+        
+        // Check storage with getAllWinners function
+        expect(winner[0][0]).to.equal(name)
+        expect(winner[0][1]).to.equal(name1)
+        expect(new BigNumber(winner[1][0])).to.be.bignumber.equal(year)
+        // Nom du premier gagnant: name = winner[0][0]
+        // Nom du deuxieme gagnant: name1 = winner[0][1]
+        // Année de la victoire: year = winner[1][0]
+    })
+
+    
+    
     // Change Statut and test function statut paused
     it("C-mettre le contract en pause et verifié les fonction de pause ", async function () {
         // Mint

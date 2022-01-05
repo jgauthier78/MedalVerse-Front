@@ -26,12 +26,12 @@ import {
 // import { withTranslation } from 'react-i18next';
 
 class OrganizerLayout extends Component {
-
+/*
     constructor(props) {
         // console.log("OrganizerLayout:" + props);
         super(props);
     }
-
+*/
     render() {
         return (
             <>
