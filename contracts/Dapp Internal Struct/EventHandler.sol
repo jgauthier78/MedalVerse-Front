@@ -240,7 +240,7 @@ contract EventHandler is Ownable {
 		internal
 		isInRange(eventID, eventCount)
 		isNotNullUint256(eventID)
-		eventIsInState(eventID, stateOfCompetition.RewardDistribution)
+//		// eventIsInState(eventID, stateOfCompetition.RewardDistribution)
 	{
 		eventID--;
 		eventList[eventID].hasMedal = true;
