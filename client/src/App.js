@@ -56,15 +56,13 @@ class App extends Component {
             createNFT: this.createNFT,
 
             isConnected: this.isConnected,
-            // getRoleString: this.getRoleString,
             disconnect: this.disconnect,
 
-            ThrowIn_getStatus: this.ThrowIn_getStatus,
-            // ThrowIn_changeStatusToCompetitionInProgress: this.ThrowIn_changeStatusToCompetitionInProgress,
-            // ThrowIn_changeStatusToRewardDistribution: this.ThrowIn_changeStatusToRewardDistribution,
-            // ThrowIn_changeStatusToCompetitionPreparation: this.ThrowIn_changeStatusToCompetitionPreparation,
-            // ThrowIn_changeStatusToRegistrationOfParticipants: this.ThrowIn_changeStatusToRegistrationOfParticipants,
-
+            Event_getState: this.Event_getState,
+            Event_changeStateToCompetitionInProgress: this.Event_changeStateToCompetitionInProgress,
+            Event_changeStateToRewardDistribution: this.Event_changeStateToRewardDistribution,
+            Event_changeStateToRewardDistributed: this.Event_changeStateToRewardDistributed,
+         
             DID_init: this.DID_init,
             DID_showConf: this.DID_showConf,
             DID_readProfile: this.DID_readProfile,
@@ -409,7 +407,7 @@ class App extends Component {
                             activ: eventData.activ,
                             ended: eventData.ended,
                             started: eventData.started,
-                            stateOfCompetition: await this.state.contract.methods.getEventCurrentState(eventId).call(), // eventData.stateOfCompetition, <- undefined
+                            stateOfCompetition: await this.Event_getState(eventId), // eventData.stateOfCompetition, <- undefined
                             // -> crée une référence circulaire
                             organization: organization
                         }
@@ -519,16 +517,42 @@ class App extends Component {
         */
     }
 
-    ThrowIn_getStatus = async (ThrowInContractAddress) =>
+    Event_getState = async (eventId) =>
     {
-        // console.log("this.ThrowIn_getInstance(ThrowInContractAddress)="+ await this.ThrowIn_getInstance(ThrowInContractAddress))
-        // console.log("this.ThrowIn_getInstance(ThrowInContractAddress).options.address"+ (await this.ThrowIn_getInstance(ThrowInContractAddress)).options.address)
-        
-     let val = await ((await this.ThrowIn_getInstance(ThrowInContractAddress)).methods.status().call())
-     const status_val = parseInt( val, 10 )
-     return status_val
+        let val = await this.state.contract.methods.getEventCurrentState(eventId).call()
+        const status_val = parseInt( val, 10 )
+        console.log("Event_getState:status_val="+status_val)
+        return status_val
     }
-   
+    
+    // 
+    Event_changeStateToCompetitionInProgress = async (eventId) =>
+    {
+        console.log("App::Event_changeStateToCompetitionInProgress: eventId="+eventId)
+        await this.state.contract.methods.adminStartEvent(eventId).send({ from: this.getAccounts() })
+        // Event
+    }
+
+    Event_changeStateToRewardDistribution = async (eventId) =>
+    {
+        console.log("App::Event_changeStateToRewardDistribution: eventId="+eventId)
+        await this.state.contract.methods.adminEndEvent(eventId).send({ from: this.getAccounts() })
+        // Event
+    }
+
+    Event_changeStateToRewardDistributed = async (eventId, winnerAddress) =>
+    {
+        console.log("App::Event_changeStateToRewardDistributed: eventId="+eventId+" , winnerAddress="+winnerAddress)
+        await this.state.contract.methods.adminSetWinner(eventId, winnerAddress).send({ from: this.getAccounts() })
+        // Event
+    }
+/*
+    Event_changeStateToRewardDistributed = async (eventId) =>
+    {
+        await this.state.contract.methods.AdminSetMedal(eventId).send({ from: this.getAccounts() })
+        // Event
+    }
+*/
 /*
     ThrowIn_changeStatusToCompetitionInProgress = async (ThrowInContractAddress) =>
     {

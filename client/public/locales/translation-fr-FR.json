@@ -7,6 +7,9 @@
   },
   "OrganizerEvent": {
     "actions" : {
+      "changeStateToCompetitionInProgress" : "Démarrer la compétition",
+      "changeStateToRewardDistribution" : "Remise des trophées",
+      "changeStateToRewardDistributed" : "Trophées remis",
       "closeEvent" : "Terminer l'évènement",
       "medal" : "médailler"
     },
