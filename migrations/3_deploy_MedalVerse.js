@@ -41,8 +41,6 @@ module.exports = async function (deployer, network, accounts) {
     await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.setYear(2022, { from: ACCOUNT_CONTRACT_OWNER })
-
-
     nftCounter++
     return nft;
   }
@@ -242,6 +240,10 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.adminStartEvent(EVENT_FOUR, { from: ACCOUNT_ORGANIZER_01 })
 
   // Create a competition reward but no winner
+  let rcup3 = await createNFT("Tennis Cup 2", "Tennis Nft 2", "TNFT2", "Paul_Henry", "/img/medals/medal3.jpg", ACCOUNT_ORGANIZER_01)
+  await rcup3.addWinner("François Coste", ACCOUNT_ATHLETE_01, { from: ACCOUNT_CONTRACT_OWNER })
+  await MVerse.adminAddMedal(EVENT_FOUR, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+
   // let rcup3 = await mintNFT("Tennis Cup", "Tennis Nft", "TNFT", "Gauthier Germain", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
   // mintCupNFT(nftOrganization, nftName, nftSymbol, name, img, year, account) {
   // let participants_04 = []

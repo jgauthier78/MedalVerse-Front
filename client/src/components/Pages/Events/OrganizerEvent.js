@@ -51,7 +51,7 @@ function EventLayout( { events, AppCallBacks /*userProfile*/ } )
       
 
 
-
+/*
     //  event handler
     const onHandleEventMedalWinner = async (eventId, athleteAdr) => {
         try {
@@ -62,7 +62,7 @@ function EventLayout( { events, AppCallBacks /*userProfile*/ } )
             console.error(error)
         } // catch
     } // onHandleEventMedalWinner
-
+*/
     //  event handler
     /*
     const ThrowIn_getStatus = async (ThrowInContractAddress) => {
@@ -77,7 +77,16 @@ function EventLayout( { events, AppCallBacks /*userProfile*/ } )
     } // ThrowIn_getStatus
     */
 
-    // event handler
+    const onHandle_setWinner = async (winnerAddress) => {
+        try {
+            console.log("EventLayout::onHandle_changeStateToCompetitionInProgress")
+            await AppCallBacks.Event_setWinner(event.eventId, winnerAddress)
+        } // try
+        catch (error) {
+            console.error(error)
+        } // catch
+    } // onHandle_setWinner
+
     const onHandle_changeStateToCompetitionInProgress = async () => {
         try {
             console.log("EventLayout::onHandle_changeStateToCompetitionInProgress")
@@ -103,23 +112,12 @@ function EventLayout( { events, AppCallBacks /*userProfile*/ } )
     const onHandle_changeStateToRewardDistributed = async () => {
         try {
             console.log("EventLayout::onHandle_changeStateToRewardDistributed")
-            await AppCallBacks.Event_changeStateToRewardDistributed(event/*event.eventId, event.winner*/)
+            await AppCallBacks.Event_changeStateToRewardDistributed(event.eventId)
         } // try
         catch (error) {
             console.error(error)
         } // catch
     } // onHandle_changeStateToRewardDistributed
-
-    // //  event handler
-    // const onHandleEventAddMedal = async (eventId) => {
-    //     try {
-    //         console.log("EventLayout::onHandleEventAddMedal: eventId="+eventId)
-    //         await AppCallBacks.adminAddMedal(eventId)
-    //     } // try
-    //     catch (error) {
-    //         console.error(error)
-    //     } // catch
-    // } // onHandleEventAddMedal
 
     return (
         <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 ">
@@ -146,11 +144,17 @@ function EventLayout( { events, AppCallBacks /*userProfile*/ } )
                     <Card.Text>
                         {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATE_00_REGISTRATIONOFPARTICIPANTS
                          &&
-                        <Button className="ml-1" variant="warning" onClick={() => onHandle_changeStateToCompetitionInProgress(event.throwIn.address)}>{t("OrganizerEvent.actions.changeStateToCompetitionInProgress")}</Button>
+                        <Button className="ml-1" variant="warning" onClick={() => onHandle_changeStateToCompetitionInProgress()}>{t("OrganizerEvent.actions.changeStateToCompetitionInProgress")}</Button>
                         }
                         {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATUS_01_COMPETITIONINPROGRESS
                          &&
-                        <Button className="ml-1" variant="warning" onClick={() => onHandle_changeStateToRewardDistribution(event.throwIn.address)}>{t("OrganizerEvent.actions.changeStateToRewardDistribution")} <Trophy style={{ verticalAlign: '-10%' }} /></Button>
+                        <Button className="ml-1" variant="warning" onClick={() => onHandle_changeStateToRewardDistribution()}>{t("OrganizerEvent.actions.changeStateToRewardDistribution")} <Trophy style={{ verticalAlign: '-10%' }} /></Button>
+                        }
+                        {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATUS_02_REWARDDISTRIBUTION
+                        &&
+                        event.winner !== ZERO_ADDRESS_STRING // Display button : Reward distribution state AND event has a winner
+                        &&
+                        <Button className="ml-1" variant="warning" onClick={() =>  onHandle_changeStateToRewardDistributed()}>{t("OrganizerEvent.actions.changeStateToRewardDistributed")}</Button>
                         }
                     </Card.Text>
                 </Card.Body>
@@ -178,7 +182,7 @@ function EventLayout( { events, AppCallBacks /*userProfile*/ } )
                                         &&
                                      event.winner === ZERO_ADDRESS_STRING && // event.winner !== athleteAdr && // Display button : Reward distribution state AND event has no winner
                                         <td>
-                                            <Button className="ml-1" variant="warning" onClick={() =>  onHandle_changeStateToRewardDistributed(event.throwIn.address)}><Trophy style={{ verticalAlign: '-10%' }} /> {t("OrganizerEvent.athlete.actions.setWinner")}</Button>
+                                            <Button className="ml-1" variant="warning" onClick={() =>  onHandle_setWinner(athleteAdr)}><Trophy style={{ verticalAlign: '-10%' }} /> {t("OrganizerEvent.athlete.actions.setWinner")}</Button>
                                         </td>
                                     }
                                 </tr>
