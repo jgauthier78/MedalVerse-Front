@@ -1,5 +1,5 @@
 /* React */
-import React, { useState , useEffect, useRef } from "react";
+import React, { useState /*, useEffect, useRef*/ } from "react";
 
 /* Translation */
 import { useTranslation } from 'react-i18next';
@@ -7,14 +7,14 @@ import { useTranslation } from 'react-i18next';
 // import {useParams} from 'react-router-dom'
 /* React - Bootstrap*/
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+// import Row from 'react-bootstrap/Row'
+// import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
-import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
+// import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
+// import ListGroup from 'react-bootstrap/ListGroup';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
-import Accordion from 'react-bootstrap/Accordion'
+// import Accordion from 'react-bootstrap/Accordion'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Form from 'react-bootstrap/Form'
 
@@ -42,7 +42,6 @@ const Profile = ( { handleSaveProfile, profile }  ) =>
     } // catch
   } // onHandleSaveProfile
 
-  
   const handleOnNameChange = (e) =>
   {
       console.log("Profile::handleOnNameChange:e.target.value= '"+e.target.value+"'")
@@ -91,6 +90,5 @@ const Profile = ( { handleSaveProfile, profile }  ) =>
 </Container>
   )
 }
-
 
 export { Profile };
