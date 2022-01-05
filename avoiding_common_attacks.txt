@@ -74,31 +74,45 @@ Pas d'exploitation de "tx"
 
 ThrowIn.sol
 
+
 Ré-entrance:
 ------------
 
-ThrowIn n'effectue pas de transfert, encapsule les NFT dans une structure, mais n'appelle pas de fonction sur ces derniers.
+ThrowIn n'effectue pas de transfert, encapsule le NFT dans une structure, mais appelle qu'une seul fonction view de ce dernier.
 Pas de soucis de ré-entrance
 
 
 OverFlow: 
 ---------
 
+ThrowIn n'est pas affecté par l'attaque d'overFlow car les incrementation ne sont pas modifiable par l'utilisateur 
 
 Unexpected Ether: 
 ----------------
 
-ThrowIn n'est pas payable, mais prend des NFT en paramètres qui eux peuvent déjà être mintés: check à prévoir
+ThrowIn n'est pas payable, mais prend dun NFT en paramètres qui lui peut déjà être minté: check à prévoir
 
 
 Visibilité:
 -----------
 
+ThrowIn n'est pas tres visible a la visibilité , en effet: 
 
+Beaucoup de fonction public mais seulement utilisable par le owner 
+Exepté les fonctions view qui ont la possibilité d'etre utilisé par tous
 
 
 Référence à un contrat externe:
 -------------------------------
+
+- le contrat NFTArtist et encapsulés dans la structure, un seul appelle est effectuer sur celui ci mais c'est une fonction view
+- NFTArtist est minté indépendamment de ThrowIn, et le contrat affecte le NFT via:
+
+ThrowIn.sol : IERC721Metadata NFT_Medal;
+
+-> on vérifie la bonne implémentation de l'interface dans le constructor
+IERC721(addressNFT_Medal).supportsInterface(type(IERC721).interfaceId);
+
 
 
 Envoyer une adresse incomplete: 
