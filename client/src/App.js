@@ -727,6 +727,105 @@ class App extends Component {
 
     } // handleError
 
+// -------------------------------------------------------------------------------------
+
+MedalVerse_SetEventHandler = (  ) =>
+{
+//   const { t } = this.props;
+  const connectedAccountAddr = this.getAccounts()
+  const medalVerseContractInstance = this.state.contract
+
+  // Mise en place du handler pour les évènements du contrat
+  // https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#events-allevents
+
+  if ( medalVerseContractInstance !== undefined )
+   {
+
+    if ( medalVerseContractInstance.medalVerseContractEvents === undefined )
+    {
+      var medalVerseContractEvents = medalVerseContractInstance.events.allEvents
+      (
+        { fromBlock: 'latest' },
+        (error, result) =>
+          {
+            if (error)
+            {
+              console.error("medalVerseContractInstance: %s error: %s", medalVerseContractInstance.options.address, error ) ;
+            // debug
+            alert(error)
+            }
+          else
+            {
+              console.log("medalVerseContractInstance: %s result: " + result, medalVerseContractInstance.options.address ) ;
+            }
+          }
+      ); // erc20ContractInstance.events.allEvents
+
+      // Set property to avoid creating event handler twice
+      medalVerseContractInstance.medalVerseContractEvents = medalVerseContractEvents ;
+
+      medalVerseContractEvents.on('data', event =>
+        {
+            alert("event.event="+event.event)
+        // Event
+          if ( event.event === "eventStatusChanged" )
+            {
+                alert("eventStatusChanged")
+                console.log( "event.returnValues= " + event.returnValues );
+              // console.log( "event.returnValues.owner= " + event.returnValues.owner );
+              // console.log( "event.returnValues.spender= " + event.returnValues.spender );
+              // console.log( "event.returnValues.value= " + event.returnValues.value );
+              // alert("Approval : " + event.returnValues.owner + " approved spending  " + event.returnValues.value + "  " + erc20ContractInstance.erc20Symbol + "  by " + event.returnValues.spender );
+              /*
+              if ( event.returnValues.owner === connectedAccountAddr // && erc20VaultsAdresses.includes( event.returnValues.spender )
+                 )
+                {
+                  let newEvent =
+                  {
+                    title:    "eventStatusChanged",
+                    message:  event.returnValues.owner + ,
+                    level :   "success",
+                  };
+    
+                  this.showEvent( newEvent, true )
+                }
+                */
+
+            }
+        // Event
+/*
+        else if ( event.event === "eventRegisterSportsman" )
+            {
+                alert("eventRegisterSportsman")
+
+              if ( event.returnValues.from === connectedAccountAddr && erc20VaultsAdresses.includes( event.returnValues.to ) )
+                {
+                  // alert("Transfer")
+                  let newEvent =
+                      {
+                        title:    t("erc20VaultContract.app.user.events.spending.title"),
+                        message:  event.returnValues.spender + t("erc20VaultContract.app.user.events.spending.spent") ,
+                        level :   "success",
+                      };
+                  this.showEvent( newEvent, true )
+                }
+            }
+            */
+            else
+            {
+              // this.ERC20Vault_UpdateData() ;
+              console.error( "Unknown event : %s", event.event )
+            }
+
+          }); // medalVerseContractEvents.on
+
+      } // erc20ContractInstance.medalVerseContractEvents === undefined
+
+    } // erc20ContractInstance !== undefined
+
+}; // MedalVerse_SetEventHandler
+
+
 } // class App
 
 export default App;
