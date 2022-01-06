@@ -13,20 +13,21 @@ contract ThrowIn is ERC721, Ownable {
 		string memory name,
 		string memory symbol
 	) ERC721(name, symbol) {
-		IERC721Metadata(addressNFT_Medal).supportsInterface(type(IERC721).interfaceId);
+		IERC721Metadata(addressNFT_Medal).supportsInterface(
+			type(IERC721).interfaceId
+		);
 		NFT_Medal = IERC721Metadata(addressNFT_Medal);
 		nameOfOrganization = organization;
 		name = name;
 		symbol = symbol;
 	}
 
-	//@dev Structure to describe the winner
+	///@dev Structure to describe the winner
 	struct Winner {
-		string playerName; // Name of winner 
+		string playerName; // Name of winner
 		uint256[] year; // All the years of victory
 		uint256 numberOfVictory; // Number of victory of player or team
 	}
-
 
 	// Data --------------------------------
 	Winner[] public winnersArray; // Winner structure array
@@ -66,29 +67,25 @@ contract ThrowIn is ERC721, Ownable {
 	event throwInWinnersAdd(address organizer, address winners);
 	event throwInSetPause(bool check);
 	event throwInPauseRemoved(bool check);
-	event throwInTranserWithoutPermission(address caller, address recipient, uint id);
-	event throwInSetYear(uint whatYear);
-
+	event throwInTranserWithoutPermission(
+		address caller,
+		address recipient,
+		uint256 id
+	);
+	event throwInSetYear(uint256 whatYear);
 
 	// Methods -------------------------------
 	///@dev Mint the only possible edition of the NFT Cup
 	///@param tokenId Token id of the NFTA Artist got the Uri
-	function mintCup(uint256 tokenId)
-		public
-		onlyOwner
-		whenNotPaused
-	{
+	function mintCup(uint256 tokenId) public onlyOwner whenNotPaused {
 		require(numberMint == 0, "Only one single cup can be minted"); // Check if the nft has already been minted
 
 		uri = IERC721Metadata(NFT_Medal).tokenURI(tokenId); // Get the uri of the NFTArtist
-
 		numberMint++; // increment the number of NFT mint
-
 		uriToken[numberMint] = uri; // Set the uri of the mint token
+		emit throwInCupMinted(msg.sender);
 
 		_mint(msg.sender, numberMint); // Mint the NFT
-
-		emit throwInCupMinted(msg.sender);
 	}
 
 	///@dev Ensures that only the owner can move the nft when the contract is paused
@@ -136,9 +133,7 @@ contract ThrowIn is ERC721, Ownable {
 		emit throwInPauseRemoved(pause);
 	}
 
-
 	function setYear(uint16 competYear) public onlyOwner whenNotPaused {
-
 		year = competYear;
 
 		emit throwInSetYear(competYear);
@@ -146,18 +141,14 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@dev Add winners to the Winners array and modify its structure associated with this wallet
 	///@param walletPlayer winner's address
-	function addWinner(
-		string memory name,
-		address walletPlayer
-		)
+	function addWinner(string memory name, address walletPlayer)
 		public
 		onlyOwner
 		isNotNull(walletPlayer)
 		whenNotPaused
 	{
-
 		require(year != 0, "Define a year");
-		
+
 		// Define the winner structure
 		winnerMap[walletPlayer].playerName = name;
 		winnerMap[walletPlayer].year.push(year);
@@ -176,8 +167,6 @@ contract ThrowIn is ERC721, Ownable {
 		emit throwInWinnersAdd(msg.sender, walletPlayer);
 	}
 
-
-
 	// Methods View-------------------------------
 
 	///@return Return all winners by name and assigned number
@@ -187,7 +176,9 @@ contract ThrowIn is ERC721, Ownable {
 		returns (string[] memory, uint16[] memory)
 	{
 		string[] memory winnersString = new string[](winnersArray.length); // Instantiate a string array the length of the winners array
-		uint16[] memory yearsOfVictory = new uint16[](yearOfEditionArray.length); // Instantiate a uint array the length of the yearOfParticipationArray
+		uint16[] memory yearsOfVictory = new uint16[](
+			yearOfEditionArray.length
+		); // Instantiate a uint array the length of the yearOfParticipationArray
 
 		// Loop that goes through all the name of the winner and copies it as well as the production years of the competition
 		for (uint256 i = 0; i < winnersArray.length; i++) {

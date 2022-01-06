@@ -32,6 +32,7 @@ Technos. utlisées :
 
 - SportsmanHandler: Un Sportsman est un user ayant le rôle de Sportif et possède des propriétés supplémentaires comme une liste d'évènement auquel il est enregistré, ainsi qu'un champ de bits décrivant les sports qu'il pratique. SportsmanHandler gère la liste des Sportsman
 
+- MedalHandler: Gère la liste des médailles basées sur ThrowIn
 
 ## Installation
 - à la racine du projet :

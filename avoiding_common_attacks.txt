@@ -1,24 +1,34 @@
 
-
+Nous détaillons ici la revue de sécurité effectuée sur les contrats MedalVerse et ThrowIn
+Le document est mis à jour régulièrement en fonction de l'évolution des contrats
 
 MedalVerse.sol
 
 Ré-entrance:
 -----------
-MedalVerse n'effectue pas de transfert, encapsule les NFT dans une structure, mais n'appelle pas de fonction sur ces derniers.
-Pas de soucis de ré-entrance
+MedalVerse n'effectue pas de transfert, encapsule les NFT dans une structure, mais n'appelle pas de fonction sur ces derniers. 
+
+- Il n'existe qu'un contrat MedalVerse
+- Le contrat hérite de tous les contrats avec lesquels il intéragit, pas de possibilité de fournir un contrat modifié
+- Pas de call, de send, de transfer, 
+
+Pas de ré-entrance
 
 
 OverFlow: 
 ---------
 Variables sensibles: 
-- Dates d'événement soumises à medalVerse, ajout de check pour vérifier qu'elles sont logiques (endtime> startTime && endTime>0), mais pas de manipulation de ces dernieres en solidity donc 
-- Toutes les données de référence (identifiant dans la base) sont checkées pour être dans les bonnes ranges de tableaux/map, on vérifie qu'elles ne générerent pas d'erreur ou d'échec innatendu.
+- Dates d'événement soumises à medalVerse - ajout de check pour vérifier qu'elles sont cohérentes, mais pas de manipulation de ces dernieres en solidity (uniquement en JS) donc non impactées par une attaque. 
 
+- Toutes les données de référence (identifiant dans la base) sont checkées pour être dans les bonnes ranges de tableaux/map, on vérifie qu'elles ne générerent pas d'erreur ou d'échec innatendu via modifier & require
+
+pas d'utilisation de librairie, pas de send.
 
 Unexpected Ether: 
 ----------------
-MedalVerse n'est pas payable, mais prend des NFT en paramètres qui eux peuvent déjà être mintés: check à prévoir
+MedalVerse n'est pas payable, mais prend des NFT en paramètres qui eux peuvent déjà être mintés.
+En l'état, le contrat n'héberge pas de token.
+
 
 Visibilité:
 -----------
@@ -52,7 +62,7 @@ IERC721(_nft).supportsInterface(type(IERC721).interfaceId);
 Envoyer une adresse incomplete: 
 -------------------------------
 
-msg.sender est utilisé pour les enregistrements d'utilisateur et les addresses sont checkées
+msg.sender est utilisé pour les enregistrements d'utilisateurs et les addresses sont checkées
 
 
 Success de call:
@@ -65,42 +75,49 @@ Timestamp:
 ----------
 
 Les dates utilisées sont en universal time, et gérée par le front. Pas d'interaction avec le contrat.
+Pas d'utilisation du nombre de block, ou de délais dans le contrat.
 
 tx.origin:
 ----------
 Pas d'exploitation de "tx"
 
+
+..........................................................
 ..........................................................
 
-ThrowIn.sol
+
+
+Contrat ThrowIn.sol
 
 
 Ré-entrance:
 ------------
 
-ThrowIn n'effectue pas de transfert, encapsule le NFT dans une structure, mais appelle qu'une seul fonction view de ce dernier.
-Pas de soucis de ré-entrance
+ThrowIn n'effectue pas de transfert, encapsule le NFT, appelle une seul fonction (view) de ce dernier.
+Le contrat NFTAutheur est passé en paramètre, si ce dernier est lui-même un throwin, ou fait appel à ThrowIn, il échoue au mint et donc ne peut ensuite être transféré. Pas de prise de possession non souhaitée d'un 
+
+Pas de ré-entrance potentielle
 
 
 OverFlow: 
 ---------
 
-ThrowIn n'est pas affecté par l'attaque d'overflow car les valeurs ne sont pas modifiable par l'utilisateur, la seul incrementation est dans la fonction mint qui est limité àa une seul utilisations
+ThrowIn n'est pas affecté par l'attaque d'overflow car:
+Seule une incrementation prsentante un overflow potentiel est effectué dans la fonction mint. L'appel est limité à une seule occurence (par modifier), il ne peut y avoir d'overflow
 
 
 Unexpected Ether: 
 ----------------
 
-ThrowIn n'est pas payable, mais prend dun NFT en paramètres qui lui peut déjà être minté: check à prévoir
+ThrowIn n'est pas payable, mais prend dun NFT en paramètres qui lui pourrait être déjà minté et contenir de la monnaie, mais il échouera dans l'utilisation de ThrowIn et les événements ne seront pas générés.
 
 
 Visibilité:
 -----------
 
-ThrowIn n'est pas tres affecté par ça visibilité , en effet: 
+La majorité des des fonctions  "public" sont des getters, les autres sont en onlyowner, réservées au propriétaire de la médaille.
 
-Beaucoup de fonction public mais seulement utilisable par le owner 
-Exepté les fonctions view qui ont la possibilité d'etre utilisé par tous
+Seules les fonctions view ont la possibilité d'etre utilisées par tous
 
 
 Référence à un contrat externe:
@@ -130,7 +147,7 @@ Pas de Call dans les classes
 Timestamp:
 ----------
 
-Les dates utilisées sont en universal time, et gérée par le front. Pas d'interaction avec le contrat.
+Les dates utilisées sont en universal time, et gérées par le front. Pas d'interaction avec le contrat.
 
 
 tx.origin:
