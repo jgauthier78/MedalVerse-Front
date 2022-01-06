@@ -142,7 +142,7 @@ contract MedalVerse is
 		setEventWinner(eventID, winner);
 	}
 
-	///@dev The event gets a winner and closes,checks we are an admin for the event
+	///@dev A medal is associated to an event, whatever its status
 	///@param eventID id of the event
 	///@param _nft address of medal nft associated to the prize
 	function adminAddMedal(uint256 eventID, address _nft)
@@ -160,6 +160,8 @@ contract MedalVerse is
 		eventSetMedal(eventID, medalID);
 	}
 
+	///@dev Affect the medal owned by the event to the winner of the competition
+	///@param eventID id of the event
 	function adminGiveMedalToWinner(uint256 eventID)
 		external
 		isAdminOfEvent(eventID)
