@@ -593,7 +593,6 @@ class App extends Component {
             organization: organization
             }
 
-        //  console.log("event="+JSON.stringify(event))
         //  console.log("stateOfCompetition="+event.stateOfCompetition)
         // Medal data
         let throwIn = {}
@@ -622,13 +621,44 @@ class App extends Component {
             } // if
         } // for
 
+        debugger
         // Update state
         let userOrganizations = this.state.userOrganizations        
         const newUserOrganizations = [...userOrganizations]
-        // debugger
+        debugger
         this.setState({ userOrganizations: newUserOrganizations })
     }
-  
+
+    updateOrganizationsEventOnEvent = async (eventId, organizations) => {
+        // REFRESH DATA
+        console.log("eventId=" + eventId)
+
+        if (organizations===undefined)
+        { console.error("App::updateOrganizationsEventOnEvent:organizations===undefined") }
+        if (eventId===undefined)
+        { console.error("App::updateOrganizationsEventOnEvent:eventId===undefined") }
+
+        for (let orgIdx=0; orgIdx < organizations.length; orgIdx++)
+        {
+            let organization = organizations[orgIdx]
+            console.log("organizations.id=" + organization.id)
+            let organizationEvents = organization.events
+            for (let userOrgEventIdx=0; userOrgEventIdx < organizationEvents.length; userOrgEventIdx++)
+            {
+                let userOrganizationEvent = organizationEvents[userOrgEventIdx]
+                console.log("organizations.eventId=" + userOrganizationEvent.eventId)
+
+                if (eventId===userOrganizationEvent.eventId)
+                {
+                    // Update event
+                    this.updateOrganizerEvent(userOrganizationEvent.eventId, organization)
+                    break
+                } // eventId===userOrganizationEvent.eventId
+            } // for userOrgEventIdx
+        } // for organizations
+            
+    }
+
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
     } // DID_init
@@ -776,11 +806,9 @@ class App extends Component {
                     (error, result) => {
                         if (error) {
                             console.error("medalVerseContractInstance: %s error: %s", medalVerseContractInstance.options.address, error);
-                            // debug
                             alert(error)
                         }
                         else {
-                            // debugger
                             console.log("medalVerseContractInstance: %s result: " + JSON.stringify(result), medalVerseContractInstance.options.address);
                         }
                     }
@@ -792,37 +820,25 @@ class App extends Component {
             medalVerseContractEvents.on('data', event => {
                 // alert("event.event=" + event.event)
                 // Event
-                if (event.event === "eventStatusChanged") {
+                if (event.event === "eventStatusChanged")
+                {
                     console.log("eventStatusChanged")
                     console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
-                    console.log("event.returnValues.eventID=" + event.returnValues.eventID)
-                    if (event.returnValues !== undefined && event.returnValues.eventID!==undefined)
-                    {
-                        for (let orgIdx=0; orgIdx < userOrganizations.length; orgIdx++)
-                        {
-                            let userOrganization = userOrganizations[orgIdx]
-                            console.log("userOrganization.id=" + userOrganization.id)
-                            let userOrganizationEvents = userOrganization.events
-                            for (let userOrgEventIdx=0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++)
-                            {
-                                let userOrganizationEvent = userOrganizationEvents[userOrgEventIdx]
-                                console.log("userOrganizationEvent.eventId=" + userOrganizationEvent.eventId)
-
-                                if (event.returnValues.eventID===userOrganizationEvent.eventId)
-                                {
-                                    // Update event
-                                    this.updateOrganizerEvent(userOrganizationEvent.eventId, userOrganization)
-                                    break
-                                } // event.returnValues.eventID===userOrganizationEvent.eventId
-                            } // for userOrgEventIdx
-                        } // for userOrganizations
-                        // // Update state
-                        // const newUserOrganizations = [...userOrganizations]
-                        // this.setState({ userOrganizations: newUserOrganizations })
-                    } // event.returnValues.eventID!==undefined
-
+                    if (event.returnValues===undefined)
+                    { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined") }
+                    this.updateOrganizationsEventOnEvent( event.returnValues.eventID, userOrganizations)
+                }
+                else if ( event.event === "eventWinnerSet" )
+                {
+                    console.log("eventStatusChanged")
+                    console.log("event.returnValues= " + event.returnValues);
+                    let userOrganizations = this.state.userOrganizations
+                    // REFRESH DATA
+                    if (event.returnValues===undefined)
+                    { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined") }
+                    this.updateOrganizationsEventOnEvent( event.returnValues.eventID, userOrganizations)
                 }
                 else if ( event.event === "MedalAdded" )
                 {
@@ -844,8 +860,8 @@ class App extends Component {
                 {
                     console.log("sportsmanAdded")
                 }
-                else {
-                    // this.ERC20Vault_UpdateData() ;
+                else
+                {
                     console.error("Unknown event : %s", event.event)
                 }
 

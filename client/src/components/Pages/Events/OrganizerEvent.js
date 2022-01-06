@@ -20,21 +20,29 @@ import { Trophy } from 'react-bootstrap-icons';
 
 function EventLayout( { events, AppCallBacks } )
 {
-    let params = useParams();
     const { t } = useTranslation();
-    const [event, setEvent] = useState(events[params.eventId-1]);
 
-    // setEvent(events[params.eventId-1]) // Event id starts at 1 : remove 1 to find it in the array
-    // console.log("params.eventId="+params.eventId)
-    // let event = events[params.eventId-1] // Event id starts at 1 : remove 1 to find it in the array
+    let params = useParams();
+    const eventId = params.eventId
+
+    const getEvent = (events, eventId) =>{
+        for (let idxEvnt=0; idxEvnt<events.length; idxEvnt++)
+        {
+            if (events[idxEvnt].eventId===eventId)
+            {
+                return events[idxEvnt]
+            }
+        }
+    }
+
+    const [event, setEvent] = useState(getEvent(events, eventId));
 
     const init = useCallback( async() => {
-        console.log(">init")
-        await AppCallBacks.MedalVerse_SetEventHandler(event.eventId)
-        setEvent(events[params.eventId-1])
-        // debugger
-        console.log("init<")
-      }, /*[NO dependencies]*/)
+        console.log(">EventLayout::init")
+        await AppCallBacks.MedalVerse_SetEventHandler(eventId)
+        setEvent( getEvent(events, eventId) )
+        console.log("EventLayout::init<")
+      }, [eventId,AppCallBacks,events]/*[dependencies]*/)
 
     useEffect(
         () =>
@@ -42,7 +50,7 @@ function EventLayout( { events, AppCallBacks } )
             // console.log("useEffect:call init()");
             init()
         },
-        [init, events/*NO dependencies*/]);
+        [init, events/*dependencies*/]);
 
     const onHandle_setWinner = async (winnerAddress) => {
         try {
@@ -87,6 +95,13 @@ function EventLayout( { events, AppCallBacks } )
     } // onHandle_changeStateToRewardDistributed
 
     return (
+        (!event
+        &&
+        <div></div>
+        )
+        ||
+        (event
+        &&
         <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 ">
             <Card border="secondary">
                 <Card.Header>
@@ -165,10 +180,8 @@ function EventLayout( { events, AppCallBacks } )
                     </Table>
                 </Card.Body>
             </Card>
-        </Container>
-
+        </Container>)
     )
-
 }
 
 export { EventLayout };

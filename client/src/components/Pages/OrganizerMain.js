@@ -172,13 +172,16 @@ class OrganizerMainBeforeTranslation extends Component {
 
     async componentDidMount() {
         // let result = await this.props.AppCallBacks.getUserEvents()
-        let events = extractOrganizerEventsFromProfile(this.props.userProfile)
-        let eventsToDisplay = filterEvents(events)
-        this.setState( { events, eventsToDisplay } )
+        console.log("OrganizerMainBeforeTranslation::componentDidMount")
+        // let events = extractOrganizerEventsFromProfile(this.props.userProfile)
+        // let eventsToDisplay = filterEvents(events)
+        // this.setState( { events, eventsToDisplay } )
 
+        // filterEvents( extractOrganizerEventsFromProfile(this.props.userProfile) )
     }
 
     render() {
+        console.log("OrganizerMainBeforeTranslation::render")
         // return(
         //     <Routes>
         //         <Route path="/" element={<Layout />}>
@@ -187,17 +190,30 @@ class OrganizerMainBeforeTranslation extends Component {
         //         </Route>
         //     </Routes>
         // )
+
+//         return(
+//             <Routes>
+//                 <Route path="/" element={<OrganizerLayout AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />}>
+// {/*}
+//                     <Route path="events" element={<OrganizerEvents userProfile={this.props.userProfile} />} />
+// {*/}
+//                     <Route path="events" element={<EventsLayout  eventsToDisplay={this.state.eventsToDisplay} />} />
+//                     <Route path="event/:eventId"  element={<EventLayout events={this.state.eventsToDisplay} AppCallBacks={this.props.AppCallBacks} />} />
+//                 </Route>
+//             </Routes>
+//         )
         return(
             <Routes>
                 <Route path="/" element={<OrganizerLayout AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />}>
 {/*}
                     <Route path="events" element={<OrganizerEvents userProfile={this.props.userProfile} />} />
 {*/}
-                    <Route path="events" element={<EventsLayout  eventsToDisplay={this.state.eventsToDisplay} />} />
-                    <Route path="event/:eventId"  element={<EventLayout events={this.state.eventsToDisplay} AppCallBacks={this.props.AppCallBacks} />} />
+                    <Route path="events" element={<EventsLayout  eventsToDisplay={filterEvents( extractOrganizerEventsFromProfile(this.props.userProfile) )} />} />
+                    <Route path="event/:eventId"  element={<EventLayout events={filterEvents( extractOrganizerEventsFromProfile(this.props.userProfile) )} AppCallBacks={this.props.AppCallBacks} />} />
                 </Route>
             </Routes>
         )
+
     }
 /*
     renderOld() {
