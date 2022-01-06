@@ -61,6 +61,7 @@ contract EventHandler is Ownable {
 	event eventRemoved(uint256 eventId);
 	event eventRegisterSportsman(uint256 eventId, address sportsmanId);
 	event eventStatusChanged(uint256 eventID, stateOfCompetition newStatus);
+	event eventWinnerSet(uint256 eventId, address winner);
 
 	// Methods -------------------------------
 	///@dev add an event to the list of events
@@ -146,6 +147,7 @@ contract EventHandler is Ownable {
 		eventIsInState(eventID, stateOfCompetition.RewardDistribution)
 	{
 		eventList[eventID - 1].winner = _winner;
+		emit eventWinnerSet(eventID, _winner);
 	}
 
 	///@dev Open to registration
@@ -240,13 +242,15 @@ contract EventHandler is Ownable {
 		internal
 		isInRange(eventID, eventCount)
 		isNotNullUint256(eventID)
-//		// eventIsInState(eventID, stateOfCompetition.RewardDistribution)
+	//		// eventIsInState(eventID, stateOfCompetition.RewardDistribution)
 	{
 		eventID--;
 		eventList[eventID].hasMedal = true;
 		eventList[eventID].medalID = medalID;
 	}
 
+	///@dev Affect the medal of the event to the winner
+	///@param eventID id of the event
 	function eventDistributeMedal(uint256 eventID)
 		internal
 		isInRange(eventID, eventCount)
@@ -262,6 +266,8 @@ contract EventHandler is Ownable {
 		emit eventStatusChanged(eventID, stateOfCompetition.RewardDistributed);
 	}
 
+	///@dev checks if event has a medal
+	///@param eventID id of the event
 	function eventHasMedal(uint256 eventID)
 		public
 		view
@@ -272,6 +278,8 @@ contract EventHandler is Ownable {
 		return eventList[eventID - 1].hasMedal;
 	}
 
+	///@dev returns the id of the medal associated to the event
+	///@param eventID id of the event
 	function eventGetMedal(uint256 eventID)
 		public
 		view
@@ -282,6 +290,8 @@ contract EventHandler is Ownable {
 		return eventList[eventID - 1].medalID;
 	}
 
+	///@dev returns the id of the winner associated to the event
+	///@param eventID id of the event
 	function eventGetWinner(uint256 eventID)
 		public
 		view
@@ -292,6 +302,10 @@ contract EventHandler is Ownable {
 		return eventList[eventID - 1].winner;
 	}
 
+	///@dev Affects coordinates to en event
+	///@param eventID id of the event
+	///@param posX X position
+	///@param posY Y Position
 	function eventSetPosition(
 		uint256 eventID,
 		string memory posX,
@@ -301,6 +315,8 @@ contract EventHandler is Ownable {
 		eventList[eventID - 1].positionY = posY;
 	}
 
+	///@dev returns X coordinate of an event
+	///@param eventID id of the event
 	function eventGetPositionX(uint256 eventID)
 		public
 		view
@@ -311,6 +327,8 @@ contract EventHandler is Ownable {
 		return eventList[eventID - 1].positionX;
 	}
 
+	///@dev returns Y coordinate of an event
+	///@param eventID id of the event
 	function eventGetPositionY(uint256 eventID)
 		public
 		view

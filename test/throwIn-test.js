@@ -66,7 +66,7 @@ contract('ThrowIn', function (accounts) {
         let winner = await this.throwInInstance.winnerMap(user);
         let whatYear = new BigNumber(await this.throwInInstance.getYearOfCompetition());
         let winYear = new BigNumber(await this.throwInInstance.viewThisVictoryByAddress(user, 0));
-        
+
         // Check la structure du gagnant
         expect(winner.playerName).to.equal(name);
         expect(winYear).to.be.bignumber.equal(whatYear);
@@ -87,7 +87,7 @@ contract('ThrowIn', function (accounts) {
         await this.throwInInstance.addWinner(name2, accounts[3], { from: owner });
 
         let winner = await this.throwInInstance.getAllWinners()
-        
+
         // Check storage with getAllWinners function
         expect(winner[0][0]).to.equal(name)
         expect(winner[0][1]).to.equal(name1)
@@ -97,10 +97,10 @@ contract('ThrowIn', function (accounts) {
         // Année de la victoire: year = winner[1][0]
     })
 
-    
-    
+
+
     // Change Statut and test function statut paused
-    it("C-mettre le contract en pause et verifié les fonction de pause ", async function () {
+    it("C-mettre le contract en pause et verifier les fonctions de pause ", async function () {
         // Mint
         await this.NFTArtist.mintNFTArtist("name", Uri);
         await this.throwInInstance.mintCup(1, { from: owner });
@@ -141,11 +141,11 @@ contract('ThrowIn', function (accounts) {
         // Check 
         expect(unpaused).to.equal(false);
         // Verifie que pause a étais enlever: unpaused = false
-        
+
     })
 
     //Error Test
-    it("D-Mint plusieurs NFT ", async function () {
+    it("D-Mint d'un NFT deja minte ", async function () {
         console.log("Test des erreur ...")
         // Mint NftArtiste 
         await this.NFTArtist.mintNFTArtist("name", Uri, { from: user });
@@ -169,14 +169,14 @@ contract('ThrowIn', function (accounts) {
         await this.throwInInstance.mintCup(1, { from: owner });
 
         await this.throwInInstance.setPaused({ from: owner });
-        await catchException(this.throwInInstance.safeTransferFromWithoutPermission(owner, 1, { from: user }), errTypes.revert );
+        await catchException(this.throwInInstance.safeTransferFromWithoutPermission(owner, 1, { from: user }), errTypes.revert);
 
         let balance = new BigNumber(await this.throwInInstance.balanceOf(user))
 
         expect(balance).to.be.bignumber.equal(zero);
     })
 
-    it("F-Mettre pause si on est pas l'owner", async function () {
+    it("F-Mettre en pause si on est pas l'owner", async function () {
         await catchException(this.throwInInstance.setPaused({ from: user }), errTypes.revert);
 
         let pause = await this.throwInInstance.paused()
@@ -200,7 +200,7 @@ contract('ThrowIn', function (accounts) {
         expect(balance).to.be.bignumber.equal(zero);
         expect(balance1).to.be.bignumber.equal(number);
     })
-    
+
     it("H-Utiliser une fonction qui neccesite que le contrat ne soit pas en pause quand le contrat est en pause ", async function () {
         await this.throwInInstance.setPaused({ from: owner });
         await catchException(this.throwInInstance.setYear(year, { from: owner }), errTypes.revert)
