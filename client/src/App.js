@@ -610,6 +610,24 @@ class App extends Component {
         return event
     } // getEventData
 
+    updateOrganizerEvent = async (eventId, organization) => {
+        let updatedEvent = await this.getEventData(eventId, organization)
+        let userOrganizationEvents = organization.events
+        for (let userOrgEventIdx=0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++)
+        {
+            if (organization.events[userOrgEventIdx].eventId === eventId)
+            {
+                organization.events[userOrgEventIdx] = updatedEvent
+                break
+            } // if
+        } // for
+
+        // Update state
+        let userOrganizations = this.state.userOrganizations        
+        const newUserOrganizations = [...userOrganizations]
+        // debugger
+        this.setState({ userOrganizations: newUserOrganizations })
+    }
   
     DID_init = async () => {
         await DID_init(this.state.web3, window.ethereum)
@@ -751,7 +769,6 @@ class App extends Component {
         // Mise en place du handler pour les évènements du contrat
         // https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#events-allevents
 
-
         if (medalVerseContractInstance.medalVerseContractEvents === undefined) {
             var medalVerseContractEvents = medalVerseContractInstance.events.allEvents
                 (
@@ -776,51 +793,56 @@ class App extends Component {
                 // alert("event.event=" + event.event)
                 // Event
                 if (event.event === "eventStatusChanged") {
-                    // alert("eventStatusChanged")
+                    console.log("eventStatusChanged")
                     console.log("event.returnValues= " + event.returnValues);
-                    JSON.stringify(event)
-
                     let userOrganizations = this.state.userOrganizations
-
-                    debugger
-
                     // REFRESH DATA
                     console.log("event.returnValues.eventID=" + event.returnValues.eventID)
                     if (event.returnValues !== undefined && event.returnValues.eventID!==undefined)
                     {
-                        userOrganizations.forEach(userOrganization => {
+                        for (let orgIdx=0; orgIdx < userOrganizations.length; orgIdx++)
+                        {
+                            let userOrganization = userOrganizations[orgIdx]
                             console.log("userOrganization.id=" + userOrganization.id)
-                            userOrganization.events.forEach(event => {
-                                console.log("event.eventId=" + event.eventId)
-                                
-                                if (event.returnValues.eventID===event.eventId)
+                            let userOrganizationEvents = userOrganization.events
+                            for (let userOrgEventIdx=0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++)
+                            {
+                                let userOrganizationEvent = userOrganizationEvents[userOrgEventIdx]
+                                console.log("userOrganizationEvent.eventId=" + userOrganizationEvent.eventId)
+
+                                if (event.returnValues.eventID===userOrganizationEvent.eventId)
                                 {
                                     // Update event
-                                    event = this.getEventData(event.eventId,userOrganization)
-                                }
-                            }); // For each event
-                        }); // For each organization
-                        
-                        // Update state
-                        const newUserOrganizations = [...userOrganizations]
-                        this.setState({ userOrganizations: newUserOrganizations })
+                                    this.updateOrganizerEvent(userOrganizationEvent.eventId, userOrganization)
+                                    break
+                                } // event.returnValues.eventID===userOrganizationEvent.eventId
+                            } // for userOrgEventIdx
+                        } // for userOrganizations
+                        // // Update state
+                        // const newUserOrganizations = [...userOrganizations]
+                        // this.setState({ userOrganizations: newUserOrganizations })
                     } // event.returnValues.eventID!==undefined
 
                 }
                 else if ( event.event === "MedalAdded" )
                 {
+                    console.log("MedalAdded")
                 }
                 else if ( event.event === "sportsmanMedalAdded" )
                 {
+                    console.log("sportsmanMedalAdded")
                 }
                 else if ( event.event === "sportsmanUnregisterdEvent" )
                 {
+                    console.log("sportsmanUnregisterdEvent")
                 }
                 else if ( event.event === "sportsmanRegisterdEvent" )
                 {
+                    console.log("sportsmanRegisterdEvent")
                 }
                 else if ( event.event === "sportsmanAdded" )
                 {
+                    console.log("sportsmanAdded")
                 }
                 else {
                     // this.ERC20Vault_UpdateData() ;
