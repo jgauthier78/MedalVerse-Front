@@ -1,5 +1,5 @@
 /* React - Hooks*/
-import /*React,*/ { /*useState,*/ useEffect/*, useRef*/, useCallback } from "react";
+import /*React,*/ { useState, useEffect/*, useRef*/, useCallback } from "react";
 
 /* React - Bootstrap*/
 import { Card, Container, Table } from "react-bootstrap";
@@ -18,26 +18,22 @@ import { ZERO_ADDRESS_STRING, MEDALVERSE_STATES_VALUES } from "../../../utils/co
 /* Icons */
 import { Trophy } from 'react-bootstrap-icons';
 
-/*
-const Athletes = ({ registeredAthletes }) => (
-    <div>
-        {registeredAthletes.map((registeredAthlete, idx) => (
-            <li key={idx}>{registeredAthlete}</li>
-        ))}
-    </div>
-)
-*/
-function EventLayout( { events, AppCallBacks /*userProfile*/ } )
+function EventLayout( { events, AppCallBacks } )
 {
     let params = useParams();
     const { t } = useTranslation();
+    const [event, setEvent] = useState(events[params.eventId-1]);
+
+    // setEvent(events[params.eventId-1]) // Event id starts at 1 : remove 1 to find it in the array
     // console.log("params.eventId="+params.eventId)
-    let event = events[params.eventId-1] // Event id starts at 1 : remove 1 to find it in the array
+    // let event = events[params.eventId-1] // Event id starts at 1 : remove 1 to find it in the array
 
     const init = useCallback( async() => {
-        // console.log(">init")
+        console.log(">init")
         await AppCallBacks.MedalVerse_SetEventHandler(event.eventId)
-        // console.log("init<")
+        setEvent(events[params.eventId-1])
+        // debugger
+        console.log("init<")
       }, /*[NO dependencies]*/)
 
     useEffect(
@@ -46,36 +42,7 @@ function EventLayout( { events, AppCallBacks /*userProfile*/ } )
             // console.log("useEffect:call init()");
             init()
         },
-        [init/*NO dependencies*/]);
-
-      
-
-
-/*
-    //  event handler
-    const onHandleEventMedalWinner = async (eventId, athleteAdr) => {
-        try {
-            console.log("onHandleEventMedalWinner: eventId=" + eventId + " , athleteAdr= " + athleteAdr)
-            await AppCallBacks.adminSetWinner(eventId, athleteAdr)
-        } // try
-        catch (error) {
-            console.error(error)
-        } // catch
-    } // onHandleEventMedalWinner
-*/
-    //  event handler
-    /*
-    const ThrowIn_getStatus = async (ThrowInContractAddress) => {
-        console.log("EventLayout::ThrowIn_getStatus:ThrowInContractAddress="+ThrowInContractAddress)
-        try {
-            let status = await AppCallBacks.ThrowIn_getStatus(ThrowInContractAddress)
-            console.log("status = "+status)
-        } // try
-        catch (error) {
-            console.error(error)
-        } // catch
-    } // ThrowIn_getStatus
-    */
+        [init, events/*NO dependencies*/]);
 
     const onHandle_setWinner = async (winnerAddress) => {
         try {
@@ -133,7 +100,6 @@ function EventLayout( { events, AppCallBacks /*userProfile*/ } )
                             </div>
                             <div className="ms-2 c-details">
                                 <h6>{t(`MedalVerse.event.states.${event.stateOfCompetition}`)}</h6>
-                                <h6>event.stateOfCompetition={event.stateOfCompetition}</h6>
                             </div>
                         </div>
                     </div>
@@ -168,19 +134,27 @@ function EventLayout( { events, AppCallBacks /*userProfile*/ } )
                     <Table striped bordered hover variant="secondary" size="sm">
                         <thead>
                             <tr>
+                                {event.winner !== ZERO_ADDRESS_STRING && // Display column : Event has a winner
                                 <th>{t("OrganizerEvent.athlete.won")}</th>
+                                }
                                 <th>{t("OrganizerEvent.athlete.address")}</th>
+                                {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATUS_02_REWARDDISTRIBUTION
+                                        &&
+                                     event.winner === ZERO_ADDRESS_STRING && // Display column : Reward distribution state AND event has no winner
                                 <th>{t("OrganizerEvent.athlete.action")}</th>
+                                }
                             </tr>
                         </thead>
                         <tbody>
                             {event.registeredSportsMan.map((athleteAdr, idx) => (
                                 <tr key={idx}>
+                                    {event.winner !== ZERO_ADDRESS_STRING && // Display column : Event has a winner
                                     <td>{(event.winner === athleteAdr ? <Trophy style={{ verticalAlign: '-10%' }} /> : "")} </td>
+                                    }
                                     <td>{athleteAdr} </td>
                                     {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATUS_02_REWARDDISTRIBUTION
                                         &&
-                                     event.winner === ZERO_ADDRESS_STRING && // event.winner !== athleteAdr && // Display button : Reward distribution state AND event has no winner
+                                     event.winner === ZERO_ADDRESS_STRING && // Display button : Reward distribution state AND event has no winner
                                         <td>
                                             <Button className="ml-1" variant="warning" onClick={() =>  onHandle_setWinner(athleteAdr)}><Trophy style={{ verticalAlign: '-10%' }} /> {t("OrganizerEvent.athlete.actions.setWinner")}</Button>
                                         </td>
