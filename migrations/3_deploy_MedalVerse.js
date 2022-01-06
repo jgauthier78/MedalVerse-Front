@@ -195,16 +195,30 @@ module.exports = async function (deployer, network, accounts) {
   // L'organisateur 01 organise ces évènements:
   // newEvent( organizationId, startDate, endDate, sportsCategory, eventDesc )
   await MVerse.newEvent(0, Time01_start, Time01_end, 2, "Saison 14, Paris", { from: ACCOUNT_ORGANIZER_01 });
-  await MVerse.adminSetEventPosition(1, "48.9239455", "2.3536833", { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminSetEventPosition(EVENT_ONE, "48.9239455", "2.3536833", { from: ACCOUNT_ORGANIZER_01 })
 
   await MVerse.newEvent(1, Time02_start, Time02_end, 4, "Mx Moto-Station", { from: ACCOUNT_ORGANIZER_01 });
-  await MVerse.adminSetEventPosition(2, "48.9335885", "2.3873314", { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminSetEventPosition(EVENT_TWO, "48.9335885", "2.3873314", { from: ACCOUNT_ORGANIZER_01 })
 
   await MVerse.newEvent(2, Time03_start, Time03_end, 4, "Trophé des Champions, Saint-Denis", { from: ACCOUNT_ORGANIZER_01 });
-  await MVerse.adminSetEventPosition(3, "48.9192245", "2.36705", { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminSetEventPosition(EVENT_THREE, "48.9192245", "2.36705", { from: ACCOUNT_ORGANIZER_01 })
 
   await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes", { from: ACCOUNT_ORGANIZER_01 });
-  await MVerse.adminSetEventPosition(4, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminSetEventPosition(EVENT_FOUR, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+// evenements de test
+                  console.log(".")
+                  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 2", { from: ACCOUNT_ORGANIZER_01 });
+                  await MVerse.adminSetEventPosition(5, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+                  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 3", { from: ACCOUNT_ORGANIZER_01 });
+                  await MVerse.adminSetEventPosition(6, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+                  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 4", { from: ACCOUNT_ORGANIZER_01 });
+                  await MVerse.adminSetEventPosition(7, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+                  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 5", { from: ACCOUNT_ORGANIZER_01 });
+                  await MVerse.adminSetEventPosition(8, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
   console.log(".")
 
@@ -214,6 +228,13 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_TWO);
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_FOUR);
   console.log(".")
+
+// evenements de test
+                                  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 5);
+                                  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 6);
+                                  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 7);
+                                  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 8);
+                                  console.log(".")
 
 
   // population de récompenses
@@ -244,11 +265,13 @@ module.exports = async function (deployer, network, accounts) {
   await rcup3.addWinner("François Coste", ACCOUNT_ATHLETE_01, { from: ACCOUNT_CONTRACT_OWNER })
   await MVerse.adminAddMedal(EVENT_FOUR, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
 
-  // let rcup3 = await mintNFT("Tennis Cup", "Tennis Nft", "TNFT", "Gauthier Germain", "/img/medals/medal2.jpg", ACCOUNT_ORGANIZER_01)
-  // mintCupNFT(nftOrganization, nftName, nftSymbol, name, img, year, account) {
-  // let participants_04 = []
-  // participants_04.push({ "account": ACCOUNT_ATHLETE_01, "name": ATHLETE_01_NAME })
-  // let x = await mintCupNFT("Tennis Cup", "Tennis Nft", "TNFT", "/img/medals/medal3.jpg", 2022, participants_04)
+
+// evenements de test
+          await MVerse.adminAddMedal(5, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+          await MVerse.adminAddMedal(6, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+          await MVerse.adminAddMedal(7, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+          await MVerse.adminAddMedal(8, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+
 
 
   console.log("done.")
