@@ -30,7 +30,7 @@ function EventLayout( { activEvents, AppCallBacks } )
         {
             if (events[idxEvnt].eventId===eventId)
             {
-                // debugger
+                console.log( Object.entries( events[idxEvnt]) )
                 return events[idxEvnt]
             }
         }

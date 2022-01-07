@@ -4,7 +4,6 @@ import { Component } from "react";
 // Components
 import { Button, Card, Container } from "react-bootstrap";
 
-
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
 
@@ -26,9 +25,9 @@ const EventsLayout = ( {currentEvents, incomingEvents, endedEvents} ) =>
     const { t } = useTranslation();
     return (
         <Container>
-            <OrganizerEvents eventsToDisplay={currentEvents} >{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEvents>
-            <OrganizerEvents eventsToDisplay={incomingEvents}>{t("OrganizerEvents.titleIncomingEvents")}</OrganizerEvents>
-            <OrganizerEvents eventsToDisplay={endedEvents}   >{t("OrganizerEvents.titlePreviousEvents")}</OrganizerEvents>
+            <OrganizerEvents eventsToDisplay={currentEvents}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEvents>
+            <OrganizerEvents eventsToDisplay={incomingEvents} prefix="next" bg="warning">{t("OrganizerEvents.titleIncomingEvents")}</OrganizerEvents>
+            <OrganizerEvents eventsToDisplay={endedEvents}    prefix="prev" bg="secondary">{t("OrganizerEvents.titlePreviousEvents")}</OrganizerEvents>
         </Container>
     )
 }
@@ -54,7 +53,7 @@ const CarrousselItem = ({ organizerEvents }) =>
     const { t } = useTranslation();
 
     return (
-    <div>
+    <Container>
     {organizerEvents.map((event, indx) => (
         <div key={indx} className={`carousel-item ${indx === 0 ? "active" : ""}`}>
             <img src={event.organization.logoURI} alt={event.organization.name} className="w-100 d-block" />
@@ -66,7 +65,7 @@ const CarrousselItem = ({ organizerEvents }) =>
             </div>
         </div>
     ))}
-    </div>
+    </Container>
     )
 }
 
@@ -83,8 +82,8 @@ const NoEventToDisplay = (props) =>
     const { t } = useTranslation();
     return (
         <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
-        <Card className="cardProfile shadow-sm ">
-            <CardHeader>
+        <Card className="cardProfile shadow-sm">
+            <CardHeader className={`bg-${props.bg}`}>
                 <h6>{props.children}</h6>
             </CardHeader>
             <Container>
@@ -100,6 +99,7 @@ class OrganizerEventsBeforeTranslation extends Component
 {
     render()
     {
+        console.log("this.props.prefix"+this.props.prefix);
         // const { t } = this.props; // Translation
         const { eventsToDisplay } = this.props
         // console.log(eventsToDisplay)
@@ -107,17 +107,18 @@ class OrganizerEventsBeforeTranslation extends Component
         if ( eventsToDisplay === undefined || eventsToDisplay.length <= 0 )
         {
             return (
-                <NoEventToDisplay>{this.props.children}</NoEventToDisplay>
+                <NoEventToDisplay bg={this.props.bg}>{this.props.children}</NoEventToDisplay>
             )
         }
 
         return (
             <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
                 <Card className="cardProfile shadow-sm ">
-                    <CardHeader>
+                    <CardHeader className={`bg-${this.props.bg}`}>
                         <h6>{this.props.children}</h6>
                     </CardHeader>
-                    <div id="carEvents" className="carousel slide ml-3 mr-3 mt-3 mb-3" data-bs-ride="carousel">
+
+                    <div id={`${this.props.prefix}carEvents`} className="carousel slide ml-3 mr-3 mt-3 mb-3" data-bs-ride="carousel">
 
                         <div className="carousel-indicators">
                             <CarrousselButtonItem organizerEvents={eventsToDisplay} />
@@ -125,10 +126,10 @@ class OrganizerEventsBeforeTranslation extends Component
                         <div className="carousel-inner" >
                             <CarrousselItem organizerEvents={eventsToDisplay} />
                         </div>
-                        <button className="carousel-control-prev" type="button" data-bs-target="#carEvents" data-bs-slide="prev">
+                        <button className="carousel-control-prev" type="button" data-bs-target={`#${this.props.prefix}carEvents`} data-bs-slide="prev">
                             <span className="carousel-control-prev-icon"></span>
                         </button>
-                        <button className="carousel-control-next" type="button" data-bs-target="#carEvents" data-bs-slide="next">
+                        <button className="carousel-control-next" type="button" data-bs-target={`#${this.props.prefix}carEvents`} data-bs-slide="next">
                             <span className="carousel-control-next-icon"></span>
                         </button>
 
