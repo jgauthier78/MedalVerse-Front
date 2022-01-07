@@ -1,7 +1,7 @@
 /* React - Hooks*/
 import /*React,*/ { useState, useEffect/*, useRef*/, useCallback } from "react";
 
-/* React - Bootstrap*/
+/* React - Bootstrap */
 import { Card, Container, Table } from "react-bootstrap";
 
 import Button from 'react-bootstrap/Button';
@@ -18,7 +18,7 @@ import { ZERO_ADDRESS_STRING, MEDALVERSE_STATES_VALUES } from "../../../utils/co
 /* Icons */
 import { Trophy } from 'react-bootstrap-icons';
 
-function EventLayout( { events, AppCallBacks } )
+function EventLayout( { activEvents, AppCallBacks } )
 {
     const { t } = useTranslation();
 
@@ -30,19 +30,20 @@ function EventLayout( { events, AppCallBacks } )
         {
             if (events[idxEvnt].eventId===eventId)
             {
+                // debugger
                 return events[idxEvnt]
             }
         }
     }
 
-    const [event, setEvent] = useState(getEvent(events, eventId));
+    const [event, setEvent] = useState(getEvent(activEvents, eventId));
 
     const init = useCallback( async() => {
-        console.log(">EventLayout::init")
+        // console.log(">EventLayout::init")
         await AppCallBacks.MedalVerse_SetEventHandler(eventId)
-        setEvent( getEvent(events, eventId) )
-        console.log("EventLayout::init<")
-      }, [eventId,AppCallBacks,events]/*[dependencies]*/)
+        setEvent( getEvent(activEvents, eventId) )
+        // console.log("EventLayout::init<")
+      }, [eventId,AppCallBacks,activEvents]/*[dependencies]*/)
 
     useEffect(
         () =>
@@ -50,11 +51,11 @@ function EventLayout( { events, AppCallBacks } )
             // console.log("useEffect:call init()");
             init()
         },
-        [init, events/*dependencies*/]);
+        [init, activEvents/*dependencies*/]);
 
     const onHandle_setWinner = async (winnerAddress) => {
         try {
-            console.log("EventLayout::onHandle_changeStateToCompetitionInProgress")
+            // console.log("EventLayout::onHandle_changeStateToCompetitionInProgress")
             await AppCallBacks.Event_setWinner(event.eventId, winnerAddress)
         } // try
         catch (error) {
@@ -64,7 +65,7 @@ function EventLayout( { events, AppCallBacks } )
 
     const onHandle_changeStateToCompetitionInProgress = async () => {
         try {
-            console.log("EventLayout::onHandle_changeStateToCompetitionInProgress")
+            // console.log("EventLayout::onHandle_changeStateToCompetitionInProgress")
             await AppCallBacks.Event_changeStateToCompetitionInProgress(event.eventId)
         } // try
         catch (error) {
@@ -75,7 +76,7 @@ function EventLayout( { events, AppCallBacks } )
     // event handler
     const onHandle_changeStateToRewardDistribution = async () => {
         try {
-            console.log("EventLayout::onHandle_changeStateToRewardDistribution")
+            // console.log("EventLayout::onHandle_changeStateToRewardDistribution")
             await AppCallBacks.Event_changeStateToRewardDistribution(event.eventId)
         } // try
         catch (error) {
@@ -86,7 +87,7 @@ function EventLayout( { events, AppCallBacks } )
     // event handler
     const onHandle_changeStateToRewardDistributed = async () => {
         try {
-            console.log("EventLayout::onHandle_changeStateToRewardDistributed")
+            // console.log("EventLayout::onHandle_changeStateToRewardDistributed")
             await AppCallBacks.Event_changeStateToRewardDistributed(event.eventId)
         } // try
         catch (error) {

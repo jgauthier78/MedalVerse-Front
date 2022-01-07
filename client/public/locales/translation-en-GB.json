@@ -27,8 +27,10 @@
     }
   },
   "OrganizerEvents": {
-    "noEvent" : "No events",
-    "title" : "Organized events",
+    "noEvent" : "No event",
+    "titleCurrentEvents" : "Current events",
+    "titleIncomingEvents" : "Incoming events",
+    "titlePreviousEvents" : "Previous events",
     "details" : "Details",
     "from" : "From",
     "to" : "to"

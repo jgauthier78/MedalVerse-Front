@@ -27,8 +27,10 @@
     }
   },
   "OrganizerEvents": {
-    "noEvent" : "Pas d'évènements",
-    "title" : "Evènements organisés",
+    "noEvent" : "Pas d'évènement",
+    "titleCurrentEvents" : "Événements en cours",
+    "titleIncomingEvents" : "Événements à venir",
+    "titlePreviousEvents" : "Événements précédents",
     "details" : "Détails",
     "from" : "Du",
     "to" : "au"

@@ -17,21 +17,76 @@ const extractOrganizerEventsFromUserOrganizations = (userOrganizations) => {
     return events.flat()
  }
 
-// Filter criteria
-const eventFilterCriteria = (event) => { 
+// Filters criterias
+const eventFilterCriteria_Activ = (event) => { 
     return (
         event.activ // === true
         // && event.eventId > 1 // test
     )
 }
 
-// Filter events
-const filterEvents = (events) => {
+const eventFilterCriteria_CurrentEvents = (event) => { 
+    return (
+        event.started // started
+        &&
+        ! event.ended // NOT ended
+    )
+}
+
+const eventFilterCriteria_EndedEvents = (event) => { 
+    return (
+        event.started // started
+        &&
+        event.ended // ended
+    )
+}
+
+const eventFilterCriteria_IncomingEvents = (event) => { 
+    return (
+        ! event.started // NOT started
+        &&
+        ! event.ended // NOT ended
+        // && event.eventId > 1 // test
+    )
+}
+
+// Events filters
+
+// Basic filter, eliminates inactiv events
+const filterActivEvents = (events) => {
     return events.filter ( (event /*, index, array*/) => {
         //eventFilter(event)
         // console.log(event)
-        return eventFilterCriteria(event)
+        return eventFilterCriteria_Activ(event)
     })
 }
 
-export { extractOrganizerEventsFromProfile, extractOrganizerEventsFromUserOrganizations, filterEvents };
+// Filters current events
+const filterCurrentEvents = (events) => {
+    return events.filter ( (event /*, index, array*/) => {
+        //eventFilter(event)
+        // console.log(event)
+        return eventFilterCriteria_CurrentEvents(event)
+    })
+}
+
+// Filters ended events
+const filterEndedEvents = (events) => {
+    return events.filter ( (event /*, index, array*/) => {
+        //eventFilter(event)
+        // console.log(event)
+        return eventFilterCriteria_EndedEvents(event)
+    })
+}
+
+// Filters incoming events
+const filterIncomingEvents = (events) => {
+    return events.filter ( (event /*, index, array*/) => {
+        //eventFilter(event)
+        // console.log(event)
+        return eventFilterCriteria_IncomingEvents(event)
+    })
+}
+
+
+export { extractOrganizerEventsFromProfile, extractOrganizerEventsFromUserOrganizations, filterActivEvents, filterCurrentEvents, filterEndedEvents, filterIncomingEvents };
