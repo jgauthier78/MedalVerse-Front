@@ -620,12 +620,9 @@ class App extends Component {
                 break
             } // if
         } // for
-
-        debugger
         // Update state
         let userOrganizations = this.state.userOrganizations        
         const newUserOrganizations = [...userOrganizations]
-        debugger
         this.setState({ userOrganizations: newUserOrganizations })
     }
 
