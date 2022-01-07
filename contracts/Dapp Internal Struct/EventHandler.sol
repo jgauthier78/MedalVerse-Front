@@ -161,6 +161,7 @@ contract EventHandler is Ownable {
 		// start the competition
 		eventList[eventId - 1].eventState = stateOfCompetition
 			.CompetitionInProgress;
+		eventList[eventId - 1].started = true;
 		emit eventStatusChanged(
 			eventId + 1,
 			stateOfCompetition.CompetitionInProgress
@@ -177,6 +178,7 @@ contract EventHandler is Ownable {
 	{
 		eventList[eventId - 1].eventState = stateOfCompetition
 			.RewardDistribution;
+		eventList[eventId - 1].ended = true;
 		emit eventStatusChanged(eventId, stateOfCompetition.RewardDistribution);
 	}
 
