@@ -18,7 +18,7 @@ import { ZERO_ADDRESS_STRING, MEDALVERSE_STATES_VALUES } from "../../../utils/co
 /* Icons */
 import { Trophy } from 'react-bootstrap-icons';
 
-function EventLayout( { activEvents, AppCallBacks } )
+const EventLayout = ( { activEvents, AppCallBacks } ) =>
 {
     const { t } = useTranslation();
 
@@ -30,7 +30,7 @@ function EventLayout( { activEvents, AppCallBacks } )
         {
             if (events[idxEvnt].eventId===eventId)
             {
-                console.log( Object.entries( events[idxEvnt]) )
+                // console.log( Object.entries( events[idxEvnt]) )
                 return events[idxEvnt]
             }
         }
@@ -98,7 +98,7 @@ function EventLayout( { activEvents, AppCallBacks } )
     return (
         (!event
         &&
-        <div></div>
+        <Container>...</Container>
         )
         ||
         (event

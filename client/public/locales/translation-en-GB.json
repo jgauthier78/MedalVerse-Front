@@ -2,7 +2,8 @@
   "OrganizerSideBar" :{
     "menu" : {
       "organizerHome" : "Home",
-      "events" : "Events"
+      "eventsByState" : "Events by state",
+      "eventsByDate" : "Events by date"
     }
   },
   "OrganizerEvent": {
@@ -29,8 +30,9 @@
   "OrganizerEvents": {
     "noEvent" : "No event",
     "titleCurrentEvents" : "Current events",
-    "titleIncomingEvents" : "Incoming events",
+    "titleUpcomingEvents" : "Upcoming events",
     "titlePreviousEvents" : "Previous events",
+    "titleEventsByDate" : "Events by date",
     "details" : "Details",
     "from" : "From",
     "to" : "to"

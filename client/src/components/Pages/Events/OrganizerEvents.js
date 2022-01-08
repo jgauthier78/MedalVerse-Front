@@ -3,9 +3,9 @@ import { Component } from "react";
 /* React - Bootstrap */
 // Components
 import { Button, Card, Container } from "react-bootstrap";
+import { Col, Row } from 'react-bootstrap';
 
 import CardHeader from "react-bootstrap/esm/CardHeader";
-
 
 // Router
 import { useNavigate } from 'react-router-dom';
@@ -20,14 +20,24 @@ import { useTranslation } from 'react-i18next';
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
 // import { extractOrgan
 
-const EventsLayout = ( {currentEvents, incomingEvents, endedEvents} ) =>
+const EventsByStateLayout = ( {currentEvents, incomingEvents, endedEvents} ) =>
 {
     const { t } = useTranslation();
     return (
         <Container>
-            <OrganizerEvents eventsToDisplay={currentEvents}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEvents>
-            <OrganizerEvents eventsToDisplay={incomingEvents} prefix="next" bg="warning">{t("OrganizerEvents.titleIncomingEvents")}</OrganizerEvents>
-            <OrganizerEvents eventsToDisplay={endedEvents}    prefix="prev" bg="secondary">{t("OrganizerEvents.titlePreviousEvents")}</OrganizerEvents>
+            <OrganizerEventsCarousel eventsToDisplay={currentEvents}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEventsCarousel>
+            <OrganizerEventsCarousel eventsToDisplay={incomingEvents} prefix="next" bg="warning">{t("OrganizerEvents.titleUpcomingEvents")}</OrganizerEventsCarousel>
+            <OrganizerEventsCarousel eventsToDisplay={endedEvents}    prefix="prev" bg="secondary">{t("OrganizerEvents.titlePreviousEvents")}</OrganizerEventsCarousel>
+        </Container>
+    )
+}
+
+const EventsByDateLayout = ( {activEvents} ) =>
+{
+    const { t } = useTranslation();
+    return (
+        <Container>
+            <OrganizerEventsByDate activEvents={activEvents} >{t("OrganizerEvents.titleEventsByDate")}</OrganizerEventsByDate>
         </Container>
     )
 }
@@ -80,8 +90,9 @@ const CarrousselButtonItem = ({ organizerEvents }) => (
 const NoEventToDisplay = (props) =>
 {
     const { t } = useTranslation();
+
     return (
-        <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
+    <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
         <Card className="cardProfile shadow-sm">
             <CardHeader className={`bg-${props.bg}`}>
                 <h6>{props.children}</h6>
@@ -95,11 +106,11 @@ const NoEventToDisplay = (props) =>
     )
 }
 
-class OrganizerEventsBeforeTranslation extends Component
+class OrganizerEventsCarouselBeforeTranslation extends Component
 {
     render()
     {
-        console.log("this.props.prefix"+this.props.prefix);
+        // console.log("this.props.prefix"+this.props.prefix);
         // const { t } = this.props; // Translation
         const { eventsToDisplay } = this.props
         // console.log(eventsToDisplay)
@@ -140,6 +151,67 @@ class OrganizerEventsBeforeTranslation extends Component
     } // render
 } // class OrganizerEventsBeforeTranslation
 
-const OrganizerEvents = withTranslation()(OrganizerEventsBeforeTranslation);
+const OrganizerEventsByDate = ({ activEvents, children }) =>
+{
 
-export { EventsLayout, OrganizerEvents };
+    if ( activEvents === undefined || activEvents.length <= 0 )
+    return (
+        <NoEventToDisplay>{children}</NoEventToDisplay>
+        )
+
+    return (
+    
+        <EventsByDate activEvents={activEvents} />
+        )
+}
+
+const Event = ({ event }) =>
+{
+    const { t } = useTranslation();
+    let navigate = useNavigate();
+
+    const onHandleDisplayEventDetails = async ( event ) =>
+    {
+        try
+        {
+            // console.log("CarrousselItem::onHandleDisplayEventDetails:event.eventId="+event.eventId)
+            navigate( `../event/${event.eventId}` );
+        } // try
+        catch (error)
+        {
+            console.error(error)
+        } // catch
+    } // onHandleDisplayEventDetails
+    return (
+    <Card className="cardProfile shadow-sm ">
+        <CardHeader>
+            <h6>{t("OrganizerEvents.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvents.to")} {format_TimeStampToEndDate(event.endDate)}</h6>
+        </CardHeader>
+        <h6>{event.eventDescription}</h6>
+        <h6>{event.organization.name}</h6>
+        <Button className="btn btn-light btn-sm m-2 opacity-100" onClick={() => onHandleDisplayEventDetails( event ) } >{t("OrganizerEvents.details")}</Button>
+    </Card>
+    )
+}
+
+const EventsByDate = ({ activEvents }) =>
+{
+
+    // Display event details
+
+    return (
+    <Container>
+        <Row xs={1} md={2} xl={2} className="g-8">
+        {activEvents.map((event, indx) => (
+             <Col key={indx} >
+                <Event event={event}/>
+            </Col>
+        ))}
+    </Row>
+    </Container>
+    )
+}
+
+const OrganizerEventsCarousel = withTranslation()(OrganizerEventsCarouselBeforeTranslation);
+
+export { EventsByStateLayout, EventsByDateLayout/*, OrganizerEventsCarousel*/ };
