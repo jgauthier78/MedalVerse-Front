@@ -63,7 +63,7 @@ class App extends Component {
             updateUserDetails: this.updateUserDetails,
             resetNavigateTo: this.resetNavigateTo,
             accountsUpdated: this.accountsUpdated,
-            getUserEvents: this.getUserEvents,
+            getAthleteEvents: this.getAthleteEvents,
             getUserMedals: this.getUserMedals,
             getOrganizerOrganisations: this.getOrganizerOrganisations,
             getUserDetails: this.getUserDetails,
@@ -264,7 +264,7 @@ class App extends Component {
         }
         else if (role & ROLES.ROLE_ATHLETE) // Athlete
         {
-            let evnts = await this.getUserEvents(this.getAccounts())
+            let evnts = await this.getAthleteEvents(this.getAccounts())
             let usermedals = await this.getUserMedals(this.getAccounts())
             this.setState({
                 userEvents: evnts,
@@ -303,6 +303,7 @@ class App extends Component {
 
     /* Retourne la structure complete des évènements auxquels un user appartient */
     // devrait être appelée get(Athlete|Sportsman)Events ?
+/*
     getUserEvents = async (account) => {
         let result = { nbEvents: 0, Event: null }
         // We get the nb of events the sporsman registered to
@@ -332,13 +333,87 @@ class App extends Component {
 
         return result;
     }
+*/
+    getAthleteEvents = async (account) => {
+        let result = { nbEvents: 0, Event: null }
+        // We get the nb of events the sporsman registered to
+        let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
+        if (nbEvents > 0)
+        {
+            result.nbEvents = nbEvents
+            // We get the list of events the sporsman registered to
+            let eventIndxList = await this.state.contract.methods.getSportsmanEventsSubscriptions(account).call()
+            if (eventIndxList.length > 0)
+            {
+                result.eventList = []
+                result.organisationDesc = []
+                // We now populate the structure
+                await Promise.all(eventIndxList.map(async (eventId, idx) =>
+                {
+                    console.log(eventIndxList[idx])
+                    // let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
+                    // result.eventList.push(val)
+                    result.eventList[idx] = await this.state.contract.methods.getEvent(eventIndxList[idx]).call()
+                    // let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.
+                    //     organizedBy).call()
+                    // result.organisationDesc.push(organisationDesc)
+                    result.organisationDesc[idx] = await this.state.contract.methods.getOrganizationsList(result.eventList[idx].organizedBy, result.eventList[idx].organizedBy).call()
+                })) // await Promise.all
+            }
+        }
+        return result;
+    }
+
+    // getUserMedals = async (account) => {
+    //     let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [], nftDesc: [] }
+    //     result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
+    //     for (let i = 0; i < result.nbMedals; i++) {
+
+    //         let medalID = await this.state.contract.methods.getSportsmanMedal(account, i).call()
+    //         let medal = { success: null, org: null, event: null }
+    //         medal.succes = await this.state.contract.methods.getMedal(medalID).call()
+    //         medal.org = await this.state.contract.methods.getOrganizationName(medal.succes.organizationID).call()
+    //         medal.event = await this.state.contract.methods.getEvent(medal.succes.eventID).call()
+    //         let medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
+
+    //         // We get the list of winners for the medal
+    //         let allWinners = await medalContract.methods.getAllWinners().call()
+    //         console.log("--------------")
+    //         console.log(allWinners)
+    //         console.log("--------------")
+    //         let { 0: winnersString, 1: yearsOfVictory } = allWinners
+    //         let nfdesc = {
+    //             name: await medalContract.methods.name().call(),
+    //             symbol: await medalContract.methods.symbol().call(),
+    //             orgName: await medalContract.methods.getOrganizationName().call(),
+    //             winnersString,
+    //             yearsOfVictory,
+
+    //         }
+    //         result.nftDesc.push(nfdesc)
+    //         // We get the uri of the medal
+    //         let img = await medalContract.methods.uriToken(1).call()
+    //         result.uriList.push(img)
+    //         result.Medals.push(medal)
+
+    //         if (medal.succes.isInWinnerGallery) {
+    //             result.nbMedalsInGallery++
+    //             result.Gallery.push(medal)
+    //         }
+    //     }
+
+    //     return result
+    // }
 
     getUserMedals = async (account) => {
         let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [], nftDesc: [] }
         result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
-        for (let i = 0; i < result.nbMedals; i++) {
+        // for (let i = 0; i < result.nbMedals; i++) {
 
-            let medalID = await this.state.contract.methods.getSportsmanMedal(account, i).call()
+        let numbersArray = Array.from( Array( parseInt(result.nbMedals, 10) ).keys())
+        await Promise.all(numbersArray.map(async (_, idx) =>
+        {
+            let medalID = await this.state.contract.methods.getSportsmanMedal(account, idx).call()
             let medal = { success: null, org: null, event: null }
             medal.succes = await this.state.contract.methods.getMedal(medalID).call()
             medal.org = await this.state.contract.methods.getOrganizationName(medal.succes.organizationID).call()
@@ -369,7 +444,8 @@ class App extends Component {
                 result.nbMedalsInGallery++
                 result.Gallery.push(medal)
             }
-        }
+        })) // await Promise.all
+
 
         return result
     }

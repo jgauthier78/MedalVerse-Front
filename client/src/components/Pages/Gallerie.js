@@ -111,7 +111,7 @@ export default function Gallerie({ AppCallBacks }) {
                         setRole(details.detail.role)
                         setInitialized(true);
                         if (details.detail.role & 8) {
-                            let evnts = await AppCallBacks.getUserEvents(id)
+                            let evnts = await AppCallBacks.getAthleteEvents(id)
                             setEvents(evnts)
                             console.log(evnts)
                             let medl = await AppCallBacks.getUserMedals(id)
