@@ -36,7 +36,7 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks }) 
 
   return (
 
-    <Navbar className={`colored-Nav ${options}`} expand="lg"  >
+    <Navbar className={`colored-Nav fixed-top ${options}`} expand="lg"  >
       <Container>
 
         <Navbar.Brand href="/" className={textStyleCentered}><Trophy style={{ verticalAlign: '-10%' }} /> {t("menu.title")}</Navbar.Brand>
@@ -77,7 +77,7 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks }) 
             }
             <NavItem className="d-none d-lg-block ml-lg-4">
               {AppCallBacks.isConnected() ?
-                <Button className={textStyleRight} onClick={AppCallBacks.disconnect}>{t("menu.LogoutButton")} <BoxArrowRight style={{ verticalAlign: '-10%' }}/></Button>
+                <Button className={textStyleRight} onClick={AppCallBacks.disconnect}>{t("menu.LogoutButton")} <BoxArrowRight style={{ verticalAlign: '-10%' }} /></Button>
                 :
                 <Button className={textStyleRight} onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {t("menu.LoginButton")}</Button>
               }
