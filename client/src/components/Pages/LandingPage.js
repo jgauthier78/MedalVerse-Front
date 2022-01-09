@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from "react";
-// import Button from "react-bootstrap/esm/Button";
-// import Dialog from 'react-bootstrap-dialog'
+
 import { SimpleModal } from "../Modals"
 import { withTranslation } from 'react-i18next';
 
@@ -12,15 +11,19 @@ import SimpleFooter from "../UIElements/SimpleFooter"
 import BandeauTitre from './Landing/BandeauTitre'
 
 // import { Container, Row, Col } from "react-bootstrap";
-import SecondBandeau from "./Landing/SecondBandeau";
-import TroisiemeBandeau from "./Landing/TroisiemeBandeau";
+import CreationFactory from "./Landing/4-CreationFactory";
+import FanPlace from "./Landing/5-FanPlace";
 import QuatriemeBandeau from "./Landing/QuatriemeBandeau";
 
 /* Icons */
 import { Wallet2 } from 'react-bootstrap-icons';
 
 import Spinner from 'react-bootstrap/Spinner'
-
+import BandeauPres from "./Landing/2-BandeauPres";
+import TrophyFactory from "./Landing/3-TrophyFactory";
+import BandeauGalerie from "./Landing/6-BandeauGalerie";
+import BandeauProduits from "./Landing/7-BandeauProduits";
+import ProjectTimeline from "./Landing/8-ProjectTimeline";
 // import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from '../../utils/did'
 
 class LandingPageWithTranslation extends Component {
@@ -114,13 +117,18 @@ class LandingPageWithTranslation extends Component {
                 <NavBar loginCallBack={this.loginCallBack} AppCallBacks={this.props.AppCallBacks} />
                 <main ref="main">
                     <BandeauTitre />
-                    <SecondBandeau />
-                    <TroisiemeBandeau />
+                    <BandeauPres />
+                    <TrophyFactory />
+                    <CreationFactory />
+                    <FanPlace />
+                    <BandeauGalerie />
+                    <BandeauProduits />
+                    <ProjectTimeline />
                     <QuatriemeBandeau />
 
                 </main>
-                <SimpleFooter />
-                <SimpleModal title={<div><Wallet2 style={{ verticalAlign: '-10%' } } /> {t("LandingPage.walletConnect.title")} </div>} messageBody={<div> <Spinner animation="border" size="sm" /> {t("LandingPage.walletConnect.body")}   </div>} show={this.state.show} animation={false} />
+
+                <SimpleModal title={<div><Wallet2 style={{ verticalAlign: '-10%' }} /> {t("LandingPage.walletConnect.title")} </div>} messageBody={<div> <Spinner animation="border" size="sm" /> {t("LandingPage.walletConnect.body")}   </div>} show={this.state.show} animation={false} />
                 <ToastContainer />
             </Fragment >
 

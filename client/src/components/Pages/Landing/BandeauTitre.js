@@ -1,38 +1,35 @@
+
 import 'react-toastify/dist/ReactToastify.css';
 
 
 import { Container, Row, Col } from "react-bootstrap";
+import BkgVideo from '../../UIElements/BkgVideo';
+import { Trophy } from 'react-bootstrap-icons';
+import NavigateButton from '../../UIElements/NavigateButton';
+
 
 const BandeauTitre = () => {
     return (
-        <div className="position-relative">
-            <section className="section section-lg section-shaped pb-250">
-                <div className="shape shape-style-1 shape-default">
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
+        <div id="Titre" className="Container-Full">
+
+
+            <BkgVideo videoSource='img/bkg1.mkv' options="Background-Video" />
+
+            <Container className="  d-flex">
+                <div className="col px-0">
+                    <Row>
+                        <Col lg="6">
+                            <div>
+                                <Trophy size="40" color='white' />
+                                <img src="img/MedalVerse.svg" className="Titre-MedalVerse" alt="MedalVerse" />
+                            </div>
+                            <div>
+                                <span className="display-6 text-white text-light">{"Entrez dans l’univers des Récompenses NFT"} </span>
+
+                            </div>
+                        </Col>
+                    </Row>
                 </div>
-                <Container className="py-lg-md d-flex">
-                    <div className="col px-0">
-                        <Row>
-                            <Col lg="6">
-                                <h1 className="display-3 text-white">
-                                    MedalVerse{" "}
-                                    <span className="display-6 text-white text-light">{"Vos médailles en Réseau"} </span>
-                                    <p className="lead text-white">
-                                        {"Le premier réseau social sportif, suivez vos sportifs favoris, suivez les événements, tenez-vous au courant de l'actualité."}
-                                    </p>
-                                </h1>
-                            </Col>
-                        </Row>
-                    </div>
-                </Container>
                 <div className="separator separator-bottom separator-skew">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -48,11 +45,14 @@ const BandeauTitre = () => {
                         />
                     </svg>
                 </div>
-
-            </section>
+            </Container>
+            <NavigateButton linkTo="pres" up="false" />
         </div>
+
 
     )
 }
+
+
 
 export default BandeauTitre

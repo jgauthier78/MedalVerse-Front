@@ -1,6 +1,8 @@
 .colored-Nav{
   background-color: rgba(53, 112, 238, 0.829);
-  
+  top:0;
+  position: fixed;
+  z-index:100;
 }
 #navbar-menu-nav-dropdown
 {

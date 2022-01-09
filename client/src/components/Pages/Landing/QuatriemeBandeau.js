@@ -1,56 +1,30 @@
-import { Card, CardImg } from "react-bootstrap";
+
 import { Container, Row, Col } from "react-bootstrap";
 
+import { Facebook, Google, Instagram, Linkedin, Pinterest, Twitter } from 'react-bootstrap-icons';
 
 let QuatriemeBandeau = () => {
     return (
-        <section className="section bg-light-gray">
+        <section id="communeaute" className="section Blue-Bkg">
             <Container>
                 <Row className="row-grid align-items-center mt-6">
-                    <Col md="4">
-                        <Card className="bg-default shadow border-0">
-                            <CardImg
+                    <div md="4">
+                        <h1 className="display-1 text-white d-flex justify-content-center">Communeauté</h1>
+                        <h4 className="text-gray d-flex justify-content-center">{"Organisateurs, Sportifs, Fans: Rejoignez-nous !"}</h4>
+                    </div>
+                    <div className="d-flex justify-content-center mt-8">
 
-                                alt="..."
-                                src="img/worktogether.jpg"
+                        <Facebook size="40" color='white' className="social-spacing" />
+                        <Twitter size="40" color='white' className="social-spacing" />
+                        <Google size="40" color='white' className="social-spacing" />
+                        <Instagram size="40" color='white' className="social-spacing" />
+                        <Linkedin size="40" color='white' className="social-spacing" />
+                        <Pinterest size="40" color='white' />
 
-                            />
-                            <blockquote className="card-blockquote">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="svg-bg"
-                                    preserveAspectRatio="none"
-                                    viewBox="0 0 583 95"
-                                >
-                                    <polygon
-                                        className="fill-default"
-                                        points="0,52 583,95 0,95"
-                                    />
-
-                                </svg>
-                                <h4 className=" font-weight-bold text-white">
-                                    {"Un succès d'équipe"}
-                                </h4>
-                                <p className="lead text-italic text-white">
-                                    {"Travaillons ensemble dans un esprit sportif pour mettre en valeur vos projets."}
-                                </p>
-                            </blockquote>
-                        </Card>
-                    </Col>
-                    <Col md="6">
-                        <div className="pl-md-5">
-
-                            <h4>{"Organisateurs: Rejoignez-nous !"}</h4>
-                            <p className="lead">
-                                {"Annoncez vos nouvelles compétitions, et rendez-les accessibles à tous nos sportifs - créez facilement vos médailles en piochant dans notre marketplace - Remettez vos médailles en ligne, et faites en un événement. La médaille NFT vous simplifie la vie: une création aisée, une personnalisation simplifiée et la possibilité d'y affecter une dotation"}
-                            </p>
-
-                        </div>
-                    </Col>
+                    </div>
                 </Row>
             </Container>
         </section>
     )
 }
-
-export default QuatriemeBandeau 
+export default QuatriemeBandeau
