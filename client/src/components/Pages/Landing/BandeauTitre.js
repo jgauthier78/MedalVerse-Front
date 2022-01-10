@@ -28,16 +28,19 @@ const BandeauTitre = ({ AppCallBacks, loginCallBack }) => {
 
                             </div>
                         </Col>
+{/*}
                         <Col className="col-2 d-flex justify-content-center">
                             <div className='mt-8'>
                                 {AppCallBacks.isConnected() ?
-                                    <Button className="text-light" onClick={AppCallBacks.disconnect}>{"Se Déconnecter"} <BoxArrowInRight style={{ verticalAlign: '-10%' }} /></Button>
+                                    <Button className="text-light" onClick={AppCallBacks.disconnect}>{"Se DéconnecterX"} <BoxArrowInRight style={{ verticalAlign: '-10%' }} /></Button>
                                     :
-                                    <Button className="text-light " onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {"Se Connecter"}</Button>
+                                    <Button className="text-light " onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {"Se ConnecterX"}</Button>
                                 }
                             </div>
 
                         </Col>
+{*/}
+
                     </Row>
 
                 </div>
