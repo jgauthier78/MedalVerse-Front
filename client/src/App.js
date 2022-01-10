@@ -9,11 +9,13 @@ import LandingPage from "./components/Pages/LandingPage"
 import OrganizerMain from "./components/Pages/OrganizerMain";
 import AthleteMain from "./components/Pages/AthleteMain";
 import RedirectTo from "./components/UIElements/RedirectTo";
-import { Alerts } from "./components/Alerts";
 
 // React router
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
+// Toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Translation
 // import i18n (needs to be bundled ;))
@@ -34,6 +36,7 @@ import { ROLES } from "./utils/roles_CONSTS"
 
 // Utils
 import { format_TimeMsToDate } from './utils/dateUtils'
+import { truncateString } from './utils/AppUtils'
 import { DID_init, DID_readProfile, DID_updateProfile, DID_showConf } from './utils/did'
 
 // CSS
@@ -100,13 +103,18 @@ class App extends Component {
             userMedals: null,
             userEvents: null,
             userOrganizations: null,
-            // Misc.
-            //  - Alerts
-            alertsList: []
         }
 
 
-    }
+    } // constructor
+
+    toast_options = {
+        // autoClose: 2000,
+        hideProgressBar: false,
+        position: toast.POSITION.TOP_LEFT,
+        pauseOnHover: true,
+        progress: undefined
+    };
 
     setIsConnected = val => this.setState({ isConnected: val })
     isConnected = () => { return this.state.isConnected; }
@@ -119,7 +127,7 @@ class App extends Component {
         let userProfile = { address: this.state.accounts, userDetails: this.state.userDetails, userEvents: this.state.userEvents, userOrganizations: this.state.userOrganizations, userMedals: this.state.userMedals, web3: this.state.web3 }
         return (
             <BrowserRouter >
-                <Alerts alertsList={this.state.alertsList} />
+                <ToastContainer autoClose={60000}/>
                 <Routes>
                     <Route exact path="/Gallerie/:id" element={
 
@@ -464,7 +472,7 @@ class App extends Component {
     } // getOrganizerOrganisations
 
     adminSetWinner = async (eventId, athleteAdr) => {
-        // console.log("App::adminSetWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
+        console.log("App::adminSetWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
         try {
             await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
             // Todo
@@ -477,7 +485,7 @@ class App extends Component {
     } // adminSetWinner
 
     adminAddMedal = async (eventId) => {
-        // console.log("App::adminAddMedal: eventId=" + eventId + " this.getAccounts()=" + this.getAccounts())
+        console.log("App::adminAddMedal: eventId=" + eventId + " this.getAccounts()=" + this.getAccounts())
         try {
             // Create NFT
             // await this.createNFT()
@@ -547,15 +555,26 @@ class App extends Component {
 
     // 
     Event_changeStateToCompetitionInProgress = async (eventId) => {
-        // console.log("App::Event_changeStateToCompetitionInProgress: eventId=" + eventId)
+        console.log("App::Event_changeStateToCompetitionInProgress: eventId=" + eventId)
         await this.state.contract.methods.adminStartEvent(eventId).send({ from: this.getAccounts() })
         // Event
     }
 
     Event_changeStateToRewardDistribution = async (eventId) => {
-        // console.log("App::Event_changeStateToRewardDistribution: eventId=" + eventId)
-        await this.state.contract.methods.adminEndEvent(eventId).send({ from: this.getAccounts() })
-        // Event
+        try {
+            console.log("App::Event_changeStateToRewardDistribution: eventId=" + eventId)
+            await this.state.contract.methods.adminEndEvent(eventId).send({ from: this.getAccounts() })
+            // Data refresh : Handled by event
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
+
+/*
+
+*/
+
     }
 
     Event_setWinner = async (eventId, winnerAddress) => {
@@ -707,13 +726,13 @@ class App extends Component {
 
     handleError = (error, bLogToConsole, bshowAlertPopup) => {
         // const { t } = this.props;
-        const { alertsList } = this.state;
-        let newAlert = {}
+        // Default values
+        let newAlert = { level: "error", "title" : "error", detail: "Error occured", time: format_TimeMsToDate(new Date()) }
 
-        let now = new Date();
-        // newAlert.time = now.toLocaleDateString(t("Formats.date")) + " " +
-        //   new Intl.DateTimeFormat(t("Formats.date"), { hour: "numeric", minute: "numeric", second: "numeric", timeZoneName: "short" }).format()
-        newAlert.time = format_TimeMsToDate(now)
+        // let now = new Date();
+//        // newAlert.time = now.toLocaleDateString(t("Formats.date")) + " " +
+//        //   new Intl.DateTimeFormat(t("Formats.date"), { hour: "numeric", minute: "numeric", second: "numeric", timeZoneName: "short" }).format()
+        // newAlert.time = format_TimeMsToDate(now)
 
         if (bLogToConsole) {
             console.error(error);
@@ -725,22 +744,31 @@ class App extends Component {
         }
 
         if (error.code !== undefined) {
+            // Metamask / Web3 errors
 
-            //   if (error.code === 4001) {
-            //     newAlert.title = t("Errors.4001.title")
-            //     newAlert.variant = t("Errors.4001.variant")
-            //     newAlert.message = t("Errors.4001.message")
-            //   } // 4001
-            //   else {
-            //     newAlert.title = t("Errors.default.title")
-            //     newAlert.variant = t("Errors.default.variant")
-            //     newAlert.message = t("Errors.default.message")
-            //   } // default
+              if (error.code === 4001) {
+                newAlert.title = "Transaction signature denied"
+                newAlert.detail = "User denied message signature"
+                newAlert.level = "warning"
+              } // 4001
+              else if (error.code === -32603) {
+                newAlert.title = "Transaction signature denied"
+                newAlert.detail = "User denied message signature"
+                newAlert.level = "warning"
+              } // 4001
+              else {
+                newAlert.title = "Transaction error"
+                newAlert.detail = truncateString(error.message, 50)
+                // error
+              } // default
 
-            if (error.message !== undefined) {
-                // newAlert.detail = truncateString(error.message, 50)
-                newAlert.detail = error.message
-            } // switch (error.code)
+            
+
+            // if (error.message !== undefined) {
+            //     // newAlert.detail = truncateString(error.message, 50)
+            //     newAlert.detail = truncateString(error.message, 50)
+            // } // switch (error.code)
+
         }
         else {
 
@@ -767,9 +795,26 @@ class App extends Component {
             //  newAlert.detail = truncateString(error, 100)
             newAlert.detail = error.message
         } // else
+        
+        switch (alert.level)
+        {
+            case 'info':
+                toast.info( newAlert.detail, {...this.toast_options, autoClose: 10000});
+            break;
 
-        const alertsListUpdated = [...alertsList, newAlert]
-        this.setState({ alertsList: alertsListUpdated })
+            case 'success':
+                toast.success( newAlert.detail, {...this.toast_options, autoClose: 10000});
+            break;
+
+            case 'warning':
+                toast.warn( newAlert.detail, {...this.toast_options, autoClose: 30000});
+            break;
+
+            case 'error':
+            default:
+                toast.error( newAlert.detail, {...this.toast_options, autoClose: false});
+            break;
+        }
 
     } // handleError
 
