@@ -114,8 +114,9 @@
       }
     }
   },
-  "bandeau": {
-    "title": "MedalVerse"
+  "bandeauTitre": {
+    "title": "MedalVerse",
+    "text": "Entrez dans l’univers des Récompenses NFT"
   },
   "account": {
     "address": "Adresse : : "
