@@ -44,9 +44,9 @@ const theme = createTheme(themes.default, {
         height: '50%',
     },
     marker: {
-        backgroundColor: '#ffffff',
-        border: '2px solid #bbbbbb',
-        color: "#ffffff",
+        backgroundColor: '#00df00',
+        border: '2px solid #99999999',
+        color: "#ef00ef",
         borderRadius: '50%',
         width: '20px',
         height: '20px',
@@ -62,7 +62,7 @@ const ProjectTimeline = () => {
             <section className="section section-lg ">
                 <div className=' d-flex justify-content-center'>
 
-                    <img src="img/MedalVerse.svg" className="Titre-MedalVerse" alt="MedalVerse" />
+                    <img src="img/MedalVerse.svg" className="Titre-MedalVerse ml-3" alt="MedalVerse" />
                 </div>
                 <div className="d-flex justify-content-center cards-margin-title-small">
                     <h1 className="justify-content-sm-center display-3">{"RoadMap"}</h1>
