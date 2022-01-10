@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import { Fragment, Component } from "react";
 
 import { SimpleModal } from "../Modals"
 import { withTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavBar from "../UIElements/NavBar"
-import SimpleFooter from "../UIElements/SimpleFooter"
+// import SimpleFooter from "../UIElements/SimpleFooter"
 
 import BandeauTitre from './Landing/BandeauTitre'
 
@@ -107,8 +107,6 @@ class LandingPageWithTranslation extends Component {
         if (!success) toast.error(erreur, this.toast_options);
         else this.props.AppCallBacks.updateUserDetails()
     }
-
-
 
     render() {
         const { t } = this.props;
