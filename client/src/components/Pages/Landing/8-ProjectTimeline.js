@@ -103,7 +103,7 @@ const ProjectTimeline = () => {
                         </TextEvent>
                     </Events>
                 </Timeline>
-                <NavigateButton linkTo="communeaute" up="false" />
+                <NavigateButton linkTo="communeaute" up="false" options="mt-6" />
             </section >
         </div>
 

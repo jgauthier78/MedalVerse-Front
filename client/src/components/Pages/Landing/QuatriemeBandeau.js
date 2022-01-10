@@ -2,6 +2,7 @@
 import { Container, Row, Col } from "react-bootstrap";
 
 import { Facebook, Google, Instagram, Linkedin, Pinterest, Twitter } from 'react-bootstrap-icons';
+import NavigateButton from "../../UIElements/NavigateButton";
 
 let QuatriemeBandeau = () => {
     return (
@@ -22,6 +23,7 @@ let QuatriemeBandeau = () => {
                         <Pinterest size="40" color='white' />
 
                     </div>
+                    <NavigateButton linkTo="Titre" up="false" options="mt-6" white="true" />
                 </Row>
             </Container>
         </section>
