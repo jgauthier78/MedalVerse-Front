@@ -33,7 +33,6 @@ const BandeauTitre = ({ AppCallBacks, loginCallBack }) => {
                             </div>
                             <div>
                                 <span className="display-6 text-white text-light">{t("bandeauTitre.text")}</span>
-
                             </div>
                         </Col>
 {/*}

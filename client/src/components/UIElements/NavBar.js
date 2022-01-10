@@ -16,7 +16,7 @@ import { Button } from "react-bootstrap";
 import {ReactComponent as FR_FLAG} from './../flags/FR.svg';
 import {ReactComponent as ENGLISH_FLAG} from './../flags/English_language.svg';
 
-const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, isLanding }) => {
+const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks, isLanding }) => {
 
   const { t } = useTranslation();
   const changeLanguage = (lng) => { i18n.changeLanguage(lng) }
@@ -47,8 +47,14 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, is
                 <Nav.Link className={textStyleCentered}><Link to="galerie" spy={true} smooth={false}>{t("LandingPage.menu.gallery")}</Link></Nav.Link>
                 <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{t("LandingPage.menu.roadmap")}</Link></Nav.Link>
                 <NavDropdown title={t("LandingPage.menu.language")} id="basic-nav-dropdown" >
-                  <NavDropdown.Item style={{padding: '0px 0px 0px 20px'}} onClick={() => changeLanguage('fr-FR')}><FR_FLAG style={{ width: '110px', height : '100px' }} /></NavDropdown.Item>
+                  {i18n.language !== 'en'
+                  &&
                   <NavDropdown.Item style={{padding: '0px 0px 0px 20px'}} onClick={() => changeLanguage('en')}><ENGLISH_FLAG style={{  width: '110px', height : '110px' }} /></NavDropdown.Item>
+                  }
+                  {i18n.language === 'en'
+                  &&
+                  <NavDropdown.Item style={{padding: '0px 0px 0px 20px'}} onClick={() => changeLanguage('fr-FR')}><FR_FLAG style={{ width: '110px', height : '100px' }} /></NavDropdown.Item>
+                  }
                 </NavDropdown>
                </>
             )
