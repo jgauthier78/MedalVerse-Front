@@ -41,6 +41,15 @@
     "walletConnect": {
       "title" : "Connection au Wallet",
       "body" : "En cours ..."
+    },
+    "menu" :{
+      "presentation" : "Présentation",
+      "trophy" : "Trophy Factory",
+      "creation" : "Creation Factory",
+      "fanplace" : "Fan Place",
+      "gallery" : "Galerie",
+      "roadmap" : "Feuille de route",
+      "language" : "Langue"
     }
   },
   "homePage": {

@@ -40,14 +40,13 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, is
 
             {isLanding === "true" ? (
               <>
-                <Nav.Link className={textStyleCentered}><Link to="pres" spy={true} smooth={false}>{"Présentation"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="trophy" spy={true} smooth={false}>{"Trophy Factory"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="creation" spy={true} smooth={false}>{"Creation Factory"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="fan" spy={true} smooth={false}>{"Fan Place"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="galerie" spy={true} smooth={false}>{"Galerie"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{"Roadmap"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{"Roadmap"}</Link></Nav.Link>
-                <NavDropdown title={"Language"} id="basic-nav-dropdown" >
+                <Nav.Link className={textStyleCentered}><Link to="pres" spy={true} smooth={false}>{t("LandingPage.menu.presentation")}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="trophy" spy={true} smooth={false}>{t("LandingPage.menu.trophy")}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="creation" spy={true} smooth={false}>{t("LandingPage.menu.creation")}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="fan" spy={true} smooth={false}>{t("LandingPage.menu.fanplace")}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="galerie" spy={true} smooth={false}>{t("LandingPage.menu.gallery")}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{t("LandingPage.menu.roadmap")}</Link></Nav.Link>
+                <NavDropdown title={t("LandingPage.menu.language")} id="basic-nav-dropdown" >
                   <NavDropdown.Item style={{padding: '0px 0px 0px 20px'}} onClick={() => changeLanguage('fr-FR')}><FR_FLAG style={{ width: '110px', height : '100px' }} /></NavDropdown.Item>
                   <NavDropdown.Item style={{padding: '0px 0px 0px 20px'}} onClick={() => changeLanguage('en')}><ENGLISH_FLAG style={{  width: '110px', height : '110px' }} /></NavDropdown.Item>
                 </NavDropdown>
