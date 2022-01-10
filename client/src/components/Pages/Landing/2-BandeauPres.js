@@ -11,30 +11,30 @@ import NavigateButton from '../../UIElements/NavigateButton';
 
 const BandeauPres = () => {
     return (
-        <section id="pres" className="section section-lg Container-Full">
+        <section id="pres" className="section section-lg Container-Full bkg-gradient">
 
-            <Container className=' Full-Section' >
-
+            <Container className=' Full-Section ' >
                 <Row className="row-grid align-items-center mb-6">
                     <Col className="col-sm align-self-center">
                         <div>
-
+                            <Trophy size="40" color='white' className='NoBreak mb-3-5 mr-3' />
                             <div className="MedalVerse MedalColor  NoBreak">{"Medal"} </div>
                             <div className="MedalVerse VerseColor NoBreak">{"Verse"} </div>
 
                         </div>
                     </Col>
                     <Col className="col-sm">
-                        <div className="pl-md-5">
+                        <div className="pl-md-5 ">
 
 
-                            <p className="lead">
+                            <p className=" MedalDescription justify-text">
                                 {"MedalVerse permet de créer des récompenses sous forme de NFT, et de les distribuer à ceux qui les remportent."}
                             </p>
-                            <p className="lead">
+                            <p className=" MedalDescription justify-text">
                                 {" Mais un trophée est fait pour être montré et partagé, et MedalVerse vous permettra d’exposer toutes vos récompenses dans une galerie. L’immersion de vos visiteurs sera renforcée avec la personnalisation unique qui pourra être donnée à votre galerie."}
                             </p>
-                            <p className="lead">                                    {"Nous avons créé une marketplace dans laquelle les sportifs pourront partager avec leurs fans des objets uniques basés sur leurs exploits. "}
+                            <p className=" MedalDescription justify-text">
+                                {"Nous avons créé une marketplace dans laquelle les sportifs pourront partager avec leurs fans des objets uniques basés sur leurs exploits. "}
                             </p>
                             <a className="ca3-scroll-down-link ca3-scroll-down-arrow" data-ca3_iconfont="ETmodules" data-ca3_icon=""></a>
                         </div>

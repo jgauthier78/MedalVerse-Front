@@ -10,15 +10,15 @@ import NavigateButton from '../../UIElements/NavigateButton';
 
 const BandeauGalerie = () => {
     return (
-        <section id="galerie" className="section section-lg bg-light-gray Container-Full">
+        <section id="galerie" className="section section-lg bkg-gradient Container-Full">
             <Container >
                 <Row className="row-grid align-items-center mb-6 justify-content-sm-center">
                     <div className='cards-margin-title-small'>
-                        <Trophy size="40" color='white' />
+
                         <img src="img/MedalVerse.svg" className="Titre-MedalVerse" alt="MedalVerse" />
                     </div>
                     <div className="d-flex justify-content-center cards-margin-title-small">
-                        <h1 className="justify-content-sm-center display-1">{"Créez votre propre galerie"}</h1>
+                        <h1 className="justify-content-sm-center text-white display-1">{"Créez votre propre galerie"}</h1>
                     </div>
                     <Col lg="4">
 
@@ -64,7 +64,7 @@ const BandeauGalerie = () => {
                         y="0"
                     >
                         <polygon
-                            className="fill-white"
+                            className="fill-red"
                             points="2560 0 2560 100 0 100"
                         />
                     </svg>

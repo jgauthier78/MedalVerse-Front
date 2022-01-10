@@ -2,13 +2,13 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import BkgVideo from '../../UIElements/BkgVideo';
-import { Trophy } from 'react-bootstrap-icons';
+import { BoxArrowInRight, Trophy } from 'react-bootstrap-icons';
 import NavigateButton from '../../UIElements/NavigateButton';
 
 
-const BandeauTitre = () => {
+const BandeauTitre = ({ AppCallBacks, loginCallBack }) => {
     return (
         <div id="Titre" className="Container-Full">
 
@@ -17,7 +17,7 @@ const BandeauTitre = () => {
 
             <Container className="  d-flex">
                 <div className="col px-0">
-                    <Row>
+                    <Row className='justify-content-between'>
                         <Col lg="6">
                             <div>
                                 <Trophy size="40" color='white' />
@@ -28,23 +28,20 @@ const BandeauTitre = () => {
 
                             </div>
                         </Col>
+                        <Col className="col-2 d-flex justify-content-center">
+                            <div className='mt-8'>
+                                {AppCallBacks.isConnected() ?
+                                    <Button className="text-light" onClick={AppCallBacks.disconnect}>{"Se Déconnecter"} <BoxArrowInRight style={{ verticalAlign: '-10%' }} /></Button>
+                                    :
+                                    <Button className="text-light " onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {"Se Connecter"}</Button>
+                                }
+                            </div>
+
+                        </Col>
                     </Row>
+
                 </div>
-                <div className="separator separator-bottom separator-skew">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        preserveAspectRatio="none"
-                        version="1.1"
-                        viewBox="0 0 2560 100"
-                        x="0"
-                        y="0"
-                    >
-                        <polygon
-                            className="fill-white"
-                            points="2560 0 2560 100 0 100"
-                        />
-                    </svg>
-                </div>
+
             </Container>
             <NavigateButton linkTo="pres" up="false" />
         </div>

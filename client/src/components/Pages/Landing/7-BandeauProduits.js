@@ -10,15 +10,17 @@ import NavigateButton from '../../UIElements/NavigateButton';
 
 const BandeauProduits = () => {
     return (
-        <section id="produit" className="section section-lg bg-white Container-Full">
+        <section id="produit" className="section section-lg  Container-Full">
             <Container >
+
                 <Row className="row-grid align-items-center mb-6 justify-content-sm-center">
+                    <BkgVideo videoSource='img/abstract1.webm' options="Background-Video" />
                     <div className='cards-margin-title-small'>
-                        <Trophy size="40" color='white' />
+
                         <img src="img/MedalVerse.svg" className="Titre-MedalVerse" alt="MedalVerse" />
                     </div>
                     <div className="d-flex justify-content-center cards-margin-title-small">
-                        <h1 className="justify-content-sm-center display-3">{"Créez et achetez des produits dérivés"}</h1>
+                        <h1 className="justify-content-sm-center text-white display-3">{"Créez et achetez des produits dérivés"}</h1>
                     </div>
                     <Col lg="4">
 
@@ -51,7 +53,7 @@ const BandeauProduits = () => {
                     </Col>
 
                 </Row>
-                <NavigateButton linkTo="project" up="false" />
+                <NavigateButton linkTo="project" up="false" white="true" />
                 <div className="separator separator-bottom separator-skew">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

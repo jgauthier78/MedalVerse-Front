@@ -5,7 +5,7 @@ import React from "react";
 import { Container, NavDropdown, Nav, Navbar, NavItem } from "react-bootstrap";
 
 // import { Link } from "react-router-dom"
-import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-scroll'
 
 /* Translation */
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,8 @@ import { BoxArrowInRight, BoxArrowRight, Trophy } from 'react-bootstrap-icons';
 import "../../styles/NavBar.css";
 import { Button } from "react-bootstrap";
 
-const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks }) => {
+const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, isLanding }) => {
+
   const { t } = useTranslation();
   /*
      return (
@@ -46,28 +47,22 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks }) 
 
           <Nav className="me-auto">
 
-            <LinkContainer to="/">
-              <Nav.Link className={textStyleCentered}>{t("menu.home")}</Nav.Link>
-            </LinkContainer>
+            {isLanding === "true" ? (
+              <>
+                <Nav.Link className={textStyleCentered}><Link to="pres" spy={true} smooth={false}>{"Présentation"}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="trophy" spy={true} smooth={false}>{"Trophy Factory"}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="creation" spy={true} smooth={false}>{"Creation Factory"}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="fan" spy={true} smooth={false}>{"Fan Place"}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="galerie" spy={true} smooth={false}>{"Galerie"}</Link></Nav.Link>
+                <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{"Roadmap"}</Link></Nav.Link>
+              </>
+            )
+              : (<></>)
+            }
 
-            <LinkContainer to={"/profile/" + connectedAccountAddr}>
-              <Nav.Link className={textStyleCentered}>{t("menu.profile")}</Nav.Link>
-            </LinkContainer>
 
-            <LinkContainer to="/simpleStorage">
-              <Nav.Link className={textStyleCentered}>{t("menu.simpleStorage")}</Nav.Link>
-            </LinkContainer>
-
-            <Nav.Link href="#link" className={textStyleCentered}>Link</Nav.Link>
-
-            <NavDropdown menuVariant="dark" title={t("menu.dropdown1.title")} id="navbar-menu-nav-dropdown" >
-              <NavDropdown.Item href="/" className={textStyleLeft}>{t("menu.home")}</NavDropdown.Item>
-              <NavDropdown.Item href="/profile/Toto" className={textStyleLeft}>{t("menu.profile")}</NavDropdown.Item>
-              <NavDropdown.Item href="/simpleStorage" className={textStyleLeft}>{t("menu.simpleStorage")}</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="/" className={textStyleLeft}>{t("menu.home")}</NavDropdown.Item>
-            </NavDropdown>
           </Nav>
+
           <Nav className="align-items-lg-center ml-lg-auto" navbar>
             {AppCallBacks.isConnected() ?
 

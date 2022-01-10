@@ -1,3 +1,42 @@
+.justify-text {
+  text-align:justify;  
+  text-justify:inter-character;
+}
+.bkg-gradient {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 20s ease infinite;
+	height: 100vh;
+}
+
+
+
+.mb-3-5{
+  margin-bottom: 33px !important;
+}
+
+.MedalDescription {
+  margin-bottom: 1.5rem;
+  font-family: inherit;
+  font-weight: 400;
+  line-height: 1.5;
+  color: white; 
+  font-size: 1.25rem; }
+
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
 .Card-Video{
   width:100%;
   height:auto;
@@ -228,7 +267,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#024057",endCo
   border-radius: 10px;
   box-shadow: 0 10px 22px -5px rgba(50, 50, 73, 0.4), 0 10px 10px -10px rgba(50, 50, 73, 0.3);
 }
-+.glow-on-hover {
+.glow-on-hover {
   width: 220px;
   height: 50px;
   border: none;

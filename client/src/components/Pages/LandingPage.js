@@ -114,9 +114,9 @@ class LandingPageWithTranslation extends Component {
         const { t } = this.props;
         return (
             <Fragment>
-                <NavBar loginCallBack={this.loginCallBack} AppCallBacks={this.props.AppCallBacks} />
+                <NavBar loginCallBack={this.loginCallBack} AppCallBacks={this.props.AppCallBacks} isLanding="true" />
                 <main ref="main">
-                    <BandeauTitre />
+                    <BandeauTitre AppCallBacks={this.props.AppCallBacks} loginCallBack={this.loginCallBack} />
                     <BandeauPres />
                     <TrophyFactory />
                     <CreationFactory />
