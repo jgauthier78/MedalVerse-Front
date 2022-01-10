@@ -1,7 +1,7 @@
-/* React - Bootstrap*/
+// React - Bootstrap
 import { Container, Col, Row } from 'react-bootstrap';
 
-/* Icônes */
+// Icons
 import { Clock } from 'react-bootstrap-icons';
 
 const Loading = ( /* {  } */ ) =>
@@ -14,7 +14,6 @@ const Loading = ( /* {  } */ ) =>
         </Col>
       </Row>
   </Container>
-
 
   ); // render
     
