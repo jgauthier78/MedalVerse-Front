@@ -4,9 +4,6 @@ import { Container, Col, Row } from 'react-bootstrap';
 /* Icônes */
 import { Clock } from 'react-bootstrap-icons';
 
-// CSS
-import "../styles/Loading.css";
-
 const Loading = ( /* {  } */ ) =>
 {
    return (
@@ -20,7 +17,6 @@ const Loading = ( /* {  } */ ) =>
 
 
   ); // render
-
     
 } // Toolbar
 
