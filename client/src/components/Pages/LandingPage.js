@@ -79,7 +79,7 @@ class LandingPageWithTranslation extends Component {
                 if (result.err === null) {
                     this.MedalVerse = result.contract
 
-                    console.log(this._accounts)
+                    // console.log(this._accounts)
                     result = await this.props.AppCallBacks.initUserDetails(this._accounts[0])
                     if (result.err === null) {
 
