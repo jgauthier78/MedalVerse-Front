@@ -46,6 +46,9 @@ class SporstmanMain extends Component {
                     <Row className="flex-nowrap">
                         <NavBar AppCallBacks={this.props.AppCallBacks} />
                     </Row>
+                    <Row className="flex-nowrap" style={{ height : '70px' }}>
+                        <Col/>
+                    </Row>
                     <Row className="g-0">
 
                         <SporstmanSideBar setPannel={this.setPannel} />
