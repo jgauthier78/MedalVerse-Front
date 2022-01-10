@@ -1,39 +1,32 @@
-/* React */
-import React from "react";
+// React - Bootstrap
+import { Container,/*NavDropdown,*/ Nav, Navbar, NavItem, NavDropdown } from "react-bootstrap";
 
-/* React - Bootstrap*/
-import { Container, NavDropdown, Nav, Navbar, NavItem } from "react-bootstrap";
-
-// import { Link } from "react-router-dom"
 import { Link } from 'react-scroll'
 
-/* Translation */
+// Translation
 import { useTranslation } from 'react-i18next';
+import i18n from '../../utils/i18n';
 
-
-/* Icônes */
+// Icons
 import { BoxArrowInRight, BoxArrowRight, Trophy } from 'react-bootstrap-icons';
-
-/* CSS */
+// CSS
 import "../../styles/NavBar.css";
 import { Button } from "react-bootstrap";
+
+
+// tmp
+import { Flag, FlagFill } from 'react-bootstrap-icons';
+
 
 const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, isLanding }) => {
 
   const { t } = useTranslation();
-  /*
-     return (
-      <Container>
-        <nav>
-          <Link to="/"> {t("menu.home")} </Link>
-          <Link to="/profile"> {t("menu.home.profile")} </Link>
-          <Link to="/simpleStorage"> {t("menu.home.simpleStorage")} </Link>
-        </nav>
-    </Container>
-  */
+  const changeLanguage = (lng) => { i18n.changeLanguage(lng) }
+
   const textStyleCentered = "text-light text-center";
   const textStyleLeft = "text-light text-left";
   const textStyleRight = "text-light text-right";
+
 
   return (
 
@@ -55,7 +48,12 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, is
                 <Nav.Link className={textStyleCentered}><Link to="fan" spy={true} smooth={false}>{"Fan Place"}</Link></Nav.Link>
                 <Nav.Link className={textStyleCentered}><Link to="galerie" spy={true} smooth={false}>{"Galerie"}</Link></Nav.Link>
                 <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{"Roadmap"}</Link></Nav.Link>
-              </>
+                <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{"Roadmap"}</Link></Nav.Link>
+                <NavDropdown title={"Language"} id="basic-nav-dropdown">
+                  <NavDropdown.Item onClick={() => changeLanguage('fr-FR')}><FlagFill className="ml-4"  />{'FR'}</NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => changeLanguage('en')}><Flag size={14} className="ml-4" />{'EN'}</NavDropdown.Item>
+                </NavDropdown>
+               </>
             )
               : (<></>)
             }
