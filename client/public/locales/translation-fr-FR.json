@@ -20,7 +20,7 @@
       "athletes" : "Athlètes",
       "competitors" : "Competitors",
       "won" : "won",
-      "address" : "addresse",
+      "address" : "adresse",
       "action" : "action",
       "actions": {
         "setWinner": "Déclarer vainqueur"
