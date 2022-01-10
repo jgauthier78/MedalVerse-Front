@@ -118,7 +118,11 @@
   },
   "bandeauTitre": {
     "title": "MedalVerse",
-    "text": "Entrez dans l’univers des Récompenses NFT"
+    "text": "Be part of the NFT rewards universe"
+  },
+  "QuatriemeBandeau": {
+    "title": "Community",
+    "text": "Sports event organizer, Athelets, Fans: Join us !"
   },
   "account": {
     "address": "address : "
