@@ -319,7 +319,7 @@ class App extends Component {
                 // We now populate the structure
                 await Promise.all(eventIndxList.map(async (eventId, idx) =>
                 {
-                    console.log(eventIndxList[idx])
+                    // console.log(eventIndxList[idx])
                     // let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
                     // result.eventList.push(val)
                     result.eventList[idx] = await this.state.contract.methods.getEvent(eventIndxList[idx]).call()
@@ -350,9 +350,9 @@ class App extends Component {
 
             // We get the list of winners for the medal
             let allWinners = await medalContract.methods.getAllWinners().call()
-            console.log("--------------")
-            console.log(allWinners)
-            console.log("--------------")
+            // console.log("--------------")
+            // console.log(allWinners)
+            // console.log("--------------")
             let { 0: winnersString, 1: yearsOfVictory } = allWinners
             let nfdesc = {
                 name: await medalContract.methods.name().call(),
@@ -385,7 +385,6 @@ class App extends Component {
         let organisationList = await this.state.contract.methods.getOrganizerOrganisationList(account).call()
         // console.log("organisationList.length=" + organisationList.length)
         if (organisationList.length > 0) {
-            // result.organizations = [];
             // For each organization this organizer belongs to
 
             await Promise.all(organisationList.map(async (organisationId) => {
@@ -465,7 +464,7 @@ class App extends Component {
     } // getOrganizerOrganisations
 
     adminSetWinner = async (eventId, athleteAdr) => {
-        console.log("App::adminSetWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
+        // console.log("App::adminSetWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
         try {
             await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
             // Todo
@@ -478,7 +477,7 @@ class App extends Component {
     } // adminSetWinner
 
     adminAddMedal = async (eventId) => {
-        console.log("App::adminAddMedal: eventId=" + eventId + " this.getAccounts()=" + this.getAccounts())
+        // console.log("App::adminAddMedal: eventId=" + eventId + " this.getAccounts()=" + this.getAccounts())
         try {
             // Create NFT
             // await this.createNFT()
@@ -494,7 +493,7 @@ class App extends Component {
     } // adminAddMedal
 
     createNFT = async (/*Todo params*/) => {
-        console.log("App::createNFT: ")
+        // console.log("App::createNFT: ")
         try {
             // Create NFT
             await this.state.contract.methods.todo(/*Todo params*/).send({ from: this.getAccounts() })
