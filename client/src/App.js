@@ -236,7 +236,7 @@ class App extends Component {
         try {
             // call the contract method to get infos about user
             result.detail = await this.state.contract.methods.getUserDetails(account).call()
-            console.log("result.detail=" + result.detail)
+            // console.log("result.detail=" + result.detail)
             // result.detail["account"] = account;
             // console.log("result.detail+account="+result.detail)
             this.setState({ userRole: result.detail.role })
