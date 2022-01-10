@@ -2,7 +2,7 @@
 import { Component } from "react";
 
 /* React - Bootstrap */
-import { Col, Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 
 // React-router
 import { Routes, Route, Outlet } from "react-router-dom";
@@ -23,9 +23,12 @@ class OrganizerLayout extends Component
     render() {
         return (
             <>
-            <div className="container-fluid profile-page">
+            <Container className="container-fluid profile-page">
                 <Row className="flex-nowrap">
                     <NavBar AppCallBacks={this.props.AppCallBacks} />
+                </Row>
+                <Row className="flex-nowrap" style={{ height : '70px' }}>
+                    <Col/>
                 </Row>
                 <Row className="flex-nowrap">
                     <Row>
@@ -39,7 +42,7 @@ class OrganizerLayout extends Component
                         </Col>
                     </Row>
                 </Row>
-            </div>
+            </Container>
         </>
         )
     } // render
