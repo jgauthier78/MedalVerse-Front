@@ -13,10 +13,8 @@ import { BoxArrowInRight, BoxArrowRight, Trophy } from 'react-bootstrap-icons';
 import "../../styles/NavBar.css";
 import { Button } from "react-bootstrap";
 
-
-// tmp
-import { Flag, FlagFill } from 'react-bootstrap-icons';
-
+import {ReactComponent as FR_FLAG} from './../flags/FR.svg';
+import {ReactComponent as ENGLISH_FLAG} from './../flags/English_language.svg';
 
 const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, isLanding }) => {
 
@@ -24,7 +22,7 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, is
   const changeLanguage = (lng) => { i18n.changeLanguage(lng) }
 
   const textStyleCentered = "text-light text-center";
-  const textStyleLeft = "text-light text-left";
+  // const textStyleLeft = "text-light text-left";
   const textStyleRight = "text-light text-right";
 
 
@@ -49,9 +47,9 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, is
                 <Nav.Link className={textStyleCentered}><Link to="galerie" spy={true} smooth={false}>{"Galerie"}</Link></Nav.Link>
                 <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{"Roadmap"}</Link></Nav.Link>
                 <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{"Roadmap"}</Link></Nav.Link>
-                <NavDropdown title={"Language"} id="basic-nav-dropdown">
-                  <NavDropdown.Item onClick={() => changeLanguage('fr-FR')}><FlagFill className="ml-4"  />{'FR'}</NavDropdown.Item>
-                  <NavDropdown.Item onClick={() => changeLanguage('en')}><Flag size={14} className="ml-4" />{'EN'}</NavDropdown.Item>
+                <NavDropdown title={"Language"} id="basic-nav-dropdown" >
+                  <NavDropdown.Item style={{padding: '0px 0px 0px 20px'}} onClick={() => changeLanguage('fr-FR')}><FR_FLAG style={{ width: '110px', height : '100px' }} /></NavDropdown.Item>
+                  <NavDropdown.Item style={{padding: '0px 0px 0px 20px'}} onClick={() => changeLanguage('en')}><ENGLISH_FLAG style={{  width: '110px', height : '110px' }} /></NavDropdown.Item>
                 </NavDropdown>
                </>
             )
