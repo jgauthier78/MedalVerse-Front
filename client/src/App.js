@@ -301,186 +301,210 @@ class App extends Component {
 
     // The user changed the current account, so we need to update everything
     accountsUpdated = async (account) => {
+        try {
         // Directly set the state, as the callback gives us a pointer to new account
         this.setState({ accounts: account })
         // read new details from contract
         await this.initUserDetails(account)
         // redirect to the right page
         await this.updateUserDetails()
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
     }
 
     /* Retourne la structure complete des évènements auxquels un user appartient */
     // devrait être appelée get(Athlete|Sportsman)Events ?
     getAthleteEvents = async (account) => {
-        let result = { nbEvents: 0, Event: null }
-        // We get the nb of events the sporsman registered to
-        let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
-        if (nbEvents > 0)
-        {
-            result.nbEvents = nbEvents
-            // We get the list of events the sporsman registered to
-            let eventIndxList = await this.state.contract.methods.getSportsmanEventsSubscriptions(account).call()
-            if (eventIndxList.length > 0)
+        try {
+            let result = { nbEvents: 0, Event: null }
+            // We get the nb of events the sporsman registered to
+            let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
+            if (nbEvents > 0)
             {
-                result.eventList = []
-                result.organisationDesc = []
-                // We now populate the structure
-                await Promise.all(eventIndxList.map(async (eventId, idx) =>
+                result.nbEvents = nbEvents
+                // We get the list of events the sporsman registered to
+                let eventIndxList = await this.state.contract.methods.getSportsmanEventsSubscriptions(account).call()
+                if (eventIndxList.length > 0)
                 {
-                    // console.log(eventIndxList[idx])
-                    // let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
-                    // result.eventList.push(val)
-                    result.eventList[idx] = await this.state.contract.methods.getEvent(eventIndxList[idx]).call()
-                    // let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.
-                    //     organizedBy).call()
-                    // result.organisationDesc.push(organisationDesc)
-                    result.organisationDesc[idx] = await this.state.contract.methods.getOrganizationsList(result.eventList[idx].organizedBy, result.eventList[idx].organizedBy).call()
-                })) // await Promise.all
+                    result.eventList = []
+                    result.organisationDesc = []
+                    // We now populate the structure
+                    await Promise.all(eventIndxList.map(async (eventId, idx) =>
+                    {
+                        // console.log(eventIndxList[idx])
+                        // let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
+                        // result.eventList.push(val)
+                        result.eventList[idx] = await this.state.contract.methods.getEvent(eventIndxList[idx]).call()
+                        // let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.
+                        //     organizedBy).call()
+                        // result.organisationDesc.push(organisationDesc)
+                        result.organisationDesc[idx] = await this.state.contract.methods.getOrganizationsList(result.eventList[idx].organizedBy, result.eventList[idx].organizedBy).call()
+                    })) // await Promise.all
+                }
             }
-        }
-        return result;
+            return result;
+            }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
     }
 
     getUserMedals = async (account) => {
-        let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [], nftDesc: [] }
-        result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
-        // for (let i = 0; i < result.nbMedals; i++) {
-
-        let numbersArray = Array.from( Array( parseInt(result.nbMedals, 10) ).keys())
-        await Promise.all(numbersArray.map(async (_, idx) =>
-        {
-            let medalID = await this.state.contract.methods.getSportsmanMedal(account, idx).call()
-            let medal = { success: null, org: null, event: null }
-            medal.succes = await this.state.contract.methods.getMedal(medalID).call()
-            medal.org = await this.state.contract.methods.getOrganizationName(medal.succes.organizationID).call()
-            medal.event = await this.state.contract.methods.getEvent(medal.succes.eventID).call()
-            let medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
-
-            // We get the list of winners for the medal
-            let allWinners = await medalContract.methods.getAllWinners().call()
-            // console.log("--------------")
-            // console.log(allWinners)
-            // console.log("--------------")
-            let { 0: winnersString, 1: yearsOfVictory } = allWinners
-            let nfdesc = {
-                name: await medalContract.methods.name().call(),
-                symbol: await medalContract.methods.symbol().call(),
-                orgName: await medalContract.methods.getOrganizationName().call(),
-                winnersString,
-                yearsOfVictory,
-
-            }
-            result.nftDesc.push(nfdesc)
-            // We get the uri of the medal
-            let img = await medalContract.methods.uriToken(1).call()
-            result.uriList.push(img)
-            result.Medals.push(medal)
-
-            if (medal.succes.isInWinnerGallery) {
-                result.nbMedalsInGallery++
-                result.Gallery.push(medal)
-            }
-        })) // await Promise.all
-        return result
+        try {
+            let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [], nftDesc: [] }
+            result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
+            // for (let i = 0; i < result.nbMedals; i++) {
+    
+            let numbersArray = Array.from( Array( parseInt(result.nbMedals, 10) ).keys())
+            await Promise.all(numbersArray.map(async (_, idx) =>
+            {
+                let medalID = await this.state.contract.methods.getSportsmanMedal(account, idx).call()
+                let medal = { success: null, org: null, event: null }
+                medal.succes = await this.state.contract.methods.getMedal(medalID).call()
+                medal.org = await this.state.contract.methods.getOrganizationName(medal.succes.organizationID).call()
+                medal.event = await this.state.contract.methods.getEvent(medal.succes.eventID).call()
+                let medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
+    
+                // We get the list of winners for the medal
+                let allWinners = await medalContract.methods.getAllWinners().call()
+                // console.log("--------------")
+                // console.log(allWinners)
+                // console.log("--------------")
+                let { 0: winnersString, 1: yearsOfVictory } = allWinners
+                let nfdesc = {
+                    name: await medalContract.methods.name().call(),
+                    symbol: await medalContract.methods.symbol().call(),
+                    orgName: await medalContract.methods.getOrganizationName().call(),
+                    winnersString,
+                    yearsOfVictory,
+    
+                }
+                result.nftDesc.push(nfdesc)
+                // We get the uri of the medal
+                let img = await medalContract.methods.uriToken(1).call()
+                result.uriList.push(img)
+                result.Medals.push(medal)
+    
+                if (medal.succes.isInWinnerGallery) {
+                    result.nbMedalsInGallery++
+                    result.Gallery.push(medal)
+                }
+            })) // await Promise.all
+            return result
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
     }
 
     getOrganizerOrganisations = async () => {
-        // console.log("getOrganizerOrganisations")
-        let account = this.getAccounts()
-        //let result = { organizations: null }
-        const result = []
-        // We get the list of organization the organizer subscribed to uint256[]
-        let organisationList = await this.state.contract.methods.getOrganizerOrganisationList(account).call()
-        // console.log("organisationList.length=" + organisationList.length)
-        if (organisationList.length > 0) {
-            // For each organization this organizer belongs to
+        try {
+            // console.log("getOrganizerOrganisations")
+            let account = this.getAccounts()
+            //let result = { organizations: null }
+            const result = []
+            // We get the list of organization the organizer subscribed to uint256[]
+            let organisationList = await this.state.contract.methods.getOrganizerOrganisationList(account).call()
+            // console.log("organisationList.length=" + organisationList.length)
+            if (organisationList.length > 0) {
+                // For each organization this organizer belongs to
+                await Promise.all(organisationList.map(async (organisationId) => {
+                    // console.log("organisationId=" + organisationId)
+                    let organization = {};
+                    // Load ONE organization details
+                    let organizationList = await this.state.contract.methods.getOrganizationsList(organisationId, organisationId).call()
+                    // console.log("organizationList="+ JSON.stringify( organizationList ) )
+                    organization["id"] = organisationId
+                    organization["name"] = organizationList[0][0]
+                    organization["description"] = organizationList[0][1]
+                    organization["logoURI"] = organizationList[0][2]
+                    organization["activ"] = organizationList[0][3]
+                    organization["admins"] = []
+                    organization["events"] = []
+                    // console.log("organization[]="+ JSON.stringify( organization ) )
+                    // Load organization admins ids list uint256[]
+                    let adminsList = await this.state.contract.methods.getAdminList(organisationId).call()
+                    if (adminsList.length > 0) {
+                        // For each admin
+                        adminsList.forEach(adminId => {
+                            // console.log("adminId=" + adminId)
+                            organization["admins"].push({ id: adminId })
+                        }); // For each admin
+                    }
+                    let eventsList = await this.state.contract.methods.getEventList(organisationId).call()
+                    // console.log("eventsList.length=" + eventsList.length)
+                    if (eventsList.length > 0) {
+                        await Promise.all(eventsList.map(async (eventId) => {
+                            // console.log("eventsList:eventId=" + eventId)
+                            let eventData = await this.state.contract.methods.getEvent(eventId).call()
+                            // console.log("eventData:eventId=" + eventData.eventId)
+                            let event = {
+                                eventId: eventData.eventId,
+                                sportCategory: eventData.sportCategory,
+                                organizedBy: eventData.organizedBy,
+                                registeredSportsMan: eventData.registeredSportsMan,
+                                winner: eventData.winner,
+                                startDate: eventData.startDate,
+                                endDate: eventData.startDate,
+                                medalID: eventData.medalID,
+                                eventDescription: eventData.eventDescription,
+                                hasMedal: eventData.hasMedal,
+                                activ: eventData.activ,
+                                ended: eventData.ended,
+                                started: eventData.started,
+                                stateOfCompetition: await this.Event_getState(eventId), // eventData.stateOfCompetition, <- undefined
+                                // -> crée une référence circulaire
+                                organization: organization
+                            }
+                            //  console.log("event="+JSON.stringify(event))
+                            //  console.log("stateOfCompetition="+event.stateOfCompetition)
+                            // Medal data
+                            let throwIn = {}
+                            let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
+                            // ThrowIn contract data
+                            throwIn.address = medalData.throwIn
+                            throwIn.winner = medalData.winner
+                            throwIn.isInWinnerGallery = medalData.isInWinnerGallery
+                            // throwIn.status = await this.ThrowIn_getStatus(throwIn.address)
+                            // console.log("throwIn.status ="+throwIn.status )
+                            // Set
+                            event.throwIn = throwIn
 
-            await Promise.all(organisationList.map(async (organisationId) => {
-                // console.log("organisationId=" + organisationId)
-                let organization = {};
-                // Load ONE organization details
-                let organizationList = await this.state.contract.methods.getOrganizationsList(organisationId, organisationId).call()
-                // console.log("organizationList="+ JSON.stringify( organizationList ) )
-                organization["id"] = organisationId
-                organization["name"] = organizationList[0][0]
-                organization["description"] = organizationList[0][1]
-                organization["logoURI"] = organizationList[0][2]
-                organization["activ"] = organizationList[0][3]
-                organization["admins"] = []
-                organization["events"] = []
-                // console.log("organization[]="+ JSON.stringify( organization ) )
-                // Load organization admins ids list uint256[]
-                let adminsList = await this.state.contract.methods.getAdminList(organisationId).call()
-                if (adminsList.length > 0) {
-                    // For each admin
-                    adminsList.forEach(adminId => {
-                        // console.log("adminId=" + adminId)
-                        organization["admins"].push({ id: adminId })
-                    }); // For each admin
-                }
-                let eventsList = await this.state.contract.methods.getEventList(organisationId).call()
-                // console.log("eventsList.length=" + eventsList.length)
-                if (eventsList.length > 0) {
-                    await Promise.all(eventsList.map(async (eventId) => {
-                        // console.log("eventsList:eventId=" + eventId)
-                        let eventData = await this.state.contract.methods.getEvent(eventId).call()
-                        // console.log("eventData:eventId=" + eventData.eventId)
-                        let event = {
-                            eventId: eventData.eventId,
-                            sportCategory: eventData.sportCategory,
-                            organizedBy: eventData.organizedBy,
-                            registeredSportsMan: eventData.registeredSportsMan,
-                            winner: eventData.winner,
-                            startDate: eventData.startDate,
-                            endDate: eventData.startDate,
-                            medalID: eventData.medalID,
-                            eventDescription: eventData.eventDescription,
-                            hasMedal: eventData.hasMedal,
-                            activ: eventData.activ,
-                            ended: eventData.ended,
-                            started: eventData.started,
-                            stateOfCompetition: await this.Event_getState(eventId), // eventData.stateOfCompetition, <- undefined
-                            // -> crée une référence circulaire
-                            organization: organization
-                        }
-                        //  console.log("event="+JSON.stringify(event))
-                        //  console.log("stateOfCompetition="+event.stateOfCompetition)
-                        // Medal data
-                        let throwIn = {}
-                        let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
-                        // ThrowIn contract data
-                        throwIn.address = medalData.throwIn
-                        throwIn.winner = medalData.winner
-                        throwIn.isInWinnerGallery = medalData.isInWinnerGallery
-                        // throwIn.status = await this.ThrowIn_getStatus(throwIn.address)
-                        // console.log("throwIn.status ="+throwIn.status )
-                        // Set
-                        event.throwIn = throwIn
+                            // Add event to organization
+                            organization["events"].push(event)
+                        }));
+                    } // eventsList.length > 0
 
-                        // Add event to organization
-                        organization["events"].push(event)
-                    }));
-                } // eventsList.length > 0
-
-                // console.log("organization[" + organisationId + "]=" + JSON.stringify(organization))
-                // return organization
-                //result.organizations.push( organization )
-                result.push(organization)
-            }));
-        }
-        return result;
+                    // console.log("organization[" + organisationId + "]=" + JSON.stringify(organization))
+                    // return organization
+                    //result.organizations.push( organization )
+                    result.push(organization)
+                }));
+            }
+            return result;
+        } // try
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            let getOrganizerOrganisationsError = { title : "Error loading organizer events", detail: "Error occured" }
+            this.handleError(getOrganizerOrganisationsError, true)
+        } // catch
     } // getOrganizerOrganisations
 
     adminSetWinner = async (eventId, athleteAdr) => {
         console.log("App::adminSetWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
         try {
             await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
-            // Todo
-            // Refresh data
-        }
+            /// Data refresh : Handled by event
+        } // try
         catch (error) {
             // Catch any errors for any of the above operations.
-            this.handleError(error, true)
+            let adminSetWinnerError = { title : "Error setting winner", detail: "Error occured" }
+            this.handleError(adminSetWinnerError, true)
         } // catch
     } // adminSetWinner
 
@@ -491,12 +515,12 @@ class App extends Component {
             // await this.createNFT()
             let adressNFT = 0
             await this.state.contract.methods.adminAddMedal(eventId, adressNFT).send({ from: this.getAccounts() })
-            // Todo
-            // Refresh data
-        }
+            // Data refresh : Handled by event
+        } // try
         catch (error) {
             // Catch any errors for any of the above operations.
-            this.handleError(error, true)
+            let adminAddMedalError = { title : "Error medalling athlete", detail: "Error occured" }
+            this.handleError(adminAddMedalError, true)
         } // catch
     } // adminAddMedal
 
@@ -505,11 +529,11 @@ class App extends Component {
         try {
             // Create NFT
             await this.state.contract.methods.todo(/*Todo params*/).send({ from: this.getAccounts() })
-            // Todo
-            // Refresh data
-        }
+            // Data refresh : Handled by event
+        } // try
         catch (error) {
             // Catch any errors for any of the above operations.
+            let createNFTError = { title : "Error creating NFT", detail: "Error occured" }
             this.handleError(error, true)
         } // catch
     } // adminAddMedal
@@ -544,21 +568,35 @@ class App extends Component {
         // console.log("App::ThrowIn_getInstance:medalContract.options.address="+medalContract.options.address)
         return medalContract
         */
-    }
+    } // ThrowIn_getInstance
 
     Event_getState = async (eventId) => {
-        let val = await this.state.contract.methods.getEventCurrentState(eventId).call()
-        const status_val = parseInt(val, 10)
-        // console.log("Event_getState:status_val=" + status_val)
-        return status_val
-    }
+        try {
+            let val = await this.state.contract.methods.getEventCurrentState(eventId).call()
+            const status_val = parseInt(val, 10)
+            // console.log("Event_getState:status_val=" + status_val)
+            return status_val
+            }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            let eventGetStateError = { title : "Error getting event state", detail: "Error occured" }
+            this.handleError(eventGetStateError, true)
+        } // catch
+    } // Event_getState
 
     // 
     Event_changeStateToCompetitionInProgress = async (eventId) => {
-        console.log("App::Event_changeStateToCompetitionInProgress: eventId=" + eventId)
-        await this.state.contract.methods.adminStartEvent(eventId).send({ from: this.getAccounts() })
-        // Event
-    }
+        try {
+            console.log("App::Event_changeStateToCompetitionInProgress: eventId=" + eventId)
+            await this.state.contract.methods.adminStartEvent(eventId).send({ from: this.getAccounts() })
+            // Data refresh : Handled by event
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            let eventChangeStateToCompetitionInProgressError = { title : "Error promoting event state to In progress", detail: "Error occured" }
+            this.handleError(eventChangeStateToCompetitionInProgressError, true)
+        } // catch
+    } // Event_changeStateToCompetitionInProgress
 
     Event_changeStateToRewardDistribution = async (eventId) => {
         try {
@@ -568,19 +606,22 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            this.handleError(error, true)
+            let eventChangeStateToRewardDistributionError = { title : "Error promoting event state to Rewards distribution", detail: "Error occured" }
+            this.handleError(eventChangeStateToRewardDistributionError, true)
         } // catch
-
-/*
-
-*/
-
-    }
+    } // Event_changeStateToRewardDistribution
 
     Event_setWinner = async (eventId, winnerAddress) => {
-        console.log("App::Event_setWinner: event.eventId=" + eventId+" winnerAddress="+winnerAddress)
-        const connectedAccount = this.getAccounts();
-        await this.state.contract.methods.adminSetWinner(eventId, winnerAddress).send({ from: connectedAccount })
+        try {
+            console.log("App::Event_setWinner: event.eventId=" + eventId+" winnerAddress="+winnerAddress)
+            const connectedAccount = this.getAccounts();
+            await this.state.contract.methods.adminSetWinner(eventId, winnerAddress).send({ from: connectedAccount })
+                // Data refresh : Handled by event
+        }
+        catch (error) {
+            // Catch any errors for any of the above operations.
+            this.handleError(error, true)
+        } // catch
     }
 
     Event_changeStateToRewardDistributed = async (eventId) => {
@@ -727,12 +768,8 @@ class App extends Component {
     handleError = (error, bLogToConsole, bshowAlertPopup) => {
         // const { t } = this.props;
         // Default values
-        let newAlert = { level: "error", "title" : "error", detail: "Error occured", time: format_TimeMsToDate(new Date()) }
-
-        // let now = new Date();
-//        // newAlert.time = now.toLocaleDateString(t("Formats.date")) + " " +
-//        //   new Intl.DateTimeFormat(t("Formats.date"), { hour: "numeric", minute: "numeric", second: "numeric", timeZoneName: "short" }).format()
-        // newAlert.time = format_TimeMsToDate(now)
+        let newAlert = { level: "error", title : "error", detail: "Error occured", dateTime: format_TimeMsToDate(new Date()) }
+        let handleErrorOptions = this.toast_options
 
         if (bLogToConsole) {
             console.error(error);
@@ -761,8 +798,6 @@ class App extends Component {
                 newAlert.detail = truncateString(error.message, 50)
                 // error
               } // default
-
-            
 
             // if (error.message !== undefined) {
             //     // newAlert.detail = truncateString(error.message, 50)
@@ -793,26 +828,30 @@ class App extends Component {
                 newAlert.message = "Error"//t("Errors.default.message")
             }
             //  newAlert.detail = truncateString(error, 100)
-            newAlert.detail = error.message
+            newAlert.detail = (error.message!==undefined ? error.message:"")
         } // else
         
+        
+
+        const toastMsg =  newAlert.dateTime + " - " + newAlert.title + ( newAlert.detail != undefined && newAlert.detail.length>0 ? " : " + newAlert.detail : "")  
+
         switch (alert.level)
         {
             case 'info':
-                toast.info( newAlert.detail, {...this.toast_options, autoClose: 10000});
+                toast.info( toastMsg, {...handleErrorOptions, autoClose: 10000});
             break;
 
             case 'success':
-                toast.success( newAlert.detail, {...this.toast_options, autoClose: 10000});
+                toast.success( toastMsg, {...handleErrorOptions, autoClose: 10000});
             break;
 
             case 'warning':
-                toast.warn( newAlert.detail, {...this.toast_options, autoClose: 30000});
+                toast.warn( toastMsg, {...handleErrorOptions, autoClose: 30000});
             break;
 
             case 'error':
             default:
-                toast.error( newAlert.detail, {...this.toast_options, autoClose: false});
+                toast.error( toastMsg, {...handleErrorOptions, autoClose: false});
             break;
         }
 
@@ -823,8 +862,8 @@ class App extends Component {
     MedalVerse_SetEventHandler = (_eventID) => {
         // console.log("App::MedalVerse_SetEventHandler:_eventID=" + _eventID)
         // const connectedAccountAddr = this.getAccounts()
-        const medalVerseContractInstance = this.state.contract
         //   const { t } = this.props;
+        const medalVerseContractInstance = this.state.contract
 
         let eventID = parseInt(_eventID)
         if (isNaN(eventID)) {
@@ -838,12 +877,11 @@ class App extends Component {
             throw error
         }
 
-
-        // Mise en place du handler pour les évènements du contrat
         // https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#events-allevents
 
         if (medalVerseContractInstance.medalVerseContractEvents === undefined) {
-            var medalVerseContractEvents = medalVerseContractInstance.events.allEvents
+        // Create event handler
+        var medalVerseContractEvents = medalVerseContractInstance.events.allEvents
                 (
                     { fromBlock: 'latest' },
                     (error, result) => {
@@ -873,6 +911,7 @@ class App extends Component {
                     { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined") }
                     this.updateOrganizationsEventOnEvent( event.returnValues.eventID, userOrganizations)
                 }
+                // Event
                 else if ( event.event === "eventWinnerSet" )
                 {
                     console.log("eventStatusChanged")
@@ -883,26 +922,32 @@ class App extends Component {
                     { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined") }
                     this.updateOrganizationsEventOnEvent( event.returnValues.eventID, userOrganizations)
                 }
+                // Event
                 else if ( event.event === "MedalAdded" )
                 {
                     console.log("MedalAdded")
                 }
+                // Event
                 else if ( event.event === "sportsmanMedalAdded" )
                 {
                     console.log("sportsmanMedalAdded")
                 }
+                // Event
                 else if ( event.event === "sportsmanUnregisterdEvent" )
                 {
                     console.log("sportsmanUnregisterdEvent")
                 }
+                // Event
                 else if ( event.event === "sportsmanRegisterdEvent" )
                 {
                     console.log("sportsmanRegisterdEvent")
                 }
+                // Event
                 else if ( event.event === "sportsmanAdded" )
                 {
                     console.log("sportsmanAdded")
                 }
+                // Unknown Event
                 else
                 {
                     console.error("Unknown event : %s", event.event)
@@ -913,7 +958,6 @@ class App extends Component {
         } // erc20ContractInstance.medalVerseContractEvents === undefined
 
     }; // MedalVerse_SetEventHandler
-
 
 } // class App
 
