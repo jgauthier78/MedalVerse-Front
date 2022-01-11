@@ -1,5 +1,3 @@
-:root { --medalverse-light-blue-color: #05b5ff; --medalverse-header-color-95: rgba(53, 112, 238, 0.95)}
-
 .justify-text {
   text-align:justify;  
   text-justify:inter-character;
@@ -556,7 +554,12 @@ section::after {
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
   --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --medalverse-light-blue-color: #05b5ff;
+  --medalverse-toast-color:  rgba(86, 135, 239, 0.95)
+  
+}
 
 *,
 *::before,
@@ -17377,18 +17380,30 @@ td.rdtYear:hover {
 /* Toastify customizations */
 
 .Toastify__toast--error {
-  background: var(--medalverse-header-color-95) !important;
-  color: #000
+  background: var(--medalverse-toast-color) !important;
+  color: #000;
+  font-size: smaller;
+  padding: 0px;
+  padding-bottom: 5px
 }
 .Toastify__toast--success {
-background: var(--medalverse-header-color-95) !important;
-color: #000
+background: var(--medalverse-toast-color) !important;
+color: #000;
+font-size: smaller;
+padding: 0px;
+padding-bottom: 5px
 }
 .Toastify__toast--warning {
-background: var(--medalverse-header-color-95) !important;
-color: #000
+background: var(--medalverse-toast-color) !important;
+color: #000;
+font-size: smaller;
+padding: 0px;
+padding-bottom: 5px
 }
 .Toastify__toast-body {
-  background: var(--medalverse-header-color-95) !important;
-  color: #000
+  background: var(--medalverse-toast-color) !important;
+  color: #000;
+  font-size: smaller;
+  padding: 0px;
+  padding-bottom: 5px
 } 

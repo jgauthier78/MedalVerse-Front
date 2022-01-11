@@ -597,7 +597,7 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            let eventChangeStateToCompetitionInProgressError = { title: "Error occured", message : "Error promoting event state to In progress"  }
+            let eventChangeStateToCompetitionInProgressError = { title: "Error occured", message : "Error promoting event state to 'In progress'"  }
             this.showEvent(eventChangeStateToCompetitionInProgressError, error, true)
         } // catch
     } // Event_changeStateToCompetitionInProgress
@@ -610,7 +610,7 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            let eventChangeStateToRewardDistributionError = { title: "Error occured", message : "Error promoting event state to Rewards distribution" }
+            let eventChangeStateToRewardDistributionError = { title: "Error occured", message : "Error promoting event state to 'Rewards distribution'" }
             this.showEvent(eventChangeStateToRewardDistributionError, error, true)
         } // catch
     } // Event_changeStateToRewardDistribution
@@ -894,15 +894,13 @@ class App extends Component {
 
             case 'error':
             default:
-                toast.error(    <div>
-                                    <div style={{fontWeight: 'lighter', fontSize: 'small' }}>{newEvent.dateTime}</div>
-                                    <hr/>
-                                    <div style={{fontWeight: 'bold' }}>{newEvent.title}</div>
-                                    <br/>{newEvent.message}
-                                    {
-                                        newEvent.detail
-                                        &&
-                                        <div><hr/>{newEvent.detail}</div>
+                toast.error(    <div style={{ padding: '0px' }}>
+                                    <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
+                                    <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
+                                    <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
+                                    {newEvent.detail
+                                     &&
+                                    <>{newEvent.detail}</>
                                     }
                                 </div>
                     , {...eventDisplayOptions, autoClose: 120000, toastId: this.props.toastId });
