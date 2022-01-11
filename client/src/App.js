@@ -804,37 +804,38 @@ class App extends Component {
         newEvent.message = (mvEvent.message!==undefined && mvEvent.message.length>0 ? mvEvent.message:"")
         
         // Extra error info.
-        if (catchedError.code !== undefined) {
+        if (catchedError.code !== undefined)
+        {
             // Metamask / Web3 errors
             // https://github.com/MetaMask/eth-rpc-errors/blob/main/src/error-constants.ts
-              if (catchedError.code === 4001) {
-                newEvent.detail = "User denied message signature"
-              } // 4001
-              if (catchedError.code === 4100) {
-                newEvent.detail = "Unauthorized"
-              } // 4100
-              if (catchedError.code === 4900) {
-                newEvent.detail = "Disconnected"
-              } // 4900
-             
-              else if (catchedError.code === -32003) {
-                newEvent.detail = "Transaction rejected"
-              } // -32003
-              else if (catchedError.code === -32603) {
-                newEvent.detail = "The tx doesn't have the correct nonce."
-              } // -32603
-
-              else if (catchedError.code === -4900) {
-                newEvent.detail = "The provider is disconnected from all chains"
-              } // -4900
-              else if (catchedError.code === -4901) {
-                newEvent.detail = "he provider is disconnected from the specified chain"
-              } // -4901
-
-               else {
-                newEvent.detail = "Transaction error" + truncateString(mvEvent.message, 70)
-                // error
-              } // default
+            if (catchedError.code === 4001) {
+            newEvent.detail = "User denied message signature" // t("Errors.RPC.4001.message")
+            } // 4001
+            else if (catchedError.code === 4100) {
+            newEvent.detail = "Unauthorized"
+            } // 4100
+            else if (catchedError.code === 4900) {
+            newEvent.detail = "Disconnected"
+            } // 4900
+            //
+            else if (catchedError.code === -32003) {
+            newEvent.detail = "Transaction rejected"
+            } // -32003
+            else if (catchedError.code === -32603) {
+            newEvent.detail = "The tx doesn't have the correct nonce."
+            } // -32603
+            //
+            else if (catchedError.code === -4900) {
+            newEvent.detail = "The provider is disconnected from all chains"
+            } // -4900
+            else if (catchedError.code === -4901) {
+            newEvent.detail = "he provider is disconnected from the specified chain"
+            } // -4901
+            //
+            else {
+            newEvent.detail = "Transaction error " + truncateString(mvEvent.message, 70)
+            // error
+            } // default
         }
 
         // Increment toastId

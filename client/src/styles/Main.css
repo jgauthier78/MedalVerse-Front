@@ -1,3 +1,5 @@
+:root { --medalverse-light-blue-color: #05b5ff; --medalverse-header-color-95: rgba(53, 112, 238, 0.95)}
+
 .justify-text {
   text-align:justify;  
   text-justify:inter-character;
@@ -82,7 +84,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#024057",endCo
 
 }
 .MedalColor {
-  color: #05b5ff;
+  color: var(--medalverse-light-blue-color);
 }
 .VerseColor {
  color: #c71fe9;
@@ -17371,3 +17373,22 @@ td.rdtYear:hover {
   width: 1%; }
 
 /*# sourceMappingURL=argon-design-system-react.css.map */
+
+/* Toastify customizations */
+
+.Toastify__toast--error {
+  background: var(--medalverse-header-color-95) !important;
+  color: #000
+}
+.Toastify__toast--success {
+background: var(--medalverse-header-color-95) !important;
+color: #000
+}
+.Toastify__toast--warning {
+background: var(--medalverse-header-color-95) !important;
+color: #000
+}
+.Toastify__toast-body {
+  background: var(--medalverse-header-color-95) !important;
+  color: #000
+} 
