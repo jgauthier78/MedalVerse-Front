@@ -4,20 +4,24 @@ const extractOrganizerEventsFromProfile = (organizerProfile) => {
 // Browse User Organizations, Organization events : return all events
 const extractOrganizerEventsFromUserOrganizations = (userOrganizations) =>
 {
-    // Browse userOrganizations
-    let events = userOrganizations.map( (organization /*, index, array*/) =>
+    if (Array.isArray(userOrganizations))
     {
-        // Browse organization events
-        let newEvents = organization.events.map( (event /*, index, array*/) =>
+        // Browse userOrganizations
+        let events = userOrganizations.map( (organization /*, index, array*/) =>
         {
-        // on rattache l'organisation à chaque event
-        // event.organization=organization
-        return event
+            // Browse organization events
+            let newEvents = organization.events.map( (event /*, index, array*/) =>
+            {
+            // on rattache l'organisation à chaque event
+            // event.organization=organization
+            return event
+            })
+        return newEvents 
         })
-    return newEvents 
-    })
-    // Flatten returned events
-    return events.flat()
+        // Flatten returned events
+        return events.flat()
+    }
+    return undefined
  }
 
 // Filters criterias
@@ -62,37 +66,53 @@ const eventFilterCriteria_IncomingEvents = (event) =>
 // Basic filter, eliminates inactiv events
 const filterActivEvents = (events) =>
 {
-    return events.filter ( (event /*, index, array*/) => {
-        // console.log(event)
-        return eventFilterCriteria_Activ(event)
-    })
+    if (Array.isArray(events))
+    {
+        return events.filter ( (event /*, index, array*/) => {
+            // console.log(event)
+            return eventFilterCriteria_Activ(event)
+        })
+    }
+    return undefined
 }
 
 // Filters current events
 const filterCurrentEvents = (events) =>
 {
-    return events.filter ( (event /*, index, array*/) => {
-        // console.log(event)
-        return eventFilterCriteria_CurrentEvents(event)
-    })
+    if (Array.isArray(events))
+    {
+        return events.filter ( (event /*, index, array*/) => {
+            // console.log(event)
+            return eventFilterCriteria_CurrentEvents(event)
+        })
+    }
+    return undefined
 }
 
 // Filters ended events
 const filterEndedEvents = (events) =>
 {
-    return events.filter ( (event /*, index, array*/) => {
-        // console.log(event)
-        return eventFilterCriteria_EndedEvents(event)
-    })
+    if (Array.isArray(events))
+    {
+        return events.filter ( (event /*, index, array*/) => {
+            // console.log(event)
+            return eventFilterCriteria_EndedEvents(event)
+        })
+    }
+    return undefined
 }
 
 // Filters incoming events
 const filterIncomingEvents = (events) =>
 {
-    return events.filter ( (event /*, index, array*/) => {
-        // console.log(event)
-        return eventFilterCriteria_IncomingEvents(event)
-    })
+    if (Array.isArray(events))
+    {
+        return events.filter ( (event /*, index, array*/) => {
+            // console.log(event)
+            return eventFilterCriteria_IncomingEvents(event)
+        })
+    }
+    return undefined
 }
 
 // Sorting
@@ -104,7 +124,11 @@ const compareEventsDates = (event1, event2) =>
 
 const sortEventsByDate = (events) =>
 {
-    return events.sort(compareEventsDates)
+    if (Array.isArray(events))
+    {
+        return events.sort(compareEventsDates)
+    }
+    return undefined
 }
 
 

@@ -20,7 +20,7 @@
       "athletes" : "Athlètes",
       "competitors" : "Competitors",
       "won" : "won",
-      "address" : "addresse",
+      "address" : "adresse",
       "action" : "action",
       "actions": {
         "setWinner": "Déclarer vainqueur"
@@ -41,6 +41,15 @@
     "walletConnect": {
       "title" : "Connection au Wallet",
       "body" : "En cours ..."
+    },
+    "menu" :{
+      "presentation" : "Présentation",
+      "trophy" : "Trophy Factory",
+      "creation" : "Creation Factory",
+      "fanplace" : "Fan Place",
+      "gallery" : "Galerie",
+      "roadmap" : "Feuille de route",
+      "language" : "Langue"
     }
   },
   "homePage": {
@@ -105,8 +114,13 @@
       }
     }
   },
-  "bandeau": {
-    "title": "MedalVerse"
+  "bandeauTitre": {
+    "title": "MedalVerse",
+    "text": "Entrez dans l’univers des Récompenses NFT"
+  },
+  "QuatriemeBandeau": {
+    "title": "Communauté",
+    "text": "Organisateurs, Sportifs, Fans: Rejoignez-nous !"
   },
   "account": {
     "address": "Adresse : : "
@@ -128,16 +142,17 @@
     "date": "fr-FR"
   },
   "Errors": {
-    "contractUndefined": "Can't load contract. Wrong blockchain ?",
-    "4001": {
-      "title": "Transaction signature denied",
-      "message": "User denied message signature",
-      "variant": "warning"
+    "MedalVerse": {
+      
     },
-    "default": {
-      "title": "Erreur",
-      "message": "Erreur",
-      "variant": "danger"
+    "RPC": {
+      "4001": {
+        "message": "User denied message signature"
+      },
+      "32603": {
+        "message": "The tx doesn't have the correct nonce."
+      }
     }
+
   }
 }

@@ -39,3 +39,6 @@ client/*.zip
 client/*.7z
 *.zip
 *.7z
+
+# Commenter pour déployer
+client/src/contracts

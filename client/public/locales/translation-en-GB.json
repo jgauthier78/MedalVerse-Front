@@ -41,6 +41,15 @@
     "walletConnect": {
       "title" : "Connecting to wallet",
       "body" : "loading ..."
+    },
+    "menu" :{
+      "presentation" : "Presentation",
+      "trophy" : "Trophy Factory",
+      "creation" : "Creation Factory",
+      "fanplace" : "Fan Place",
+      "gallery" : "Gallery",
+      "roadmap" : "Roadmap",
+      "language" : "Language"
     }
   },
   "homePage": {
@@ -107,8 +116,13 @@
       }
     }
   },
-  "bandeau": {
-    "title": "MedalVerse"
+  "bandeauTitre": {
+    "title": "MedalVerse",
+    "text": "Be part of the NFT rewards universe"
+  },
+  "QuatriemeBandeau": {
+    "title": "Community",
+    "text": "Sports event organizer, Athelets, Fans: Join us !"
   },
   "account": {
     "address": "address : "
@@ -130,16 +144,16 @@
     "date": "en-GB"
   },
   "Errors": {
-    "contractUndefined": "Can't load contract. Wrong blockchain ?",
-    "4001": {
-      "title": "Transaction signature denied",
-      "message": "User denied message signature",
-      "variant": "warning"
+    "MedalVerse": {
+      
     },
-    "default": {
-      "title": "Erreur",
-      "message": "Erreur",
-      "variant": "danger"
+    "RPC": {
+      "4001": {
+        "message": "User denied message signature"
+      },
+      "32603": {
+        "message": "The tx doesn't have the correct nonce."
+      }
     }
   }
 }

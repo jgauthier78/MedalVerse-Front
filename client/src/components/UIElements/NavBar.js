@@ -1,43 +1,32 @@
-/* React */
-import React from "react";
+// React - Bootstrap
+import { Container,/*NavDropdown,*/ Nav, Navbar, NavItem, NavDropdown } from "react-bootstrap";
 
-/* React - Bootstrap*/
-import { Container, NavDropdown, Nav, Navbar, NavItem } from "react-bootstrap";
-
-// import { Link } from "react-router-dom"
 import { Link } from 'react-scroll'
 
-/* Translation */
+// Translation
 import { useTranslation } from 'react-i18next';
+import i18n from '../../utils/i18n';
 
-
-/* Icônes */
+// Icons
 import { BoxArrowInRight, BoxArrowRight, Trophy } from 'react-bootstrap-icons';
-
-/* CSS */
+// CSS
 import "../../styles/NavBar.css";
 import { Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import NavScroll from "./NavLink";
 
+import { ReactComponent as FR_FLAG } from './../flags/FR.svg';
+import { ReactComponent as ENGLISH_FLAG } from './../flags/English_language.svg';
 
-
-const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, isLanding, isAthlete, setPannel }) => {
+const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks, isLanding, isAthlete, setPannel }) => {
 
   const { t } = useTranslation();
-  /*
-     return (
-      <Container>
-        <nav>
-          <Link to="/"> {t("menu.home")} </Link>
-          <Link to="/profile"> {t("menu.home.profile")} </Link>
-          <Link to="/simpleStorage"> {t("menu.home.simpleStorage")} </Link>
-        </nav>
-    </Container>
-  */
+  const changeLanguage = (lng) => { i18n.changeLanguage(lng) }
+
   const textStyleCentered = "text-light text-center";
-  const textStyleLeft = "text-light text-left";
+  // const textStyleLeft = "text-light text-left";
   const textStyleRight = "text-light text-right";
+
 
   return (
 
@@ -53,12 +42,12 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, is
 
             {isLanding === "true" ? (
               <>
-                <NavScroll label={"Présentation"} linkTo="pres" />
-                <NavScroll label={"Trophy Factory"} linkTo="trophy" />
-                <NavScroll label={"Creation Factory"} linkTo="creation" />
-                <NavScroll label={"Fan Place"} linkTo="fan" />
-                <NavScroll label={"Galerie"} linkTo="galerie" />
-                <NavScroll label={"Roadmap"} linkTo="timeline" />
+                <NavScroll label={t("LandingPage.menu.presentation")} linkTo="pres" />
+                <NavScroll label={t("LandingPage.menu.trophy")} linkTo="trophy" />
+                <NavScroll label={t("LandingPage.menu.creation")} linkTo="creation" />
+                <NavScroll label={t("LandingPage.menu.fanplace")} linkTo="fan" />
+                <NavScroll label={t("LandingPage.menu.gallery")} linkTo="galerie" />
+                <NavScroll label={t("LandingPage.menu.roadmap")} linkTo="timeline" />
 
               </>
             )
@@ -73,7 +62,16 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, is
             )
               : (<></>)
             }
-
+            <NavDropdown title={t("LandingPage.menu.language")} id="basic-nav-dropdown" >
+              {i18n.language !== 'en'
+                &&
+                <NavDropdown.Item style={{ padding: '0px 0px 0px 20px' }} onClick={() => changeLanguage('en')}><ENGLISH_FLAG style={{ width: '110px', height: '110px' }} /></NavDropdown.Item>
+              }
+              {i18n.language === 'en'
+                &&
+                <NavDropdown.Item style={{ padding: '0px 0px 0px 20px' }} onClick={() => changeLanguage('fr-FR')}><FR_FLAG style={{ width: '110px', height: '100px' }} /></NavDropdown.Item>
+              }
+            </NavDropdown>
           </Nav>
 
           <Nav className="align-items-lg-center ml-lg-auto" navbar>

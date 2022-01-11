@@ -1,30 +1,22 @@
-/* React */
-import React from "react";
+// React - Bootstrap
+import { Container, Col, Row } from 'react-bootstrap';
 
-/* React - Bootstrap*/
-import Container from "react-bootstrap/esm/Container";
-
-/* Icônes */
+// Icons
 import { Clock } from 'react-bootstrap-icons';
 
 const Loading = ( /* {  } */ ) =>
 {
    return (
-    <Container>
-      <table className="table table-bordered">
-      <tbody>
-        <tr className='table-info'>
-          <td className='info'>
-          Loading ... <Clock style={{verticalAlign: '-10%'}}/>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <Container fluid expand="lg">
+      <Row style={{backgroundColor: 'rgba(53, 112, 238, 0.829)'}}>
+        <Col xs lg="12" style={{ height: '70px'}}>
+        Loading ... <Clock style={{verticalAlign: '-10%'}}/>
+        </Col>
+      </Row>
   </Container>
 
-
   ); // render
-
+    
 } // Toolbar
 
 export default Loading ;
