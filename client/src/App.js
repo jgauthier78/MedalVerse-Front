@@ -103,6 +103,7 @@ class App extends Component {
             userMedals: null,
             userEvents: null,
             userOrganizations: null,
+            toastId: 0 // Toasts unique id
         }
 
 
@@ -311,7 +312,8 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            this.handleError(error, true)
+            let accountsUpdatedError = { title : "Error updating account", message: "Error occured" }
+            this.showEvent(accountsUpdatedError, error, true)
         } // catch
     }
 
@@ -349,7 +351,8 @@ class App extends Component {
             }
         catch (error) {
             // Catch any errors for any of the above operations.
-            this.handleError(error, true)
+            let getAthleteEventsError = { title : "Error loading", message: "Error occured while loading athlete events" }
+            this.showEvent(getAthleteEventsError, error, true)
         } // catch
     }
 
@@ -398,7 +401,8 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            this.handleError(error, true)
+            let getUserMedalsError = { title : "Error loading", message: "Error occured while loading athlete medals" }
+            this.showEvent(getUserMedalsError, error, true)
         } // catch
     }
 
@@ -490,8 +494,8 @@ class App extends Component {
         } // try
         catch (error) {
             // Catch any errors for any of the above operations.
-            let getOrganizerOrganisationsError = { title : "Error loading organizer events", detail: "Error occured" }
-            this.handleError(getOrganizerOrganisationsError, true)
+            let getOrganizerOrganisationsError = { title : "Error occured", message: "Error loading organizer events" }
+            this.showEvent(getOrganizerOrganisationsError, error, true)
         } // catch
     } // getOrganizerOrganisations
 
@@ -503,8 +507,8 @@ class App extends Component {
         } // try
         catch (error) {
             // Catch any errors for any of the above operations.
-            let adminSetWinnerError = { title : "Error setting winner", detail: "Error occured" }
-            this.handleError(adminSetWinnerError, true)
+            let adminSetWinnerError = { title : "Error occured", message: "Error setting winner" }
+            this.showEvent(adminSetWinnerError, error, true)
         } // catch
     } // adminSetWinner
 
@@ -519,8 +523,8 @@ class App extends Component {
         } // try
         catch (error) {
             // Catch any errors for any of the above operations.
-            let adminAddMedalError = { title : "Error medalling athlete", detail: "Error occured" }
-            this.handleError(adminAddMedalError, true)
+            let adminAddMedalError = { title : "Error occured", message: "Error medalling athlete" }
+            this.showEvent(adminAddMedalError, error, true)
         } // catch
     } // adminAddMedal
 
@@ -533,8 +537,8 @@ class App extends Component {
         } // try
         catch (error) {
             // Catch any errors for any of the above operations.
-            let createNFTError = { title : "Error creating NFT", detail: "Error occured" }
-            this.handleError(error, true)
+            let createNFTError = { title : "Error occured", message: "Error creating NFT" }
+            this.showEvent(createNFTError, error, true)
         } // catch
     } // adminAddMedal
 
@@ -579,8 +583,8 @@ class App extends Component {
             }
         catch (error) {
             // Catch any errors for any of the above operations.
-            let eventGetStateError = { title : "Error getting event state", detail: "Error occured" }
-            this.handleError(eventGetStateError, true)
+            let eventGetStateError = { title: "Error occured", message : "Error getting event state" }
+            this.showEvent(eventGetStateError, error, true)
         } // catch
     } // Event_getState
 
@@ -593,8 +597,8 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            let eventChangeStateToCompetitionInProgressError = { title : "Error promoting event state to In progress", detail: "Error occured" }
-            this.handleError(eventChangeStateToCompetitionInProgressError, true)
+            let eventChangeStateToCompetitionInProgressError = { title: "Error occured", message : "Error promoting event state to In progress"  }
+            this.showEvent(eventChangeStateToCompetitionInProgressError, error, true)
         } // catch
     } // Event_changeStateToCompetitionInProgress
 
@@ -606,8 +610,8 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            let eventChangeStateToRewardDistributionError = { title : "Error promoting event state to Rewards distribution", detail: "Error occured" }
-            this.handleError(eventChangeStateToRewardDistributionError, true)
+            let eventChangeStateToRewardDistributionError = { title: "Error occured", message : "Error promoting event state to Rewards distribution" }
+            this.showEvent(eventChangeStateToRewardDistributionError, error, true)
         } // catch
     } // Event_changeStateToRewardDistribution
 
@@ -620,14 +624,22 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            this.handleError(error, true)
+            let eventSetWinnerError = { title: "Error occured", message : "Error nominating winner" }
+            this.showEvent(eventSetWinnerError, error, true)
         } // catch
     }
 
     Event_changeStateToRewardDistributed = async (eventId) => {
-        console.log("App::Event_changeStateToRewardDistributed: eventId=" + eventId)
-        const connectedAccount = this.getAccounts();
-        await this.state.contract.methods.adminGiveMedalToWinner(eventId).send({ from: connectedAccount })
+        try {
+            console.log("App::Event_changeStateToRewardDistributed: eventId=" + eventId)
+            const connectedAccount = this.getAccounts();
+            await this.state.contract.methods.adminGiveMedalToWinner(eventId).send({ from: connectedAccount })
+    }
+    catch (error) {
+        // Catch any errors for any of the above operations.
+        let eventChangeStateToRewardDistributedError = { title: "Error occured", message : "Error promoting event state to Rewards distributed" }
+        this.showEvent(eventChangeStateToRewardDistributedError, error, true)
+    } // catch
     }
 
     getEventData = async (eventId, organization) => {
@@ -746,7 +758,8 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            this.handleError(error, true)
+            let saveUserProfileError = { title: "Error occured", message : "Error saving user profile" }
+            this.showEvent(saveUserProfileError, error, true)
         } // catch
 
     } // handleSaveUserProfile
@@ -755,8 +768,6 @@ class App extends Component {
         this.handleSaveUserProfile(profile)
     } // handleOrganizerSaveProfile
 
-
-
     /* ************************************
       errorHandlers
     
@@ -764,94 +775,136 @@ class App extends Component {
     /* -------------------------------
       Smart contract errors
      -------------------------------- */
+     /*
+    { title : "Error occured", message: "Something weird happened", level: "warning" }
+    { title : "Tudo bom", message: "Descontrair", level: "success" }
+     */
 
-    handleError = (error, bLogToConsole, bshowAlertPopup) => {
+    showEvent = (mvEvent, catchedError, bLogToConsole=false, bshowAlertPopup) => {
         // const { t } = this.props;
         // Default values
-        let newAlert = { level: "error", title : "error", detail: "Error occured", dateTime: format_TimeMsToDate(new Date()) }
-        let handleErrorOptions = this.toast_options
+        let newEvent = { level: "error", title : "Error", message: "Error occured", dateTime: format_TimeMsToDate(new Date()) }
+        let eventDisplayOptions = this.toast_options
 
         if (bLogToConsole) {
-            console.error(error);
+            console.error(mvEvent);
+            console.error(catchedError);
         }
         if (bshowAlertPopup) {
-            //alert(t("Errors.default.title") + "\n" + error)
-            alert("Error\n" + error)
+            alert("Error\n" + mvEvent)
             return
         }
+        if (mvEvent.title !== undefined) {
+            newEvent.title = mvEvent.title
+        }
+        if (mvEvent.level !== undefined) {
+            newEvent.level = mvEvent.level
+        }
 
-        if (error.code !== undefined) {
+        newEvent.message = (mvEvent.message!==undefined && mvEvent.message.length>0 ? mvEvent.message:"")
+        
+        // Extra error info.
+        if (catchedError.code !== undefined) {
             // Metamask / Web3 errors
+            // https://github.com/MetaMask/eth-rpc-errors/blob/main/src/error-constants.ts
+              if (catchedError.code === 4001) {
+                newEvent.detail = "User denied message signature"
+              } // 4001
+              if (catchedError.code === 4100) {
+                newEvent.detail = "Unauthorized"
+              } // 4100
+              if (catchedError.code === 4900) {
+                newEvent.detail = "Disconnected"
+              } // 4900
+             
+              else if (catchedError.code === -32003) {
+                newEvent.detail = "Transaction rejected"
+              } // -32003
+              else if (catchedError.code === -32603) {
+                newEvent.detail = "The tx doesn't have the correct nonce."
+              } // -32603
 
-              if (error.code === 4001) {
-                newAlert.title = "Transaction signature denied"
-                newAlert.detail = "User denied message signature"
-                newAlert.level = "warning"
-              } // 4001
-              else if (error.code === -32603) {
-                newAlert.title = "Transaction signature denied"
-                newAlert.detail = "User denied message signature"
-                newAlert.level = "warning"
-              } // 4001
-              else {
-                newAlert.title = "Transaction error"
-                newAlert.detail = truncateString(error.message, 50)
+              else if (catchedError.code === -4900) {
+                newEvent.detail = "The provider is disconnected from all chains"
+              } // -4900
+              else if (catchedError.code === -4901) {
+                newEvent.detail = "he provider is disconnected from the specified chain"
+              } // -4901
+
+               else {
+                newEvent.detail = "Transaction error" + truncateString(mvEvent.message, 70)
                 // error
               } // default
-
-            // if (error.message !== undefined) {
-            //     // newAlert.detail = truncateString(error.message, 50)
-            //     newAlert.detail = truncateString(error.message, 50)
-            // } // switch (error.code)
-
         }
-        else {
 
-            if (error.title !== undefined) {
-                newAlert.title = error.title
-            }
-            else {
-                newAlert.title = "Error"//t("Errors.default.title")
-            }
-
-            if (error.level !== undefined) {
-                newAlert.variant = error.level
-            }
-            else {
-                newAlert.variant = "danger"//t("Errors.default.variant")
-            }
-
-            if (error.message !== undefined) {
-                newAlert.message = error.message;
-            } // error.message !== undefined
-            else {
-                newAlert.message = "Error"//t("Errors.default.message")
-            }
-            //  newAlert.detail = truncateString(error, 100)
-            newAlert.detail = (error.message!==undefined ? error.message:"")
-        } // else
+        // Increment toastId
+        this.setState( (prevState/*, props*/) => {
+            return { toastId: prevState.toastId++ }
+        })
         
-        
-
-        const toastMsg =  newAlert.dateTime + " - " + newAlert.title + ( newAlert.detail != undefined && newAlert.detail.length>0 ? " : " + newAlert.detail : "")  
-
-        switch (alert.level)
+        switch (newEvent.level)
         {
-            case 'info':
-                toast.info( toastMsg, {...handleErrorOptions, autoClose: 10000});
+        case 'info':
+                toast.info  (   <div>
+                                    <div style={{fontWeight: 'lighter', fontSize: 'small' }}>{newEvent.dateTime}</div>
+                                    <hr/>
+                                    <div style={{fontWeight: 'bold' }}>{newEvent.title}</div>
+                                    <br/>{newEvent.message}
+                                    {
+                                        newEvent.detail
+                                        &&
+                                        <div><hr/>{newEvent.detail}</div>
+                                    }
+                                </div>
+                                ,
+                                     {...eventDisplayOptions, autoClose: 10000, toastId: this.props.toastId }
+                            );
             break;
 
             case 'success':
-                toast.success( toastMsg, {...handleErrorOptions, autoClose: 10000});
+                toast.success(  <div>
+                                    <div style={{fontWeight: 'lighter', fontSize: 'small' }}>{newEvent.dateTime}</div>
+                                    <hr/>
+                                    <div style={{fontWeight: 'bold' }}>{newEvent.title}</div>
+                                    <br/>{newEvent.message}
+                                    {
+                                        newEvent.detail
+                                        &&
+                                        <div><hr/>{newEvent.detail}</div>
+                                    }
+                                </div>
+                    , {...eventDisplayOptions, autoClose: 10000, toastId: this.props.toastId });
             break;
 
             case 'warning':
-                toast.warn( toastMsg, {...handleErrorOptions, autoClose: 30000});
+                toast.warn(     <div>
+                                    <div style={{fontWeight: 'lighter', fontSize: 'small' }}>{newEvent.dateTime}</div>
+                                    <hr/>
+                                    <div style={{fontWeight: 'bold' }}>{newEvent.title}</div>
+                                    <br/>{newEvent.message}
+                                    {
+                                        newEvent.detail
+                                        &&
+                                        <div><hr/>{newEvent.detail}</div>
+                                    }
+                                </div>
+                    , {...eventDisplayOptions, autoClose: 60000, toastId: this.props.toastId });
             break;
 
             case 'error':
             default:
-                toast.error( toastMsg, {...handleErrorOptions, autoClose: false});
+                toast.error(    <div>
+                                    <div style={{fontWeight: 'lighter', fontSize: 'small' }}>{newEvent.dateTime}</div>
+                                    <hr/>
+                                    <div style={{fontWeight: 'bold' }}>{newEvent.title}</div>
+                                    <br/>{newEvent.message}
+                                    {
+                                        newEvent.detail
+                                        &&
+                                        <div><hr/>{newEvent.detail}</div>
+                                    }
+                                </div>
+                    , {...eventDisplayOptions, autoClose: 120000, toastId: this.props.toastId });
             break;
         }
 
