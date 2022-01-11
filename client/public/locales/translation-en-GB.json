@@ -144,21 +144,16 @@
     "date": "en-GB"
   },
   "Errors": {
-    "contractUndefined": "Can't load contract. Wrong blockchain ?",
-    "4001": {
-      "title": "Transaction signature denied",
-      "message": "User denied message signature",
-      "level": "warning"
+    "MedalVerse": {
+      
     },
-    "32603": {
-      "title": "Wrong nonce",
-      "message": "The tx doesn't have the correct nonce.",
-      "level": "warning"
-    },
-    "default": {
-      "title": "Erreur",
-      "message": "Erreur",
-      "variant": "danger"
+    "RPC": {
+      "4001": {
+        "message": "User denied message signature"
+      },
+      "32603": {
+        "message": "The tx doesn't have the correct nonce."
+      }
     }
   }
 }
