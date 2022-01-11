@@ -275,9 +275,7 @@ class App extends Component {
         {
             let evnts = await this.getAthleteEvents(this.getAccounts())
             let usermedals = await this.getUserMedals(this.getAccounts())
-            console.log("+++++++++++++++")
-            console.log(evnts)
-            console.log("+++++++++++++++")
+
             this.setState({
                 userEvents: evnts,
                 userMedals: usermedals,
@@ -351,9 +349,7 @@ class App extends Component {
                         result.organisationDesc[idx] = await this.state.contract.methods.getOrganizationsList(result.eventList[idx].organizedBy, result.eventList[idx].organizedBy).call()
 
                     })) // await Promise.all
-                    console.log("-----------------")
-                    console.log(result)
-                    console.log("-----------------")
+
                     for (let u = 0; u < eventIndxList.length; u++) {
                         if (result.eventList[u].started == true) {
                             if (result.eventList[u].ended == false) {
