@@ -3,6 +3,8 @@
   top:0;
   position: fixed;
   z-index:100;
+  backdrop-filter: blur(8px);
+
 }
 #navbar-menu-nav-dropdown
 {

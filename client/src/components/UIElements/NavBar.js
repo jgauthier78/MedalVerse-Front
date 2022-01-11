@@ -12,11 +12,13 @@ import { BoxArrowInRight, BoxArrowRight, Trophy } from 'react-bootstrap-icons';
 // CSS
 import "../../styles/NavBar.css";
 import { Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import NavScroll from "./NavLink";
 
-import {ReactComponent as FR_FLAG} from './../flags/FR.svg';
-import {ReactComponent as ENGLISH_FLAG} from './../flags/English_language.svg';
+import { ReactComponent as FR_FLAG } from './../flags/FR.svg';
+import { ReactComponent as ENGLISH_FLAG } from './../flags/English_language.svg';
 
-const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks, isLanding }) => {
+const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks, isLanding, isAthlete, setPannel }) => {
 
   const { t } = useTranslation();
   const changeLanguage = (lng) => { i18n.changeLanguage(lng) }
@@ -40,28 +42,36 @@ const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks
 
             {isLanding === "true" ? (
               <>
-                <Nav.Link className={textStyleCentered}><Link to="pres" spy={true} smooth={false}>{t("LandingPage.menu.presentation")}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="trophy" spy={true} smooth={false}>{t("LandingPage.menu.trophy")}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="creation" spy={true} smooth={false}>{t("LandingPage.menu.creation")}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="fan" spy={true} smooth={false}>{t("LandingPage.menu.fanplace")}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="galerie" spy={true} smooth={false}>{t("LandingPage.menu.gallery")}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{t("LandingPage.menu.roadmap")}</Link></Nav.Link>
-                <NavDropdown title={t("LandingPage.menu.language")} id="basic-nav-dropdown" >
-                  {i18n.language !== 'en'
-                  &&
-                  <NavDropdown.Item style={{padding: '0px 0px 0px 20px'}} onClick={() => changeLanguage('en')}><ENGLISH_FLAG style={{  width: '110px', height : '110px' }} /></NavDropdown.Item>
-                  }
-                  {i18n.language === 'en'
-                  &&
-                  <NavDropdown.Item style={{padding: '0px 0px 0px 20px'}} onClick={() => changeLanguage('fr-FR')}><FR_FLAG style={{ width: '110px', height : '100px' }} /></NavDropdown.Item>
-                  }
-                </NavDropdown>
-               </>
+                <NavScroll label={t("LandingPage.menu.presentation")} linkTo="pres" />
+                <NavScroll label={t("LandingPage.menu.trophy")} linkTo="trophy" />
+                <NavScroll label={t("LandingPage.menu.creation")} linkTo="creation" />
+                <NavScroll label={t("LandingPage.menu.fanplace")} linkTo="fan" />
+                <NavScroll label={t("LandingPage.menu.gallery")} linkTo="galerie" />
+                <NavScroll label={t("LandingPage.menu.roadmap")} linkTo="timeline" />
+
+              </>
             )
               : (<></>)
             }
-
-
+            {isAthlete === "true" ? (
+              <>
+                <Nav.Link className={textStyleCentered} onClick={() => setPannel(0)}>{"Mon Profil"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => setPannel(1)}>{"Mes Evénements"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => setPannel(2)}>{"Ma Galerie"}</Nav.Link>
+              </>
+            )
+              : (<></>)
+            }
+            <NavDropdown title={t("LandingPage.menu.language")} id="basic-nav-dropdown" >
+              {i18n.language !== 'en'
+                &&
+                <NavDropdown.Item style={{ padding: '0px 0px 0px 20px' }} onClick={() => changeLanguage('en')}><ENGLISH_FLAG style={{ width: '110px', height: '110px' }} /></NavDropdown.Item>
+              }
+              {i18n.language === 'en'
+                &&
+                <NavDropdown.Item style={{ padding: '0px 0px 0px 20px' }} onClick={() => changeLanguage('fr-FR')}><FR_FLAG style={{ width: '110px', height: '100px' }} /></NavDropdown.Item>
+              }
+            </NavDropdown>
           </Nav>
 
           <Nav className="align-items-lg-center ml-lg-auto" navbar>

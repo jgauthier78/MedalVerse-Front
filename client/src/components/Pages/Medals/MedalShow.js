@@ -5,6 +5,7 @@ import { Card, Col, Container } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { format_Date } from "../../../utils/dateUtils";
 import { Table } from "react-bootstrap";
+import NavigateButton from "../../UIElements/NavigateButton";
 
 
 const to = i => ({ x: 0, y: i * -4, scale: 1, rot: -10 + Math.random() * 20, delay: i * 100 })
@@ -108,14 +109,39 @@ function AnimStack({ usrProfile, setString }) {
 let MedalShow = ({ userProfile }) => {
 
     return (
-        <Container className="col-md-9 col-lg-8 col-xl-8 mb-4">
-            <Card >
-                <CardHeader>Liste des Médailles</CardHeader>
+        <section className='section section-lg Height-1024'>
+            <Container className="mb-8 mt-8">
+                <div className='  col-xl-8 mx-auto'>
+                    <p className="display-6 text-black text-light ">{"Gérez vos Médailles:"}</p>
+                    <Card >
+                        <CardHeader>Liste des Médailles</CardHeader>
 
-                <AnimStack usrProfile={userProfile} />
+                        <AnimStack usrProfile={userProfile} />
 
-            </Card>
-        </Container >
+                    </Card>
+                </div>
+            </Container >
+            <div className=" ">
+                <NavigateButton linkTo="timeline" up="false" />
+            </div>
+
+            <div className="separator separator-bottom separator-skew">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    preserveAspectRatio="none"
+                    version="1.1"
+                    viewBox="0 0 2560 100"
+                    x="0"
+                    y="0"
+                >
+                    <polygon
+                        className="fill-gray"
+                        points="2560 0 2560 100 0 100"
+                    />
+                </svg>
+            </div>
+
+        </section>
     )
 }
 
