@@ -27,7 +27,7 @@ class EncourageBandeau extends Component {
 
                                 </p>
                                 <p className="display-6 text-black text-light">
-                                    {"Et particpez à "}
+                                    {"Et participez à "}
                                     <span className="">{this.props.userProfile.userEvents.nbEvents}
                                         {" événements "}</span>
 
