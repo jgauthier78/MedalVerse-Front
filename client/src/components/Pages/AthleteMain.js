@@ -15,6 +15,10 @@ import { Container } from "react-bootstrap";
 import ImageContainer from "../UIElements/ImageContainer";
 import TimelineMedals from "./Medals/TimelineMedals";
 import EventMaps from "./Events/EventMaps";
+import NavBarSpacer from "../UIElements/NavBarSpacer";
+import BkgVideo from "../UIElements/BkgVideo";
+import EncourageBandeau from "./Medals/EncourageBandeau";
+import EventList from "./Events/EventList";
 class SporstmanMain extends Component {
 
     constructor(props) {
@@ -39,37 +43,60 @@ class SporstmanMain extends Component {
 
             return (<Navigate to="/" />)
         }
+        // <SporstmanSideBar setPannel={this.setPannel} />
 
         return (
             <>
                 <div className=" profile-page" >
                     <Row className="flex-nowrap">
-                        <NavBar AppCallBacks={this.props.AppCallBacks} />
+                        <NavBar AppCallBacks={this.props.AppCallBacks} isAthlete="true" setPannel={this.setPannel} />
                     </Row>
+                    <NavBarSpacer />
                     <Row className="g-0">
 
-                        <SporstmanSideBar setPannel={this.setPannel} />
+
                         <Col className="Main-Content">
 
+                            <div id="profil" className=" row g-0">
+
+                                <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
+                            </div>
 
                             {this.state.curPannel === 0 ?
                                 <>
-                                    <ImageContainer options=" row g-0">
-                                        <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
-                                    </ImageContainer>
-                                    <section className="ss-style-triangles  row No-Left-Margin mt">
+
+                                    <div className=" row g-0">
+
+                                        <EncourageBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
+                                    </div>
+                                    <div id="medaille" className="bkg-gradient  ">
+                                        <MedalShow userProfile={this.props.userProfile} />
+                                    </div>
+                                    <section id="timeline" className="   No-Left-Margin ">
                                         <TimelineMedals userProfile={this.props.userProfile} />
 
                                     </section>
-                                    <MedalShow userProfile={this.props.userProfile} />
+
 
                                 </>
                                 : <></>
                             }
                             {this.state.curPannel === 1 ?
                                 <>
-                                    <EventsSubscribedAthlete userProfile={this.props.userProfile} />
-                                    <EventMaps userProfile={this.props.userProfile} />
+
+                                    <div className=" row g-0 bg-blue-gradiant Height-800">
+                                        <EventList userProfile={this.props.userProfile} />
+                                    </div>
+                                    <div id="carousel" className=" row g-0 bg-light-gray">
+                                        <EventsSubscribedAthlete userProfile={this.props.userProfile} />
+                                    </div>
+                                    <div className=" row g-0 bg-light-gray">
+                                        <h3 >Carte des événements à venir</h3>
+                                    </div>
+                                    <div id="carte" className=" row g-0 bg-light-gray">
+                                        <EventMaps userProfile={this.props.userProfile} />
+                                    </div>
+
                                 </>
                                 : <></>
                             }

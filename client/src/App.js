@@ -303,8 +303,38 @@ class App extends Component {
 
     /* Retourne la structure complete des évènements auxquels un user appartient */
     // devrait être appelée get(Athlete|Sportsman)Events ?
-/*
-    getUserEvents = async (account) => {
+    /*
+        getUserEvents = async (account) => {
+            let result = { nbEvents: 0, Event: null }
+            // We get the nb of events the sporsman registered to
+            let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
+            if (nbEvents > 0) {
+                result.nbEvents = nbEvents
+                // We get the list of events the sporsman registered to
+                let eventIndxList = await this.state.contract.methods.getSportsmanEventsSubscriptions(account).call()
+                if (eventIndxList.length > 0) {
+                    result.eventList = []
+                    result.organisationDesc = []
+                    // We now populate the structure
+    
+                    for (let i = 0; i < result.nbEvents; i++) {
+    
+                        console.log(eventIndxList[i])
+                        let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
+    
+                        result.eventList.push(val)
+                        let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.
+                            organizedBy).call()
+    
+                        result.organisationDesc.push(organisationDesc)
+                    }
+                }
+            }
+    
+            return result;
+        }
+    */
+    getAthleteEvents = async (account) => {
         let result = { nbEvents: 0, Event: null }
         // We get the nb of events the sporsman registered to
         let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
@@ -315,41 +345,14 @@ class App extends Component {
             if (eventIndxList.length > 0) {
                 result.eventList = []
                 result.organisationDesc = []
+                result.encoursEvent = []
+                result.encoursOrganisationDesc = []
+                result.nbEncours = 0
+                result.nbFini = 0
+                result.aVenir = 0
+
                 // We now populate the structure
-
-                for (let i = 0; i < result.nbEvents; i++) {
-
-                    console.log(eventIndxList[i])
-                    let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
-
-                    result.eventList.push(val)
-                    let organisationDesc = await this.state.contract.methods.getOrganizationsList(val.organizedBy, val.
-                        organizedBy).call()
-
-                    result.organisationDesc.push(organisationDesc)
-                }
-            }
-        }
-
-        return result;
-    }
-*/
-    getAthleteEvents = async (account) => {
-        let result = { nbEvents: 0, Event: null }
-        // We get the nb of events the sporsman registered to
-        let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
-        if (nbEvents > 0)
-        {
-            result.nbEvents = nbEvents
-            // We get the list of events the sporsman registered to
-            let eventIndxList = await this.state.contract.methods.getSportsmanEventsSubscriptions(account).call()
-            if (eventIndxList.length > 0)
-            {
-                result.eventList = []
-                result.organisationDesc = []
-                // We now populate the structure
-                await Promise.all(eventIndxList.map(async (eventId, idx) =>
-                {
+                await Promise.all(eventIndxList.map(async (eventId, idx) => {
                     console.log(eventIndxList[idx])
                     // let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
                     // result.eventList.push(val)
@@ -358,7 +361,18 @@ class App extends Component {
                     //     organizedBy).call()
                     // result.organisationDesc.push(organisationDesc)
                     result.organisationDesc[idx] = await this.state.contract.methods.getOrganizationsList(result.eventList[idx].organizedBy, result.eventList[idx].organizedBy).call()
+
                 })) // await Promise.all
+                for (let u = 0; u < eventIndxList.length; u++) {
+                    if (result.eventList[u].started == true) {
+                        if (result.eventList[u].ended == false) {
+                            result.encoursOrganisationDesc.push(result.organisationDesc[u])
+                            result.encoursEvent.push(result.eventList[u])
+                            result.nbEncours++;
+                        }
+                        else result.nbFini++
+                    } else result.aVenir++
+                }
             }
         }
         return result;
@@ -410,9 +424,8 @@ class App extends Component {
         result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
         // for (let i = 0; i < result.nbMedals; i++) {
 
-        let numbersArray = Array.from( Array( parseInt(result.nbMedals, 10) ).keys())
-        await Promise.all(numbersArray.map(async (_, idx) =>
-        {
+        let numbersArray = Array.from(Array(parseInt(result.nbMedals, 10)).keys())
+        await Promise.all(numbersArray.map(async (_, idx) => {
             let medalID = await this.state.contract.methods.getSportsmanMedal(account, idx).call()
             let medal = { success: null, org: null, event: null }
             medal.succes = await this.state.contract.methods.getMedal(medalID).call()
@@ -422,9 +435,7 @@ class App extends Component {
 
             // We get the list of winners for the medal
             let allWinners = await medalContract.methods.getAllWinners().call()
-            console.log("--------------")
-            console.log(allWinners)
-            console.log("--------------")
+
             let { 0: winnersString, 1: yearsOfVictory } = allWinners
             let nfdesc = {
                 name: await medalContract.methods.name().call(),
@@ -634,7 +645,7 @@ class App extends Component {
     }
 
     Event_setWinner = async (eventId, winnerAddress) => {
-        console.log("App::Event_setWinner: event.eventId=" + eventId+" winnerAddress="+winnerAddress)
+        console.log("App::Event_setWinner: event.eventId=" + eventId + " winnerAddress=" + winnerAddress)
         const connectedAccount = this.getAccounts();
         await this.state.contract.methods.adminSetWinner(eventId, winnerAddress).send({ from: connectedAccount })
     }
@@ -667,7 +678,7 @@ class App extends Component {
             stateOfCompetition: await this.Event_getState(eventId), // eventData.stateOfCompetition, <- undefined
             // -> crée une référence circulaire
             organization: organization
-            }
+        }
 
         //  console.log("stateOfCompetition="+event.stateOfCompetition)
         // Medal data
@@ -688,16 +699,14 @@ class App extends Component {
     updateOrganizerEvent = async (eventId, organization) => {
         let updatedEvent = await this.getEventData(eventId, organization)
         let userOrganizationEvents = organization.events
-        for (let userOrgEventIdx=0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++)
-        {
-            if (organization.events[userOrgEventIdx].eventId === eventId)
-            {
+        for (let userOrgEventIdx = 0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++) {
+            if (organization.events[userOrgEventIdx].eventId === eventId) {
                 organization.events[userOrgEventIdx] = updatedEvent
                 break
             } // if
         } // for
         // Update state
-        let userOrganizations = this.state.userOrganizations        
+        let userOrganizations = this.state.userOrganizations
         const newUserOrganizations = [...userOrganizations]
         this.setState({ userOrganizations: newUserOrganizations })
     }
@@ -706,30 +715,25 @@ class App extends Component {
         // REFRESH DATA
         console.log("eventId=" + eventId)
 
-        if (organizations===undefined)
-        { console.error("App::updateOrganizationsEventOnEvent:organizations===undefined") }
-        if (eventId===undefined)
-        { console.error("App::updateOrganizationsEventOnEvent:eventId===undefined") }
+        if (organizations === undefined) { console.error("App::updateOrganizationsEventOnEvent:organizations===undefined") }
+        if (eventId === undefined) { console.error("App::updateOrganizationsEventOnEvent:eventId===undefined") }
 
-        for (let orgIdx=0; orgIdx < organizations.length; orgIdx++)
-        {
+        for (let orgIdx = 0; orgIdx < organizations.length; orgIdx++) {
             let organization = organizations[orgIdx]
             console.log("organizations.id=" + organization.id)
             let organizationEvents = organization.events
-            for (let userOrgEventIdx=0; userOrgEventIdx < organizationEvents.length; userOrgEventIdx++)
-            {
+            for (let userOrgEventIdx = 0; userOrgEventIdx < organizationEvents.length; userOrgEventIdx++) {
                 let userOrganizationEvent = organizationEvents[userOrgEventIdx]
                 console.log("organizations.eventId=" + userOrganizationEvent.eventId)
 
-                if (eventId===userOrganizationEvent.eventId)
-                {
+                if (eventId === userOrganizationEvent.eventId) {
                     // Update event
                     this.updateOrganizerEvent(userOrganizationEvent.eventId, organization)
                     break
                 } // eventId===userOrganizationEvent.eventId
             } // for userOrgEventIdx
         } // for organizations
-            
+
     }
 
     DID_init = async () => {
@@ -893,48 +897,38 @@ class App extends Component {
             medalVerseContractEvents.on('data', event => {
                 // alert("event.event=" + event.event)
                 // Event
-                if (event.event === "eventStatusChanged")
-                {
+                if (event.event === "eventStatusChanged") {
                     console.log("eventStatusChanged")
                     console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
-                    if (event.returnValues===undefined)
-                    { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined") }
-                    this.updateOrganizationsEventOnEvent( event.returnValues.eventID, userOrganizations)
+                    if (event.returnValues === undefined) { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined") }
+                    this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
                 }
-                else if ( event.event === "eventWinnerSet" )
-                {
+                else if (event.event === "eventWinnerSet") {
                     console.log("eventStatusChanged")
                     console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
-                    if (event.returnValues===undefined)
-                    { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined") }
-                    this.updateOrganizationsEventOnEvent( event.returnValues.eventID, userOrganizations)
+                    if (event.returnValues === undefined) { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined") }
+                    this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
                 }
-                else if ( event.event === "MedalAdded" )
-                {
+                else if (event.event === "MedalAdded") {
                     console.log("MedalAdded")
                 }
-                else if ( event.event === "sportsmanMedalAdded" )
-                {
+                else if (event.event === "sportsmanMedalAdded") {
                     console.log("sportsmanMedalAdded")
                 }
-                else if ( event.event === "sportsmanUnregisterdEvent" )
-                {
+                else if (event.event === "sportsmanUnregisterdEvent") {
                     console.log("sportsmanUnregisterdEvent")
                 }
-                else if ( event.event === "sportsmanRegisterdEvent" )
-                {
+                else if (event.event === "sportsmanRegisterdEvent") {
                     console.log("sportsmanRegisterdEvent")
                 }
-                else if ( event.event === "sportsmanAdded" )
-                {
+                else if (event.event === "sportsmanAdded") {
                     console.log("sportsmanAdded")
                 }
-                else
-                {
+                else {
                     console.error("Unknown event : %s", event.event)
                 }
 

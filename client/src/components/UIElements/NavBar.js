@@ -17,8 +17,12 @@ import { BoxArrowInRight, BoxArrowRight, Trophy } from 'react-bootstrap-icons';
 /* CSS */
 import "../../styles/NavBar.css";
 import { Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import NavScroll from "./NavLink";
 
-const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, isLanding }) => {
+
+
+const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, isLanding, isAthlete, setPannel }) => {
 
   const { t } = useTranslation();
   /*
@@ -49,17 +53,26 @@ const NavBar = ({ connectedAccountAddr, loginCallBack, options, AppCallBacks, is
 
             {isLanding === "true" ? (
               <>
-                <Nav.Link className={textStyleCentered}><Link to="pres" spy={true} smooth={false}>{"Présentation"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="trophy" spy={true} smooth={false}>{"Trophy Factory"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="creation" spy={true} smooth={false}>{"Creation Factory"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="fan" spy={true} smooth={false}>{"Fan Place"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="galerie" spy={true} smooth={false}>{"Galerie"}</Link></Nav.Link>
-                <Nav.Link className={textStyleCentered}><Link to="timeline" spy={true} smooth={false}>{"Roadmap"}</Link></Nav.Link>
+                <NavScroll label={"Présentation"} linkTo="pres" />
+                <NavScroll label={"Trophy Factory"} linkTo="trophy" />
+                <NavScroll label={"Creation Factory"} linkTo="creation" />
+                <NavScroll label={"Fan Place"} linkTo="fan" />
+                <NavScroll label={"Galerie"} linkTo="galerie" />
+                <NavScroll label={"Roadmap"} linkTo="timeline" />
+
               </>
             )
               : (<></>)
             }
-
+            {isAthlete === "true" ? (
+              <>
+                <Nav.Link className={textStyleCentered} onClick={() => setPannel(0)}>{"Mon Profil"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => setPannel(1)}>{"Mes Evénements"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => setPannel(2)}>{"Ma Galerie"}</Nav.Link>
+              </>
+            )
+              : (<></>)
+            }
 
           </Nav>
 

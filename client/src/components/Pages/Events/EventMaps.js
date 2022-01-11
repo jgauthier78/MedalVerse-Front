@@ -17,7 +17,10 @@ const MarkerList = ({ userEvents }) => userEvents.eventList.map((ogdesc, indx) =
 })
 
 const EventMaps = ({ userProfile }) => (
-    <div className="EventMap col mt-6">
+
+    <div className="EventMap col mt-6 bg-light-gray">
+
+
 
         <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
             <TileLayer
@@ -26,6 +29,7 @@ const EventMaps = ({ userProfile }) => (
             />
             <MarkerList userEvents={userProfile.userEvents} />
         </MapContainer >
+
     </div>
 )
 export default EventMaps

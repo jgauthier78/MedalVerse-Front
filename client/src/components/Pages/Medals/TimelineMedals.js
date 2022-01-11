@@ -9,6 +9,7 @@ import {
     createTheme,
 } from '@merc/react-timeline';
 import { format_Date } from "../../../utils/dateUtils";
+import { Container } from 'react-bootstrap';
 
 function getDate() {
     var dateObj = new Date();
@@ -31,16 +32,17 @@ const theme = createTheme(themes.default, {
         backgroundColor: '#bbbbbb',
     },
     date: {
-        backgroundColor: '#2570c8',
+        backgroundColor: '#888888',
         color: '#fff',
     },
     imageAtom: {
-
+        objectFit: 'cover',
+        overflow: 'hidden',
         width: 'auto',
-        height: '50%',
+        maxHeight: '150px',
     },
     marker: {
-        backgroundColor: '#ffffff',
+        backgroundColor: '#00df00',
         border: '2px solid #bbbbbb',
         color: "#ffffff",
         borderRadius: '50%',
@@ -73,17 +75,25 @@ const MedalItems = ({ userMedals }) => {
 
 const TimelineMedals = ({ userProfile }) => {
     return (
-        <div className='mt-4'>
-            <Timeline theme={theme}>
-                <Events>
-                    <TextEvent date={getDate()} text="**Aujourd'hui:** pas de nouvelle médaille" />
+        <section className="   bg-light-gray " >
 
-                    <MedalItems userMedals={userProfile.userMedals} />
+            <img src="img/MedalVerse.svg" className="Titre-MedalVerse mt-5" alt="MedalVerse" />
+            <h5 className="text-black text-light ml-4 margin--4">{"La timeline de vos succès"}</h5>
 
-                    <TextEvent date="08/12/2019" text="*Inscription à MedalVerse*" />
-                </Events>
-            </Timeline>
-        </div>
+            <Container className='d-flex justify-content-center'>
+                <div className='col mt-6 col-5 '>
+                    <Timeline theme={theme}>
+                        <Events>
+                            <TextEvent date={getDate()} text="**Aujourd'hui:** pas de nouvelle médaille" />
+
+                            <MedalItems userMedals={userProfile.userMedals} />
+
+                            <TextEvent date="08/12/2019" text="*Inscription à MedalVerse*" />
+                        </Events>
+                    </Timeline>
+                </div>
+            </Container>
+        </section >
     )
 }
 

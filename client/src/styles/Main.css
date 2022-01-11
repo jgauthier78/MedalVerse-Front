@@ -1,3 +1,25 @@
+
+.luminance-Effect{
+  color:lightblue;
+  text-transform: uppercase;
+  font-weight: bold;
+	-moz-background-clip: text;
+	-webkit-background-clip: text;
+	
+
+	margin: 10px 0;
+}  
+
+.Bandeau-Timeline {
+  background-color: #34495e;
+}
+
+.Fill-Timeline {
+  fill: #34495e;
+}
+.margin--4{
+  margin-top: -20px;
+}
 .justify-text {
   text-align:justify;  
   text-justify:inter-character;
@@ -6,11 +28,28 @@
 	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
 	background-size: 400% 400%;
 	animation: gradient 20s ease infinite;
+
+}
+
+.screen-height {
 	height: 100vh;
 }
 
+.NavBar-Spacer
+{
+  margin-bottom:70px;
+}
 
+.Height-500{
+  height: 600px;
+}
 
+.Height-800{
+  height: 800px;
+}
+.Height-1024{
+  height: 1024px;
+}
 .mb-3-5{
   margin-bottom: 33px !important;
 }
@@ -22,6 +61,15 @@
   line-height: 1.5;
   color: white; 
   font-size: 1.25rem; }
+
+  .EncourageDescription {
+    margin-bottom: 1.5rem;
+    font-family: inherit;
+    font-weight: 400;
+    line-height: 1.5;
+    color: black; 
+    font-size: 1.25rem; }
+  
 
 
 @keyframes gradient {
@@ -35,13 +83,13 @@
 		background-position: 0% 50%;
 	}
 }
-
+.vertical-center-row{ display: flex; align-items: center;}
 
 .Card-Video{
   width:100%;
   height:auto;
   object-fit: cover;
-
+  
   top: 0;
   left: 0;
   z-index: -1;
@@ -53,6 +101,10 @@
 .Full-Section{
   width: 100wv !important;
   height: 100hv !important;
+}
+
+.full-width{
+  width: 100%;
 }
 
 .Blue-Bkg{
@@ -95,12 +147,26 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#024057",endCo
     font-weight: 300;
     line-height: 1.2;
 }
-
+.overflow-hidden{
+  overflow: hidden;
+}
 .OneScreen-Width{
   height: 100vh;
   width: 100vw;
 }
 
+.adapt-Background-Video{
+  object-fit: cover;
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: auto;
+  background-size: cover;
+  background-position: center;
+}
 .Background-Video
 {
 
@@ -118,6 +184,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#024057",endCo
 
 .card-title-color{
   opacity: 0.8 !important;
+  backdrop-filter: blur(16px);
 }
 .cards-margin-title{
   margin-bottom: 200px !important;
@@ -165,7 +232,10 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#024057",endCo
   border: solid 1px;
   border-radius: 15px;
   border-color: #e4e5e6;
-  background-color: #fff
+  background-color: #fff;
+  opacity:0.9 !important;
+  backdrop-filter: blur(16px);
+
   
 }
 .hiddenImage{
@@ -475,7 +545,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#024057",endCo
   background-color: #e4e4e8;
 }
 .profile-page {
-  background-color: #F2F3F5;
+ 
 }
 .profileText{
   color:black;
@@ -516,6 +586,8 @@ section::after {
   height: 400px;
   width: 100%;
 }
+.bg-black {
+  background-color: #black !important; }
 .bg-light-gray {
   background-color: #f4f5f7 !important; }
 
@@ -868,6 +940,12 @@ h6, .h6 {
   font-size: 1.6275rem;
   font-weight: 600;
   line-height: 1.5; }
+
+ 
+.display-7 {
+  font-size: 1.6275rem;
+  font-weight: 600;
+  line-height: 1.5; } 
 
 hr {
   margin-top: 2rem;
@@ -3665,22 +3743,6 @@ input[type="button"].btn-block {
     .custom-select {
       transition: none; } }
 
-.nav {
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 0;
-  margin-bottom: 0;
-  list-style: none; }
-
-.nav-link {
-  display: block;
-  padding: 0.25rem 0.75rem; }
-  .nav-link:hover, .nav-link:focus {
-    text-decoration: none; }
-  .nav-link.disabled {
-    color: #8898aa;
-    pointer-events: none;
-    cursor: default; }
 
 .nav-tabs {
   border-bottom: 0.0625rem solid #dee2e6; }
@@ -17370,4 +17432,52 @@ td.rdtYear:hover {
   flex: 1 1 auto;
   width: 1%; }
 
-/*# sourceMappingURL=argon-design-system-react.css.map */
+.tableFixHead          { 
+  overflow: auto; height: 400px; box-shadow: 0 0 20px rgba(0,0,0,0.2);}
+
+.tableFixHead table  { 
+    border-collapse: collapse;
+    width: 100%; 
+   }
+
+.tableFixHead table  th{ 
+  position: sticky;
+  top:0;
+  z-index: 1;
+}
+  
+.tableFixHead th  { 
+      padding: 15px;
+      background-color: rgba(255,255,255,0.2);
+      color: #fff;}
+.tableFixHead td{ 
+  padding: 15px;
+  background-color: rgba(255,255,255,0.2);
+  color: #fff;
+  vertical-align: middle;
+}
+
+
+.tableFixHead th { text-align: left;}
+.tableFixHead thead th { 
+  background-color: #55608f;
+  border: hidden;
+}
+  
+.tableFixHead tr:hover { background-color: rgba(255,255,255,0.3);}
+.tableFixHead tbody td { position: relative !important;}
+.tableFixHead tbody td:hover:before {
+  content: "";
+  position: absolute !important;
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  background-color: rgba(255,255,255,0.2) !important;
+  z-index: -1;
+}  
+.tableFixHead table img   { width:100px;}  
+
+.bg-blue-gradiant{
+  background: linear-gradient(45deg, #49a09d, #5f2c82);
+}
