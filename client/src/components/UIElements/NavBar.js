@@ -64,7 +64,7 @@ const NavBar = ({ loginCallBack, options, AppCallBacks, isLanding, isAthlete, is
             {isAthlete === true ? (
               <>
                 <Nav.Link className={textStyleCentered} onClick={() => setPannel(0)}>{"Mon Profil"}</Nav.Link>
-                <Nav.Link className={textStyleCentered} onClick={() => {alert("2")}}>{"Mes Evénements"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => setPannel(1)}>{"Mes Evénements"}</Nav.Link>
                 <Nav.Link className={textStyleCentered} onClick={() => setPannel(2)}>{"Ma Galerie"}</Nav.Link>
               </>
             )
