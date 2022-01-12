@@ -4,6 +4,7 @@ const chai = require('chai');
 const expect = require('chai').expect
 chai.use(require('chai-bignumber')(BigNumber));
 const MedalVerse = artifacts.require('MedalVerse');
+const $Medal = artifacts.require('Medal')
 const throwIn = artifacts.require('ThrowIn');
 const nftArtist = artifacts.require('NFTArtist');
 
@@ -18,19 +19,7 @@ const ORGANIZER_ROLE = 4
 const errTypes = exceptionHandler.errTypes
 const catchException = exceptionHandler.catchException
 
-let nftCounter = 1
-async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
-  // Local static counter for NFTs IDs
 
-  let NFTArtist = await nftArtist.deployed()
-  let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: account }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
-  await NFTArtist.mintNFTArtist(name, img, { from: account })
-  await nft.mintCup(nftCounter, { from: account });
-  await nft.setYear(2022, { from: account })
-
-  nftCounter++
-  return nft;
-}
 
 contract('MedalVerse', function (accounts) {
 
@@ -43,6 +32,8 @@ contract('MedalVerse', function (accounts) {
   const URI = "1.jpeg";
   const mail = "pol@gmail.com";
   const role = new BigNumber(0);
+  const priceNFTA = new BigNumber(100 * (10 ** 18))
+  const priceNFTT = new BigNumber(500 * (10 ** 18))
 
   const price = new BigNumber(1200);
   const sportCategory = 12;
@@ -55,8 +46,28 @@ contract('MedalVerse', function (accounts) {
   let desc = "Fake Desc"
 
   beforeEach(async function () {
-    this.MedalVerseInstance = await MedalVerse.new({ from: owner });
+    this.tokenInstance = await $Medal.new({ from: owner })
+  })
+
+  beforeEach(async function () {
+    let addressToken = this.tokenInstance.address;
+    this.MedalVerseInstance = await MedalVerse.new(addressToken, { from: owner });
   });
+
+  beforeEach(async function () {
+    let addressToken = this.tokenInstance.address
+    let addressMedalVerse = this.MedalVerseInstance.address
+    this.nftArtistInstance = await nftArtist.new(addressToken, addressMedalVerse, { from: owner })
+  })
+
+  beforeEach(async function () {
+    let addressToken = this.tokenInstance.address
+    let addressMedalVerse = this.MedalVerseInstance.address
+    let addressNftArtist = this.nftArtistInstance.address
+    this.throwInInstance = await throwIn.new("Running Cup", addressNftArtist, addressToken, addressMedalVerse, "Running Nft", "RuNFT", true, { from: owner });
+  })
+
+
 
   // USER -------------------------------
 
@@ -245,7 +256,11 @@ contract('MedalVerse', function (accounts) {
   it("S-Ajoute une médaille  à un événement", async function () {
 
     // créé une médaille
-    let rcup = await createNFT("Running Cup", "Running Nft", "RuNFT", "Athus Keller", "/img/medals/medal0.jpg", owner)
+    await this.tokenInstance.approve(this.nftArtistInstance.address, priceNFTA, { from: owner })
+    await this.tokenInstance.approve(this.throwInInstance.address, priceNFTT, { from: owner })
+    await this.nftArtistInstance.mintNFTArtist("Athus Keller", "/img/medals/medal0.jpg", { from: owner })
+    await this.throwInInstance.mintCup(1, { from: owner });
+    await this.throwInInstance.setYear(2022, { from: owner })
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
 
@@ -258,14 +273,18 @@ contract('MedalVerse', function (accounts) {
     await this.MedalVerseInstance.adminEndEvent(1, { from: recipient })
     await this.MedalVerseInstance.adminSetWinner(1, recipient, { from: recipient })
 
-    await this.MedalVerseInstance.adminAddMedal(1, rcup.address, { from: recipient })
+    await this.MedalVerseInstance.adminAddMedal(1, this.throwInInstance.address, { from: recipient })
 
     let md = await this.MedalVerseInstance.getMedal(await this.MedalVerseInstance.eventGetMedal(1))
 
-    expect(md.throwIn).to.be.equal(rcup.address)
+    expect(md.throwIn).to.be.equal(this.throwInInstance.address)
   })
   it("T-Publie une médaille", async function () {
-    let rcup = await createNFT("Running Cup", "Running Nft", "RuNFT", "Athus Keller", "/img/medals/medal0.jpg", owner)
+    await this.tokenInstance.approve(this.nftArtistInstance.address, priceNFTA, { from: owner })
+    await this.tokenInstance.approve(this.throwInInstance.address, priceNFTT, { from: owner })
+    await this.nftArtistInstance.mintNFTArtist("Athus Keller", "/img/medals/medal0.jpg", { from: owner })
+    await this.throwInInstance.mintCup(1, { from: owner });
+    await this.throwInInstance.setYear(2022, { from: owner })
     // créé un organizateur
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, ORGANIZER_ROLE, sport, { from: owner });
 
@@ -277,7 +296,7 @@ contract('MedalVerse', function (accounts) {
     await this.MedalVerseInstance.adminEndEvent(1, { from: recipient })
     await this.MedalVerseInstance.adminSetWinner(1, recipient, { from: recipient })
 
-    await this.MedalVerseInstance.adminAddMedal(1, rcup.address, { from: recipient })
+    await this.MedalVerseInstance.adminAddMedal(1, this.throwInInstance.address, { from: recipient })
     await this.MedalVerseInstance.adminGiveMedalToWinner(1, { from: recipient })
     let indx = await this.MedalVerseInstance.eventGetMedal(1)
     await this.MedalVerseInstance.publishMedal(indx, true, { from: recipient })
