@@ -102,8 +102,8 @@ class SporstmanMain extends Component {
                             }
                             {this.state.curPannel === 2 ?
                                 <>
-                                    <MedalAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
-                                    <GallerieAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
+                                    <GallerieAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />                                    <MedalAthlete userProfile={this.props.userProfile} AppCallBacks={this.props.AppCallBacks} />
+
                                 </>
                                 : <></>}
                             <SimpleFooter />

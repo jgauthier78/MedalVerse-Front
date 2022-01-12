@@ -7,6 +7,7 @@ import "reveal.js/dist/theme/black.css"
 import Appearance from "reveal.js-appearance/plugin/appearance/appearance"
 import { format_Date } from "../../utils/dateUtils";
 
+
 let getRoleString = (role) => {
     let val = ""
     if (role & 8) val = "Sportif"
@@ -41,15 +42,16 @@ const getEventEndDate = (evnt, i) => { return format_Date(((evnt.eventList[i])).
 const MedalSlides = ({ web3, mdl }) => {
 
     if (!mdl || mdl.nbMedalsInGallery == 0) return (<></>)
-    console.log("-------------------------")
-    console.log(mdl)
+
     return (
         <>
             {
                 mdl.Gallery.map((ml, indx) => {
                     return (
 
-                        < section data-transition="slide" key={indx} >
+                        < section data-transition="slide" key={indx}
+                            data-transition="fade"
+                        >
                             <img src={mdl.uriList[indx]} style={{ width: 256 + 'px', height: "auto" }} />
                             <h4>{ml.org} </h4>
                             <h6>{(format_Date(ml.event.endDate)).toString()}</h6>
@@ -67,9 +69,12 @@ const EventSlides = ({ evnt }) => {
     return (
         <>
             {evnt.organisationDesc.map((ogdesc, indx) => (
-                < section data-transition="slide" key={indx} >
+                < section data-transition="slide" key={indx}
+                    data-transition="fade"
+                    data-background-image={getImageSrcFromEvent(evnt, indx)}
+                >
 
-                    <img src={getImageSrcFromEvent(evnt, indx)} alt={getImageSrcFromEvent(evnt, indx)} className="w-100 d-block carrousselImage" />
+
                     <h3 >{getOrgNameFromEvent(evnt, indx)}</h3>
                     <p>{getOrgDescFromEvent(evnt, indx)}</p>
                     <h5 >Du {getEventStartDate(evnt, indx)} au {getEventEndDate(evnt, indx)}
@@ -119,6 +124,10 @@ export default function Gallerie({ AppCallBacks }) {
                         }
                         await Reveal.initialize({
                             autoSlide: 2500,
+                            autoPlayMedia: true,
+                            width: "1920",
+                            height: 1080,
+                            embedded: true,
                             loop: true,
                             transition: 'default',
                             parallaxBackgroundImage: "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'", parallaxBackgroundSize: "2100px 900px",
@@ -156,10 +165,14 @@ export default function Gallerie({ AppCallBacks }) {
                 </div>)
         }
         return (
-            <div className="main" style={{ height: 1024 + 'px' }}>
+            <div className="main" style={{ height: "100vh" }}>
                 <div className="reveal">
                     <div className="slides">
-                        <section data-transition="slide">
+                        <section data-transition="slide"
+                            data-background-video="/img/abstract4.webm" data-background-repeat="repeat"
+                            data-transition="fade-in fade-out"
+                            data-autoslide="6000"
+                        >
 
                             <img data-src={userDetails.iconURI} height="150" className="card-rounded shadow" />
                             <h3>{userDetails.userName}</h3>
@@ -169,9 +182,22 @@ export default function Gallerie({ AppCallBacks }) {
                             {getMedalCountString(medals)}
 
                         </section>
-                        <section data-transition="slide">{"Les Médailles"}</section>
+                        <section
+                            data-background-video="/img/abstract2.webm" data-background-repeat="repeat"
+                            data-transition="zoom"
+                            data-autoslide="4000"
+                        >
+                            <h2 class="r-fit-text">{"Les Médailles"}</h2>
+                            <h2 class="r-fit-text">{"Les Médailles partagées par "}{userDetails.userName}</h2>
+                        </section>
                         <MedalSlides mdl={medals} web3={_web3} />
-                        <section data-transition="slide">{"Participe A"}</section>
+                        <section data-background-video="/img/abstract5.webm" data-background-repeat="repeat"
+                            data-transition="zoom"
+                            data-autoslide="4000"
+                        >
+                            <h2 class="r-fit-text">{"COMPETITIONS"}</h2>
+                            <h2 class="r-fit-text">{userDetails.userName} Participe</h2>
+                        </section>
                         <EventSlides evnt={events} />
                     </div>
                 </div>

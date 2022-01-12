@@ -33,14 +33,15 @@ function Alert({ title, message, detail, time, variant, id })
 */
 // ------------
 
-const SimpleModal = ({ title, messageBody, show, animation }) =>
+const SimpleModal = ({ title, messageBody, show, animation, bgStyle, styleHeader, styleContent }) =>
 {
+  // debugger
   return (
-      <Modal show={show} animation={animation}>
-      <Modal.Header closeButton>
+      <Modal show={show} animation={animation} style={bgStyle}>
+      <Modal.Header closeButton style={styleHeader}>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{messageBody}</Modal.Body>
+      <Modal.Body style={styleContent}>{messageBody}</Modal.Body>
     </Modal>
   )
 } // SimpleModal
