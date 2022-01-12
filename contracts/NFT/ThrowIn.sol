@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ThrowIn is ERC721, Ownable {
 	IERC721Metadata NFT_Artist; // Recovering an ERC721 interface
-	IERC20 internal Token;
+	IERC20 internal Token; // Recovering an ERC20 interface
 
 	constructor(
 		string memory organization,
@@ -96,10 +96,10 @@ contract ThrowIn is ERC721, Ownable {
 	///@param tokenId Token id of the NFTA Artist got the Uri
 	function mintCup(uint256 tokenId) public onlyOwner whenNotPaused {
 		require(numberMint == 0, "Only one single cup can be minted"); // Check if the nft has already been mint
-		// uint balance = Token.balanceOf(msg.sender);
+		uint balance = Token.balanceOf(msg.sender); // Check the minter balance
 
-		// require(balance > price);
-		Token.transferFrom(msg.sender, medalVerse, price);
+		require(balance > price); // Check the balance is greater than the price
+		Token.transferFrom(msg.sender, medalVerse, price); //.Transfer amount token to MedalVerse
 
 		uri = IERC721Metadata(NFT_Artist).tokenURI(tokenId); // Get the uri of the NFTArtist
 		numberMint++; // increment the number of NFT mint
@@ -168,6 +168,8 @@ contract ThrowIn is ERC721, Ownable {
 		emit throwInPauseRemoved(pause);
 	}
 
+	///@dev Set the year of the compet
+	///@param competYear Current year
 	function setYear(uint16 competYear) public onlyOwner whenNotPaused {
 		year = competYear;
 
@@ -176,6 +178,7 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@dev Add winners to the Winners array and modify its structure associated with this wallet
 	///@param walletPlayer winner's address
+	///@param name winner's name
 	function addWinner(string memory name, address walletPlayer)
 		public
 		onlyOwner
@@ -257,6 +260,7 @@ contract ThrowIn is ERC721, Ownable {
 		return nameOfOrganization;
 	}
 
+	///@return year of the current competition
 	function getYearOfCompetition() public view returns (uint16) {
 		return year;
 	}
