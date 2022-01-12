@@ -17444,6 +17444,8 @@ td.rdtYear:hover {
 .tableFixHead table  { 
     border-collapse: collapse;
     width: 100%; 
+    border:solid black 1px;
+    border-radius:6px;
    }
 
 .tableFixHead table  th{ 
@@ -17519,3 +17521,18 @@ padding-bottom: 5px
   padding: 0px;
   padding-bottom: 5px
 } 
+
+
+/* Scroll 2 */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+*::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #aaaaaa;
+  border-radius: 20px;
+}
