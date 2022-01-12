@@ -56,7 +56,7 @@ class MedalAthlete extends Component {
             <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
 
                 <h6>{"Mes Médailles"}:</h6> <span> {this.props.userProfile.userMedals.nbMedals} {" Médaille(s)"} </span>
-                <div className="tableFixHead-White  ">
+                <div className="tableFixHead-White ">
                     <table className="table  bordered" >
                         <thead>
                             <tr>

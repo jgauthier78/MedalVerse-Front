@@ -6,6 +6,7 @@ import "reveal.js/dist/reveal.css"
 import "reveal.js/dist/theme/black.css"
 import Appearance from "reveal.js-appearance/plugin/appearance/appearance"
 import { format_Date } from "../../utils/dateUtils";
+import { Col, Row } from "react-bootstrap"
 
 
 let getRoleString = (role) => {
@@ -18,13 +19,13 @@ let getRoleString = (role) => {
 
 function getEventsString(evnts) {
     if (evnts && evnts.nbEvents > 0)
-        return (<p>{"Participe à " + evnts.nbEvents + " événements"}</p>)
+        return (<>{"Participe à " + evnts.nbEvents + " événements"}</>)
     return (<></>)
 }
 function getMedalCountString(medal) {
     if (medal && medal.nbMedals > 0)
-        return (<><p>et</p>
-            <p>{"déjà " + medal.nbMedals + " médaille(s)"}</p>
+        return (<>
+            {"déjà " + medal.nbMedals + " médaille(s)"}
         </>)
     return (<></>)
 }
@@ -34,10 +35,11 @@ function getMedalCountString(medal) {
 const getImageSrcFromEvent = (evnt, i) => {
     return (evnt.organisationDesc[i])[0].logoURI
 }
-const getOrgNameFromEvent = (evnt, i) => { return (evnt.organisationDesc[i])[0].name }
-const getOrgDescFromEvent = (evnt, i) => { return (evnt.organisationDesc[i])[0].description }
-const getEventStartDate = (evnt, i) => { return format_Date(((evnt.eventList[i])).endDate) }
-const getEventEndDate = (evnt, i) => { return format_Date(((evnt.eventList[i])).startDate) }
+const getOrgNameFromEvent = (evnt, i) => { return (evnt.encoursOrganisationDesc[i])[0].name }
+const getOrgDescFromEvent = (evnt, i) => { return (evnt.encoursOrganisationDesc[i])[0].description }
+const getEventStartDate = (evnt, i) => { return format_Date(((evnt.encoursEvent[i])).endDate) }
+const getEventEndDate = (evnt, i) => { return format_Date(((evnt.encoursEvent[i])).startDate) }
+const getEventDesc = (evnt, i) => { return (evnt.encoursEvent[i]).eventDescription }
 
 const MedalSlides = ({ web3, mdl }) => {
 
@@ -49,14 +51,22 @@ const MedalSlides = ({ web3, mdl }) => {
                 mdl.Gallery.map((ml, indx) => {
                     return (
 
-                        < section data-transition="slide" key={indx}
-                            data-transition="fade"
+
+                        < section key={indx}
+
+                            data-transition={indx == mdl.Gallery.length - 1 ? "fade" : "fade-in zoom-out"}
+                            data-background-image={mdl.uriList[indx]}
+
+
                         >
-                            <img src={mdl.uriList[indx]} style={{ width: 256 + 'px', height: "auto" }} />
-                            <h4>{ml.org} </h4>
-                            <h6>{(format_Date(ml.event.endDate)).toString()}</h6>
+
+                            <h2 className=" shadows">{ml.event.eventDescription}</h2>
+                            <h3 className="r-fit-text shadows">{ml.org} </h3>
+                            <h3 className=" shadows-sm">Remportée le: {(format_Date(ml.event.endDate)).toString()}</h3>
+
 
                         </section>
+
                     )
                 })
             }
@@ -65,21 +75,22 @@ const MedalSlides = ({ web3, mdl }) => {
 }
 
 const EventSlides = ({ evnt }) => {
-    if (!evnt || evnt.organisationDesc.length == 0) return (<></>)
+    if (!evnt || evnt.encoursOrganisationDesc.length == 0) return (<></>)
     return (
         <>
-            {evnt.organisationDesc.map((ogdesc, indx) => (
+            {evnt.encoursOrganisationDesc.map((ogdesc, indx) => (
                 < section data-transition="slide" key={indx}
                     data-transition="fade"
                     data-background-image={getImageSrcFromEvent(evnt, indx)}
                 >
 
-
-                    <h3 >{getOrgNameFromEvent(evnt, indx)}</h3>
-                    <p>{getOrgDescFromEvent(evnt, indx)}</p>
-                    <h5 >Du {getEventStartDate(evnt, indx)} au {getEventEndDate(evnt, indx)}
-                    </h5>
-
+                    <div className=" ">
+                        <h1 className="r-fit-text shadows">{getOrgDescFromEvent(evnt, indx)}</h1>
+                        <h2 className="shadows-sm">{getOrgNameFromEvent(evnt, indx)}</h2>
+                        <h2 className="shadows-sm">{getEventDesc(evnt, indx)}</h2>
+                        <h3 className="shadows-sm">Du {getEventStartDate(evnt, indx)} au {getEventEndDate(evnt, indx)}
+                        </h3>
+                    </div>
 
                 </section>
             ))}
@@ -174,16 +185,16 @@ export default function Gallerie({ AppCallBacks }) {
                             data-autoslide="6000"
                         >
 
-                            <img data-src={userDetails.iconURI} height="150" className="card-rounded shadow" />
-                            <h3>{userDetails.userName}</h3>
+                            <img data-src={userDetails.iconURI} height="250" className="card-rounded shadow" />
+                            <h1>{userDetails.userName}</h1>
 
-                            <h5>{getRoleString(role)}</h5>
-                            {getEventsString(events)}
-                            {getMedalCountString(medals)}
+
+                            <h4>{getEventsString(events)}</h4>
+                            <h4>{getMedalCountString(medals)}</h4>
 
                         </section>
                         <section
-                            data-background-video="/img/abstract2.webm" data-background-repeat="repeat"
+                            data-background-video="/img/abstract6.webm" data-background-repeat="repeat"
                             data-transition="zoom"
                             data-autoslide="4000"
                         >
