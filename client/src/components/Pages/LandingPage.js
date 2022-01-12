@@ -83,7 +83,7 @@ class LandingPageWithTranslation extends Component {
                     result = await this.props.AppCallBacks.initUserDetails(this._accounts[0])
                     if (result.err === null) {
 
-                        console.log(result.detail)
+                        // console.log(result.detail)
                     }
                     else {
                         erreur = "Erreur utilisateur"
