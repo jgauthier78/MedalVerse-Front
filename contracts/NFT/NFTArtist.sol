@@ -9,8 +9,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
 	using Counters for Counters.Counter;
-	Counters.Counter private _tokenIds;
-    IERC20 internal Token;
+	Counters.Counter private _tokenIds; // Manage the incrementation of the tokenId
+    IERC20 internal Token; // Recovering an ERC20 interface
     
     
 
@@ -19,6 +19,7 @@ contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
         medalVerse = addressMedalVerse;
 	}
 
+    ///@dev Structure to describe the NFT
 	struct NFT {
 		string name; // Name of NFT
 		uint tokenId; // TokenID of NFT
@@ -28,13 +29,15 @@ contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
 
     // Data --------------------------------
 	mapping(uint=>NFT) public NFTs;
-    // mapping(address=>mapping(uint=>NFT)) public NFTByOwner; // Associate the owner address with the token id associated with the NFT structure
     
     uint price = 100 * (10 ** 18);
     address medalVerse;
 
     // Events ---------------------------------
-    event nftMint(address owner, string name, uint tokenId );
+    event nftArtistMint(address owner, string name, uint tokenId );
+    event nftArtistPriceChanged(uint newPrice);
+    event nftArtistAddressMedalVerseChanged(address newAddress);
+
 
     // Modifiers ----------------------------
     ///@dev Check that the address is not zero
@@ -58,17 +61,12 @@ contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
 			_mint(msg.sender, NFTArtistId); // Mint the NFT 
 			_setTokenURI(NFTArtistId, Uri); // Set URI for this id
 
-            // Defined the structure of the NFT by are id associated with the owner address
-			// NFTByOwner[msg.sender][NFTArtistId].name = name;
-			// NFTByOwner[msg.sender][NFTArtistId].tokenId = NFTArtistId;
-			// NFTByOwner[msg.sender][NFTArtistId].creator = msg.sender;
-			// NFTByOwner[msg.sender][NFTArtistId].imgPath = Uri;
 			NFTs[NFTArtistId].name = name;
             NFTs[NFTArtistId].tokenId = NFTArtistId;
             NFTs[NFTArtistId].creator = msg.sender;
             NFTs[NFTArtistId].imgPath = Uri;
 
-            emit nftMint(msg.sender, name, NFTArtistId);
+            emit nftArtistMint(msg.sender, name, NFTArtistId);
 		
 	}
 
@@ -82,31 +80,15 @@ contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
     {
         super._beforeTokenTransfer(from, to, tokenId);
 
-        // Modify the mapping
-        // NFTByOwner[to][tokenId].name = NFTByOwner[from][tokenId].name;
-        // NFTByOwner[to][tokenId].tokenId = NFTByOwner[from][tokenId].tokenId;
-        // NFTByOwner[to][tokenId].creator =  NFTByOwner[from][tokenId].creator;
-        // NFTByOwner[to][tokenId].imgPath = NFTByOwner[from][tokenId].imgPath;
-
-        // remove the old mapping
-        // delete  NFTByOwner[from][tokenId].name;
-        // delete  NFTByOwner[from][tokenId].tokenId;
-        // delete  NFTByOwner[from][tokenId].creator;
-        // delete  NFTByOwner[from][tokenId].imgPath;
-        
-
-        
     }
 
+    ///@dev delete the NFT with tokenId
+    ///@param tokenId tokenId nft deleted
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         
-        // delete  NFTByOwner[msg.sender][tokenId].name;
-        // delete  NFTByOwner[msg.sender][tokenId].tokenId;
-        // delete  NFTByOwner[msg.sender][tokenId].creator;
-        // delete  NFTByOwner[msg.sender][tokenId].imgPath;
         delete NFTs[tokenId];
         
-        super._burn(tokenId);
+        super._burn(tokenId); 
     }
 
     ///@return Returns the URI of the NFT associated with its ID
@@ -129,16 +111,32 @@ contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
         return super.supportsInterface(interfaceId);
     }
 
+    ///@dev change price of NFT
+    ///@param newPrice NewPrice to be defined
     function changePrice(uint newPrice) public onlyOwner {
         price = newPrice;
+
+        emit nftArtistPriceChanged(newPrice);
     }
 
+    ///@dev Change address MedalVerse contract
+    ///@param addressMedalVerse new address of MedalVerse contract
+    function setAddressMedalVerse(address addressMedalVerse) public onlyOwner {
+        medalVerse = addressMedalVerse;
+
+        emit nftArtistAddressMedalVerseChanged(addressMedalVerse);
+    }
+    // view ------------------------
+    ///@dev View price
+    ///@return price of nft
     function checkPrice() public view returns(uint){
         return price;
     }
 
-    function setAddressMedalVerse(address addressMedalVerse) public onlyOwner {
-        medalVerse = addressMedalVerse;
+    ///@dev view address to MedalVerse contract
+    ///@return Address MedalVerse contract
+    function checkAddressMedalVerse() public view returns(address) {
+        return medalVerse;
     }
 
 }

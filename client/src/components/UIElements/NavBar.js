@@ -1,7 +1,7 @@
 // React - Bootstrap
 import { Container,/*NavDropdown,*/ Nav, Navbar, NavItem, NavDropdown } from "react-bootstrap";
 
-import { Link } from 'react-scroll'
+// import { Link } from 'react-scroll'
 
 // Translation
 import { useTranslation } from 'react-i18next';
@@ -9,16 +9,24 @@ import i18n from '../../utils/i18n';
 
 // Icons
 import { BoxArrowInRight, BoxArrowRight, Trophy } from 'react-bootstrap-icons';
+
 // CSS
 import "../../styles/NavBar.css";
 import { Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+
+// React-Router
+// import { Link } from "react-router-dom"; // a retirer ?
+
+// React-Router Bootstrap
+import {LinkContainer} from 'react-router-bootstrap'
+
+
 import NavScroll from "./NavLink";
 
 import { ReactComponent as FR_FLAG } from './../flags/FR.svg';
 import { ReactComponent as ENGLISH_FLAG } from './../flags/English_language.svg';
 
-const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks, isLanding, isAthlete, setPannel }) => {
+const NavBar = ({ loginCallBack, options, AppCallBacks, isLanding, isAthlete, isOrganizer, setPannel }) => {
 
   const { t } = useTranslation();
   const changeLanguage = (lng) => { i18n.changeLanguage(lng) }
@@ -40,7 +48,7 @@ const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks
 
           <Nav className="me-auto">
 
-            {isLanding === "true" ? (
+            {isLanding === true ? (
               <>
                 <NavScroll label={t("LandingPage.menu.presentation")} linkTo="pres" />
                 <NavScroll label={t("LandingPage.menu.trophy")} linkTo="trophy" />
@@ -53,11 +61,20 @@ const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks
             )
               : (<></>)
             }
-            {isAthlete === "true" ? (
+            {isAthlete === true ? (
               <>
                 <Nav.Link className={textStyleCentered} onClick={() => setPannel(0)}>{"Mon Profil"}</Nav.Link>
-                <Nav.Link className={textStyleCentered} onClick={() => setPannel(1)}>{"Mes Evénements"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => {alert("2")}}>{"Mes Evénements"}</Nav.Link>
                 <Nav.Link className={textStyleCentered} onClick={() => setPannel(2)}>{"Ma Galerie"}</Nav.Link>
+              </>
+            )
+              : (<></>)
+            }
+            {isOrganizer === true ? (
+              <>
+                <LinkContainer to="/organizer" className="text-bold text-light text-center nav-link"><Nav.Link style={{ color: 'white' }}>{t("OrganizerSideBar.menu.organizerHome")}</Nav.Link></LinkContainer>
+                <LinkContainer to="eventsByState" className="text-light text-center nav-link" ><Nav.Link>{t("OrganizerSideBar.menu.eventsByState")}</Nav.Link></LinkContainer>
+                <LinkContainer to="eventsByDate" className="text-light text-center nav-link" ><Nav.Link>{t("OrganizerSideBar.menu.eventsByDate")}</Nav.Link></LinkContainer>
               </>
             )
               : (<></>)

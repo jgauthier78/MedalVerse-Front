@@ -201,9 +201,10 @@ contract MedalVerse is
 		eventSetPosition(eventID, posX, posY);
 	}
 
+	///@dev Withdraw token in the contract
 	function withdraw() public onlyOwner {
-		uint balance = Token.balanceOf(address(this));
-		Token.transfer(msg.sender, balance);
+		uint balance = Token.balanceOf(address(this)); // check balance of contract MedalVerse
+		Token.transfer(msg.sender, balance); // transfer balance to owner 
 	}
 	
 }

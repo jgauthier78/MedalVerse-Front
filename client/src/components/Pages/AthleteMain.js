@@ -49,7 +49,7 @@ class SporstmanMain extends Component {
             <>
                 <div className=" profile-page" >
                     <Row className="flex-nowrap">
-                        <NavBar AppCallBacks={this.props.AppCallBacks} isAthlete="true" setPannel={this.setPannel} />
+                        <NavBar AppCallBacks={this.props.AppCallBacks} isAthlete={true} setPannel={this.setPannel} />
                     </Row>
                     <NavBarSpacer />
                     <Row className="g-0">

@@ -6,6 +6,13 @@
       "eventsByDate" : "Evénements par date"
     }
   },
+  "OrganizerNavbar" :{
+    "menu" : {
+      "organizerHome" : "Accueil organisateur",
+      "eventsByState" : "Evénements par état",
+      "eventsByDate" : "Evénements par date"
+    }
+  },
   "OrganizerEvent": {
     "actions" : {
       "changeStateToCompetitionInProgress" : "Démarrer la compétition",

@@ -31,27 +31,26 @@ contract('ThrowIn', async function (accounts) {
     })
 
     beforeEach(async function () {
-        let addressToken = await this.tokenInstance.address
+        let addressToken = await this.tokenInstance.address;
         this.medalVerseInstance = await medalVerse.new(addressToken, { from: owner });
     })
 
     // Init NFTArtist
     beforeEach(async function () {    
-        let addressToken = await this.tokenInstance.address
-        let addressMedalVerse = await this.medalVerseInstance.address    
+        let addressToken = await this.tokenInstance.address;
+        let addressMedalVerse = await this.medalVerseInstance.address ;   
         this.nftArtistInstance = await NFTArtist.new(addressToken, addressMedalVerse, { from: owner });
     })
     
 
-    // Init ThrowIn
+    // Init ThrowIn with AntiDoping
     beforeEach(async function () {
-        let addressToken = await this.tokenInstance.address
-        let addressMedalVerse = await this.medalVerseInstance.address
+        let addressToken = await this.tokenInstance.address;
+        let addressMedalVerse = await this.medalVerseInstance.address;
         let addressNftArtist = await this.nftArtistInstance.address;
         this.throwInInstance = await throwIn.new("FITennis", addressNftArtist, addressToken, addressMedalVerse, "name", "symbol", true, { from: owner });
     });
     
-
     // MINT 
     it("A-Mint du NFT Coupe", async function () {
         let addressNftThrowIn = await this.throwInInstance.address;
@@ -253,5 +252,19 @@ contract('ThrowIn', async function (accounts) {
         let whatYear = new BigNumber(await this.throwInInstance.getYearOfCompetition())
 
         expect(whatYear).to.be.bignumber.equal(zero);
+    })
+
+    // 
+    it("J-Utiliser les fonction de l'anti-dopage quand il n'est pas activé", async function () {
+        let addressToken = await this.tokenInstance.address;
+        let addressMedalVerse = await this.medalVerseInstance.address;
+        let addressNftArtist = await this.nftArtistInstance.address;
+        this.throwInInstance2 = await throwIn.new("FITenis", addressNftArtist, addressToken, addressMedalVerse, "name", "symbol", false, { from: owner })
+
+        await catchException(this.throwInInstance2.setPaused({ from: owner }), errTypes.revert)
+
+        let pause = await this.throwInInstance2.paused()
+
+        expect(pause).to.equal(false)
     })
 })

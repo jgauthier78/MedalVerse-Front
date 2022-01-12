@@ -45,21 +45,25 @@ contract('MedalVerse', function (accounts) {
   let sport = 4
   let desc = "Fake Desc"
 
+  // init $Medal
   beforeEach(async function () {
     this.tokenInstance = await $Medal.new({ from: owner })
   })
 
+  // init MedalVerse
   beforeEach(async function () {
     let addressToken = this.tokenInstance.address;
     this.MedalVerseInstance = await MedalVerse.new(addressToken, { from: owner });
   });
 
+  // init NFTArtist
   beforeEach(async function () {
     let addressToken = this.tokenInstance.address
     let addressMedalVerse = this.MedalVerseInstance.address
     this.nftArtistInstance = await nftArtist.new(addressToken, addressMedalVerse, { from: owner })
   })
 
+  // init NFTThrowIn
   beforeEach(async function () {
     let addressToken = this.tokenInstance.address
     let addressMedalVerse = this.MedalVerseInstance.address
@@ -70,7 +74,6 @@ contract('MedalVerse', function (accounts) {
 
 
   // USER -------------------------------
-
   it("A-Créé un USER, l'enregistre, vérifie l'état de la base", async function () {
     await this.MedalVerseInstance.addNewUser(recipient, URI, username, mail, role, 0, { from: owner });
     let details = await this.MedalVerseInstance.getUserDetails(recipient);
@@ -405,5 +408,24 @@ contract('MedalVerse', function (accounts) {
     await catchException(this.MedalVerseInstance.adminSetWinner(1, recipient, { from: owner }), errTypes.revert)
   })
 
+  it("ZC-Withdraw les tokens dans le contrat", async function () {
+    await this.tokenInstance.approve(this.nftArtistInstance.address, priceNFTA, { from: owner })
+    await this.tokenInstance.approve(this.throwInInstance.address, priceNFTT, { from: owner })
+    await this.nftArtistInstance.mintNFTArtist("Athus Keller", "/img/medals/medal0.jpg", { from: owner })
+    await this.throwInInstance.mintCup(1, { from: owner });
+
+    let balance = new BigNumber(await this.tokenInstance.balanceOf(this.MedalVerseInstance.address))
+
+    let priceTotal = new BigNumber(600 * (10 ** 18))
+
+    expect(balance).to.be.bignumber.equal(priceTotal)
+
+    await this.MedalVerseInstance.withdraw({ from: owner })
+
+    balance = new BigNumber(await this.tokenInstance.balanceOf(this.MedalVerseInstance.address))
+
+    expect(balance).to.be.bignumber.equal(new BigNumber(0))
+
+  })
 
 })

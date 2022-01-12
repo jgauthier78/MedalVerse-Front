@@ -25,7 +25,7 @@ class OrganizerLayout extends Component
             <>
             <Container className="container-fluid profile-page">
                 <Row className="flex-nowrap">
-                    <NavBar AppCallBacks={this.props.AppCallBacks} />
+                    <NavBar AppCallBacks={this.props.AppCallBacks} isOrganizer={true} />
                 </Row>
                 <Row className="flex-nowrap" style={{ height : '70px' }}>
                     <Col/>
