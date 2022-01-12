@@ -1,5 +1,5 @@
 // React - Bootstrap
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row/*, Col*/ } from "react-bootstrap";
 
 // Icons
 import { Facebook, Google, Instagram, Linkedin, Pinterest, Twitter } from 'react-bootstrap-icons';

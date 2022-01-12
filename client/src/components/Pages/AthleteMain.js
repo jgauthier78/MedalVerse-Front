@@ -3,7 +3,7 @@ import NavBar from "../UIElements/NavBar";
 import SimpleFooter from "../UIElements/SimpleFooter";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import SporstmanSideBar from "./SideBar/SportsmanSideBar";
+// import SporstmanSideBar from "./SideBar/SportsmanSideBar";
 import ProfileBandeau from "./ProfileBandeau"
 import { Component } from "react";
 import { Navigate } from "react-router-dom";
@@ -11,12 +11,12 @@ import EventsSubscribedAthlete from "./Events/EventsSubscribedAthlete"
 import MedalAthlete from "./Medals/MedalAthlete"
 import GallerieAthlete from "./Medals/GallerieAthlete"
 import MedalShow from "./Medals/MedalShow";
-import { Container } from "react-bootstrap";
-import ImageContainer from "../UIElements/ImageContainer";
+// import { Container } from "react-bootstrap";
+// import ImageContainer from "../UIElements/ImageContainer";
 import TimelineMedals from "./Medals/TimelineMedals";
 import EventMaps from "./Events/EventMaps";
 import NavBarSpacer from "../UIElements/NavBarSpacer";
-import BkgVideo from "../UIElements/BkgVideo";
+// import BkgVideo from "../UIElements/BkgVideo";
 import EncourageBandeau from "./Medals/EncourageBandeau";
 import EventList from "./Events/EventList";
 class SporstmanMain extends Component {

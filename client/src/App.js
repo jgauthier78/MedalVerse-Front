@@ -349,7 +349,7 @@ class App extends Component {
 
                         // We now populate the structure
                         await Promise.all(eventIndxList.map(async (eventId, idx) => {
-                            console.log(eventIndxList[idx])
+                            // console.log(eventIndxList[idx])
                             // let val = await this.state.contract.methods.getEvent(eventIndxList[i]).call()
                             // result.eventList.push(val)
                             result.eventList[idx] = await this.state.contract.methods.getEvent(eventIndxList[idx]).call()
@@ -361,8 +361,8 @@ class App extends Component {
                         })) // await Promise.all
 
                         for (let u = 0; u < eventIndxList.length; u++) {
-                            if (result.eventList[u].started == true) {
-                                if (result.eventList[u].ended == false) {
+                            if (result.eventList[u].started === true) {
+                                if (result.eventList[u].ended === false) {
                                     result.encoursOrganisationDesc.push(result.organisationDesc[u])
                                     result.encoursEvent.push(result.eventList[u])
                                     result.nbEncours++;

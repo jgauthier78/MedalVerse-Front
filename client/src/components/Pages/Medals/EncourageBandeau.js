@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Button, Card, Container, Row, Col } from "react-bootstrap";
+import { /*Button, Card, Col,*/ Container, Row } from "react-bootstrap";
 import NavigateButton from "../../UIElements/NavigateButton";
 
 

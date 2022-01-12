@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from 'react'
 import Reveal from "reveal.js"
-import { Markdown } from "reveal.js/plugin/markdown/markdown"
+// import { Markdown } from "reveal.js/plugin/markdown/markdown"
 import "reveal.js/dist/reveal.css"
 import "reveal.js/dist/theme/black.css"
 import Appearance from "reveal.js-appearance/plugin/appearance/appearance"
@@ -65,7 +65,7 @@ const MedalSlides = ({ web3, mdl }) => {
 }
 
 const EventSlides = ({ evnt }) => {
-    if (!evnt || evnt.organisationDesc.length == 0) return (<></>)
+    if (!evnt || evnt.organisationDesc.length === 0) return (<></>)
     return (
         <>
             {evnt.organisationDesc.map((ogdesc, indx) => (
@@ -111,14 +111,14 @@ export default function Gallerie({ AppCallBacks }) {
                         setContract(await AppCallBacks.initContract())
 
                         let details = await AppCallBacks.initUserDetails(id)
-                        console.log(details.detail)
+                        // console.log(details.detail)
                         setDetails(details.detail)
                         setRole(details.detail.role)
                         setInitialized(true);
                         if (details.detail.role & 8) {
                             let evnts = await AppCallBacks.getAthleteEvents(id)
                             setEvents(evnts)
-                            console.log(evnts)
+                            // console.log(evnts)
                             let medl = await AppCallBacks.getUserMedals(id)
                             setMedals(medl)
                         }
@@ -157,7 +157,7 @@ export default function Gallerie({ AppCallBacks }) {
     }, []);
     if (userDetails) {
         // if not sportsMan
-        if (role & 8 != 8) {
+        if (role & 8 !== 8) {
             return (
                 <div>
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Card, Container } from "react-bootstrap";
-import CardHeader from "react-bootstrap/esm/CardHeader";
+import { /*Card,*/ Container } from "react-bootstrap";
+// import CardHeader from "react-bootstrap/esm/CardHeader";
 import ReactTooltip from "react-tooltip";
 import { format_Date } from "../../../utils/dateUtils";
 async function setGallery(AppCallBacks, addr, contract, indx, display, succes) {
@@ -37,10 +37,10 @@ const TableMedalItems = ({ AppCallBacks, address, contract, web3, userMedals }) 
                         }
                     </td>
                     <td colSpan="1">
-                        <img src={userMedals.uriList[indx]} style={{ width: 32 + 'px' }} data-tip data-for={"img" + indx} />
+                        <img src={userMedals.uriList[indx]} style={{ width: 32 + 'px' }} data-tip data-for={"img" + indx} alt="medalUri" />
                         <ReactTooltip id={"img" + indx} place="top" border
                             textColor='#5F4B8BFF' backgroundColor='#E69A8DFF' borderColor='darkgreen' backgroundColor='white' borderColor='black' arrowColor='white'>
-                            <img src={userMedals.uriList[indx]} style={{ width: 128 + 'px' }}
+                            <img src={userMedals.uriList[indx]} style={{ width: 128 + 'px' }} alt="medalUri"
                             />
                         </ReactTooltip>
                     </td>
