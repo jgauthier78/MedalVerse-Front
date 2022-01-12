@@ -530,7 +530,7 @@ class App extends Component {
     } // getOrganizerOrganisations
 
     adminSetWinner = async (eventId, athleteAdr) => {
-        console.log("App::adminSetWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
+        // console.log("App::adminSetWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
         try {
             await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
             /// Data refresh : Handled by event
@@ -543,7 +543,7 @@ class App extends Component {
     } // adminSetWinner
 
     adminAddMedal = async (eventId) => {
-        console.log("App::adminAddMedal: eventId=" + eventId + " this.getAccounts()=" + this.getAccounts())
+        // console.log("App::adminAddMedal: eventId=" + eventId + " this.getAccounts()=" + this.getAccounts())
         try {
             // Create NFT
             // await this.createNFT()
@@ -579,21 +579,11 @@ class App extends Component {
     ThrowIn_getInstance = async (ThrowInContractAddress) => {
         // console.log("App::ThrowIn_getInstance:ThrowInContractAddress="+ThrowInContractAddress)
         if (this.ThrowIn_getInstance.instances === undefined) {
-            // console.log("ThrowIn_getInstance.instances === undefined")
             this.ThrowIn_getInstance.instances = []
         }
-        // console.log("this.ThrowIn_getInstance.instances="+this.ThrowIn_getInstance.instances)
-        // console.log("this.ThrowIn_getInstance.instances[ThrowInContractAddress]="+this.ThrowIn_getInstance.instances[ThrowInContractAddress])
         if (this.ThrowIn_getInstance.instances[ThrowInContractAddress] === undefined) {
-            // console.log("UNDEFINED INSTANCE")
-            // console.log("create instance")
             this.ThrowIn_getInstance.instances[ThrowInContractAddress] = await new this.state.web3.eth.Contract(ThrowInContract.abi, ThrowInContractAddress);
         }
-        // else
-        // {
-        //     console.log("INSTANCE en 'cache'")
-        // }
-
         // console.log("this.ThrowIn_getInstance.instances[ThrowInContractAddress]=" + JSON.stringify( this.ThrowIn_getInstance.instances[ThrowInContractAddress] ) )
         return this.ThrowIn_getInstance.instances[ThrowInContractAddress]
 
@@ -728,18 +718,18 @@ class App extends Component {
 
     updateOrganizationsEventOnEvent = async (eventId, organizations) => {
         // REFRESH DATA
-        console.log("eventId=" + eventId)
+        // console.log("eventId=" + eventId)
 
         if (organizations === undefined) { console.error("App::updateOrganizationsEventOnEvent:organizations===undefined") }
         if (eventId === undefined) { console.error("App::updateOrganizationsEventOnEvent:eventId===undefined") }
 
         for (let orgIdx = 0; orgIdx < organizations.length; orgIdx++) {
             let organization = organizations[orgIdx]
-            console.log("organizations.id=" + organization.id)
+            // console.log("organizations.id=" + organization.id)
             let organizationEvents = organization.events
             for (let userOrgEventIdx = 0; userOrgEventIdx < organizationEvents.length; userOrgEventIdx++) {
                 let userOrganizationEvent = organizationEvents[userOrgEventIdx]
-                console.log("organizations.eventId=" + userOrganizationEvent.eventId)
+                // console.log("organizations.eventId=" + userOrganizationEvent.eventId)
 
                 if (eventId === userOrganizationEvent.eventId) {
                     // Update event
@@ -775,7 +765,7 @@ class App extends Component {
     */
     handleSaveUserProfile = async (profile) => {
         try {
-            console.log("App::handleSaveUserProfile name=" + profile.name)
+            // console.log("App::handleSaveUserProfile name=" + profile.name)
             return await this.DID_updateProfile(profile)
         }
         catch (error) {
@@ -843,7 +833,7 @@ class App extends Component {
                 newEvent.detail = "Transaction rejected"
             } // -32003
             else if (catchedError.code === -32603) {
-                newEvent.detail = "The tx doesn't have the correct nonce."
+                newEvent.detail = "The tx doesn't have the correct nonce." +  + truncateString(catchedError.message, 70)
             } // -32603
             //
             else if (catchedError.code === -4900) {
@@ -854,7 +844,7 @@ class App extends Component {
             } // -4901
             //
             else {
-                newEvent.detail = "Transaction error " + truncateString(mvEvent.message, 70)
+                newEvent.detail = "Transaction error : " + truncateString(catchedError.message, 70)
                 // error
             } // default
         }
@@ -870,7 +860,7 @@ class App extends Component {
                                     <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
                                     <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
                                     <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
-                                    {newEvent.detail
+                                    {(newEvent.detail !== null && newEvent.detail !== undefined && newEvent.detail.length !== undefined && newEvent.detail.length > 0 )
                                     &&
                                     <>{newEvent.detail}</>
                                     }
@@ -977,7 +967,7 @@ class App extends Component {
                         console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
                     } else {
                         this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
-                        let eventStatusChanged = { title: "eventStatusChanged", message: "eventStatusChanged", level: "success"}
+                        let eventStatusChanged = { title: "Event updated", level: "success"}
                         this.showEvent(eventStatusChanged, undefined)
                     }
                 }
@@ -991,7 +981,7 @@ class App extends Component {
                         console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
                     } else {
                         this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
-                        let eventWinnerSet = { title: "eventStatusChanged", message: "eventStatusChanged", level: "success"}
+                        let eventWinnerSet = { title: "Winner set", level: "success"}
                         this.showEvent(eventWinnerSet, undefined)
                     }
                 }
