@@ -17474,17 +17474,53 @@ td.rdtYear:hover {
   
 .tableFixHead tr:hover { background-color: rgba(255,255,255,0.3);}
 .tableFixHead tbody td { position: relative !important;}
-.tableFixHead tbody td:hover:before {
-  content: "";
-  position: absolute !important;
-  left: 0;
-  right: 0;
-  top: -9999px;
-  bottom: -9999px;
-  background-color: rgba(255,255,255,0.2) !important;
-  z-index: -1;
-}  
+
 .tableFixHead table img   { width:100px;}  
+
+
+
+
+.tableFixHead-White           { 
+  overflow: auto; max-height: 400px; box-shadow: 0 0 20px rgba(0,0,0,0.2);}
+
+.tabletableFixHead-White FixHead table  { 
+    border-collapse: collapse;
+    width: 100%; 
+    border:solid black 1px;
+    border-radius:6px;
+   }
+
+.tableFixHead-White  table  th{ 
+  position: sticky;
+  top:0;
+  z-index: 1;
+}
+  
+
+.tableFixHead-White th  { 
+  padding: 15px;
+  background-color: rgba(0,0,0,0.2);
+  color: #fff;}
+  .tableFixHead-White td{ 
+padding: 15px;
+background-color: rgba(0,0,0,0.2);
+color: #000000;
+vertical-align: middle;
+}
+
+
+.tableFixHead-White th { text-align: left;}
+.tableFixHead-White thead th { 
+background-color: #55608f;
+border: hidden;
+}
+
+.tableFixHead-White tr:hover { background-color: rgba(0,0,0,0.3);}
+.tableFixHead-White tbody td { position: relative !important;}
+
+.tableFixHead-White table img   { width:100px;}  
+
+
 
 .bg-blue-gradiant{
   background: linear-gradient(45deg, #49a09d, #5f2c82);

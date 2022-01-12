@@ -21,6 +21,9 @@ Structures Internes:
 
 Tests de medalVerse
 
+Cas de bon Fonctionnement
+  ZC-Vérifie la possibilité de withdraw les tokens dans le contrat MedalVerse
+
 contrat UserHandler:
 
 Cas de bon Fonctionnement
@@ -90,6 +93,7 @@ Gestion d'erreurs
   F-Vérifier qu'il n'est pas possible de mettre le contrat en pause si on n'est pas l'owner
   G-Vérifier qu'il n'est pas possible d'utiliser une fonction qui neccesite que le contrat soit en pause quand le contrat n'est pas en pause
   H-Vérifier qu'il n'est pas possible d'utiliser une fonction qui neccesite que le contrat ne soit pas en pause quand le contrat est en pause
+  J-Vérifier qu'il n'est pas possible d'utiliser une fonction qui neccesite l'antiDopage quand il est desactivé
 
 contrat NFTArtist:
 
