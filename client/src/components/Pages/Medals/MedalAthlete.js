@@ -54,11 +54,10 @@ class MedalAthlete extends Component {
         console.log(this.props.userProfile.userMedals)
         return (
             <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
-                <Card className="cardProfile shadow-sm ">
-                    <CardHeader>
-                        <h6>{"Mes Médailles"}:</h6> <span> {this.props.userProfile.userMedals.nbMedals} {" Médaille(s)"} </span>
-                    </CardHeader>
-                    <table className="table bordered" >
+
+                <h6>{"Mes Médailles"}:</h6> <span> {this.props.userProfile.userMedals.nbMedals} {" Médaille(s)"} </span>
+                <div className="tableFixHead-White  ">
+                    <table className="table  bordered" >
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -70,8 +69,7 @@ class MedalAthlete extends Component {
                         </thead>
                         <TableMedalItems userMedals={this.props.userProfile.userMedals} web3={this.props.userProfile.web3} contract={this.props.AppCallBacks.getContract()} address={this.props.userProfile.address} AppCallBacks={this.props.AppCallBacks} />
                     </table>
-
-                </Card>
+                </div>
             </Container>
 
         )
