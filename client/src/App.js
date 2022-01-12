@@ -229,10 +229,10 @@ class App extends Component {
 
             contract = await new web3.eth.Contract(MedalVerseContract.abi, deployedNetwork && deployedNetwork.address);
 
-            if (contract.address === null || contract.address === undefined )
+            if (contract.options.address === null || contract.options.address === undefined )
             {
                 const nullContractWrongNetworkError = { title: "Contract not found", message: "Wrong network ?" }
-                window.location.reload(true);
+                // window.location.reload(true);
                 throw nullContractWrongNetworkError
             }
             this.setState({ contract: contract })
@@ -252,7 +252,7 @@ class App extends Component {
         let result = { detail: null, err: null }
         try {
             // call the contract method to get infos about user
-            if (this.state.contract !== null && this.state.contract === undefined) {
+            if (this.state.contract !== null && this.state.contract !== undefined) {
                 result.detail = await this.state.contract.methods.getUserDetails(account).call()
                 // console.log("result.detail=" + result.detail)
                 // result.detail["account"] = account;
@@ -331,7 +331,7 @@ class App extends Component {
     getAthleteEvents = async (account) => {
         let result = { nbEvents: 0, Event: null }
         try {
-            if (this.state.contract !== null && this.state.contract === undefined) {
+            if (this.state.contract !== null && this.state.contract !== undefined) {
                 // We get the nb of events the sporsman registered to
                 let nbEvents = await this.state.contract.methods.getSportsManEventsNumber(account).call()
                 if (nbEvents > 0) {
@@ -386,7 +386,7 @@ class App extends Component {
     getUserMedals = async (account) => {
         try {
             let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [], nftDesc: [] }
-            if (this.state.contract !== null && this.state.contract === undefined) {
+            if (this.state.contract !== null && this.state.contract !== undefined) {
                 result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
                 // for (let i = 0; i < result.nbMedals; i++) {
     
@@ -440,7 +440,7 @@ class App extends Component {
             let account = this.getAccounts()
             //let result = { organizations: null }
             const result = []
-            if (this.state.contract !== null && this.state.contract === undefined) {
+            if (this.state.contract !== null && this.state.contract !== undefined) {
                 // We get the list of organization the organizer subscribed to uint256[]
                 let organisationList = await this.state.contract.methods.getOrganizerOrganisationList(account).call()
                 // console.log("organisationList.length=" + organisationList.length)
