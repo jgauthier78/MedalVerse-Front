@@ -12,13 +12,13 @@ import { BoxArrowInRight, BoxArrowRight, Trophy } from 'react-bootstrap-icons';
 // CSS
 import "../../styles/NavBar.css";
 import { Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import NavScroll from "./NavLink";
 
 import { ReactComponent as FR_FLAG } from './../flags/FR.svg';
 import { ReactComponent as ENGLISH_FLAG } from './../flags/English_language.svg';
 
-const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks, isLanding, isAthlete, setPannel }) => {
+const NavBar = ({ loginCallBack, options, AppCallBacks, isLanding, isAthlete, isOrganizer, setPannel }) => {
 
   const { t } = useTranslation();
   const changeLanguage = (lng) => { i18n.changeLanguage(lng) }
@@ -56,8 +56,17 @@ const NavBar = ({ /*connectedAccountAddr,*/ loginCallBack, options, AppCallBacks
             {isAthlete === "true" ? (
               <>
                 <Nav.Link className={textStyleCentered} onClick={() => setPannel(0)}>{"Mon Profil"}</Nav.Link>
-                <Nav.Link className={textStyleCentered} onClick={() => setPannel(1)}>{"Mes Evénements"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => {alert("2")}}>{"Mes Evénements"}</Nav.Link>
                 <Nav.Link className={textStyleCentered} onClick={() => setPannel(2)}>{"Ma Galerie"}</Nav.Link>
+              </>
+            )
+              : (<></>)
+            }
+            {isOrganizer === true ? (
+              <>
+                <Nav.Link className={textStyleCentered} onClick={() => {alert("0")} }>{t("OrganizerNavbar.menu.organizerHome")}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => setPannel(1)}>{t("OrganizerNavbar.menu.eventsByState")}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => {alert("2")}}>{t("OrganizerNavbar.menu.eventsByDate")}</Nav.Link>
               </>
             )
               : (<></>)
