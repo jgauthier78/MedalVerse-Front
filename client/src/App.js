@@ -232,6 +232,7 @@ class App extends Component {
             if (contract.address === null || contract.address === undefined )
             {
                 const nullContractWrongNetworkError = { title: "Contract not found", message: "Wrong network ?" }
+                window.location.reload(true);
                 throw nullContractWrongNetworkError
             }
             this.setState({ contract: contract })
@@ -672,7 +673,6 @@ class App extends Component {
     }
 
     getEventData = async (eventId, organization) => {
-
         // Update event
         let eventData = await this.state.contract.methods.getEvent(eventId).call()
         // console.log("eventData:eventId=" + eventData.eventId)
@@ -826,7 +826,7 @@ class App extends Component {
         newEvent.message = (mvEvent.message !== undefined && mvEvent.message.length > 0 ? mvEvent.message : "")
 
         // Extra error info.
-        if (catchedError.code !== undefined) {
+        if (catchedError !== null && catchedError !== undefined && catchedError.code !== undefined) {
             // Metamask / Web3 errors
             // https://github.com/MetaMask/eth-rpc-errors/blob/main/src/error-constants.ts
             if (catchedError.code === 4001) {
@@ -968,6 +968,9 @@ class App extends Component {
                 // alert("event.event=" + event.event)
                 // Event
                 if (event.event === "eventStatusChanged") {
+                    let event = { title: "eventStatusChanged", message: "eventStatusChanged" }
+                    this.showEvent(event, undefined)
+
                     console.log("eventStatusChanged")
                     console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
