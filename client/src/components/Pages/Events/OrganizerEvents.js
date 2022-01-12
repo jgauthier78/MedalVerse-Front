@@ -37,6 +37,7 @@ const EventsByDateLayout = ( {activEvents} ) =>
     const { t } = useTranslation();
     return (
         <Container>
+            <br/>
             <OrganizerEventsByDate activEvents={activEvents} >{t("OrganizerEvents.titleEventsByDate")}</OrganizerEventsByDate>
         </Container>
     )
@@ -137,12 +138,18 @@ class OrganizerEventsCarouselBeforeTranslation extends Component
                         <div className="carousel-inner" >
                             <CarrousselItem organizerEvents={eventsToDisplay} />
                         </div>
+                        {eventsToDisplay.length > 1
+                        &&
                         <button className="carousel-control-prev" type="button" data-bs-target={`#${this.props.prefix}carEvents`} data-bs-slide="prev">
                             <span className="carousel-control-prev-icon"></span>
                         </button>
+                        }
+                        {eventsToDisplay.length > 1
+                        &&
                         <button className="carousel-control-next" type="button" data-bs-target={`#${this.props.prefix}carEvents`} data-bs-slide="next">
                             <span className="carousel-control-next-icon"></span>
                         </button>
+                        }
 
                     </div>
                 </Card>
@@ -153,7 +160,6 @@ class OrganizerEventsCarouselBeforeTranslation extends Component
 
 const OrganizerEventsByDate = ({ activEvents, children }) =>
 {
-
     if ( activEvents === undefined || activEvents.length <= 0 )
     return (
         <NoEventToDisplay>{children}</NoEventToDisplay>
@@ -183,14 +189,17 @@ const Event = ({ event }) =>
         } // catch
     } // onHandleDisplayEventDetails
     return (
-    <Card className="cardProfile shadow-sm ">
-        <CardHeader>
-            <h6>{t("OrganizerEvents.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvents.to")} {format_TimeStampToEndDate(event.endDate)}</h6>
-        </CardHeader>
-        <h6>{event.eventDescription}</h6>
-        <h6>{event.organization.name}</h6>
-        <Button className="btn btn-light btn-sm m-2 opacity-100" onClick={() => onHandleDisplayEventDetails( event ) } >{t("OrganizerEvents.details")}</Button>
-    </Card>
+        <Container fluid>
+            <Card style={{ width: '18rem' }}>
+            <Card.Header>{t("OrganizerEvents.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvents.to")} {format_TimeStampToEndDate(event.endDate)}</Card.Header>
+            <Card.Img variant="top" src={event.organization.logoURI} />
+            <Card.Body> 
+                <Card.Title>{event.organization.name}</Card.Title>
+                <Card.Text>{event.eventDescription}</Card.Text>
+                <Button className="btn btn-light btn-sm m-2 opacity-100" onClick={() => onHandleDisplayEventDetails( event ) } >{t("OrganizerEvents.details")}</Button>
+            </Card.Body>
+            </Card>
+        </Container>
     )
 }
 
@@ -201,13 +210,14 @@ const EventsByDate = ({ activEvents }) =>
 
     return (
     <Container>
-        <Row xs={1} md={2} xl={2} className="g-8">
+        <Row xs={1} md={4} xl={8} className="g-8">
         {activEvents.map((event, indx) => (
              <Col key={indx} >
                 <Event event={event}/>
             </Col>
         ))}
-    </Row>
+        </Row>
+        <br/>
     </Container>
     )
 }

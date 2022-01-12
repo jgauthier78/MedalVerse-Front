@@ -968,15 +968,18 @@ class App extends Component {
                 // alert("event.event=" + event.event)
                 // Event
                 if (event.event === "eventStatusChanged") {
-                    let event = { title: "eventStatusChanged", message: "eventStatusChanged" }
-                    this.showEvent(event, undefined)
 
                     console.log("eventStatusChanged")
                     console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
-                    if (event.returnValues === undefined) { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined") }
-                    this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
+                    if (event.returnValues === undefined) {
+                        console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
+                    } else {
+                        this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
+                        let eventStatusChanged = { title: "eventStatusChanged", message: "eventStatusChanged", level: "success"}
+                        this.showEvent(eventStatusChanged, undefined)
+                    }
                 }
                 // Event
                 else if (event.event === "eventWinnerSet") {
@@ -984,8 +987,13 @@ class App extends Component {
                     console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
-                    if (event.returnValues === undefined) { console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined") }
-                    this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
+                    if (event.returnValues === undefined) {
+                        console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
+                    } else {
+                        this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
+                        let eventWinnerSet = { title: "eventStatusChanged", message: "eventStatusChanged", level: "success"}
+                        this.showEvent(eventWinnerSet, undefined)
+                    }
                 }
                 // Event
                 else if (event.event === "MedalAdded") {

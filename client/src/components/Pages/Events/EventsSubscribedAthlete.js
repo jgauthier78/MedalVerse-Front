@@ -95,12 +95,18 @@ class EventsSubscribedAthlete extends Component {
                                     <div className="carousel-inner" >
                                         <CarrousselItem userEvents={this.props.userProfile.userEvents} />
                                     </div>
+                                    {this.props.userProfile.userEvents.length > 1
+                                    &&
                                     <button className="carousel-control-prev" type="button" data-bs-target="#carEvents" data-bs-slide="prev">
                                         <span className="carousel-control-prev-icon"></span>
                                     </button>
+                                    }
+                                    {this.props.userProfile.userEvents.length > 1
+                                    &&
                                     <button className="carousel-control-next" type="button" data-bs-target="#carEvents" data-bs-slide="next">
                                         <span className="carousel-control-next-icon"></span>
                                     </button>
+                                    }
                                 </div>
 
                                 <Card.Footer className="text-muted ">
