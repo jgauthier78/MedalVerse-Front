@@ -8,6 +8,7 @@ import "./Dapp Internal Struct/EventHandler.sol";
 import "./Dapp Internal Struct/OrganizerHandler.sol";
 import "./Dapp Internal Struct/MedalHandler.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract MedalVerse is
 	Ownable,
@@ -18,6 +19,13 @@ contract MedalVerse is
 	OrganizerHandler,
 	MedalHandler
 {
+
+	IERC20 internal Token;
+	
+	constructor(address addressToken)  {
+		Token = IERC20(addressToken);
+	}
+		
 	// Modifiers ----------------------------
 	modifier isNotNull(address a)
 		virtual
@@ -192,4 +200,12 @@ contract MedalVerse is
 	) external isAdminOfEvent(eventID) {
 		eventSetPosition(eventID, posX, posY);
 	}
+
+	function withdraw() public onlyOwner {
+		uint balance = Token.balanceOf(address(this));
+		Token.transfer(msg.sender, balance);
+	}
+	
 }
+
+

@@ -1,4 +1,5 @@
 var MedalVerse = artifacts.require("./MedalVerse.sol");
+const TokenMedal = artifacts.require("./Medal.sol");
 const throwIn = artifacts.require('ThrowIn');
 const nftArtist = artifacts.require('NFTArtist');
 
@@ -12,14 +13,19 @@ module.exports = async function (deployer, network, accounts) {
 
   const ACCOUNT_CONTRACT_OWNER = accounts[0]
 
-  await deployer.deploy(MedalVerse, { from: ACCOUNT_CONTRACT_OWNER });
-  await deployer.deploy(nftArtist, { from: ACCOUNT_CONTRACT_OWNER });
+  await deployer.deploy(TokenMedal, { from: ACCOUNT_CONTRACT_OWNER });
+  let TkMedal = await TokenMedal.deployed()
 
+  await deployer.deploy(MedalVerse, TkMedal.address, { from: ACCOUNT_CONTRACT_OWNER });
   let MVerse = await MedalVerse.deployed()
+
+  await deployer.deploy(nftArtist, TkMedal.address, MVerse.address, { from: ACCOUNT_CONTRACT_OWNER });
   let NFTArtist = await nftArtist.deployed()
+  
 
 
   console.log("----------------------------------------------------------")
+  console.log("$Medal Deployed at " + TkMedal.address)
   console.log("MedalVerse Deployed at " + MVerse.address)
   console.log("NFTArtist Deployed at " + NFTArtist.address)
 
@@ -35,9 +41,14 @@ module.exports = async function (deployer, network, accounts) {
 
   // 
   let nftCounter = 1
+  
+  let priceT = ethers.BigNumber.from("500000000000000000000")
+  let priceA = ethers.BigNumber.from("100000000000000000000")
 
   async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
-    let nft = await throwIn.new(nftOrganization, NFTArtist.address, nftName, nftSymbol, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
+    let nft = await throwIn.new(nftOrganization, NFTArtist.address, TkMedal.address, MVerse.address, nftName, nftSymbol, false, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
+    await TkMedal.approve(NFTArtist.address, priceA,{ from: ACCOUNT_CONTRACT_OWNER })
+    await TkMedal.approve(nft.address, priceT, { from: ACCOUNT_CONTRACT_OWNER })
     await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
     await nft.setYear(2022, { from: ACCOUNT_CONTRACT_OWNER })
