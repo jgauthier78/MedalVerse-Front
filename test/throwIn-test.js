@@ -7,39 +7,60 @@ const exceptionHandler = require("../scripts/CatchException")
 const errTypes = exceptionHandler.errTypes
 const catchException = exceptionHandler.catchException
 
+const $Medal = artifacts.require('Medal');
 const throwIn = artifacts.require('ThrowIn');
+const medalVerse = artifacts.require('MedalVerse')
 const NFTArtist = artifacts.require('NFTArtist')
-contract('ThrowIn', function (accounts) {
+contract('ThrowIn', async function (accounts) {
 
-
+    
     const owner = accounts[0];
     const user = accounts[1]
     const year = new BigNumber(1998);
     const number = new BigNumber(1);
     const Uri = "img";
     const zero = new BigNumber(0);
-
+    const priceT = new BigNumber("500000000000000000000")
+    const priceA = new BigNumber("100000000000000000000")
     const name = "Rapahel Nadal";
     const name1 = "Roger Federer";
     const name2 = "Serena Williams";
 
-    // Init NFTArtist
     beforeEach(async function () {
-        this.NFTArtist = await NFTArtist.new({ from: owner });
-
+        this.tokenInstance = await $Medal.new({ from: owner });
     })
+
+    beforeEach(async function () {
+        let addressToken = await this.tokenInstance.address
+        this.medalVerseInstance = await medalVerse.new(addressToken, { from: owner });
+    })
+
+    // Init NFTArtist
+    beforeEach(async function () {    
+        let addressToken = await this.tokenInstance.address
+        let addressMedalVerse = await this.medalVerseInstance.address    
+        this.nftArtistInstance = await NFTArtist.new(addressToken, addressMedalVerse, { from: owner });
+    })
+    
 
     // Init ThrowIn
     beforeEach(async function () {
-        let addressNFT = await this.NFTArtist.address
-        this.throwInInstance = await throwIn.new("FITennis", addressNFT, "name", "symbol", { from: owner });
+        let addressToken = await this.tokenInstance.address
+        let addressMedalVerse = await this.medalVerseInstance.address
+        let addressNftArtist = await this.nftArtistInstance.address;
+        this.throwInInstance = await throwIn.new("FITennis", addressNftArtist, addressToken, addressMedalVerse, "name", "symbol", true, { from: owner });
     });
+    
 
     // MINT 
     it("A-Mint du NFT Coupe", async function () {
+        let addressNftThrowIn = await this.throwInInstance.address;
+        let addressNftArtist = await this.nftArtistInstance.address;
+        await this.tokenInstance.approve(addressNftArtist, priceA, { from: owner })
         // Mint NftArtiste 
-        await this.NFTArtist.mintNFTArtist("name", Uri, { from: user });
+        await this.nftArtistInstance.mintNFTArtist("name", Uri, { from: owner });
 
+        await this.tokenInstance.approve(addressNftThrowIn, priceT, { from: owner })
         // Mint NftCup with Uri NftArtist 
         await this.throwInInstance.mintCup(1, { from: owner });
 
@@ -101,8 +122,13 @@ contract('ThrowIn', function (accounts) {
 
     // Change Statut and test function statut paused
     it("C-mettre le contract en pause et verifier les fonctions de pause ", async function () {
+        let addressNftThrowIn = await this.throwInInstance.address;
+        let addressNftArtist = await this.nftArtistInstance.address;
+        await this.tokenInstance.approve(addressNftArtist, priceA, { from: owner })
         // Mint
-        await this.NFTArtist.mintNFTArtist("name", Uri);
+        await this.nftArtistInstance.mintNFTArtist("name", Uri);
+
+        await this.tokenInstance.approve(addressNftThrowIn, priceT, { from: owner })
         await this.throwInInstance.mintCup(1, { from: owner });
         let balance = new BigNumber(await this.throwInInstance.balanceOf(owner));
 
@@ -147,13 +173,21 @@ contract('ThrowIn', function (accounts) {
     //Error Test
     it("D-Mint d'un NFT deja minte ", async function () {
         console.log("Test des erreur ...")
+
+        let addressNftThrowIn = await this.throwInInstance.address;
+        let addressNftArtist = await this.nftArtistInstance.address;
+
+        let priceAdouble = new BigNumber(priceA * 2)
+        let priceTdouble = new BigNumber(priceT * 2)
+        await this.tokenInstance.approve(addressNftArtist, priceAdouble, { from: owner })
         // Mint NftArtiste 
-        await this.NFTArtist.mintNFTArtist("name", Uri, { from: user });
+        await this.nftArtistInstance.mintNFTArtist("name", Uri, { from: owner });
+        await this.tokenInstance.approve(addressNftThrowIn, priceTdouble, { from: owner })
         // Mint NftCup with Uri NftArtist 
         await this.throwInInstance.mintCup(1, { from: owner });
 
         // Mint NftArtiste 
-        await this.NFTArtist.mintNFTArtist("name1", "img1", { from: user });
+        await this.nftArtistInstance.mintNFTArtist("name1", "img1", { from: owner });
         // Mint NftCup with Uri NftArtist 
         await catchException(this.throwInInstance.mintCup(2, { from: owner }), errTypes.revert)
 
@@ -163,10 +197,16 @@ contract('ThrowIn', function (accounts) {
     })
 
     it("E-Utiliser transferFromWithoutPermission sans etre l'owner", async function () {
+        let addressNftThrowIn = await this.throwInInstance.address;
+        let addressNftArtist = await this.nftArtistInstance.address;
+        await this.tokenInstance.approve(addressNftArtist, priceA, { from: owner })
         // Mint NftArtiste 
-        await this.NFTArtist.mintNFTArtist("name", Uri);
+        await this.nftArtistInstance.mintNFTArtist("name", Uri, { from: owner });
+
+        await this.tokenInstance.approve(addressNftThrowIn, priceT, { from: owner })
         // Mint NftCup with Uri NftArtist 
         await this.throwInInstance.mintCup(1, { from: owner });
+
 
         await this.throwInInstance.setPaused({ from: owner });
         await catchException(this.throwInInstance.safeTransferFromWithoutPermission(owner, 1, { from: user }), errTypes.revert);
@@ -185,8 +225,13 @@ contract('ThrowIn', function (accounts) {
     })
 
     it("G-Utiliser une fonction qui neccesite que le contrat soit en pause quand le contrat n'est pas en pause ", async function () {
+        let addressNftThrowIn = await this.throwInInstance.address;
+        let addressNftArtist = await this.nftArtistInstance.address;
+        await this.tokenInstance.approve(addressNftArtist, priceA, { from: owner })
         // Mint NftArtiste 
-        await this.NFTArtist.mintNFTArtist("name", Uri);
+        await this.nftArtistInstance.mintNFTArtist("name", Uri, { from: owner });
+
+        await this.tokenInstance.approve(addressNftThrowIn, priceT, { from: owner })
         // Mint NftCup with Uri NftArtist 
         await this.throwInInstance.mintCup(1, { from: owner });
 

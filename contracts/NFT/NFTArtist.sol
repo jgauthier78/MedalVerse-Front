@@ -3,15 +3,20 @@ pragma solidity ^0.8;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
+contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
 	using Counters for Counters.Counter;
 	Counters.Counter private _tokenIds;
+    IERC20 internal Token;
+    
+    
 
-    constructor() ERC721("MedalVerse", "MDV") {
+    constructor(address addressMedal, address addressMedalVerse) ERC721("MedalVerse", "MDV") {
+        Token = IERC20(addressMedal);
+        medalVerse = addressMedalVerse;
 	}
 
 	struct NFT {
@@ -24,6 +29,9 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     // Data --------------------------------
 	mapping(uint=>NFT) public NFTs;
     // mapping(address=>mapping(uint=>NFT)) public NFTByOwner; // Associate the owner address with the token id associated with the NFT structure
+    
+    uint price = 100 * (10 ** 18);
+    address medalVerse;
 
     // Events ---------------------------------
     event nftMint(address owner, string name, uint tokenId );
@@ -40,6 +48,10 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 	///@param name Name of the structure NFT 
     ///@param Uri Path to Image
 	function mintNFTArtist(string memory name, string memory Uri) public {
+            uint balance = Token.balanceOf(msg.sender);
+            require(balance > price);
+
+            Token.transferFrom(msg.sender, medalVerse, price);
 		
 			_tokenIds.increment(); // Define the TokenId
 			uint256 NFTArtistId = _tokenIds.current(); // Define the id of the NFTArtist in relation to this variable TokenIds
@@ -92,10 +104,8 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         // delete  NFTByOwner[msg.sender][tokenId].tokenId;
         // delete  NFTByOwner[msg.sender][tokenId].creator;
         // delete  NFTByOwner[msg.sender][tokenId].imgPath;
-        delete NFTs[tokenId].name;
-        delete NFTs[tokenId].tokenId;
-        delete NFTs[tokenId].creator;
-        delete NFTs[tokenId].imgPath;
+        delete NFTs[tokenId];
+        
         super._burn(tokenId);
     }
 
@@ -117,6 +127,18 @@ contract NFTArtist is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function changePrice(uint newPrice) public onlyOwner {
+        price = newPrice;
+    }
+
+    function checkPrice() public view returns(uint){
+        return price;
+    }
+
+    function setAddressMedalVerse(address addressMedalVerse) public onlyOwner {
+        medalVerse = addressMedalVerse;
     }
 
 }

@@ -2,24 +2,32 @@
 pragma solidity ^0.8;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ThrowIn is ERC721, Ownable {
-	IERC721Metadata NFT_Medal; // Recovering an ERC721 interface
+	IERC721Metadata NFT_Artist; // Recovering an ERC721 interface
+	IERC20 internal Token;
 
 	constructor(
 		string memory organization,
-		address addressNFT_Medal,
+		address addressNFT_Artist,
+		address addressToken,
+		address addressMedalVerse,
 		string memory name,
-		string memory symbol
+		string memory symbol,
+		bool _antiDoping
 	) ERC721(name, symbol) {
-		IERC721Metadata(addressNFT_Medal).supportsInterface(
+		IERC721Metadata(addressNFT_Artist).supportsInterface(
 			type(IERC721).interfaceId
 		);
-		NFT_Medal = IERC721Metadata(addressNFT_Medal);
-		nameOfOrganization = organization;
+		nameOfOrganization = organization;		
+		NFT_Artist = IERC721Metadata(addressNFT_Artist);
+		Token = IERC20(addressToken);
+		medalVerse = addressMedalVerse;
 		name = name;
 		symbol = symbol;
+		antiDoping = _antiDoping;
 	}
 
 	///@dev Structure to describe the winner
@@ -39,9 +47,12 @@ contract ThrowIn is ERC721, Ownable {
 
 	string nameOfOrganization;
 	string uri;
-	uint256 numberMint;
+	uint8 numberMint;
+	uint price = 500 * (10 ** 18);
 	uint16 year;
+	bool antiDoping;
 	bool pause;
+	address medalVerse;
 
 	// Modifiers ----------------------------
 	///@dev Check that the address is not zero
@@ -62,6 +73,11 @@ contract ThrowIn is ERC721, Ownable {
 		_;
 	}
 
+	modifier checkAntiDoping() {
+		require(antiDoping == true, "Anti-doping: not activated");
+		_;
+	}
+
 	// Events ---------------------------------
 	event throwInCupMinted(address mint);
 	event throwInWinnersAdd(address organizer, address winners);
@@ -73,14 +89,19 @@ contract ThrowIn is ERC721, Ownable {
 		uint256 id
 	);
 	event throwInSetYear(uint256 whatYear);
+	event throwInOwnerRecovery(address caller, address recipient, uint256 id);
 
 	// Methods -------------------------------
 	///@dev Mint the only possible edition of the NFT Cup
 	///@param tokenId Token id of the NFTA Artist got the Uri
 	function mintCup(uint256 tokenId) public onlyOwner whenNotPaused {
-		require(numberMint == 0, "Only one single cup can be minted"); // Check if the nft has already been minted
+		require(numberMint == 0, "Only one single cup can be minted"); // Check if the nft has already been mint
+		// uint balance = Token.balanceOf(msg.sender);
 
-		uri = IERC721Metadata(NFT_Medal).tokenURI(tokenId); // Get the uri of the NFTArtist
+		// require(balance > price);
+		Token.transferFrom(msg.sender, medalVerse, price);
+
+		uri = IERC721Metadata(NFT_Artist).tokenURI(tokenId); // Get the uri of the NFTArtist
 		numberMint++; // increment the number of NFT mint
 		uriToken[numberMint] = uri; // Set the uri of the mint token
 		emit throwInCupMinted(msg.sender);
@@ -112,6 +133,7 @@ contract ThrowIn is ERC721, Ownable {
 	function safeTransferFromWithoutPermission(address from, uint256 tokenId)
 		public
 		onlyOwner
+		checkAntiDoping
 		whenPaused
 	{
 		_safeTransfer(from, msg.sender, tokenId, "");
@@ -119,15 +141,28 @@ contract ThrowIn is ERC721, Ownable {
 		emit throwInTranserWithoutPermission(msg.sender, from, tokenId);
 	}
 
+	///@dev Recover the NFT to restart the competition
+	///@param from NFT owner address
+	///@param tokenId ID to transfer
+	function ownerRecovery(address from, uint256 tokenId)
+		public
+		onlyOwner
+		whenNotPaused
+	{
+		_safeTransfer(from, msg.sender, tokenId, "");
+
+		emit throwInOwnerRecovery(msg.sender, from, tokenId);
+	}
+
 	///@dev pause the contract
-	function setPaused() public onlyOwner whenNotPaused {
+	function setPaused() public onlyOwner checkAntiDoping whenNotPaused {
 		pause = true;
 
 		emit throwInSetPause(pause);
 	}
 
 	///@dev unpause the contract
-	function removePaused() public onlyOwner whenPaused {
+	function removePaused() public onlyOwner checkAntiDoping whenPaused {
 		pause = false;
 
 		emit throwInPauseRemoved(pause);
