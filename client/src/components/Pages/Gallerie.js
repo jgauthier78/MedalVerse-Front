@@ -41,7 +41,7 @@ const getEventEndDate = (evnt, i) => { return format_Date(((evnt.eventList[i])).
 
 const MedalSlides = ({ web3, mdl }) => {
 
-    if (!mdl || mdl.nbMedalsInGallery == 0) return (<></>)
+    if (!mdl || mdl.nbMedalsInGallery === 0) return (<></>)
 
     return (
         <>
