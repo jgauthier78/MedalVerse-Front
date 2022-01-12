@@ -2,7 +2,7 @@
 import { Component } from "react";
 
 /* React - Bootstrap */
-import { Container, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 
 // React-router
 import { Routes, Route, Outlet } from "react-router-dom";
@@ -10,7 +10,6 @@ import { Routes, Route, Outlet } from "react-router-dom";
 /* Components */
 import NavBar from "../UIElements/NavBar";
 import SimpleFooter from "../UIElements/SimpleFooter";
-// import OrganizerSideBar from "./SideBar/OrganizerSideBar";
 import ProfileBandeau from "./ProfileBandeau"
 import { EventsByStateLayout, EventsByDateLayout } from "./Events/OrganizerEvents";
 import { EventLayout } from "./Events/OrganizerEvent";

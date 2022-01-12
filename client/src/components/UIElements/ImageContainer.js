@@ -24,7 +24,7 @@ class ImageContainer extends Component {
 
     constructor() {
         super()
-        this.bkgImages = new Array("/img/bkg/Horsing.jpg", "/img/bkg/Lifting.jpg", "/img/bkg/Swimming2.jpeg", "/img/bkg/ball.jpg", "/img/bkg/pool.jpg", "/img/bkg/velo.jpg", "/img/bkg/skii.jpg")
+        this.bkgImages = ["/img/bkg/Horsing.jpg", "/img/bkg/Lifting.jpg", "/img/bkg/Swimming2.jpeg", "/img/bkg/ball.jpg", "/img/bkg/pool.jpg", "/img/bkg/velo.jpg", "/img/bkg/skii.jpg"]
     }
 
 
