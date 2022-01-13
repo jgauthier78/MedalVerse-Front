@@ -702,6 +702,8 @@ class App extends Component {
     } // getEventData
 
     updateOrganizerEvent = async (eventId, organization) => {
+        // REFRESH DATA
+        console.log("updateOrganizerEvent:eventId=" + eventId)
         let updatedEvent = await this.getEventData(eventId, organization)
         let userOrganizationEvents = organization.events
         for (let userOrgEventIdx = 0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++) {
@@ -718,8 +720,7 @@ class App extends Component {
 
     updateOrganizationsEventOnEvent = async (eventId, organizations) => {
         // REFRESH DATA
-        // console.log("eventId=" + eventId)
-
+        console.log("updateOrganizationsEventOnEvent:eventId=" + eventId)
         if (organizations === undefined) { console.error("App::updateOrganizationsEventOnEvent:organizations===undefined") }
         if (eventId === undefined) { console.error("App::updateOrganizationsEventOnEvent:eventId===undefined") }
 
@@ -821,6 +822,7 @@ class App extends Component {
             // https://github.com/MetaMask/eth-rpc-errors/blob/main/src/error-constants.ts
             if (catchedError.code === 4001) {
                 newEvent.detail = "User denied message signature" // t("Errors.RPC.4001.message")
+                newEvent.additionnalDetails = truncateString(catchedError.message, 500)
             } // 4001
             else if (catchedError.code === 4100) {
                 newEvent.detail = "Unauthorized"
@@ -833,7 +835,8 @@ class App extends Component {
                 newEvent.detail = "Transaction rejected"
             } // -32003
             else if (catchedError.code === -32603) {
-                newEvent.detail = "The tx doesn't have the correct nonce." +  + truncateString(catchedError.message, 70)
+                newEvent.detail = "Internal error"
+                newEvent.additionnalDetails = truncateString(catchedError.message, 500)
             } // -32603
             //
             else if (catchedError.code === -4900) {
@@ -844,7 +847,8 @@ class App extends Component {
             } // -4901
             //
             else {
-                newEvent.detail = "Transaction error : " + truncateString(catchedError.message, 70)
+                newEvent.detail = "Transaction error"
+                newEvent.additionnalDetails = truncateString(catchedError.message, 500)
                 // error
             } // default
         }
@@ -864,7 +868,13 @@ class App extends Component {
                                     &&
                                     <>{newEvent.detail}</>
                                     }
-                                </div>
+                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
+                                    &&
+                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                                    </div>
+                                    }
+                                    </div>
                     ,
                     { ...eventDisplayOptions, autoClose: 10000, toastId: this.props.toastId }
                 );
@@ -879,7 +889,13 @@ class App extends Component {
                                     &&
                                     <>{newEvent.detail}</>
                                     }
-                                </div>
+                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
+                                    &&
+                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                                    </div>
+                                    }
+                                    </div>
                     , { ...eventDisplayOptions, autoClose: 10000, toastId: this.props.toastId });
                 break;
 
@@ -892,7 +908,13 @@ class App extends Component {
                                     &&
                                     <>{newEvent.detail}</>
                                     }
-                                </div>
+                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
+                                    &&
+                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                                    </div>
+                                    }
+                                    </div>
                     , { ...eventDisplayOptions, autoClose: 60000, toastId: this.props.toastId });
                 break;
 
@@ -904,9 +926,15 @@ class App extends Component {
                                     <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
                                     {newEvent.detail
                                      &&
-                                    <>{newEvent.detail}</>
+                                     <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.detail}</p>
                                     }
-                                </div>
+                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
+                                    &&
+                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                                    </div>
+                                    }
+                                    </div>
                     , {...eventDisplayOptions, autoClose: 120000, toastId: this.props.toastId });
             break;
         }
@@ -973,16 +1001,22 @@ class App extends Component {
                 }
                 // Event
                 else if (event.event === "eventWinnerSet") {
-                    console.log("eventStatusChanged")
+                    console.log("eventWinnerSet")
                     console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
                         console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
                     } else {
-                        this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
-                        let eventWinnerSet = { title: "Winner set", level: "success"}
-                        this.showEvent(eventWinnerSet, undefined)
+                        // ! eventID != eventId !
+                        if (event.returnValues.eventID=== undefined) {
+                            console.error("eventWinnerSet:No 'eventID' returned")
+                        }
+                        else {
+                            this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
+                            let eventWinnerSet = { title: "Winner set", level: "success"}
+                            this.showEvent(eventWinnerSet, undefined)
+                            }
                     }
                 }
                 // Event
