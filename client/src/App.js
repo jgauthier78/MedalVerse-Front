@@ -702,6 +702,8 @@ class App extends Component {
     } // getEventData
 
     updateOrganizerEvent = async (eventId, organization) => {
+        // REFRESH DATA
+        console.log("updateOrganizerEvent:eventId=" + eventId)
         let updatedEvent = await this.getEventData(eventId, organization)
         let userOrganizationEvents = organization.events
         for (let userOrgEventIdx = 0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++) {
@@ -718,8 +720,7 @@ class App extends Component {
 
     updateOrganizationsEventOnEvent = async (eventId, organizations) => {
         // REFRESH DATA
-        // console.log("eventId=" + eventId)
-
+        console.log("updateOrganizationsEventOnEvent:eventId=" + eventId)
         if (organizations === undefined) { console.error("App::updateOrganizationsEventOnEvent:organizations===undefined") }
         if (eventId === undefined) { console.error("App::updateOrganizationsEventOnEvent:eventId===undefined") }
 
@@ -834,7 +835,7 @@ class App extends Component {
                 newEvent.detail = "Transaction rejected"
             } // -32003
             else if (catchedError.code === -32603) {
-                newEvent.detail = "The tx doesn't have the correct nonce."
+                newEvent.detail = "Internal error"
                 newEvent.additionnalDetails = truncateString(catchedError.message, 500)
             } // -32603
             //
@@ -1000,16 +1001,22 @@ class App extends Component {
                 }
                 // Event
                 else if (event.event === "eventWinnerSet") {
-                    console.log("eventStatusChanged")
+                    console.log("eventWinnerSet")
                     console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
                         console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
                     } else {
-                        this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
-                        let eventWinnerSet = { title: "Winner set", level: "success"}
-                        this.showEvent(eventWinnerSet, undefined)
+                        // ! eventID != eventId !
+                        if (event.returnValues.eventID=== undefined) {
+                            console.error("eventWinnerSet:No 'eventID' returned")
+                        }
+                        else {
+                            this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
+                            let eventWinnerSet = { title: "Winner set", level: "success"}
+                            this.showEvent(eventWinnerSet, undefined)
+                            }
                     }
                 }
                 // Event
