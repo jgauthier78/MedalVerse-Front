@@ -7,7 +7,7 @@ struct User {
 	string iconURI; // URI for displaying user in UI
 	string userName; // Username for UI elements
 	string email; // email for the user
-	uint8 role; // Role in MedalVerse (Admin, Author,)
+	uint256 role; // Role in MedalVerse (Admin, Author,)
 	bool activ; // user is activ on the website
 }
 
@@ -38,7 +38,7 @@ contract UserHandler is Ownable {
 		string memory _iconURI,
 		string memory _userName,
 		string memory _email,
-		uint8 _role
+		uint256 _role
 	) internal onlyOwner isNotNull(_userAddress) {
 		// Copy to the structure
 		_Users[_userAddress] = User({
