@@ -821,6 +821,7 @@ class App extends Component {
             // https://github.com/MetaMask/eth-rpc-errors/blob/main/src/error-constants.ts
             if (catchedError.code === 4001) {
                 newEvent.detail = "User denied message signature" // t("Errors.RPC.4001.message")
+                newEvent.additionnalDetails = truncateString(catchedError.message, 500)
             } // 4001
             else if (catchedError.code === 4100) {
                 newEvent.detail = "Unauthorized"
@@ -833,7 +834,8 @@ class App extends Component {
                 newEvent.detail = "Transaction rejected"
             } // -32003
             else if (catchedError.code === -32603) {
-                newEvent.detail = "The tx doesn't have the correct nonce." +  + truncateString(catchedError.message, 70)
+                newEvent.detail = "The tx doesn't have the correct nonce."
+                newEvent.additionnalDetails = truncateString(catchedError.message, 500)
             } // -32603
             //
             else if (catchedError.code === -4900) {
@@ -844,7 +846,8 @@ class App extends Component {
             } // -4901
             //
             else {
-                newEvent.detail = "Transaction error : " + truncateString(catchedError.message, 70)
+                newEvent.detail = "Transaction error"
+                newEvent.additionnalDetails = truncateString(catchedError.message, 500)
                 // error
             } // default
         }
@@ -864,7 +867,13 @@ class App extends Component {
                                     &&
                                     <>{newEvent.detail}</>
                                     }
-                                </div>
+                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
+                                    &&
+                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                                    </div>
+                                    }
+                                    </div>
                     ,
                     { ...eventDisplayOptions, autoClose: 10000, toastId: this.props.toastId }
                 );
@@ -879,7 +888,13 @@ class App extends Component {
                                     &&
                                     <>{newEvent.detail}</>
                                     }
-                                </div>
+                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
+                                    &&
+                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                                    </div>
+                                    }
+                                    </div>
                     , { ...eventDisplayOptions, autoClose: 10000, toastId: this.props.toastId });
                 break;
 
@@ -892,7 +907,13 @@ class App extends Component {
                                     &&
                                     <>{newEvent.detail}</>
                                     }
-                                </div>
+                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
+                                    &&
+                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                                    </div>
+                                    }
+                                    </div>
                     , { ...eventDisplayOptions, autoClose: 60000, toastId: this.props.toastId });
                 break;
 
@@ -904,9 +925,15 @@ class App extends Component {
                                     <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
                                     {newEvent.detail
                                      &&
-                                    <>{newEvent.detail}</>
+                                     <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.detail}</p>
                                     }
-                                </div>
+                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
+                                    &&
+                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                                    </div>
+                                    }
+                                    </div>
                     , {...eventDisplayOptions, autoClose: 120000, toastId: this.props.toastId });
             break;
         }

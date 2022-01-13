@@ -17569,6 +17569,61 @@ border: hidden;
   padding-bottom: 5px
 } 
 
+/* Toastify tooltips */
+
+/* Tooltip container */
+.toastTooltip {
+  position: relative;
+  display: block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.toastTooltip .toastTooltipText {
+  visibility: hidden;
+  min-width: 300px;
+  max-width: 700px;
+  background-color: var(--medalverse-toast-color);
+  color: black;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 15%;
+  left: -50px;
+  margin-top: 5px;
+  margin-left: 0px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.toastTooltip .toastTooltipText::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+  box-shadow: 4px 3px 10px var(--medalverse-toast-color);
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.toastTooltip:hover .toastTooltipText {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
 
 /* Scroll 2 */
 *::-webkit-scrollbar {
