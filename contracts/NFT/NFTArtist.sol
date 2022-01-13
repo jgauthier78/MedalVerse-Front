@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
 	using Counters for Counters.Counter;
 	Counters.Counter private _tokenIds; // Manage the incrementation of the tokenId
-    IERC20 internal Token; // Recovering an ERC20 interface
+    IERC20 private Token; // Recovering an ERC20 interface
     
     
 
@@ -30,7 +30,7 @@ contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
     // Data --------------------------------
 	mapping(uint=>NFT) public NFTs;
     
-    uint price = 100 * (10 ** 18);
+    uint MDL_Mint_Royalties = 100 * (10 ** 18);
     address medalVerse;
 
     // Events ---------------------------------
@@ -52,9 +52,9 @@ contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
     ///@param Uri Path to Image
 	function mintNFTArtist(string memory name, string memory Uri) public {
             uint balance = Token.balanceOf(msg.sender);
-            require(balance > price);
+            require(balance > MDL_Mint_Royalties);
 
-            Token.transferFrom(msg.sender, medalVerse, price);
+            Token.transferFrom(msg.sender, medalVerse, MDL_Mint_Royalties);
 		
 			_tokenIds.increment(); // Define the TokenId
 			uint256 NFTArtistId = _tokenIds.current(); // Define the id of the NFTArtist in relation to this variable TokenIds
@@ -114,7 +114,7 @@ contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
     ///@dev change price of NFT
     ///@param newPrice NewPrice to be defined
     function changePrice(uint newPrice) public onlyOwner {
-        price = newPrice;
+        MDL_Mint_Royalties = newPrice;
 
         emit nftArtistPriceChanged(newPrice);
     }
@@ -130,7 +130,7 @@ contract NFTArtist is  ERC721URIStorage, ERC721Enumerable, Ownable {
     ///@dev View price
     ///@return price of nft
     function checkPrice() public view returns(uint){
-        return price;
+        return MDL_Mint_Royalties;
     }
 
     ///@dev view address to MedalVerse contract

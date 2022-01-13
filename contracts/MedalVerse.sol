@@ -20,7 +20,7 @@ contract MedalVerse is
 	MedalHandler
 {
 
-	IERC20 internal Token;
+	IERC20 private Token;
 	
 	constructor(address addressToken)  {
 		Token = IERC20(addressToken);
@@ -57,6 +57,10 @@ contract MedalVerse is
 		require(checkorganizerisAdminOf(organizationId), "you must be admin");
 		_;
 	}
+
+	// Event -------------------------------
+
+	event MedalVerseWithdraw(address owner);
 
 	// Methods -------------------------------
 
@@ -204,7 +208,10 @@ contract MedalVerse is
 	///@dev Withdraw token in the contract
 	function withdraw() public onlyOwner {
 		uint balance = Token.balanceOf(address(this)); // check balance of contract MedalVerse
+		require(balance != 0, "The contract must contain $Medal");
 		Token.transfer(msg.sender, balance); // transfer balance to owner 
+
+		emit MedalVerseWithdraw(msg.sender);
 	}
 	
 }

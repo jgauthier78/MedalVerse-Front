@@ -2,12 +2,12 @@
 pragma solidity ^0.8;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ThrowIn is ERC721, Ownable {
 	IERC721Metadata NFT_Artist; // Recovering an ERC721 interface
-	IERC20 internal Token; // Recovering an ERC20 interface
+	IERC20 private Token; // Recovering an ERC20 interface
 
 	constructor(
 		string memory organization,
@@ -23,7 +23,7 @@ contract ThrowIn is ERC721, Ownable {
 		);
 		nameOfOrganization = organization;		
 		NFT_Artist = IERC721Metadata(addressNFT_Artist);
-		Token = IERC20(addressToken);
+		Token = IERC20Metadata(addressToken);
 		medalVerse = addressMedalVerse;
 		name = name;
 		symbol = symbol;
@@ -48,7 +48,7 @@ contract ThrowIn is ERC721, Ownable {
 	string nameOfOrganization;
 	string uri;
 	uint8 numberMint;
-	uint price = 500 * (10 ** 18);
+	uint MDL_Mint_Royalties = 500 * (10 ** 18);
 	uint16 year;
 	bool antiDoping;
 	bool pause;
@@ -98,8 +98,8 @@ contract ThrowIn is ERC721, Ownable {
 		require(numberMint == 0, "Only one single cup can be minted"); // Check if the nft has already been mint
 		uint balance = Token.balanceOf(msg.sender); // Check the minter balance
 
-		require(balance > price); // Check the balance is greater than the price
-		Token.transferFrom(msg.sender, medalVerse, price); //.Transfer amount token to MedalVerse
+		require(balance > MDL_Mint_Royalties); // Check the balance is greater than the price
+		Token.transferFrom(msg.sender, medalVerse, MDL_Mint_Royalties); //.Transfer amount token to MedalVerse
 
 		uri = IERC721Metadata(NFT_Artist).tokenURI(tokenId); // Get the uri of the NFTArtist
 		numberMint++; // increment the number of NFT mint
