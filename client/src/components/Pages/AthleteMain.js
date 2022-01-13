@@ -61,7 +61,7 @@ class SporstmanMain extends Component {
                                 <>
                                     <div id="profil" className=" row g-0">
 
-                                        <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
+                                        <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} animatedBackground = 'img/abstract6.webm'/>
                                     </div>
 
 
