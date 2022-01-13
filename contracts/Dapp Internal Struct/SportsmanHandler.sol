@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./NFT_Medal_Bkg_Desc.sol";
 
 ///@dev Structure for describing MedalVerse Authors - used by AuthorHandler
 struct Sportsman {
 	address userAddress; // address used as ref
 	uint256 sportCategory; // Categories of sports supported
-	mapping(uint256 => uint256) eventsSubscribed; // Events referenced by count
-	mapping(uint256 => bool) eventsActivSubscription; // subscription referenced by eventsID
 	uint256 nbEventsSubscrided;
 	uint256 nbActivSubscriptions;
+	mapping(uint256 => uint256) eventsSubscribed; // Events referenced by count
+	mapping(uint256 => bool) eventsActivSubscription; // subscription referenced by eventsID
 	uint256[] medalList;
 	bool activ;
 }

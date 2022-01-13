@@ -11,22 +11,22 @@ enum stateOfCompetition {
 
 contract EventHandler is Ownable {
 	struct EventDesc {
+		stateOfCompetition eventState;
 		uint256 eventId; // Index of the event in the EventList
 		uint256 sportCategory; // Category
 		uint256 organizedBy; // Id of the Organization
-		address[] registeredSportsMan; //List of sportsman that are participating to the event
-		address winner; // Winner of the Event
 		uint256 startDate;
 		uint256 endDate;
 		uint256 medalID;
 		string eventDescription; // String describing the event
 		string positionX;
 		string positionY;
+		address winner; // Winner of the Event
+		address[] registeredSportsMan; //List of sportsman that are participating to the event
 		bool hasMedal;
 		bool activ;
 		bool ended; // finished ?
 		bool started; // The event has started
-		stateOfCompetition eventState;
 	}
 
 	// Data ---------------------------------
@@ -87,6 +87,7 @@ contract EventHandler is Ownable {
 		_event.winner = address(0);
 		_event.eventDescription = _eventDescription;
 		_event.eventState = stateOfCompetition.RegistrationOfParticipants;
+
 		emit eventAdded(eventCount);
 
 		return eventCount++;

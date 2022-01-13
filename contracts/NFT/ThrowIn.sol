@@ -6,58 +6,26 @@ import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ThrowIn is ERC721, Ownable {
+	// Data --------------------------------
+	uint256 mintCount;
+	uint256 MDL_Mint_Royalties = 500 * (10**18);
+	uint256 year;
+	address medalVerse;
 	IERC721Metadata NFT_Artist; // Recovering an ERC721 interface
 	IERC20 private Token; // Recovering an ERC20 interface
 
-	constructor(
-		string memory organization,
-		address addressNFT_Artist,
-		address addressToken,
-		address addressMedalVerse,
-		string memory name,
-		string memory symbol,
-		bool _antiDoping
-	) ERC721(name, symbol) {
-		IERC721Metadata(addressNFT_Artist).supportsInterface(
-			type(IERC721).interfaceId
-		);
-		nameOfOrganization = organization;
-		NFT_Artist = IERC721Metadata(addressNFT_Artist);
-		Token = IERC20Metadata(addressToken);
-		medalVerse = addressMedalVerse;
-		name = name;
-		symbol = symbol;
-		antiDoping = _antiDoping;
-	}
-
-	///@dev Structure to describe the winner
-	struct Winner {
-		string playerName; // Name of winner
-		uint256[] year; // All the years of victory
-		uint256 numberOfVictory; // Number of victory of player or team
-	}
-
-	// Data --------------------------------
 	Winner[] public winnersArray; // Winner structure array
-	uint16[] public yearOfEditionArray; // Stock up on the years where the competition takes place
+	uint256[] public yearOfEditionArray; // Stock up on the years where the competition takes place
 
 	mapping(address => Winner) public winnerMap; // Associate a winner structure with an address
 	mapping(uint256 => string) public uriToken; // Associate the token id and the uri
-	mapping(uint16 => address) public winnerByYearMap; // Year -> Winners array
+	mapping(uint256 => address) public winnerByYearMap; // Year -> Winners array
 
 	string nameOfOrganization;
 	string uri;
-<<<<<<< HEAD
-	uint256 mintCount;
-	uint256 price = 500 * (10**18);
-=======
-	uint8 numberMint;
-	uint MDL_Mint_Royalties = 500 * (10 ** 18);
->>>>>>> f5560b65bf7e520da35c3735c7c58f4d18a5b1d7
-	uint16 year;
+
 	bool antiDoping;
 	bool pause;
-	address medalVerse;
 
 	// Modifiers ----------------------------
 	///@dev Check that the address is not zero
@@ -97,6 +65,35 @@ contract ThrowIn is ERC721, Ownable {
 	event throwInOwnerRecovery(address caller, address recipient, uint256 id);
 
 	// Methods -------------------------------
+
+	constructor(
+		string memory organization,
+		address addressNFT_Artist,
+		address addressToken,
+		address addressMedalVerse,
+		string memory name,
+		string memory symbol,
+		bool _antiDoping
+	) ERC721(name, symbol) {
+		IERC721Metadata(addressNFT_Artist).supportsInterface(
+			type(IERC721).interfaceId
+		);
+		nameOfOrganization = organization;
+		NFT_Artist = IERC721Metadata(addressNFT_Artist);
+		Token = IERC20Metadata(addressToken);
+		medalVerse = addressMedalVerse;
+		name = name;
+		symbol = symbol;
+		antiDoping = _antiDoping;
+	}
+
+	///@dev Structure to describe the winner
+	struct Winner {
+		string playerName; // Name of winner
+		uint256[] year; // All the years of victory
+		uint256 numberOfVictory; // Number of victory of player or team
+	}
+
 	///@dev Mint the only possible edition of the NFT Cup
 	///@param tokenId Token id of the NFTA Artist got the Uri
 	function mintCup(uint256 tokenId) public onlyOwner whenNotPaused {
@@ -119,18 +116,17 @@ contract ThrowIn is ERC721, Ownable {
 	///@param to address receiving the NFT
 	///@param tokenId Token ID to transfer
 	function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal virtual override {
-        super._beforeTokenTransfer(from, to, tokenId);
+		address from,
+		address to,
+		uint256 tokenId
+	) internal virtual override {
+		super._beforeTokenTransfer(from, to, tokenId);
 		address ownerContract = owner();
 
 		if (ownerContract != msg.sender) {
-
-        	require(!paused(), "ERC721Pausable: token transfer while paused");
+			require(!paused(), "ERC721Pausable: token transfer while paused");
 		}
-    }
+	}
 
 	///@dev Recovery of NFT without the athlete's consent
 	///@param from NFT owner address
@@ -175,14 +171,14 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@dev Set the year of the compet
 	///@param competYear Current year
-	function setYear(uint16 competYear) public onlyOwner whenNotPaused {
+	function setYear(uint256 competYear) public onlyOwner whenNotPaused {
 		year = competYear;
 
 		emit throwInSetYear(competYear);
 	}
 
 	///@dev Add winners to the Winners array and modify its structure associated with this wallet
-	///@param walletPlayer winner's address
+	///@param walletPlayer winner's addressNumber
 	///@param name winner's name
 	function addWinner(string memory name, address walletPlayer)
 		public
@@ -216,10 +212,10 @@ contract ThrowIn is ERC721, Ownable {
 	function getAllWinners()
 		public
 		view
-		returns (string[] memory, uint16[] memory)
+		returns (string[] memory, uint256[] memory)
 	{
 		string[] memory winnersString = new string[](winnersArray.length); // Instantiate a string array the length of the winners array
-		uint16[] memory yearsOfVictory = new uint16[](
+		uint256[] memory yearsOfVictory = new uint256[](
 			yearOfEditionArray.length
 		); // Instantiate a uint array the length of the yearOfParticipationArray
 
@@ -266,7 +262,7 @@ contract ThrowIn is ERC721, Ownable {
 	}
 
 	///@return year of the current competition
-	function getYearOfCompetition() public view returns (uint16) {
+	function getYearOfCompetition() public view returns (uint256) {
 		return year;
 	}
 }

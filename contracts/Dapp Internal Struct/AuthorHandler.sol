@@ -1,7 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./NFT_Medal_Bkg_Desc.sol";
+struct NFT_Medal_Bkg_Desc {
+	address author; // Owner of the NFT
+	address NFT_Bkg_Adr; //Address for the minted NFT (can be null)
+	uint256 price; // Price for the corresponding NFT
+	uint256 creationId; // Creation ref
+	uint256 sportCategory;
+	string description; // Its Description
+	string URI; // URI for the image
+	bool activ; // Is It a valid struct ?
+}
 
 ///@dev Structure for describing MedalVerse Authors - used by AuthorHandler
 struct Author {
