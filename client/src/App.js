@@ -909,15 +909,15 @@ class App extends Component {
 
     // -------------------------------------------------------------------------------------
 
-    MedalVerse_SetEventHandler = (_eventID) => {
+    MedalVerse_SetEventHandler = (_eventId) => {
         // console.log("App::MedalVerse_SetEventHandler:_eventID=" + _eventID)
         // const connectedAccountAddr = this.getAccounts()
         //   const { t } = this.props;
         const medalVerseContractInstance = this.state.contract
 
-        let eventID = parseInt(_eventID)
-        if (isNaN(eventID)) {
-            const error = "MedalVerse_SetEventHandler:eventID is not a number"
+        let eventId = parseInt(_eventId)
+        if (isNaN(eventId)) {
+            const error = "MedalVerse_SetEventHandler:eventId is not a number"
             console.log(error)
             throw error
         }
@@ -953,19 +953,19 @@ class App extends Component {
                 // Event
                 if (event.event === "eventStatusChanged") {
 
-                    console.log("eventStatusChanged")
-                    console.log("event.returnValues= " + Object.entries(event.returnValues));
+                    // console.log("eventStatusChanged")
+                    // console.log("event.returnValues= " + Object.entries(event.returnValues));
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
                         console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
                     } else {
                         // ! eventID != eventId !
-                        if (event.returnValues.eventID=== undefined) {
-                            console.error("eventStatusChanged:No 'eventID' returned")
+                        if (event.returnValues.eventId=== undefined) {
+                            console.error("eventStatusChanged:No 'eventId' returned")
                         }
                         else {
-                            this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
+                            this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
                             let eventStatusChanged = { title: "Event updated", level: "success" }
                             this.showEvent(eventStatusChanged, undefined)
                             }
@@ -973,9 +973,8 @@ class App extends Component {
                 }
                 // Event
                 else if (event.event === "eventWinnerSet") {
-                    console.log("eventWinnerSet")
-                    console.log("event.returnValues= " + event.returnValues);
-                    debugger
+                    // console.log("eventWinnerSet")
+                    // console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
