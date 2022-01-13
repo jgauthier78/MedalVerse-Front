@@ -33,7 +33,7 @@ class GallerieAthlete extends Component {
                     </CardHeader>
                     <Col className="mt-5 ">
                         <h7>Visualiser la gallerie dans une nouvelle page:</h7>
-                        <Button variant="outline-secondary" className="ml-3" onClick={() => window.open("Gallerie/" + this.props.userProfile.address, "_blank")}
+                        <Button className="ml-3" onClick={() => window.open("Gallerie/" + this.props.userProfile.address, "_blank")}
                         >Gallerie</Button>
                     </Col>
                     <Col className="mb-5">

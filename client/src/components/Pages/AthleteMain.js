@@ -57,13 +57,13 @@ class SporstmanMain extends Component {
 
                         <Col className="Main-Content">
 
-                            <div id="profil" className=" row g-0">
-
-                                <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
-                            </div>
-
                             {this.state.curPannel === 0 ?
                                 <>
+                                    <div id="profil" className=" row g-0">
+
+                                        <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
+                                    </div>
+
 
                                     <div className=" row g-0">
 
