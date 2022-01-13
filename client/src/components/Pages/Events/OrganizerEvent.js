@@ -25,12 +25,16 @@ const EventLayout = ( { activEvents, AppCallBacks } ) =>
     let params = useParams();
     const eventId = params.eventId
 
+    // console.log("EventLayout:eventId="+eventId)
+    // console.log("EventLayout:activEvents:"+ Object.entries(activEvents))
+
     const getEvent = (events, eventId) =>{
         for (let idxEvnt=0; idxEvnt<events.length; idxEvnt++)
         {
+            // console.log( "EventLayout:Object.entries( events["+idxEvnt+"])=" + Object.entries(events[idxEvnt]) )
             if (events[idxEvnt].eventId===eventId)
             {
-                // console.log( Object.entries( events[idxEvnt]) )
+                // console.log( "EventLayout:events[idxEvnt].eventId===eventId" )
                 return events[idxEvnt]
             }
         }

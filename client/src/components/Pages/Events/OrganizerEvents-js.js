@@ -25,11 +25,12 @@ const extractOrganizerEventsFromUserOrganizations = (userOrganizations) =>
  }
 
 // Filters criterias
-const eventFilterCriteria_Activ = (event) =>
+const eventFilterCriteria_isValidEvent = (event) =>
 { 
     return (
-        event.activ // === true
+        // event.activ // === true
         // && event.eventId > 1 // test
+        true
     )
 }
 
@@ -64,13 +65,13 @@ const eventFilterCriteria_IncomingEvents = (event) =>
 // Events filters
 
 // Basic filter, eliminates inactiv events
-const filterActivEvents = (events) =>
+const filterValidEvents = (events) =>
 {
     if (Array.isArray(events))
     {
         return events.filter ( (event /*, index, array*/) => {
             // console.log(event)
-            return eventFilterCriteria_Activ(event)
+            return eventFilterCriteria_isValidEvent(event)
         })
     }
     return undefined
@@ -83,7 +84,7 @@ const filterCurrentEvents = (events) =>
     {
         return events.filter ( (event /*, index, array*/) => {
             // console.log(event)
-            return eventFilterCriteria_CurrentEvents(event)
+            return eventFilterCriteria_isValidEvent && eventFilterCriteria_CurrentEvents(event)
         })
     }
     return undefined
@@ -96,7 +97,7 @@ const filterEndedEvents = (events) =>
     {
         return events.filter ( (event /*, index, array*/) => {
             // console.log(event)
-            return eventFilterCriteria_EndedEvents(event)
+            return eventFilterCriteria_isValidEvent && eventFilterCriteria_EndedEvents(event)
         })
     }
     return undefined
@@ -109,7 +110,7 @@ const filterIncomingEvents = (events) =>
     {
         return events.filter ( (event /*, index, array*/) => {
             // console.log(event)
-            return eventFilterCriteria_IncomingEvents(event)
+            return eventFilterCriteria_isValidEvent && eventFilterCriteria_IncomingEvents(event)
         })
     }
     return undefined
@@ -132,4 +133,4 @@ const sortEventsByDate = (events) =>
 }
 
 
-export { extractOrganizerEventsFromProfile, extractOrganizerEventsFromUserOrganizations, filterActivEvents, filterCurrentEvents, filterEndedEvents, filterIncomingEvents, sortEventsByDate };
+export { extractOrganizerEventsFromProfile, extractOrganizerEventsFromUserOrganizations, filterValidEvents, filterCurrentEvents, filterEndedEvents, filterIncomingEvents, sortEventsByDate };

@@ -16,7 +16,7 @@ import { EventsByStateLayout, EventsByDateLayout } from "./Events/OrganizerEvent
 import { EventLayout } from "./Events/OrganizerEvent";
 
 /* Utils */
-import { extractOrganizerEventsFromProfile, filterActivEvents, filterCurrentEvents, filterEndedEvents, filterIncomingEvents, sortEventsByDate} from "./Events/OrganizerEvents-js";
+import { extractOrganizerEventsFromProfile, filterValidEvents, filterCurrentEvents, filterEndedEvents, filterIncomingEvents, sortEventsByDate} from "./Events/OrganizerEvents-js";
 import NavBarSpacer from "../UIElements/NavBarSpacer";
 
 class OrganizerLayout extends Component
@@ -76,8 +76,8 @@ class OrganizerMainBeforeTranslation extends Component
             <Routes>
                 <Route path="/" element={<OrganizerLayout AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />}>
                     <Route path="eventsByState" element={<EventsByStateLayout currentEvents={filterCurrentEvents( extractOrganizerEventsFromProfile(this.props.userProfile) )} incomingEvents={filterIncomingEvents( extractOrganizerEventsFromProfile(this.props.userProfile) )} endedEvents={filterEndedEvents( extractOrganizerEventsFromProfile(this.props.userProfile) )} />} />
-                    <Route path="eventsByDate" element={<EventsByDateLayout activEvents={sortEventsByDate(filterActivEvents( extractOrganizerEventsFromProfile(this.props.userProfile) ))} />} />
-                    <Route path="event/:eventId"  element={<EventLayout activEvents={filterActivEvents( extractOrganizerEventsFromProfile(this.props.userProfile) )} AppCallBacks={this.props.AppCallBacks} />} />
+                    <Route path="eventsByDate" element={<EventsByDateLayout activEvents={sortEventsByDate(filterValidEvents( extractOrganizerEventsFromProfile(this.props.userProfile) ))} />} />
+                    <Route path="event/:eventId"  element={<EventLayout activEvents={filterValidEvents( extractOrganizerEventsFromProfile(this.props.userProfile) )} AppCallBacks={this.props.AppCallBacks} />} />
                 </Route>
             </Routes>
         )

@@ -473,41 +473,9 @@ class App extends Component {
                         // console.log("eventsList.length=" + eventsList.length)
                         if (eventsList.length > 0) {
                             await Promise.all(eventsList.map(async (eventId) => {
-                                // console.log("eventsList:eventId=" + eventId)
-                                let eventData = await this.state.contract.methods.getEvent(eventId).call()
-                                // console.log("eventData:eventId=" + eventData.eventId)
-                                let event = {
-                                    eventId: eventData.eventId,
-                                    sportCategory: eventData.sportCategory,
-                                    organizedBy: eventData.organizedBy,
-                                    registeredSportsMan: eventData.registeredSportsMan,
-                                    winner: eventData.winner,
-                                    startDate: eventData.startDate,
-                                    endDate: eventData.startDate,
-                                    medalID: eventData.medalID,
-                                    eventDescription: eventData.eventDescription,
-                                    hasMedal: eventData.hasMedal,
-                                    activ: eventData.activ,
-                                    ended: eventData.ended,
-                                    started: eventData.started,
-                                    stateOfCompetition: await this.Event_getState(eventId), // eventData.stateOfCompetition, <- undefined
-                                    // -> crée une référence circulaire
-                                    organization: organization
-                                }
-                                //  console.log("event="+JSON.stringify(event))
-                                //  console.log("stateOfCompetition="+event.stateOfCompetition)
-                                // Medal data
-                                let throwIn = {}
-                                let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
-                                // ThrowIn contract data
-                                throwIn.address = medalData.throwIn
-                                throwIn.winner = medalData.winner
-                                throwIn.isInWinnerGallery = medalData.isInWinnerGallery
-                                // throwIn.status = await this.ThrowIn_getStatus(throwIn.address)
-                                // console.log("throwIn.status ="+throwIn.status )
-                                // Set
-                                event.throwIn = throwIn
-
+                                // console.log("getOrganizerOrganisations:eventsList:eventId=" + eventId)
+                                let event = await this.getEventData(eventId, organization)
+                                //  console.log("getOrganizerOrganisations:Object.entries(event)=" + Object.entries(event) )
                                 // Add event to organization
                                 organization["events"].push(event)
                             }));
@@ -663,9 +631,9 @@ class App extends Component {
     }
 
     getEventData = async (eventId, organization) => {
-        // Update event
         let eventData = await this.state.contract.methods.getEvent(eventId).call()
-        // console.log("eventData:eventId=" + eventData.eventId)
+        // console.log("getEventData:eventId=" + eventId + " eventData:eventId=" +  eventData.eventId)
+        // console.log("getEventData:eventData: " + Object.entries(eventData))
         let event = {
             eventId: eventData.eventId,
             sportCategory: eventData.sportCategory,
@@ -681,8 +649,7 @@ class App extends Component {
             ended: eventData.ended,
             started: eventData.started,
             stateOfCompetition: await this.Event_getState(eventId), // eventData.stateOfCompetition, <- undefined
-            // -> crée une référence circulaire
-            organization: organization
+            organization: organization // -> crée une référence circulaire ; ne pas utiliser JSON.stringify()
         }
 
         //  console.log("stateOfCompetition="+event.stateOfCompetition)
@@ -697,13 +664,12 @@ class App extends Component {
         // console.log("throwIn.status ="+throwIn.status )
         // Set
         event.throwIn = throwIn
-
         return event
     } // getEventData
 
     updateOrganizerEvent = async (eventId, organization) => {
         // REFRESH DATA
-        console.log("updateOrganizerEvent:eventId=" + eventId)
+        // console.log("updateOrganizerEvent:eventId=" + eventId)
         let updatedEvent = await this.getEventData(eventId, organization)
         let userOrganizationEvents = organization.events
         for (let userOrgEventIdx = 0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++) {
@@ -720,7 +686,7 @@ class App extends Component {
 
     updateOrganizationsEventOnEvent = async (eventId, organizations) => {
         // REFRESH DATA
-        console.log("updateOrganizationsEventOnEvent:eventId=" + eventId)
+        // console.log("updateOrganizationsEventOnEvent:eventId=" + eventId)
         if (organizations === undefined) { console.error("App::updateOrganizationsEventOnEvent:organizations===undefined") }
         if (eventId === undefined) { console.error("App::updateOrganizationsEventOnEvent:eventId===undefined") }
 
@@ -988,32 +954,39 @@ class App extends Component {
                 if (event.event === "eventStatusChanged") {
 
                     console.log("eventStatusChanged")
-                    console.log("event.returnValues= " + event.returnValues);
+                    console.log("event.returnValues= " + Object.entries(event.returnValues));
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
                         console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
                     } else {
-                        this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
-                        let eventStatusChanged = { title: "Event updated", level: "success"}
-                        this.showEvent(eventStatusChanged, undefined)
+                        // ! eventID != eventId !
+                        if (event.returnValues.eventID=== undefined) {
+                            console.error("eventStatusChanged:No 'eventID' returned")
+                        }
+                        else {
+                            this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
+                            let eventStatusChanged = { title: "Event updated", level: "success" }
+                            this.showEvent(eventStatusChanged, undefined)
+                            }
                     }
                 }
                 // Event
                 else if (event.event === "eventWinnerSet") {
                     console.log("eventWinnerSet")
                     console.log("event.returnValues= " + event.returnValues);
+                    debugger
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
                         console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
                     } else {
                         // ! eventID != eventId !
-                        if (event.returnValues.eventID=== undefined) {
-                            console.error("eventWinnerSet:No 'eventID' returned")
+                        if (event.returnValues.eventId=== undefined) {
+                            console.error("eventWinnerSet:No 'eventId' returned")
                         }
                         else {
-                            this.updateOrganizationsEventOnEvent(event.returnValues.eventID, userOrganizations)
+                            this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
                             let eventWinnerSet = { title: "Winner set", level: "success"}
                             this.showEvent(eventWinnerSet, undefined)
                             }
