@@ -19,10 +19,9 @@ contract MedalVerse is
 	OrganizerHandler,
 	MedalHandler
 {
-
 	IERC20 private Token;
 	
-	constructor(address addressToken)  {
+	constructor(address addressToken) {
 		Token = IERC20(addressToken);
 	}
 		
@@ -76,7 +75,7 @@ contract MedalVerse is
 		string memory _iconURI,
 		string memory _userName,
 		string memory _email,
-		uint8 _role,
+		uint256 _role,
 		uint256 _sportsCategory
 	) public onlyOwner isNotNull(_userAddress) {
 		addUser(_userAddress, _iconURI, _userName, _email, _role);
@@ -205,9 +204,9 @@ contract MedalVerse is
 		eventSetPosition(eventID, posX, posY);
 	}
 
-	///@dev Withdraw token in the contract
+	///@dev Withdraw token placed in the contract
 	function withdraw() public onlyOwner {
-		uint balance = Token.balanceOf(address(this)); // check balance of contract MedalVerse
+		uint256 balance = Token.balanceOf(address(this)); // check balance of contract MedalVerse
 		require(balance != 0, "The contract must contain $Medal");
 		Token.transfer(msg.sender, balance); // transfer balance to owner 
 
@@ -216,12 +215,9 @@ contract MedalVerse is
 
 	///@dev Check balance contract
 	///@return return balance contract
-	function getBalance() public view returns(uint) {
-		uint balance = Token.balanceOf(address(this));
+	function getBalance() public view returns(uint256) {
+		uint256 balance = Token.balanceOf(address(this));
 
 		return balance;
 	}
-	
 }
-
-

@@ -21,7 +21,7 @@ contract ThrowIn is ERC721, Ownable {
 		IERC721Metadata(addressNFT_Artist).supportsInterface(
 			type(IERC721).interfaceId
 		);
-		nameOfOrganization = organization;		
+		nameOfOrganization = organization;
 		NFT_Artist = IERC721Metadata(addressNFT_Artist);
 		Token = IERC20Metadata(addressToken);
 		medalVerse = addressMedalVerse;
@@ -47,8 +47,13 @@ contract ThrowIn is ERC721, Ownable {
 
 	string nameOfOrganization;
 	string uri;
+<<<<<<< HEAD
+	uint256 mintCount;
+	uint256 price = 500 * (10**18);
+=======
 	uint8 numberMint;
 	uint MDL_Mint_Royalties = 500 * (10 ** 18);
+>>>>>>> f5560b65bf7e520da35c3735c7c58f4d18a5b1d7
 	uint16 year;
 	bool antiDoping;
 	bool pause;
@@ -95,18 +100,18 @@ contract ThrowIn is ERC721, Ownable {
 	///@dev Mint the only possible edition of the NFT Cup
 	///@param tokenId Token id of the NFTA Artist got the Uri
 	function mintCup(uint256 tokenId) public onlyOwner whenNotPaused {
-		require(numberMint == 0, "Only one single cup can be minted"); // Check if the nft has already been mint
-		uint balance = Token.balanceOf(msg.sender); // Check the minter balance
+		require(mintCount == 0, "Only one single cup can be minted"); // Check if the nft has already been mint
+		uint256 balance = Token.balanceOf(msg.sender); // Check the minter balance
 
 		require(balance > MDL_Mint_Royalties); // Check the balance is greater than the price
 		Token.transferFrom(msg.sender, medalVerse, MDL_Mint_Royalties); //.Transfer amount token to MedalVerse
 
 		uri = IERC721Metadata(NFT_Artist).tokenURI(tokenId); // Get the uri of the NFTArtist
-		numberMint++; // increment the number of NFT mint
-		uriToken[numberMint] = uri; // Set the uri of the mint token
+		mintCount++; // increment the number of NFT mint
+		uriToken[mintCount] = uri; // Set the uri of the mint token
 		emit throwInCupMinted(msg.sender);
 
-		_mint(msg.sender, numberMint); // Mint the NFT
+		_mint(msg.sender, mintCount); // Mint the NFT
 	}
 
 	///@dev Ensures that only the owner can move the nft when the contract is paused

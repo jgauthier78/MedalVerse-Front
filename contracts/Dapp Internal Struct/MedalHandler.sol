@@ -20,6 +20,7 @@ contract MedalHandler is Ownable {
 	}
 	// Events -------------------------------
 	event MedalAdded(uint256 medalID, uint256 eventID);
+	event MedalPublished(uint256 medalID, bool status);
 
 	// Methods -------------------------------
 
@@ -66,5 +67,6 @@ contract MedalHandler is Ownable {
 		indexInRange(medalID)
 	{
 		medalList[medalID].isInWinnerGallery = status;
+		emit MedalPublished(medalID, status);
 	}
 }
