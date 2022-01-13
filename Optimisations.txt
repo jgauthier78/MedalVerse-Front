@@ -1,0 +1,18 @@
+Optimisation Structure de données
+---------------------------------
+
+Type de données:
++++++++++++++++++++
+uint8 consomme plus de gaz que uint256 lors de l'utilisation, de façon conséquente
+=> modification de "role" et  pour corriger de uint8=>uint256
+
+Padding
++++++++
+Pour éviter des couts sur les alignements: trie des structures par taille décroissante:
+
+Memory/storage
+++++++++++++++
+Manipuler une variable memory et l'affecter ensuite au storage est moins couteux en gaz que d'utiliser une variable storage.
+Ex:
+
+
