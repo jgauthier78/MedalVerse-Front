@@ -5,13 +5,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 ///@dev Structure for describing MedalVerse Authors - used by AuthorHandler
 struct Sportsman {
 	address userAddress; // address used as ref
-	uint256 sportCategory; // Categories of sports supported
 	uint256 nbEventsSubscrided;
 	uint256 nbActivSubscriptions;
 	mapping(uint256 => uint256) eventsSubscribed; // Events referenced by count
 	mapping(uint256 => bool) eventsActivSubscription; // subscription referenced by eventsID
 	uint256[] medalList;
-	bool activ;
 }
 
 ///@dev Contract Adding / Removing Authors and their creations
@@ -39,17 +37,10 @@ contract SportsmanHandler is Ownable {
 	// Methods -------------------------------
 	///@dev Register an author, given an address
 	///@param _user Address of the user to register as author
-	function addSportsman(address _user, uint256 _sportCategory)
-		internal
-		onlyOwner
-		isNotNull(_user)
-	{
+	function addSportsman(address _user) internal onlyOwner isNotNull(_user) {
 		registeredSportsman.push(_user);
 		Sportsman storage _sportsMan = allSportsman[_user];
 		_sportsMan.userAddress = _user;
-		_sportsMan.sportCategory = _sportCategory;
-		_sportsMan.activ = true;
-
 		emit sportsmanAdded(_user);
 	}
 
@@ -62,7 +53,6 @@ contract SportsmanHandler is Ownable {
 		isNotNull(_sportsMan)
 		isNotNullUint256(eventId)
 	{
-		assert(allSportsman[_sportsMan].activ);
 		uint256 indx = allSportsman[_sportsMan].nbEventsSubscrided++;
 		allSportsman[_sportsMan].eventsSubscribed[indx] = eventId;
 		allSportsman[_sportsMan].eventsActivSubscription[eventId] = true;
@@ -70,36 +60,16 @@ contract SportsmanHandler is Ownable {
 		emit sportsmanRegisterdEvent(_sportsMan, eventId);
 	}
 
-	///@dev Sportsman unregisters to an Event
-	///@param _sportsMan Address of the user sportsman
-	///@param eventId id of the event to unregister to
-	function unRegisterSportsmanFromEvent(address _sportsMan, uint256 eventId)
-		private
-		onlyOwner
-		isNotNull(_sportsMan)
-	{
-		allSportsman[_sportsMan].eventsActivSubscription[eventId] = false;
-		allSportsman[_sportsMan].nbActivSubscriptions--;
-		emit sportsmanUnregisterdEvent(_sportsMan, eventId);
-	}
-
-	///@dev returns the number of Sportsman
-	function getNumberOfSportsman() public view returns (uint256) {
-		return registeredSportsman.length;
-	}
-
 	struct SportsmanDesc {
 		address userAddress; // address used as ref
-		uint256 sportCategory; // Categories of sports supported
 		uint256 nbActivSubscriptions;
-		bool activ;
 	}
 
 	///@dev returns the list of organization : they may be inactif, must test activ value
 	///@param _start starting index amoung organizations
 	///@param _end ending index amoung ogranizations
 	function getSportsmanList(uint256 _start, uint256 _end)
-		public
+		external
 		view
 		isNotNullUint256(registeredSportsman.length)
 		returns (SportsmanDesc[] memory)
@@ -120,9 +90,7 @@ contract SportsmanHandler is Ownable {
 			Sportsman storage sprt = allSportsman[registeredSportsman[x]];
 			_desc[x - _start] = SportsmanDesc({
 				userAddress: sprt.userAddress,
-				sportCategory: sprt.sportCategory,
-				nbActivSubscriptions: sprt.nbActivSubscriptions,
-				activ: sprt.activ
+				nbActivSubscriptions: sprt.nbActivSubscriptions
 			});
 
 			x++;
@@ -133,7 +101,7 @@ contract SportsmanHandler is Ownable {
 	///@dev returns the nb of activ events the sportsman registered to
 	///@param sportsmanId address of the sportsman
 	function getSportsManEventsNumber(address sportsmanId)
-		public
+		external
 		view
 		isNotNull(sportsmanId)
 		returns (uint256)
@@ -145,7 +113,7 @@ contract SportsmanHandler is Ownable {
 	///@param sportsmanId address of the sportsman
 	function getSportsmanEventsSubscriptions(
 		address sportsmanId ///@dev returns the list of activ events the sportsman registered to
-	) public view returns (uint256[] memory) {
+	) external view returns (uint256[] memory) {
 		// We make sure tjere are some events the user subscribed to
 		assert(allSportsman[sportsmanId].nbActivSubscriptions > 0);
 		//Allocate enogh entries for the resulting list
@@ -168,7 +136,7 @@ contract SportsmanHandler is Ownable {
 	}
 
 	function getSportsmanMedalList(address sportsmanId)
-		public
+		external
 		view
 		returns (uint256[] memory)
 	{
@@ -176,7 +144,7 @@ contract SportsmanHandler is Ownable {
 	}
 
 	function getSportsmanMedalCount(address sportsmanId)
-		public
+		external
 		view
 		returns (uint256)
 	{

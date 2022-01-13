@@ -11,20 +11,18 @@ enum stateOfCompetition {
 
 contract EventHandler is Ownable {
 	struct EventDesc {
-		stateOfCompetition eventState;
+		address winner; // Winner of the Event
 		uint256 eventId; // Index of the event in the EventList
-		uint256 sportCategory; // Category
 		uint256 organizedBy; // Id of the Organization
-		uint256 startDate;
-		uint256 endDate;
 		uint256 medalID;
+		uint128 startDate;
+		uint128 endDate;
+		stateOfCompetition eventState;
 		string eventDescription; // String describing the event
 		string positionX;
 		string positionY;
-		address winner; // Winner of the Event
 		address[] registeredSportsMan; //List of sportsman that are participating to the event
 		bool hasMedal;
-		bool activ;
 		bool ended; // finished ?
 		bool started; // The event has started
 	}
@@ -64,22 +62,18 @@ contract EventHandler is Ownable {
 	///@param _organizedBy id of the oganization
 	///@param _startDate Date for the event to start
 	///@param _endDate Date for the event to finish
-	///@param _sportCategory Type of event
 	///@param _eventDescription Desc of the evnt
 	function addEvent(
 		uint256 _organizedBy,
-		uint256 _startDate,
-		uint256 _endDate,
-		uint256 _sportCategory,
+		uint128 _startDate,
+		uint128 _endDate,
 		string memory _eventDescription
-	) public returns (uint256) {
+	) internal returns (uint256) {
 		EventDesc storage _event = eventList[eventCount];
 		_event.eventId = eventCount;
 		_event.organizedBy = _organizedBy;
 		_event.startDate = _startDate;
 		_event.endDate = _endDate;
-		_event.sportCategory = _sportCategory;
-		_event.activ = true;
 		_event.winner = address(0);
 		_event.eventDescription = _eventDescription;
 		_event.eventState = stateOfCompetition.RegistrationOfParticipants;
@@ -102,7 +96,7 @@ contract EventHandler is Ownable {
 	///@dev returns the details of a specific event
 	///@param eventId id of the event
 	function getEvent(uint256 eventId)
-		public
+		external
 		view
 		isNotNullUint256(eventId)
 		returns (EventDesc memory)
@@ -172,7 +166,7 @@ contract EventHandler is Ownable {
 	///@param _start start index  - paging
 	///@param _end ending index - paging
 	function getEventList(uint256 _start, uint256 _end)
-		public
+		external
 		view
 		isNotNullUint256(eventCount)
 		isNotNullUint256(_start)
@@ -278,7 +272,7 @@ contract EventHandler is Ownable {
 	///@dev returns the id of the winner associated to the event
 	///@param eventID id of the event
 	function eventGetWinner(uint256 eventID)
-		public
+		external
 		view
 		isInRange(eventID, eventCount)
 		isNotNullUint256(eventID)
@@ -303,7 +297,7 @@ contract EventHandler is Ownable {
 	///@dev returns X coordinate of an event
 	///@param eventID id of the event
 	function eventGetPositionX(uint256 eventID)
-		public
+		external
 		view
 		isInRange(eventID, eventCount)
 		isNotNullUint256(eventID)
@@ -315,7 +309,7 @@ contract EventHandler is Ownable {
 	///@dev returns Y coordinate of an event
 	///@param eventID id of the event
 	function eventGetPositionY(uint256 eventID)
-		public
+		external
 		view
 		isInRange(eventID, eventCount)
 		isNotNullUint256(eventID)

@@ -95,7 +95,7 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@dev Mint the only possible edition of the NFT Cup
 	///@param tokenId Token id of the NFTA Artist got the Uri
-	function mintCup(uint256 tokenId) public onlyOwner whenNotPaused {
+	function mintCup(uint256 tokenId) external onlyOwner whenNotPaused {
 		require(mintCount == 0, "ERR_C"); // Check if the nft has already been mint
 		uint256 balance = Token.balanceOf(msg.sender); // Check the minter balance
 
@@ -123,7 +123,7 @@ contract ThrowIn is ERC721, Ownable {
 		address ownerContract = owner();
 
 		if (ownerContract != msg.sender) {
-			require(!paused(), "ERR_D");
+			require(!pause, "ERR_D");
 		}
 	}
 
@@ -131,7 +131,7 @@ contract ThrowIn is ERC721, Ownable {
 	///@param from NFT owner address
 	///@param tokenId ID to transfer
 	function safeTransferFromWithoutPermission(address from, uint256 tokenId)
-		public
+		external
 		onlyOwner
 		checkAntiDoping
 		whenPaused
@@ -145,7 +145,7 @@ contract ThrowIn is ERC721, Ownable {
 	///@param from NFT owner address
 	///@param tokenId ID to transfer
 	function organisazionRecovery(address from, uint256 tokenId)
-		public
+		external
 		onlyOwner
 		whenNotPaused
 	{
@@ -155,14 +155,14 @@ contract ThrowIn is ERC721, Ownable {
 	}
 
 	///@dev pause the contract
-	function setPaused() public onlyOwner checkAntiDoping whenNotPaused {
+	function setPaused() external onlyOwner checkAntiDoping whenNotPaused {
 		pause = true;
 
 		emit throwInSetPause(pause);
 	}
 
 	///@dev unpause the contract
-	function removePaused() public onlyOwner checkAntiDoping whenPaused {
+	function removePaused() external onlyOwner checkAntiDoping whenPaused {
 		pause = false;
 
 		emit throwInPauseRemoved(pause);
@@ -170,7 +170,7 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@dev Set the year of the compet
 	///@param competYear Current year
-	function setYear(uint256 competYear) public onlyOwner whenNotPaused {
+	function setYear(uint256 competYear) external onlyOwner whenNotPaused {
 		year = competYear;
 
 		emit throwInSetYear(competYear);
@@ -180,7 +180,7 @@ contract ThrowIn is ERC721, Ownable {
 	///@param walletPlayer winner's addressNumber
 	///@param name winner's name
 	function addWinner(string memory name, address walletPlayer)
-		public
+		external
 		onlyOwner
 		isNotNull(walletPlayer)
 		whenNotPaused
@@ -209,7 +209,7 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@return Return all winners by name and assigned number
 	function getAllWinners()
-		public
+		external
 		view
 		returns (string[] memory, uint256[] memory)
 	{
@@ -229,7 +229,7 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@return Return the structure of the winner as well as the table of years
 	function viewAllYearVictoryByAddress(address winner)
-		public
+		external
 		view
 		isNotNull(winner)
 		returns (uint256[] memory)
@@ -241,7 +241,7 @@ contract ThrowIn is ERC721, Ownable {
 	///@param winner Address of a winner register
 	///@param number Number selected from the list
 	function viewThisVictoryByAddress(address winner, uint256 number)
-		public
+		external
 		view
 		isNotNull(winner)
 		returns (uint256)
@@ -250,7 +250,7 @@ contract ThrowIn is ERC721, Ownable {
 	}
 
 	///@return Returns if the contract is paused or not
-	function paused() public view returns (bool) {
+	function paused() external view returns (bool) {
 		return pause;
 	}
 

@@ -76,9 +76,6 @@ module.exports = async function (deployer, network, accounts) {
   async function setWinner(rcup, eventId, sporsmanId, organizerId) {
 
     await rcup.addWinner("François Coste", ACCOUNT_ATHLETE_01, { from: ACCOUNT_CONTRACT_OWNER })
-
-
-
     await MVerse.adminSetWinner(eventId, sporsmanId, { from: organizerId })
     // Il affecte la médaille au sportif vainqueur de l'évènement 
     await MVerse.adminAddMedal(eventId, rcup.address, { from: organizerId })
@@ -88,12 +85,12 @@ module.exports = async function (deployer, network, accounts) {
   function avatarRef(s) { return "/img/avatars/" + s }
 
   /* Ajouter un utilisateur */
-  async function addFakeUser(nom, mail, role, sportsCategory) {
+  async function addFakeUser(nom, mail, role, unused) {
     // Local static counter for NFTs IDs
     const addFakeUser_initial_counter_value = 3 // fake accounts : 3 ... n
     addFakeUser.counter = addFakeUser.counter || addFakeUser_initial_counter_value;
 
-    await MVerse.addNewUser(generateFakeAdr(), avatarRef(addFakeUser.counter.toString + ".jpg"), nom, mail, role, sportsCategory, { from: ACCOUNT_CONTRACT_OWNER }); addFakeUser.counter++
+    await MVerse.addNewUser(generateFakeAdr(), avatarRef(addFakeUser.counter.toString + ".jpg"), nom, mail, role, { from: ACCOUNT_CONTRACT_OWNER }); addFakeUser.counter++
   }
 
   const ACCOUNT_ORGANIZER_01 = accounts[1]
@@ -147,8 +144,8 @@ module.exports = async function (deployer, network, accounts) {
 
   console.log(".")
 
-  await MVerse.addNewUser(ACCOUNT_ORGANIZER_01, avatarRef("1.jpg"), "Paul_Henry", "pol@gmail.com", ROLE_ATHLETE + ROLE_ORGANIZER, 0, { from: ACCOUNT_CONTRACT_OWNER })
-  await MVerse.addNewUser(ACCOUNT_ATHLETE_01, avatarRef("2.jpg"), ATHLETE_01_NAME, "fcoste@free.fr", ROLE_ATHLETE, 0, { from: ACCOUNT_CONTRACT_OWNER })
+  await MVerse.addNewUser(ACCOUNT_ORGANIZER_01, avatarRef("1.jpg"), "Paul_Henry", "pol@gmail.com", ROLE_ATHLETE + ROLE_ORGANIZER, { from: ACCOUNT_CONTRACT_OWNER })
+  await MVerse.addNewUser(ACCOUNT_ATHLETE_01, avatarRef("2.jpg"), ATHLETE_01_NAME, "fcoste@free.fr", ROLE_ATHLETE, { from: ACCOUNT_CONTRACT_OWNER })
 
   await addFakeUser("Sonia Legendre", "slegendre@gmail.com", ROLE_ATHLETE, 0)
   console.log(".")
@@ -205,30 +202,30 @@ module.exports = async function (deployer, network, accounts) {
 
   // L'organisateur 01 organise ces évènements:
   // newEvent( organizationId, startDate, endDate, sportsCategory, eventDesc )
-  await MVerse.newEvent(0, Time01_start, Time01_end, 2, "Saison 14, Paris", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(0, Time01_start, Time01_end, "Saison 14, Paris", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(EVENT_ONE, "48.9239455", "2.3536833", { from: ACCOUNT_ORGANIZER_01 })
 
-  await MVerse.newEvent(1, Time02_start, Time02_end, 4, "Mx Moto-Station", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(1, Time02_start, Time02_end, "Mx Moto-Station", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(EVENT_TWO, "48.9335885", "2.3873314", { from: ACCOUNT_ORGANIZER_01 })
 
-  await MVerse.newEvent(2, Time03_start, Time03_end, 4, "Trophé des Champions, Saint-Denis", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(2, Time03_start, Time03_end, "Trophé des Champions, Saint-Denis", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(EVENT_THREE, "48.9192245", "2.36705", { from: ACCOUNT_ORGANIZER_01 })
 
-  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(EVENT_FOUR, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
   // evenements de test
   console.log(".")
-  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 2", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 2", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(5, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
-  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 3", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 3", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(6, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
-  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 4", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 4", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(7, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
-  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 5", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 5", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(8, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
   console.log(".")

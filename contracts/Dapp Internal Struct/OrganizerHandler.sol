@@ -19,7 +19,6 @@ contract OrganizerHandler is Ownable {
 		string name;
 		string description;
 		string logoURI;
-		bool activ;
 	}
 
 	Organizer[] organizerList; // List of organizers
@@ -72,13 +71,12 @@ contract OrganizerHandler is Ownable {
 		string memory _name,
 		string memory _description,
 		string memory _logoURI
-	) public isNotNull(_user) onlyOwner {
+	) external isNotNull(_user) onlyOwner {
 		uint256 indx = organizationList.length;
 		Organization storage _org = organizationList.push();
 		_org.name = _name;
 		_org.description = _description;
 		_org.logoURI = _logoURI;
-		_org.activ = true;
 		organizationAddAdmin(indx, _user);
 
 		emit OganizationAdded(_user, indx);
@@ -108,7 +106,7 @@ contract OrganizerHandler is Ownable {
 	// Exposing data to the outside ---
 
 	function getOrganizationName(uint256 orgID)
-		public
+		external
 		view
 		returns (string memory)
 	{
@@ -121,14 +119,13 @@ contract OrganizerHandler is Ownable {
 		string name;
 		string description;
 		string logoURI;
-		bool activ;
 	}
 
 	///@dev returns the list of organization : they may be inactive, must test activ value
 	///@param _start starting index amoung organizations
 	///@param _end ending index amoung ogranizations
 	function getOrganizationsList(uint256 _start, uint256 _end)
-		public
+		external
 		view
 		isNotNullUint256(organizationList.length)
 		returns (organizationDesc[] memory)
@@ -150,18 +147,12 @@ contract OrganizerHandler is Ownable {
 			_desc[x - _start] = organizationDesc({
 				name: organizationList[x].name,
 				description: organizationList[x].description,
-				logoURI: organizationList[x].logoURI,
-				activ: organizationList[x].activ
+				logoURI: organizationList[x].logoURI
 			});
 
 			x++;
 		}
 		return _desc;
-	}
-
-	///@dev returns the number of Organizations
-	function getOrganisationCount() public view returns (uint256) {
-		return organizationList.length;
 	}
 
 	///@dev returns the count of activ admin
@@ -181,7 +172,7 @@ contract OrganizerHandler is Ownable {
 	///@dev returns the list activ admin of an organisation
 	///@param orgIndx  index amoung organizations
 	function getAdminList(uint256 orgIndx)
-		public
+		external
 		view
 		isLowerThanUint256(orgIndx, organizationList.length)
 		returns (uint256[] memory)
@@ -229,7 +220,7 @@ contract OrganizerHandler is Ownable {
 	///@dev returns the address of an admin, given an id organizer
 	///@param id  id (=index) of the organizer
 	function getOrganizerAddressById(uint256 id)
-		public
+		external
 		view
 		isLowerThanUint256(id, organizerList.length)
 		returns (address)
@@ -240,7 +231,7 @@ contract OrganizerHandler is Ownable {
 	///@dev returns the list of organization the organizer subscribed to
 	///@param _user  address of the user
 	function getOrganizerOrganisationList(address _user)
-		public
+		external
 		view
 		returns (uint256[] memory)
 	{
@@ -282,7 +273,7 @@ contract OrganizerHandler is Ownable {
 	///@dev return the list of events associated to an organization
 	///@param orgId id of the org
 	function getEventList(uint256 orgId)
-		public
+		external
 		view
 		returns (uint256[] memory)
 	{

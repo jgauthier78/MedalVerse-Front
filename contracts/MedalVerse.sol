@@ -70,26 +70,24 @@ contract MedalVerse is
 	///@param _userName FName + LName
 	///@param _email email address
 	///@param _role Author / Organizer / sportsman
-	///@param _sportsCategory id of the event
 	function addNewUser(
 		address _userAddress,
 		string memory _iconURI,
 		string memory _userName,
 		string memory _email,
-		uint256 _role,
-		uint256 _sportsCategory
-	) public onlyOwner isNotNull(_userAddress) {
+		uint256 _role
+	) external onlyOwner isNotNull(_userAddress) {
 		addUser(_userAddress, _iconURI, _userName, _email, _role);
 		if ((_role & 2) == 2) addAuthor(_userAddress);
 		if ((_role & 4) == 4) addOrganizer(_userAddress);
-		if ((_role & 8) == 8) addSportsman(_userAddress, _sportsCategory);
+		if ((_role & 8) == 8) addSportsman(_userAddress);
 	}
 
 	///@dev register a user to an event and event to user
 	///@param _userAddress address of the user
 	///@param eventid id of the event
 	function LinkUserAndEvent(address _userAddress, uint256 eventid)
-		public
+		external
 		isNotNull(_userAddress)
 	{
 		EventRegisterSportsman(eventid, _userAddress); // checks both values
@@ -100,29 +98,23 @@ contract MedalVerse is
 	///@param organizationId Id Of the Organization
 	///@param startDate starting Date
 	///@param endDate ending Date
-	///@param sportsCategory Category of sport for the event
 	///@param eventDesc Description for the event
 	function newEvent(
 		uint256 organizationId,
-		uint256 startDate,
-		uint256 endDate,
-		uint256 sportsCategory,
+		uint128 startDate,
+		uint128 endDate,
 		string memory eventDesc
-	) public isNotNullUint256(startDate) isNotNullUint256(endDate) {
+	) external isNotNullUint256(startDate) isNotNullUint256(endDate) {
 		require(endDate > startDate, "invalid dates");
 		// We first neet to check that the sender corresponds to an organizer
 		uint256 organizerId = organizerByAddress[msg.sender];
-		require(organizerId > 0, "you must be an organizer");
-		require(
-			checkorganizerisAdminOf(organizerId, organizationId),
-			"you must be admin"
-		);
+		require(organizerId > 0, "ERR6");
+		require(checkorganizerisAdminOf(organizerId, organizationId), "ERR7");
 
 		uint256 eventID = addEvent(
 			organizationId,
 			startDate,
 			endDate,
-			sportsCategory,
 			eventDesc
 		);
 		organizerAddEvent(organizerId, organizationId, eventID + 1);
@@ -206,7 +198,7 @@ contract MedalVerse is
 	}
 
 	///@dev Withdraw token placed in the contract
-	function withdraw() public onlyOwner {
+	function withdraw() external onlyOwner {
 		uint256 balance = Token.balanceOf(address(this)); // check balance of contract MedalVerse
 		require(balance != 0, "ERR_H");
 		Token.transfer(msg.sender, balance); // transfer balance to owner
@@ -216,7 +208,7 @@ contract MedalVerse is
 
 	///@dev Check balance contract
 	///@return return balance contract
-	function getBalance() public view returns (uint256) {
+	function getBalance() external view returns (uint256) {
 		return Token.balanceOf(address(this));
 	}
 }
