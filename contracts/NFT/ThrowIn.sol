@@ -114,18 +114,18 @@ contract ThrowIn is ERC721, Ownable {
 	///@param to address receiving the NFT
 	///@param tokenId Token ID to transfer
 	function _beforeTokenTransfer(
-		address from,
-		address to,
-		uint256 tokenId
-	) internal override {
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual override {
+        super._beforeTokenTransfer(from, to, tokenId);
 		address ownerContract = owner();
 
 		if (ownerContract != msg.sender) {
-			revert("contract is paused:Only the owner can transfer token");
-		}
 
-		super._beforeTokenTransfer(from, to, tokenId);
-	}
+        	require(!paused(), "ERC721Pausable: token transfer while paused");
+		}
+    }
 
 	///@dev Recovery of NFT without the athlete's consent
 	///@param from NFT owner address
@@ -144,7 +144,7 @@ contract ThrowIn is ERC721, Ownable {
 	///@dev Recover the NFT to restart the competition
 	///@param from NFT owner address
 	///@param tokenId ID to transfer
-	function ownerRecovery(address from, uint256 tokenId)
+	function organisazionRecovery(address from, uint256 tokenId)
 		public
 		onlyOwner
 		whenNotPaused
