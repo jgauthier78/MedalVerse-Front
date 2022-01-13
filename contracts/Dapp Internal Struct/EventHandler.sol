@@ -149,7 +149,7 @@ contract EventHandler is Ownable {
 			.CompetitionInProgress;
 		eventList[eventId - 1].started = true;
 		emit eventStatusChanged(
-			eventId + 1,
+			eventId,
 			stateOfCompetition.CompetitionInProgress
 		);
 	}
