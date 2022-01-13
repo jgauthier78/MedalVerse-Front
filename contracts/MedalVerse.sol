@@ -7,7 +7,8 @@ import "./Dapp Internal Struct/SportsmanHandler.sol";
 import "./Dapp Internal Struct/EventHandler.sol";
 import "./Dapp Internal Struct/OrganizerHandler.sol";
 import "./Dapp Internal Struct/MedalHandler.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract MedalVerse is
@@ -20,10 +21,6 @@ contract MedalVerse is
 	MedalHandler
 {
 	IERC20 private Token;
-
-	constructor(address addressToken) {
-		Token = IERC20(addressToken);
-	}
 
 	// Modifiers ----------------------------
 	modifier isNotNull(address a)
@@ -62,6 +59,10 @@ contract MedalVerse is
 	event MedalVerseWithdraw(address owner);
 
 	// Methods -------------------------------
+
+	constructor(address addressToken) {
+		Token = IERC20(addressToken);
+	}
 
 	///@dev Add a new user to the DB, using parent classes
 	///@param _userAddress userAddr
@@ -211,5 +212,11 @@ contract MedalVerse is
 		Token.transfer(msg.sender, balance); // transfer balance to owner
 
 		emit MedalVerseWithdraw(msg.sender);
+	}
+
+	///@dev Check balance contract
+	///@return return balance contract
+	function getBalance() public view returns (uint256) {
+		//return Token.balanceOf(address(this));
 	}
 }

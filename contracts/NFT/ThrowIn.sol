@@ -23,7 +23,6 @@ contract ThrowIn is ERC721, Ownable {
 
 	string nameOfOrganization;
 	string uri;
-
 	bool antiDoping;
 	bool pause;
 

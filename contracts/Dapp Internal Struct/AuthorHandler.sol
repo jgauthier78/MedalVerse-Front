@@ -47,9 +47,9 @@ contract AuthorHandler is Ownable {
 	///@param _user Address of the user to register as author
 	function addAuthor(address _user) internal onlyOwner isNotNull(_user) {
 		registeredAuthors.push(_user);
-		Author storage _author = allAuthors[_user];
-		_author.userAddress = _user;
-		_author.activ = true;
+
+		allAuthors[_user].userAddress = _user;
+		allAuthors[_user].activ = true;
 		emit AuthorAdded(_user, registeredAuthors.length - 1);
 	}
 

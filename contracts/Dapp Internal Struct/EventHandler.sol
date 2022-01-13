@@ -31,9 +31,8 @@ contract EventHandler is Ownable {
 
 	// Data ---------------------------------
 
-	//   Events
-	mapping(uint256 => EventDesc) eventList; // List of events already registered
 	uint256 eventCount; // Index for events
+	mapping(uint256 => EventDesc) eventList; // List of events already registered
 
 	// Modifiers ----------------------------
 	modifier eventIsInState(uint256 eventId, stateOfCompetition _state) {
@@ -101,17 +100,6 @@ contract EventHandler is Ownable {
 		returns (stateOfCompetition)
 	{
 		return eventList[evntID - 1].eventState;
-	}
-
-	///@dev remove an event from the list of events
-	///@param eventId id of the event
-	function removeEvent(uint256 eventId)
-		private
-		isNotNullUint256(eventId)
-		onlyOwner
-	{
-		eventList[eventId - 1].activ = false;
-		emit eventRemoved(eventId);
 	}
 
 	///@dev returns the details of a specific event

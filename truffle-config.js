@@ -85,7 +85,7 @@ module.exports =
       host: "127.0.0.1", // localhost de notre réseau ganache 
       port: 8545, // le port rpc de notre réseau ganache 
       network_id: "*", // Match any network id (default: none)
-      gas: 6721975
+      gas: 6721975,
 
     },
 
