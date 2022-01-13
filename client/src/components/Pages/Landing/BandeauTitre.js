@@ -1,9 +1,9 @@
 // React - Bootstrap
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 // Toastify
 import 'react-toastify/dist/ReactToastify.css';
-
+import NavScroll from "../../UIElements/NavLink";
 // Translation
 import { useTranslation } from 'react-i18next';
 
@@ -12,7 +12,7 @@ import BkgVideo from '../../UIElements/BkgVideo';
 import NavigateButton from '../../UIElements/NavigateButton';
 
 // Icons
-import { /*BoxArrowInRight,*/ Trophy } from 'react-bootstrap-icons';
+import { /*BoxArrowInRight,*/ BoxArrowInRight, Trophy } from 'react-bootstrap-icons';
 
 const BandeauTitre = ({ AppCallBacks, loginCallBack }) => {
     const { t } = useTranslation();
@@ -35,18 +35,24 @@ const BandeauTitre = ({ AppCallBacks, loginCallBack }) => {
                                 <span className="display-6 text-white text-light">{t("bandeauTitre.text")}</span>
                             </div>
                         </Col>
-{/*}
+
                         <Col className="col-2 d-flex justify-content-center">
-                            <div className='mt-8'>
+                            <div className=''>
+                                <NavScroll label={t("LandingPage.menu.presentation")} linkTo="pres" white={true} />
+                                <NavScroll label={t("LandingPage.menu.trophy")} linkTo="trophy" white={true} />
+                                <NavScroll label={t("LandingPage.menu.creation")} linkTo="creation" white={true} />
+                                <NavScroll label={t("LandingPage.menu.fanplace")} linkTo="fan" white={true} />
+                                <NavScroll label={t("LandingPage.menu.gallery")} linkTo="galerie" white={true} />
+                                <NavScroll label={t("LandingPage.menu.roadmap")} linkTo="timeline" white={true} />
                                 {AppCallBacks.isConnected() ?
-                                    <Button className="text-light" onClick={AppCallBacks.disconnect}>{"Se DéconnecterX"} <BoxArrowInRight style={{ verticalAlign: '-10%' }} /></Button>
+                                    <Button className="text-light btn-landing" variant="outline-secondary" onClick={AppCallBacks.disconnect}>{"Se Déconnecter"} <BoxArrowInRight style={{ verticalAlign: '-10%' }} /></Button>
                                     :
-                                    <Button className="text-light " onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {"Se ConnecterX"}</Button>
+                                    <Button className="text-light  btn-landing" variant="outline-secondary" onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {"Se Connecter"}</Button>
                                 }
                             </div>
 
                         </Col>
-{*/}
+
 
                     </Row>
 

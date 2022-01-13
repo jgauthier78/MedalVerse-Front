@@ -6,16 +6,9 @@ import "reveal.js/dist/reveal.css"
 import "reveal.js/dist/theme/black.css"
 import Appearance from "reveal.js-appearance/plugin/appearance/appearance"
 import { format_Date } from "../../utils/dateUtils";
-import { Col, Row } from "react-bootstrap"
 
 
-let getRoleString = (role) => {
-    let val = ""
-    if (role & 8) val = "Sportif"
-    if (role & 4) { if (val.length) val += ","; val += " Oganisateur" }
 
-    return val
-}
 
 function getEventsString(evnts) {
     if (evnts && evnts.nbEvents > 0)
@@ -54,7 +47,7 @@ const MedalSlides = ({ web3, mdl }) => {
 
                         < section key={indx}
 
-                            data-transition={indx == mdl.Gallery.length - 1 ? "fade" : "fade-in zoom-out"}
+                            data-transition={indx === mdl.Gallery.length - 1 ? "fade" : "fade-in zoom-out"}
                             data-background-image={mdl.uriList[indx]}
 
 
@@ -75,11 +68,11 @@ const MedalSlides = ({ web3, mdl }) => {
 }
 
 const EventSlides = ({ evnt }) => {
-    if (!evnt || evnt.encoursOrganisationDesc.length == 0) return (<></>)
+    if (!evnt || evnt.encoursOrganisationDesc.length === 0) return (<></>)
     return (
         <>
             {evnt.encoursOrganisationDesc.map((ogdesc, indx) => (
-                < section data-transition="slide" key={indx}
+                < section key={indx}
                     data-transition="fade"
                     data-background-image={getImageSrcFromEvent(evnt, indx)}
                 >
@@ -102,10 +95,10 @@ export default function Gallerie({ AppCallBacks }) {
     const { id } = useParams()
     const [_web3, setWeb3] = useState(null);
     const [userDetails, setDetails] = useState(null);
-    const [contract, setContract] = useState(null);
+    const [setContract] = useState(null);
     const [initialized, setInitialized] = useState(false);
     const [role, setRole] = useState(0);
-    const [incorrect, setIncorrect] = useState(false);
+    const [setIncorrect] = useState(false);
     const [events, setEvents] = useState(null)
     const [medals, setMedals] = useState(null)
 
@@ -168,7 +161,7 @@ export default function Gallerie({ AppCallBacks }) {
     }, []);
     if (userDetails) {
         // if not sportsMan
-        if (role & 8 !== 8) {
+        if ((role & 8) !== 8) {
             return (
                 <div>
 
@@ -179,13 +172,13 @@ export default function Gallerie({ AppCallBacks }) {
             <div className="main" style={{ height: "100vh" }}>
                 <div className="reveal">
                     <div className="slides">
-                        <section data-transition="slide"
+                        <section
                             data-background-video="/img/abstract4.webm" data-background-repeat="repeat"
                             data-transition="fade-in fade-out"
                             data-autoslide="6000"
                         >
 
-                            <img data-src={userDetails.iconURI} height="250" className="card-rounded shadow" />
+                            <img data-src={userDetails.iconURI} height="250" alt=".." className="card-rounded shadow" />
                             <h1>{userDetails.userName}</h1>
 
 

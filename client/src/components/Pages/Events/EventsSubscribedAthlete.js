@@ -26,20 +26,19 @@ const CarrousselItem = ({ userEvents }) => {
         <div>
             {userEvents.encoursEvent.map((ogdesc, indx) => {
                 let _active = false
-                {
-                    if (firstElem == true) { firstElem = false; _active = true }
-                    return (
+                if (firstElem === true) { firstElem = false; _active = true }
+                return (
 
-                        <div key={indx} className={`carousel-item ${_active ? "active" : ""}`}>
-                            <img src={getImageSrcFromEvent(userEvents, indx)} alt={getImageSrcFromEvent(userEvents, indx)} className="w-100 d-block carrousselImage" />
-                            <div className="carousel-caption carrousselCartouche">
-                                <h3 className="text-white">{getOrgNameFromEvent(userEvents, indx)}</h3>
+                    <div key={indx} className={`carousel-item ${_active ? "active" : ""}`}>
+                        <img src={getImageSrcFromEvent(userEvents, indx)} alt={getImageSrcFromEvent(userEvents, indx)} className="w-100 d-block carrousselImage" />
+                        <div className="carousel-caption carrousselCartouche">
+                            <h3 className="text-white">{getOrgNameFromEvent(userEvents, indx)}</h3>
 
-                                <h5 className="text-green"><b>Du {getEventStartDate(userEvents, indx)} au {getEventEndDate(userEvents, indx)}</b></h5>
-                            </div>
+                            <h5 className="text-green"><b>Du {getEventStartDate(userEvents, indx)} au {getEventEndDate(userEvents, indx)}</b></h5>
                         </div>
-                    )
-                }
+                    </div>
+                )
+
             }
             )}
         </div>
@@ -96,16 +95,16 @@ class EventsSubscribedAthlete extends Component {
                                         <CarrousselItem userEvents={this.props.userProfile.userEvents} />
                                     </div>
                                     {this.props.userProfile.userEvents.length > 1
-                                    &&
-                                    <button className="carousel-control-prev" type="button" data-bs-target="#carEvents" data-bs-slide="prev">
-                                        <span className="carousel-control-prev-icon"></span>
-                                    </button>
+                                        &&
+                                        <button className="carousel-control-prev" type="button" data-bs-target="#carEvents" data-bs-slide="prev">
+                                            <span className="carousel-control-prev-icon"></span>
+                                        </button>
                                     }
                                     {this.props.userProfile.userEvents.length > 1
-                                    &&
-                                    <button className="carousel-control-next" type="button" data-bs-target="#carEvents" data-bs-slide="next">
-                                        <span className="carousel-control-next-icon"></span>
-                                    </button>
+                                        &&
+                                        <button className="carousel-control-next" type="button" data-bs-target="#carEvents" data-bs-slide="next">
+                                            <span className="carousel-control-next-icon"></span>
+                                        </button>
                                     }
                                 </div>
 

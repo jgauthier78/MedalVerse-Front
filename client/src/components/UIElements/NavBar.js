@@ -18,7 +18,7 @@ import { Button } from "react-bootstrap";
 // import { Link } from "react-router-dom"; // a retirer ?
 
 // React-Router Bootstrap
-import {LinkContainer} from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 
 
 import NavScroll from "./NavLink";
@@ -63,9 +63,9 @@ const NavBar = ({ loginCallBack, options, AppCallBacks, isLanding, isAthlete, is
             }
             {isAthlete === true ? (
               <>
-                <Nav.Link className={textStyleCentered} onClick={() => setPannel(0)}>{"Mon Profil"}</Nav.Link>
-                <Nav.Link className={textStyleCentered} onClick={() => setPannel(1)}>{"Mes Evénements"}</Nav.Link>
-                <Nav.Link className={textStyleCentered} onClick={() => setPannel(2)}>{"Ma Galerie"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => { window.scroll(0, 0); setPannel(0) }}>{"Mon Profil"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => { window.scroll(0, 0); setPannel(1) }}>{"Mes Evénements"}</Nav.Link>
+                <Nav.Link className={textStyleCentered} onClick={() => { window.scroll(0, 0); setPannel(2) }}>{"Ma Galerie"}</Nav.Link>
               </>
             )
               : (<></>)

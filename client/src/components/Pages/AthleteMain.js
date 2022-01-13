@@ -36,7 +36,9 @@ class SporstmanMain extends Component {
         this.setState({ curPannel: u })
     }
 
-
+    componentDidMount() {
+        window.scroll(0, 0);
+    }
 
     render() {
         if (this.props.AppCallBacks === undefined || this.props.userProfile.userDetails === null) {
@@ -61,7 +63,7 @@ class SporstmanMain extends Component {
                                 <>
                                     <div id="profil" className=" row g-0">
 
-                                        <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
+                                        <ProfileBandeau showTriangle={true} AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
                                     </div>
 
 

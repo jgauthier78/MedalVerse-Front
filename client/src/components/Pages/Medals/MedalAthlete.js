@@ -39,7 +39,7 @@ const TableMedalItems = ({ AppCallBacks, address, contract, web3, userMedals }) 
                     <td colSpan="1">
                         <img src={userMedals.uriList[indx]} style={{ width: 32 + 'px' }} data-tip data-for={"img" + indx} alt="medalUri" />
                         <ReactTooltip id={"img" + indx} place="top" border
-                            textColor='#5F4B8BFF' backgroundColor='#E69A8DFF' borderColor='darkgreen' backgroundColor='white' borderColor='black' arrowColor='white'>
+                            textColor='#5F4B8BFF' backgroundColor='white' borderColor='black' arrowColor='white'>
                             <img src={userMedals.uriList[indx]} style={{ width: 128 + 'px' }} alt="medalUri"
                             />
                         </ReactTooltip>

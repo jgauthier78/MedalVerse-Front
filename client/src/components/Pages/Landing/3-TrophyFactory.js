@@ -1,5 +1,5 @@
 
-import { Card, CardImg } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { Container, Row, Col } from "react-bootstrap";
 import NavigateButton from "../../UIElements/NavigateButton";
 
@@ -25,12 +25,19 @@ const TrophyFactory = () => {
                                 </Col>
                                 <Col className="col-sm ">
                                     <Card className="bg-default shadow border-0 m-6">
-                                        <CardImg
 
-                                            alt="..."
-                                            src="img/worktogether.jpg"
+                                        <video
 
-                                        />
+                                            autoPlay="autoplay"
+                                            playsInline="playsinline"
+                                            loop="loop"
+                                            muted
+                                            id="video-id"
+                                            className="Card-Video-trophy " >
+
+                                            <source src='img/trophee.mov' type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
                                         <blockquote className="card-blockquote">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"

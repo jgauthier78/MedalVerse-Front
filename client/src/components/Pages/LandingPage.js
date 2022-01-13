@@ -36,6 +36,10 @@ class LandingPageWithTranslation extends Component {
         this.closeModal = this.closeModal.bind(this);
     }
 
+    componentDidMount() {
+        window.scroll(0, 0);
+    }
+
     toast_options = {
         autoClose: 2000,
         hideProgressBar: false,
@@ -126,7 +130,7 @@ class LandingPageWithTranslation extends Component {
 
                 </main>
 
-                <SimpleModal title={<div><Wallet2 style={{ verticalAlign: '-10%'}} /> {t("LandingPage.walletConnect.title")} </div>} messageBody={<div> <Spinner animation="border" size="sm" /> {t("LandingPage.walletConnect.body")}   </div>} show={this.state.show} animation={false} bgStyle={{ backgroundColor: 'rgba(86, 135, 239, 0.5) ' }} styleHeader={{ backgroundColor:'rgba(86, 135, 239, 0.9)', borderBottom: '1px solid #276aad' }} styleContent={{ backgroundColor:'rgba(86, 135, 239, 0.7)', borderBottom: '1px solid #276aad' }} />
+                <SimpleModal title={<div><Wallet2 style={{ verticalAlign: '-10%' }} /> {t("LandingPage.walletConnect.title")} </div>} messageBody={<div> <Spinner animation="border" size="sm" /> {t("LandingPage.walletConnect.body")}   </div>} show={this.state.show} animation={false} bgStyle={{ backgroundColor: 'rgba(86, 135, 239, 0.5) ' }} styleHeader={{ backgroundColor: 'rgba(86, 135, 239, 0.9)', borderBottom: '1px solid #276aad' }} styleContent={{ backgroundColor: 'rgba(86, 135, 239, 0.7)', borderBottom: '1px solid #276aad' }} />
                 <ToastContainer />
             </Fragment >
 

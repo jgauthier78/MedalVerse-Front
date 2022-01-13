@@ -21,11 +21,9 @@ class GallerieAthlete extends Component {
                     width="100%"
                     height="650px"
                     id="myId"
-                    className="myClassname"
                     display="initial"
                     position="relative"
                     allowFullScreen
-                    className="mb-5"
                 />
                 <Card className="cardProfile shadow-sm ">
                     <CardHeader>

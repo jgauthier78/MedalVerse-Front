@@ -17,9 +17,11 @@ const BandeauPres = () => {
                 <Row className="row-grid align-items-center mb-6">
                     <Col className="col-sm align-self-center">
                         <div>
-                            <Trophy size="40" color='white' className='NoBreak mb-3-5 mr-3' />
-                            <div className="MedalVerse MedalColor  NoBreak">{"Medal"} </div>
-                            <div className="MedalVerse VerseColor NoBreak">{"Verse"} </div>
+
+                            <div>
+                                <Trophy size="40" color='white' />
+                                <img src="img/MedalVerse.svg" className="Titre-MedalVerse" alt="MedalVerse" />
+                            </div>
 
                         </div>
                     </Col>
@@ -36,7 +38,7 @@ const BandeauPres = () => {
                             <p className=" MedalDescription justify-text">
                                 {"Nous avons créé une marketplace dans laquelle les sportifs pourront partager avec leurs fans des objets uniques basés sur leurs exploits. "}
                             </p>
-                            <a className="ca3-scroll-down-link ca3-scroll-down-arrow" data-ca3_iconfont="ETmodules" data-ca3_icon=""></a>
+                            <a className="ca3-scroll-down-link ca3-scroll-down-arrow" data-ca3_iconfont="ETmodules" data-ca3_icon="" ></a>
                         </div>
 
                     </Col>

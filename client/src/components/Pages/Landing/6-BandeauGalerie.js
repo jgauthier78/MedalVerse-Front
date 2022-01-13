@@ -23,7 +23,7 @@ const BandeauGalerie = () => {
                     <Col lg="4">
 
                         <Card className="shadow  border-0 card-rounded ">
-                            <BkgVideo videoSource='img/trophee.mov' options="Card-Video " />
+                            <BkgVideo videoSource='img/visiteurs.webm' options="Card-Video " />
                             <Card.Body className="py-5 text-center">
 
                                 <h6 className="text-success text-uppercase">
@@ -38,7 +38,7 @@ const BandeauGalerie = () => {
                     </Col>
                     <Col lg="4">
                         <Card className="shadow  border-0  card-rounded ">
-                            <BkgVideo videoSource='img/field.webm' options="Card-Video " />
+                            <BkgVideo videoSource='img/foot.webm' options="Card-Video " />
                             <Card.Body className="py-5 text-center">
 
                                 <h6 className="text-success text-uppercase">

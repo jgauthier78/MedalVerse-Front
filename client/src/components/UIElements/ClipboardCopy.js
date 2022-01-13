@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, FormLabel, InputGroup, FormControl } from "react-bootstrap";
+import { useState } from "react";
+import { Button, InputGroup, FormControl } from "react-bootstrap";
 
 export default function ClipboardCopy({ copyText }) {
     const [isCopied, setIsCopied] = useState(false);
