@@ -27,7 +27,8 @@ pas d'utilisation de librairie, pas de send.
 Unexpected Ether: 
 ----------------
 MedalVerse n'est pas payable, mais prend des NFT en paramètres qui eux peuvent déjà être mintés.
-En l'état, le contrat n'héberge pas de token.
+Le transfert vers MedalVerse ne peut etre gerer que par la fonction mint des nfts 
+La fonction withdraw est utilisable seulement par l'owner
 
 
 Visibilité:
@@ -103,13 +104,13 @@ OverFlow:
 ---------
 
 ThrowIn n'est pas affecté par l'attaque d'overflow car:
-Seule une incrementation prsentante un overflow potentiel est effectué dans la fonction mint. L'appel est limité à une seule occurence (par modifier), il ne peut y avoir d'overflow
+Seule une incrementation présentante un overflow potentiel est effectué dans la fonction mint. L'appel est limité à une seule occurence (par modifier), il ne peut y avoir d'overflow
 
 
 Unexpected Ether: 
 ----------------
 
-ThrowIn n'est pas payable, mais prend dun NFT en paramètres qui lui pourrait être déjà minté et contenir de la monnaie, mais il échouera dans l'utilisation de ThrowIn et les événements ne seront pas générés.
+ThrowIn gere le transfer du token seul dans ça fonction mint ne peut pas etre exploité pas un contrat malveillant
 
 
 Visibilité:
@@ -123,6 +124,8 @@ Seules les fonctions view ont la possibilité d'etre utilisées par tous
 Référence à un contrat externe:
 -------------------------------
 
+- le contrat $Medal est utilise dans throwIn seulement dans la fonction mint qui ne permais pas d'attaque 
+- le contrat MedalVerse n'est pas utilisé dans throwIn nous gardons l'addresse pour l'envoie de token et non pour une interaction
 - le contrat NFTArtist et encapsulés dans la structure, un seul appelle est effectuer sur celui ci mais c'est une fonction view
 - NFTArtist est minté indépendamment de ThrowIn, et le contrat affecte le NFT via:
 
@@ -130,6 +133,134 @@ ThrowIn.sol : IERC721Metadata NFT_Medal;
 
 -> on vérifie la bonne implémentation de l'interface dans le constructor
 IERC721(addressNFT_Medal).supportsInterface(type(IERC721).interfaceId);
+
+
+Envoyer une adresse incomplete: 
+-------------------------------
+
+msg.sender est utilisé pour les enregistrements d'utilisateur et les addresses sont checkées
+
+
+Success de call:
+----------------
+
+Pas de Call dans les classes
+
+
+Timestamp:
+----------
+
+Les dates utilisées sont en universal time, et gérées par le front. Pas d'interaction avec le contrat.
+
+
+tx.origin:
+----------
+Pas d'exploitation de "tx"
+
+
+Contrat NFTArtist
+
+
+Ré-entrance:
+------------
+
+NFTArtist n'existe qu'en un seul exemplaire une fois déployé il est impossible de changé c'est contrat en parametre pour appellé un contrat malveillant 
+Pas de ré-entrance potentielle
+
+
+OverFlow: 
+---------
+
+NFTArtist n'est pas affecté par l'attaque d'overflow car:
+Seule une incrementation présentante un overflow potentiel est effectué dans la fonction mint. L'incrementation se passe de 1 en 1 au fur est a mesure que les NFT sont mint.
+OverFlow potentiel mais tres tres long
+
+
+Unexpected Ether: 
+----------------
+
+NFTArtist gere un transfert de token seul sans intervention de l'utilisateur ou de contrat exterieur ne peut donc pas etre exploité par un contrat malveillant 
+
+
+Visibilité:
+-----------
+
+La majorité des des fonctions  "public" sont des getters, les autres sont en onlyowner, réservées au propriétaire du contrat.
+
+Seules les fonctions view ont la possibilité d'etre utilisées par tous
+
+
+Référence à un contrat externe:
+-------------------------------
+
+- le contrat $Medal est utilise dans throwIn seulement dans la fonction mint qui ne permais pas d'attaque 
+- le contrat MedalVerse n'est pas utilisé dans NFTArtist nous gardons l'addresse pour l'envoie de token et non pour une interaction
+- Nous ajoutons les addresses dans le constructor une fois deployer les contrat externe ne pourront pas etre changer
+
+
+Envoyer une adresse incomplete: 
+-------------------------------
+
+msg.sender est utilisé pour les enregistrements d'utilisateur et les addresses sont checkées
+
+
+Success de call:
+----------------
+
+Pas de Call dans les classes
+
+
+Timestamp:
+----------
+
+Les dates utilisées sont en universal time, et gérées par le front. Pas d'interaction avec le contrat.
+
+
+tx.origin:
+----------
+Pas d'exploitation de "tx"
+
+
+
+..........................................................
+..........................................................
+
+
+
+Contrat $Medal.sol
+
+
+Ré-entrance:
+------------
+
+Pas de ré-entrance potentielle
+
+
+OverFlow: 
+---------
+
+Les incrementation ne sont pas gérée par l'utilisateur
+aucun risque d'overflow 
+
+
+Unexpected Ether: 
+----------------
+
+La supply n'est pas integret au contrat ne peut donc pas etre vidé par un contrat malveillant
+
+
+Visibilité:
+-----------
+
+La majorité des fonctions  "public" sont des getters, les autres sont en onlyowner, réservées au propriétaire du token.
+
+Seules les fonctions view ont la possibilité d'etre utilisées par tous
+
+
+Référence à un contrat externe:
+-------------------------------
+
+Ne fais de référence à aucun contrat externe 
 
 
 Envoyer une adresse incomplete: 

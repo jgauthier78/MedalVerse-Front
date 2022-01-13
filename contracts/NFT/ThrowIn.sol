@@ -2,12 +2,12 @@
 pragma solidity ^0.8;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ThrowIn is ERC721, Ownable {
 	IERC721Metadata NFT_Artist; // Recovering an ERC721 interface
-	IERC20 internal Token; // Recovering an ERC20 interface
+	IERC20 private Token; // Recovering an ERC20 interface
 
 	constructor(
 		string memory organization,
@@ -23,7 +23,7 @@ contract ThrowIn is ERC721, Ownable {
 		);
 		nameOfOrganization = organization;
 		NFT_Artist = IERC721Metadata(addressNFT_Artist);
-		Token = IERC20(addressToken);
+		Token = IERC20Metadata(addressToken);
 		medalVerse = addressMedalVerse;
 		name = name;
 		symbol = symbol;
@@ -47,8 +47,13 @@ contract ThrowIn is ERC721, Ownable {
 
 	string nameOfOrganization;
 	string uri;
+<<<<<<< HEAD
 	uint256 mintCount;
 	uint256 price = 500 * (10**18);
+=======
+	uint8 numberMint;
+	uint MDL_Mint_Royalties = 500 * (10 ** 18);
+>>>>>>> f5560b65bf7e520da35c3735c7c58f4d18a5b1d7
 	uint16 year;
 	bool antiDoping;
 	bool pause;
@@ -98,8 +103,8 @@ contract ThrowIn is ERC721, Ownable {
 		require(mintCount == 0, "Only one single cup can be minted"); // Check if the nft has already been mint
 		uint256 balance = Token.balanceOf(msg.sender); // Check the minter balance
 
-		require(balance > price); // Check the balance is greater than the price
-		Token.transferFrom(msg.sender, medalVerse, price); //.Transfer amount token to MedalVerse
+		require(balance > MDL_Mint_Royalties); // Check the balance is greater than the price
+		Token.transferFrom(msg.sender, medalVerse, MDL_Mint_Royalties); //.Transfer amount token to MedalVerse
 
 		uri = IERC721Metadata(NFT_Artist).tokenURI(tokenId); // Get the uri of the NFTArtist
 		mintCount++; // increment the number of NFT mint
@@ -114,18 +119,18 @@ contract ThrowIn is ERC721, Ownable {
 	///@param to address receiving the NFT
 	///@param tokenId Token ID to transfer
 	function _beforeTokenTransfer(
-		address from,
-		address to,
-		uint256 tokenId
-	) internal override {
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual override {
+        super._beforeTokenTransfer(from, to, tokenId);
 		address ownerContract = owner();
 
 		if (ownerContract != msg.sender) {
-			revert("contract is paused:Only the owner can transfer token");
-		}
 
-		super._beforeTokenTransfer(from, to, tokenId);
-	}
+        	require(!paused(), "ERC721Pausable: token transfer while paused");
+		}
+    }
 
 	///@dev Recovery of NFT without the athlete's consent
 	///@param from NFT owner address
@@ -144,7 +149,7 @@ contract ThrowIn is ERC721, Ownable {
 	///@dev Recover the NFT to restart the competition
 	///@param from NFT owner address
 	///@param tokenId ID to transfer
-	function ownerRecovery(address from, uint256 tokenId)
+	function organisazionRecovery(address from, uint256 tokenId)
 		public
 		onlyOwner
 		whenNotPaused

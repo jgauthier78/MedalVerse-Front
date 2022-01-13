@@ -151,7 +151,7 @@ contract('ThrowIn', async function (accounts) {
         expect(paused).to.equal(true);
         // Vérifie la mise en pause du contrat: paused = true
 
-        // NFT recovery
+        // NFT recovery after cheat
         await this.throwInInstance.safeTransferFromWithoutPermission(user, 1, { from: owner });
         balance = new BigNumber(await this.throwInInstance.balanceOf(owner));
 
