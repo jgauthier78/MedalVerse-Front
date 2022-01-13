@@ -11,36 +11,32 @@ enum stateOfCompetition {
 
 contract EventHandler is Ownable {
 	struct EventDesc {
+		stateOfCompetition eventState;
 		uint256 eventId; // Index of the event in the EventList
 		uint256 sportCategory; // Category
 		uint256 organizedBy; // Id of the Organization
-		address[] registeredSportsMan; //List of sportsman that are participating to the event
-		address winner; // Winner of the Event
 		uint256 startDate;
 		uint256 endDate;
 		uint256 medalID;
 		string eventDescription; // String describing the event
 		string positionX;
 		string positionY;
+		address winner; // Winner of the Event
+		address[] registeredSportsMan; //List of sportsman that are participating to the event
 		bool hasMedal;
 		bool activ;
 		bool ended; // finished ?
 		bool started; // The event has started
-		stateOfCompetition eventState;
 	}
 
 	// Data ---------------------------------
 
-	//   Events
-	mapping(uint256 => EventDesc) eventList; // List of events already registered
 	uint256 eventCount; // Index for events
+	mapping(uint256 => EventDesc) eventList; // List of events already registered
 
 	// Modifiers ----------------------------
 	modifier eventIsInState(uint256 eventId, stateOfCompetition _state) {
-		require(
-			eventList[eventId - 1].eventState == _state,
-			"Not possible in current state of the Event"
-		);
+		require(eventList[eventId - 1].eventState == _state, "ERR_3");
 		_;
 	}
 	modifier isNotNull(address a) virtual {
@@ -52,7 +48,7 @@ contract EventHandler is Ownable {
 		_;
 	}
 	modifier isInRange(uint256 a, uint256 b) {
-		require(a <= b, "not in range");
+		require(a <= b, "ERR_1");
 		_;
 	}
 
@@ -87,6 +83,7 @@ contract EventHandler is Ownable {
 		_event.winner = address(0);
 		_event.eventDescription = _eventDescription;
 		_event.eventState = stateOfCompetition.RegistrationOfParticipants;
+
 		emit eventAdded(eventCount);
 
 		return eventCount++;
@@ -100,17 +97,6 @@ contract EventHandler is Ownable {
 		returns (stateOfCompetition)
 	{
 		return eventList[evntID - 1].eventState;
-	}
-
-	///@dev remove an event from the list of events
-	///@param eventId id of the event
-	function removeEvent(uint256 eventId)
-		private
-		isNotNullUint256(eventId)
-		onlyOwner
-	{
-		eventList[eventId - 1].activ = false;
-		emit eventRemoved(eventId);
 	}
 
 	///@dev returns the details of a specific event
@@ -195,7 +181,7 @@ contract EventHandler is Ownable {
 		_start--;
 		_end--;
 		require(_start <= _end); // check params
-		require(_start < eventCount, "StartIndex out of range");
+		require(_start < eventCount, "ERR_1");
 
 		// we adjust the ending value
 		if (_end >= eventCount) _end = eventCount - 1;
@@ -259,10 +245,7 @@ contract EventHandler is Ownable {
 		isNotNullUint256(eventID)
 		eventIsInState(eventID, stateOfCompetition.RewardDistribution)
 	{
-		require(
-			eventList[eventID - 1].hasMedal == true,
-			"no medal affected to the event"
-		);
+		require(eventList[eventID - 1].hasMedal == true, "ERR_4");
 		eventList[eventID - 1].eventState = stateOfCompetition
 			.RewardDistributed;
 		emit eventStatusChanged(eventID, stateOfCompetition.RewardDistributed);

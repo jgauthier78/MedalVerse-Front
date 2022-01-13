@@ -7,7 +7,8 @@ import "./Dapp Internal Struct/SportsmanHandler.sol";
 import "./Dapp Internal Struct/EventHandler.sol";
 import "./Dapp Internal Struct/OrganizerHandler.sol";
 import "./Dapp Internal Struct/MedalHandler.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract MedalVerse is
@@ -20,11 +21,7 @@ contract MedalVerse is
 	MedalHandler
 {
 	IERC20 private Token;
-	
-	constructor(address addressToken) {
-		Token = IERC20(addressToken);
-	}
-		
+
 	// Modifiers ----------------------------
 	modifier isNotNull(address a)
 		virtual
@@ -35,7 +32,7 @@ contract MedalVerse is
 			EventHandler,
 			OrganizerHandler
 		) {
-		require(a != address(0), "should not be null");
+		require(a != address(0), "ERR_K");
 		_;
 	}
 	modifier isNotNullUint256(uint256 a)
@@ -46,14 +43,14 @@ contract MedalVerse is
 			EventHandler,
 			AuthorHandler
 		) {
-		require(a != 0, "value must not be null");
+		require(a != 0, "ERR_K");
 		_;
 	}
 
 	modifier isAdminOfEvent(uint256 eventID) {
 		uint256 organizationId = getEventOrganizer(eventID);
 
-		require(checkorganizerisAdminOf(organizationId), "you must be admin");
+		require(checkorganizerisAdminOf(organizationId), "ERR_J");
 		_;
 	}
 
@@ -62,6 +59,10 @@ contract MedalVerse is
 	event MedalVerseWithdraw(address owner);
 
 	// Methods -------------------------------
+
+	constructor(address addressToken) {
+		Token = IERC20(addressToken);
+	}
 
 	///@dev Add a new user to the DB, using parent classes
 	///@param _userAddress userAddr
@@ -179,7 +180,7 @@ contract MedalVerse is
 	{
 		// Gets the id og the winner to associate the medal
 		address winner = getWinner(eventID);
-		require(winner != address(0), "Set a Winner First");
+		require(winner != address(0), "ERR_I");
 		require(eventHasMedal(eventID));
 
 		setMedalWinner(eventGetMedal(eventID), winner);
@@ -207,17 +208,15 @@ contract MedalVerse is
 	///@dev Withdraw token placed in the contract
 	function withdraw() public onlyOwner {
 		uint256 balance = Token.balanceOf(address(this)); // check balance of contract MedalVerse
-		require(balance != 0, "The contract must contain $Medal");
-		Token.transfer(msg.sender, balance); // transfer balance to owner 
+		require(balance != 0, "ERR_H");
+		Token.transfer(msg.sender, balance); // transfer balance to owner
 
 		emit MedalVerseWithdraw(msg.sender);
 	}
 
 	///@dev Check balance contract
 	///@return return balance contract
-	function getBalance() public view returns(uint256) {
-		uint256 balance = Token.balanceOf(address(this));
-
-		return balance;
+	function getBalance() public view returns (uint256) {
+		return Token.balanceOf(address(this));
 	}
 }

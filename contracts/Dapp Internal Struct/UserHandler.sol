@@ -4,10 +4,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 ///@dev Structure for describing MedalVerse Users - used by the main contract
 struct User {
+	uint256 role; // Role in MedalVerse (Admin, Author,)
 	string iconURI; // URI for displaying user in UI
 	string userName; // Username for UI elements
 	string email; // email for the user
-	uint256 role; // Role in MedalVerse (Admin, Author,)
 	bool activ; // user is activ on the website
 }
 

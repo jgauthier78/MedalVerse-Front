@@ -15,7 +15,7 @@ contract MedalHandler is Ownable {
 
 	// Modifiers -------------------------------
 	modifier indexInRange(uint256 medalID) {
-		require(medalID < medalList.length, "MedalID out of range");
+		require(medalID < medalList.length, "ERR_1");
 		_;
 	}
 	// Events -------------------------------

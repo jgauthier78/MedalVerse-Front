@@ -1,7 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./NFT_Medal_Bkg_Desc.sol";
+struct NFT_Medal_Bkg_Desc {
+	address author; // Owner of the NFT
+	address NFT_Bkg_Adr; //Address for the minted NFT (can be null)
+	uint256 price; // Price for the corresponding NFT
+	uint256 creationId; // Creation ref
+	uint256 sportCategory;
+	string description; // Its Description
+	string URI; // URI for the image
+	bool activ; // Is It a valid struct ?
+}
 
 ///@dev Structure for describing MedalVerse Authors - used by AuthorHandler
 struct Author {
@@ -38,9 +47,9 @@ contract AuthorHandler is Ownable {
 	///@param _user Address of the user to register as author
 	function addAuthor(address _user) internal onlyOwner isNotNull(_user) {
 		registeredAuthors.push(_user);
-		Author storage _author = allAuthors[_user];
-		_author.userAddress = _user;
-		_author.activ = true;
+
+		allAuthors[_user].userAddress = _user;
+		allAuthors[_user].activ = true;
 		emit AuthorAdded(_user, registeredAuthors.length - 1);
 	}
 
@@ -58,7 +67,7 @@ contract AuthorHandler is Ownable {
 		string memory _URI
 	) public onlyOwner isNotNull(_user) {
 		Author storage _author = allAuthors[_user];
-		require(_author.activ, "Invalid User");
+		require(_author.activ, "ERR_0");
 		uint256 allCreationCount = allCreations.length;
 		allCreations.push();
 		// Register the creation in the global list of creations
@@ -111,7 +120,7 @@ contract AuthorHandler is Ownable {
 		returns (NFT_Medal_Bkg_Desc[] memory)
 	{
 		require(_start <= _end); // check params
-		require(_start < allCreations.length, "StartIndex out of range");
+		require(_start < allCreations.length, "ERR_1");
 
 		// we adjust the ending value
 		if (_end >= allCreations.length) _end = allCreations.length - 1;

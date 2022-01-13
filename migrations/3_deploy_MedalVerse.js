@@ -21,7 +21,7 @@ module.exports = async function (deployer, network, accounts) {
 
   await deployer.deploy(nftArtist, TkMedal.address, MVerse.address, { from: ACCOUNT_CONTRACT_OWNER });
   let NFTArtist = await nftArtist.deployed()
-  
+
 
 
   console.log("----------------------------------------------------------")
@@ -41,13 +41,13 @@ module.exports = async function (deployer, network, accounts) {
 
   // 
   let nftCounter = 1
-  
+
   let priceT = ethers.BigNumber.from("500000000000000000000")
   let priceA = ethers.BigNumber.from("100000000000000000000")
 
   async function createNFT(nftOrganization, nftName, nftSymbol, name, img, account) {
     let nft = await throwIn.new(nftOrganization, NFTArtist.address, TkMedal.address, MVerse.address, nftName, nftSymbol, false, { from: ACCOUNT_CONTRACT_OWNER }); // constructor(string memory oragnization, address addressNFT_Medal, string memory name, string memory symbol)
-    await TkMedal.approve(NFTArtist.address, priceA,{ from: ACCOUNT_CONTRACT_OWNER })
+    await TkMedal.approve(NFTArtist.address, priceA, { from: ACCOUNT_CONTRACT_OWNER })
     await TkMedal.approve(nft.address, priceT, { from: ACCOUNT_CONTRACT_OWNER })
     await NFTArtist.mintNFTArtist(name, img, { from: ACCOUNT_CONTRACT_OWNER })
     await nft.mintCup(nftCounter, { from: ACCOUNT_CONTRACT_OWNER });
@@ -155,42 +155,42 @@ module.exports = async function (deployer, network, accounts) {
   await addFakeUser("Sandra Palin", "spali@hotmail.com", ROLE_ORGANIZER, 0)
   await addFakeUser("Cindy Quer", "cquer@icloud.com", ROLE_ATHLETE, 0)
   await addFakeUser("Sarah Comah", "scomah@yopmail.com", ROLE_ATHLETE, 0)
-  console.log(".")
-  await addFakeUser("Francois Lemin", "flemin@yahoo.fr", ROLE_ATHLETE, 0) //7
-  await addFakeUser("Gregoire Kann", "gkann@hotmail.com", ROLE_ATHLETE, 0)
-  await addFakeUser("Pierre Lemin", "plemin@yahoo.fr", ROLE_ATHLETE, 0)
-  await addFakeUser("Sandrine Praut", "spraut@free.fr", ROLE_ATHLETE, 0)
-  console.log(".")
-  await addFakeUser("Alain Terrieur", "aterrieur@yahoo.fr", ROLE_ATHLETE, 0)
-  await addFakeUser("Mimi Ferraud", "mferraud@free.fr", ROLE_ATHLETE, 0)
-  await addFakeUser("Yin Tran", "ytran@icloud.com", ROLE_ATHLETE, 0)
-  console.log(".")
-  await addFakeUser("Patricia Linn", "plinn@yahoo.fr", ROLE_ATHLETE, 0)
-  await addFakeUser("Lin Tran", "ltran@aol.com", ROLE_ATHLETE, 0)
-  await addFakeUser("Fabien Oumal", "foumal@icloud.com", ROLE_ATHLETE, 0)
-  console.log(".")
-  await addFakeUser("Farah Linn", "flinn@free.fr", ROLE_ATHLETE, 0)
-  await addFakeUser("Inna Kassar", "ikassar@aol.com", ROLE_ATHLETE, 0)
-  await addFakeUser("Alain Lebref", "alebref@hotmail.com", ROLE_ATHLETE, 0)
-  console.log(".")
-  await addFakeUser("Tse Fan", "tfan@aol.com", ROLE_ATHLETE, 0)
-  await addFakeUser("Paul Mickel", "pmickel@yopmail.com", ROLE_ATHLETE, 0)
-  console.log(".")
-  await addFakeUser("Linn Bertram", "lbertram@yopmail.com", ROLE_ATHLETE, 0)
-  await addFakeUser("Jean Labarthe", "jlabarthe@aol.fr", ROLE_ATHLETE, 0)
-  await addFakeUser("Fred Bert", "fbert@yahoo.fr", ROLE_ATHLETE, 0)
-  await addFakeUser("Ahmed Karr", "akarr@hotmail.com", ROLE_ATHLETE, 0)
-  console.log(".")
-  await addFakeUser("Yuri Leck", "yleck@free.fr", ROLE_ATHLETE, 0)
-  await addFakeUser("Annie Sebbagh", "asebbagh@icloud.com", ROLE_ATHLETE, 0)
-  await addFakeUser("Linnette Arnaud", "larnaud@icloud.com", ROLE_ATHLETE, 0)
-  console.log(".")
-  await addFakeUser("Gérard Broux", "gbroux@yahoo.fr", ROLE_ATHLETE, 0)
-  await addFakeUser("Cyril Mann", "cmann@yopmail.com", ROLE_ATHLETE, 0)
-  await addFakeUser("Cédric Jompard", "cjompard@hotmail.com", ROLE_ATHLETE, 0)
-  await addFakeUser("Annie Hall", "ahall@free.fr", ROLE_ATHLETE, 0)
-  console.log(".")
-
+  /* console.log(".")
+   await addFakeUser("Francois Lemin", "flemin@yahoo.fr", ROLE_ATHLETE, 0) //7
+   await addFakeUser("Gregoire Kann", "gkann@hotmail.com", ROLE_ATHLETE, 0)
+   await addFakeUser("Pierre Lemin", "plemin@yahoo.fr", ROLE_ATHLETE, 0)
+   await addFakeUser("Sandrine Praut", "spraut@free.fr", ROLE_ATHLETE, 0)
+   console.log(".")
+   await addFakeUser("Alain Terrieur", "aterrieur@yahoo.fr", ROLE_ATHLETE, 0)
+   await addFakeUser("Mimi Ferraud", "mferraud@free.fr", ROLE_ATHLETE, 0)
+   await addFakeUser("Yin Tran", "ytran@icloud.com", ROLE_ATHLETE, 0)
+   console.log(".")
+   await addFakeUser("Patricia Linn", "plinn@yahoo.fr", ROLE_ATHLETE, 0)
+   await addFakeUser("Lin Tran", "ltran@aol.com", ROLE_ATHLETE, 0)
+   await addFakeUser("Fabien Oumal", "foumal@icloud.com", ROLE_ATHLETE, 0)
+   console.log(".")
+   await addFakeUser("Farah Linn", "flinn@free.fr", ROLE_ATHLETE, 0)
+   await addFakeUser("Inna Kassar", "ikassar@aol.com", ROLE_ATHLETE, 0)
+   await addFakeUser("Alain Lebref", "alebref@hotmail.com", ROLE_ATHLETE, 0)
+   console.log(".")
+   await addFakeUser("Tse Fan", "tfan@aol.com", ROLE_ATHLETE, 0)
+   await addFakeUser("Paul Mickel", "pmickel@yopmail.com", ROLE_ATHLETE, 0)
+   console.log(".")
+   await addFakeUser("Linn Bertram", "lbertram@yopmail.com", ROLE_ATHLETE, 0)
+   await addFakeUser("Jean Labarthe", "jlabarthe@aol.fr", ROLE_ATHLETE, 0)
+   await addFakeUser("Fred Bert", "fbert@yahoo.fr", ROLE_ATHLETE, 0)
+   await addFakeUser("Ahmed Karr", "akarr@hotmail.com", ROLE_ATHLETE, 0)
+   console.log(".")
+   await addFakeUser("Yuri Leck", "yleck@free.fr", ROLE_ATHLETE, 0)
+   await addFakeUser("Annie Sebbagh", "asebbagh@icloud.com", ROLE_ATHLETE, 0)
+   await addFakeUser("Linnette Arnaud", "larnaud@icloud.com", ROLE_ATHLETE, 0)
+   console.log(".")
+   await addFakeUser("Gérard Broux", "gbroux@yahoo.fr", ROLE_ATHLETE, 0)
+   await addFakeUser("Cyril Mann", "cmann@yopmail.com", ROLE_ATHLETE, 0)
+   await addFakeUser("Cédric Jompard", "cjompard@hotmail.com", ROLE_ATHLETE, 0)
+   await addFakeUser("Annie Hall", "ahall@free.fr", ROLE_ATHLETE, 0)
+   console.log(".")
+ */
   let a = await MVerse.getUserCount({ from: ACCOUNT_CONTRACT_OWNER })
   console.log(a.toString() + ' users added')
 
@@ -217,19 +217,19 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(EVENT_FOUR, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
-// evenements de test
-                  console.log(".")
-                  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 2", { from: ACCOUNT_ORGANIZER_01 });
-                  await MVerse.adminSetEventPosition(5, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+  // evenements de test
+  console.log(".")
+  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 2", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(5, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
-                  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 3", { from: ACCOUNT_ORGANIZER_01 });
-                  await MVerse.adminSetEventPosition(6, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 3", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(6, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
-                  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 4", { from: ACCOUNT_ORGANIZER_01 });
-                  await MVerse.adminSetEventPosition(7, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 4", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(7, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
-                  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 5", { from: ACCOUNT_ORGANIZER_01 });
-                  await MVerse.adminSetEventPosition(8, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.newEvent(2, Time04_start, Time04_end, 4, "Coupe des coupes de gagnants de coupes 5", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(8, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
   console.log(".")
 
@@ -240,12 +240,12 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_FOUR);
   console.log(".")
 
-// evenements de test
-                                  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 5);
-                                  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 6);
-                                  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 7);
-                                  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 8);
-                                  console.log(".")
+  // evenements de test
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 5);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 6);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 7);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 8);
+  console.log(".")
 
 
   // population de récompenses
@@ -277,11 +277,11 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.adminAddMedal(EVENT_FOUR, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
 
 
-// evenements de test
-          await MVerse.adminAddMedal(5, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
-          await MVerse.adminAddMedal(6, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
-          await MVerse.adminAddMedal(7, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
-          await MVerse.adminAddMedal(8, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  // evenements de test
+  await MVerse.adminAddMedal(5, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(6, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(7, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(8, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
 
 
 
