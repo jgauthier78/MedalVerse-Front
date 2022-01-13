@@ -47,13 +47,10 @@ contract ThrowIn is ERC721, Ownable {
 
 	string nameOfOrganization;
 	string uri;
-<<<<<<< HEAD
 	uint256 mintCount;
 	uint256 price = 500 * (10**18);
-=======
 	uint8 numberMint;
 	uint MDL_Mint_Royalties = 500 * (10 ** 18);
->>>>>>> f5560b65bf7e520da35c3735c7c58f4d18a5b1d7
 	uint16 year;
 	bool antiDoping;
 	bool pause;
