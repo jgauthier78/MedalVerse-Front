@@ -19,7 +19,7 @@ contract Medal is ERC20, Ownable {
     }
 
     function _burn(address account, uint256 amount) internal virtual override(ERC20) {
-        require(tokenBurned + amount < maxBurned);
+        require(tokenBurned + amount < maxBurned, "Burn request exceeds maxBuned");
 
         require(account != address(0), "ERC20: burn from the zero address");
 
