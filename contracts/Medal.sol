@@ -43,13 +43,13 @@ contract Medal is ERC20, Ownable {
 
 	///@dev indicated the already burn token number
 	///@return Burn token Number
-	function getTokenBurned() public view returns (uint256) {
+	function getTokenBurned() external view returns (uint256) {
 		return tokenBurned;
 	}
 
 	///@dev Burn the indicated amount of token
 	///@param amount Amount to burn
-	function burn(uint256 amount) public onlyOwner {
+	function burn(uint256 amount) external onlyOwner {
 		_burn(msg.sender, amount);
 
 		emit $MedalBurned(msg.sender, amount);

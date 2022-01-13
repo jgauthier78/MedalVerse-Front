@@ -49,7 +49,7 @@ contract NFTArtist is ERC721URIStorage, ERC721Enumerable, Ownable {
 	///@dev Mint NFTArtist
 	///@param name Name of the structure NFT
 	///@param Uri Path to Image
-	function mintNFTArtist(string memory name, string memory Uri) public {
+	function mintNFTArtist(string memory name, string memory Uri) external {
 		uint256 balance = Token.balanceOf(msg.sender);
 		require(balance > MDL_Mint_Royalties);
 
@@ -113,7 +113,7 @@ contract NFTArtist is ERC721URIStorage, ERC721Enumerable, Ownable {
 
 	///@dev change price of NFT
 	///@param newPrice NewPrice to be defined
-	function changePrice(uint256 newPrice) public onlyOwner {
+	function changePrice(uint256 newPrice) external onlyOwner {
 		MDL_Mint_Royalties = newPrice;
 
 		emit nftArtistPriceChanged(newPrice);
@@ -121,7 +121,10 @@ contract NFTArtist is ERC721URIStorage, ERC721Enumerable, Ownable {
 
 	///@dev Change address MedalVerse contract
 	///@param addressMedalVerse new address of MedalVerse contract
-	function setAddressMedalVerse(address addressMedalVerse) public onlyOwner {
+	function setAddressMedalVerse(address addressMedalVerse)
+		external
+		onlyOwner
+	{
 		medalVerse = addressMedalVerse;
 
 		emit nftArtistAddressMedalVerseChanged(addressMedalVerse);
@@ -130,13 +133,13 @@ contract NFTArtist is ERC721URIStorage, ERC721Enumerable, Ownable {
 	// view ------------------------
 	///@dev View price
 	///@return price of nft
-	function checkPrice() public view returns (uint256) {
+	function checkPrice() external view returns (uint256) {
 		return MDL_Mint_Royalties;
 	}
 
 	///@dev view address to MedalVerse contract
 	///@return Address MedalVerse contract
-	function checkAddressMedalVerse() public view returns (address) {
+	function checkAddressMedalVerse() external view returns (address) {
 		return medalVerse;
 	}
 }

@@ -95,7 +95,6 @@ export default function Gallerie({ AppCallBacks }) {
     const { id } = useParams()
     const [_web3, setWeb3] = useState(null);
     const [userDetails, setDetails] = useState(null);
-    const [setContract] = useState(null);
     const [initialized, setInitialized] = useState(false);
     const [role, setRole] = useState(0);
     const [setIncorrect] = useState(false);
@@ -110,12 +109,11 @@ export default function Gallerie({ AppCallBacks }) {
             if (AppCallBacks != null)
                 if (!initialized) {
                     try {
-                        if (!AppCallBacks.isConnected()) setWeb3(await AppCallBacks.getWeb3Cnx())
-
-                        setContract(await AppCallBacks.initContract())
-
+                        if (!AppCallBacks.isConnected()) {
+                            setWeb3(await AppCallBacks.getWeb3Cnx())
+                        }
+                        await AppCallBacks.initContract()
                         let details = await AppCallBacks.initUserDetails(id)
-                        // console.log(details.detail)
                         setDetails(details.detail)
                         setRole(details.detail.role)
                         setInitialized(true);
@@ -150,7 +148,7 @@ export default function Gallerie({ AppCallBacks }) {
 
                         })
                     }
-                    catch (err) { setIncorrect(true) }
+                    catch (err) { console.log(err); }
 
 
                 }

@@ -47,7 +47,7 @@ contract MedalHandler is Ownable {
 	}
 
 	function getMedal(uint256 medalID)
-		public
+		external
 		view
 		indexInRange(medalID)
 		returns (Medal memory)

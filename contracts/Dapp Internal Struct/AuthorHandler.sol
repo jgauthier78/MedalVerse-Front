@@ -6,10 +6,8 @@ struct NFT_Medal_Bkg_Desc {
 	address NFT_Bkg_Adr; //Address for the minted NFT (can be null)
 	uint256 price; // Price for the corresponding NFT
 	uint256 creationId; // Creation ref
-	uint256 sportCategory;
 	string description; // Its Description
 	string URI; // URI for the image
-	bool activ; // Is It a valid struct ?
 }
 
 ///@dev Structure for describing MedalVerse Authors - used by AuthorHandler
@@ -56,16 +54,14 @@ contract AuthorHandler is Ownable {
 	///@dev Register a creation for a given author
 	///@param _user Address of the user to register as author
 	///@param _price Price of the NFT
-	///@param _sportCategory Category for UI
 	///@param _description may be null
 	///@param _URI Address of the image, used before minting the NFT
 	function addCreation(
 		address _user,
 		uint256 _price,
-		uint256 _sportCategory,
 		string memory _description,
 		string memory _URI
-	) public onlyOwner isNotNull(_user) {
+	) external onlyOwner isNotNull(_user) {
 		Author storage _author = allAuthors[_user];
 		require(_author.activ, "ERR_0");
 		uint256 allCreationCount = allCreations.length;
@@ -74,12 +70,10 @@ contract AuthorHandler is Ownable {
 		allCreations[allCreationCount] = NFT_Medal_Bkg_Desc({
 			price: _price,
 			creationId: allCreationCount,
-			sportCategory: _sportCategory,
 			author: _user,
 			NFT_Bkg_Adr: address(0x00),
 			description: _description,
-			URI: _URI,
-			activ: true
+			URI: _URI
 		});
 
 		// Save the index into the author Structure
@@ -91,7 +85,7 @@ contract AuthorHandler is Ownable {
 	///@param _creationId index of the creation as registered in allCreations
 	///@param _NFT Address of the minted NFT
 	function affectNFTtoCreation(uint256 _creationId, address _NFT)
-		public
+		external
 		onlyOwner
 		isNotNull(_NFT)
 	{
@@ -101,7 +95,7 @@ contract AuthorHandler is Ownable {
 	///@dev returns the list of creations for user _author TESTED
 	///@param _author address of the user
 	function getAuthorCreationsList(address _author)
-		public
+		external
 		view
 		isNotNull(_author)
 		isNotNullUint256(allAuthors[_author].creations.length)
@@ -114,7 +108,7 @@ contract AuthorHandler is Ownable {
 	///@param _start start index  - paging
 	///@param _end ending index - paging
 	function getCreationList(uint256 _start, uint256 _end)
-		public
+		external
 		view
 		isNotNullUint256(allCreations.length)
 		returns (NFT_Medal_Bkg_Desc[] memory)
@@ -136,12 +130,10 @@ contract AuthorHandler is Ownable {
 			_desc[x - _start] = NFT_Medal_Bkg_Desc({
 				price: allCreations[x].price,
 				creationId: allCreations[x].creationId,
-				sportCategory: allCreations[x].sportCategory,
 				author: allCreations[x].author,
 				NFT_Bkg_Adr: allCreations[x].NFT_Bkg_Adr,
 				description: allCreations[x].description,
-				URI: allCreations[x].URI,
-				activ: allCreations[x].activ
+				URI: allCreations[x].URI
 			});
 
 			x++;
@@ -152,7 +144,7 @@ contract AuthorHandler is Ownable {
 	///@dev returns the Author struc corresponding to the user TESTED
 	///@param _user user address
 	function getAuthor(address _user)
-		public
+		external
 		view
 		isNotNull(_user)
 		returns (Author memory)
