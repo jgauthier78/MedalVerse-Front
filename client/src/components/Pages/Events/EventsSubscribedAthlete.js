@@ -4,21 +4,21 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 
 import { format_Date } from "../../../utils/dateUtils";
 import NavigateButton from "../../UIElements/NavigateButton";
-import EventList from "./EventList";
+// import EventList from "./EventList";
 
 
 const getImageSrcFromEvent = (evnt, i) => {
     return (evnt.organisationDesc[i])[0].logoURI
 }
 const getOrgNameFromEvent = (evnt, i) => { return (evnt.encoursOrganisationDesc[i])[0].name }
-const getOrgDescFromEvent = (evnt, i) => { return (evnt.encoursOrganisationDesc[i])[0].description }
+// const getOrgDescFromEvent = (evnt, i) => { return (evnt.encoursOrganisationDesc[i])[0].description }
 const getEventStartDate = (evnt, i) => { return format_Date(((evnt.encoursEvent[i])).endDate) }
 const getEventEndDate = (evnt, i) => { return format_Date(((evnt.encoursEvent[i])).startDate) }
-const eventIsActiv = (evnt, i) => {
-    if (evnt.encoursEvent[i].started === false) return true
-    if (evnt.encoursEvent[i].ended === false) return false
-    return false
-}
+// const eventIsActiv = (evnt, i) => {
+//     if (evnt.encoursEvent[i].started === false) return true
+//     if (evnt.encoursEvent[i].ended === false) return false
+//     return false
+// }
 
 const CarrousselItem = ({ userEvents }) => {
     let firstElem = true
@@ -65,7 +65,7 @@ class EventsSubscribedAthlete extends Component {
 
     render() {
 
-        console.log(this.props.userProfile.userEvents)
+        // console.log(this.props.userProfile.userEvents)
 
         if (this.props.userProfile.userEvents === undefined) {
             return (<></>)
@@ -95,12 +95,18 @@ class EventsSubscribedAthlete extends Component {
                                     <div className="carousel-inner" >
                                         <CarrousselItem userEvents={this.props.userProfile.userEvents} />
                                     </div>
+                                    {this.props.userProfile.userEvents.length > 1
+                                    &&
                                     <button className="carousel-control-prev" type="button" data-bs-target="#carEvents" data-bs-slide="prev">
                                         <span className="carousel-control-prev-icon"></span>
                                     </button>
+                                    }
+                                    {this.props.userProfile.userEvents.length > 1
+                                    &&
                                     <button className="carousel-control-next" type="button" data-bs-target="#carEvents" data-bs-slide="next">
                                         <span className="carousel-control-next-icon"></span>
                                     </button>
+                                    }
                                 </div>
 
                                 <Card.Footer className="text-muted ">

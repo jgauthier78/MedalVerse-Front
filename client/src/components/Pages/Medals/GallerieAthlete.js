@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import { Button, Card, Container, Row, Col } from "react-bootstrap";
+import { Button, Card, Container/*, Row*/, Col } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-import Reveal from 'reveal.js';
+// import Reveal from 'reveal.js';
 import { Navigate } from "react-router-dom";
 import Iframe from 'react-iframe'
 import ClipboardCopy from "../../UIElements/ClipboardCopy"

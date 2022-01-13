@@ -2,7 +2,7 @@
 import { Component } from "react";
 
 /* React - Bootstrap */
-import { Container, Col, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 
 // React-router
 import { Routes, Route, Outlet } from "react-router-dom";
@@ -10,39 +10,34 @@ import { Routes, Route, Outlet } from "react-router-dom";
 /* Components */
 import NavBar from "../UIElements/NavBar";
 import SimpleFooter from "../UIElements/SimpleFooter";
-import OrganizerSideBar from "./SideBar/OrganizerSideBar";
 import ProfileBandeau from "./ProfileBandeau"
 import { EventsByStateLayout, EventsByDateLayout } from "./Events/OrganizerEvents";
 import { EventLayout } from "./Events/OrganizerEvent";
 
 /* Utils */
 import { extractOrganizerEventsFromProfile, filterActivEvents, filterCurrentEvents, filterEndedEvents, filterIncomingEvents, sortEventsByDate} from "./Events/OrganizerEvents-js";
+import NavBarSpacer from "../UIElements/NavBarSpacer";
 
 class OrganizerLayout extends Component
 {
     render() {
         return (
             <>
-            <Container className="container-fluid profile-page">
+            <div className=" profile-page">
                 <Row className="flex-nowrap">
                     <NavBar AppCallBacks={this.props.AppCallBacks} isOrganizer={true} />
                 </Row>
-                <Row className="flex-nowrap" style={{ height : '70px' }}>
-                    <Col/>
+                <NavBarSpacer />
+                <Row className="g-0">
+                    <div id="profil" className=" row g-0">
+                            <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} animatedBackground = 'img/abstract7.webm' />
+                    </div>
                 </Row>
-                <Row className="flex-nowrap">
-                    <Row>
-                        <OrganizerSideBar />
-                        <Col >
-                            <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />
-                            <Row className="content">
-                                <Outlet />
-                            </Row>
-                            <SimpleFooter />
-                        </Col>
-                    </Row>
+                <Row className="content">
+                    <Outlet />
                 </Row>
-            </Container>
+                <SimpleFooter />
+            </div>
         </>
         )
     } // render

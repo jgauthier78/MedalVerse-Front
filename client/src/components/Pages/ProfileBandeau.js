@@ -1,24 +1,25 @@
 import { Component } from "react";
-import { Card } from "react-bootstrap";
-import { Container, Row, Table } from "react-bootstrap";
-import Col from 'react-bootstrap/Col';
-import CardHeader from "react-bootstrap/esm/CardHeader";
+import { Container, Table } from "react-bootstrap";
 
+// Translation
 import { withTranslation } from 'react-i18next';
+
 import BkgVideo from "../UIElements/BkgVideo";
+
+// Tools
 import { displayRoles } from "./profileBandeau-js"
 
 class ProfileBandeauBeforeTranslation extends Component {
 
     render() {
-        const { t } = this.props;
-        //<BkgVideo videoSource='img/abstract5.webm' options="adapt-Background-Video" />
+        const { t, animatedBackground = 'img/abstract2.webm' } = this.props;
+
         return (
             <>
 
-                <Container className="d-flex    justify-content-center overflow-hidden position-relative">
+                <Container className="d-flex justify-content-center overflow-hidden position-relative">
 
-                    <BkgVideo videoSource='img/abstract6.webm' options="adapt-Background-Video" />
+                    <BkgVideo videoSource={animatedBackground} options="adapt-Background-Video" />
 
 
                     <div className="col-mt-9 col-lg-8 col-xl-8">
@@ -26,7 +27,7 @@ class ProfileBandeauBeforeTranslation extends Component {
 
                             <div className="d-flex align-items-center">
                                 <div className="image">
-                                    <img src={this.props.userProfile.userDetails.iconURI} className="Card-Image" />
+                                    <img src={this.props.userProfile.userDetails.iconURI} className="Card-Image" alt="user"/>
                                 </div>
                                 <div className="ml-4 w-100">
 

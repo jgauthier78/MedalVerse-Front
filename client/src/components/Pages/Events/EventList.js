@@ -1,7 +1,7 @@
 import { format_Date } from "../../../utils/dateUtils";
 import React, { Component } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
-import CardHeader from "react-bootstrap/esm/CardHeader";
+import { /*Card,*/ Col, Container, Row } from "react-bootstrap";
+// import CardHeader from "react-bootstrap/esm/CardHeader";
 import NavigateButton from "../../UIElements/NavigateButton";
 
 const getImageSrcFromEvent = (evnt, i) => { return (evnt.organisationDesc[i])[0].logoURI }

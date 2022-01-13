@@ -53,7 +53,7 @@ class LandingPageWithTranslation extends Component {
     }
     /* Callback for the Login Button*/
     loginCallBack = async () => {
-        console.log("loginCallBack")
+        // console.log("loginCallBack")
         var _getWeb3 = this.props.AppCallBacks.getWeb3Cnx
         var result
         // We loop so the site is not accessible until everything is set properly
@@ -83,7 +83,7 @@ class LandingPageWithTranslation extends Component {
                     result = await this.props.AppCallBacks.initUserDetails(this._accounts[0])
                     if (result.err === null) {
 
-                        console.log(result.detail)
+                        // console.log(result.detail)
                     }
                     else {
                         erreur = "Erreur utilisateur"

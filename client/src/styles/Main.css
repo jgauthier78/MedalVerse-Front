@@ -17533,28 +17533,32 @@ border: hidden;
   background: var(--medalverse-toast-color) !important;
   color: #000;
   font-size: smaller;
-  padding: 0px;
+  padding-top: 2px;
+  padding-left: 5px;
   padding-bottom: 5px
 }
 .Toastify__toast--success {
-background: var(--medalverse-toast-color) !important;
-color: #000;
-font-size: smaller;
-padding: 0px;
-padding-bottom: 5px
+  background: var(--medalverse-toast-color) !important;
+  color: #000;
+  font-size: smaller;
+  padding-top: 2px;
+  padding-left: 5px;
+  padding-bottom: 5px
 }
 .Toastify__toast--warning {
-background: var(--medalverse-toast-color) !important;
-color: #000;
-font-size: smaller;
-padding: 0px;
-padding-bottom: 5px
+  background: var(--medalverse-toast-color) !important;
+  color: #000;
+  font-size: smaller;
+  padding-top: 2px;
+  padding-left: 5px;
+  padding-bottom: 5px
 }
 .Toastify__toast-body {
   background: var(--medalverse-toast-color) !important;
   color: #000;
   font-size: smaller;
-  padding: 0px;
+  padding-top: 2px;
+  padding-left: 5px;
   padding-bottom: 5px
 } 
 

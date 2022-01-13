@@ -5,22 +5,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
     Timeline,
     Events,
-    UrlButton,
-    ImageEvent,
+    // UrlButton,
+    // ImageEvent,
     TextEvent,
-    YouTubeEvent, themes,
+    // YouTubeEvent,
+    themes,
     createTheme,
 } from '@merc/react-timeline';
 import NavigateButton from '../../UIElements/NavigateButton';
 
-function getDate() {
-    var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
+// function getDate() {
+//     var dateObj = new Date();
+//     var month = dateObj.getUTCMonth() + 1; //months from 1-12
+//     var day = dateObj.getUTCDate();
+//     var year = dateObj.getUTCFullYear();
 
-    return day + "/" + month + "/" + year;
-}
+//     return day + "/" + month + "/" + year;
+// }
 
 const theme = createTheme(themes.default, {
     timeline: {

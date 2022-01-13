@@ -4,7 +4,7 @@ import { Card } from "react-bootstrap";
 
 import { Container, Row, Col } from "react-bootstrap";
 import BkgVideo from '../../UIElements/BkgVideo';
-import { Trophy } from 'react-bootstrap-icons';
+// import { Trophy } from 'react-bootstrap-icons';
 import NavigateButton from '../../UIElements/NavigateButton';
 
 

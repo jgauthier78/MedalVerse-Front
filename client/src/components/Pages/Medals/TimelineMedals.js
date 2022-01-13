@@ -2,10 +2,11 @@ import React from 'react';
 import {
     Timeline,
     Events,
-    UrlButton,
+    // UrlButton,
     ImageEvent,
     TextEvent,
-    YouTubeEvent, themes,
+    // YouTubeEvent,
+    themes,
     createTheme,
 } from '@merc/react-timeline';
 import { format_Date } from "../../../utils/dateUtils";

@@ -1,7 +1,7 @@
 import { useSprings, animated, interpolate } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
-import { useEffect, useState } from 'react'
-import { Card, Col, Container } from "react-bootstrap";
+import { /*useEffect,*/ useState } from 'react'
+import { Card, /*Col,*/ Container } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { format_Date } from "../../../utils/dateUtils";
 import { Table } from "react-bootstrap";
@@ -14,7 +14,7 @@ const trans = (r, s) => `perspective(1500px) rotateX(30deg) rotateY(${r / 10}deg
 
 const GenerateMedalList = ({ lst }) => {
 
-    if (lst == null || lst.winnersString.length == 0) return (<tr><td></td></tr>)
+    if (lst == null || lst.winnersString.length === 0) return (<tr><td></td></tr>)
 
     return lst.winnersString.map((elm, indx) =>
     (

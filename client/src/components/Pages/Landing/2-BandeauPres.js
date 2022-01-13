@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 import { Container, Row, Col } from "react-bootstrap";
-import BkgVideo from '../../UIElements/BkgVideo';
+// import BkgVideo from '../../UIElements/BkgVideo';
 import { Trophy } from 'react-bootstrap-icons';
 import NavigateButton from '../../UIElements/NavigateButton';
 
