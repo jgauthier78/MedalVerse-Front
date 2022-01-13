@@ -213,6 +213,14 @@ contract MedalVerse is
 
 		emit MedalVerseWithdraw(msg.sender);
 	}
+
+	///@dev Check balance contract
+	///@return return balance contract
+	function getBalance() public view returns(uint) {
+		uint balance = Token.balanceOf(address(this));
+
+		return balance;
+	}
 	
 }
 
