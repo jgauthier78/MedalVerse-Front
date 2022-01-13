@@ -112,7 +112,7 @@ const EventLayout = ( { activEvents, AppCallBacks } ) =>
                             <div className="ms-2 c-details">
                                 <h5 className="mb-0">{event.organization.description}</h5>
                                 <h5 className="mb-0">{event.eventDescription}</h5>
-                                <h6>{t("OrganizerEvent.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvent.to")} {format_TimeStampToEndDate(event.endDate)}</h6>
+                                <h6>{t("OrganizerEvent.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvent.to")} {format_TimeStampToEndDate(event.endDate, true)}</h6>
                             </div>
                             <div className="ms-2 c-details">
                                 <h6>{t(`MedalVerse.event.states.${event.stateOfCompetition}`)}</h6>
