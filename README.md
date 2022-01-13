@@ -14,9 +14,14 @@ Technos. utlisées :
 
 **Contrats Solidity :** 
 
+ - Contrat $Medal:
+   ERC20 utilisable pour mint les NFTs
+   
+ - Contrat NFTArtist: 
+   NFT de base utilisé pour mint des NFTTrophée comme throwIn
+
  - Contrat NFT ThrowIn:
-    Mint du NFT Roland Garros mintable en 1 seul exemplaire il est capable d'enregistrer et supprimée les participant a l'evenement et
-    de garder dans un tableau les vainqueur present et passé 
+    Mint d'un NFT mintable en 1 seul exemplaire il est capable de garder dans un tableau les vainqueur present et passé 
  
  - MedalVerse: contrat principal qui expose les fonctionnalités de la DAPP, et possède les structures internes au fonctionnement de la DAPP. MedalVerse hérite des contrats Handler des structures internes.
 
