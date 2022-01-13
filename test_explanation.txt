@@ -3,7 +3,7 @@
 ---------
 
 
-catchException(Promise, errType) 
+catchException(Promise, errType)  /script/catchException.js
 Utilisé pour tester qu'une exception a bien été levée. Permet de tester la bonne implémentation de modifiers / assert /require
 
 
@@ -45,7 +45,7 @@ Cas de bon Fonctionnement
   J-Vérifier qu'un création a bien un lien avec son auteur
   K-Affecte un descriptif de NFT à une création et vérifie le lien
  
-Gestion d'errreurs
+Gestion d'erreurs
   L-Vérifier une exception si ajout d'une création à un utilisateur non auteur
   M-Accéder à la liste des créations d'un auteur non existant
   N-Récupérer une liste de créations en dehors des ranges
@@ -69,6 +69,8 @@ Gestion d'erreurs
   Z-Ajouter une médaille à sans déclarer de vainqueur
   ZA-Ajouter une médaille sans être administrateur de l'event
   ZB-Déclare un gagnant sans être administrateur de l'event
+  ZC-Withdraw les tokens placés dans le contrat
+  ZD-Withdraw les tokens placés dans le contrat lorsqu'il est vide
   
 
 --------------------
