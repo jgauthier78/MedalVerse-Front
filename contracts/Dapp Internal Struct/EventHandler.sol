@@ -36,10 +36,7 @@ contract EventHandler is Ownable {
 
 	// Modifiers ----------------------------
 	modifier eventIsInState(uint256 eventId, stateOfCompetition _state) {
-		require(
-			eventList[eventId - 1].eventState == _state,
-			"Not possible in current state of the Event"
-		);
+		require(eventList[eventId - 1].eventState == _state, "ERR_3");
 		_;
 	}
 	modifier isNotNull(address a) virtual {
@@ -51,7 +48,7 @@ contract EventHandler is Ownable {
 		_;
 	}
 	modifier isInRange(uint256 a, uint256 b) {
-		require(a <= b, "not in range");
+		require(a <= b, "ERR_1");
 		_;
 	}
 
@@ -184,7 +181,7 @@ contract EventHandler is Ownable {
 		_start--;
 		_end--;
 		require(_start <= _end); // check params
-		require(_start < eventCount, "StartIndex out of range");
+		require(_start < eventCount, "ERR_1");
 
 		// we adjust the ending value
 		if (_end >= eventCount) _end = eventCount - 1;
@@ -248,10 +245,7 @@ contract EventHandler is Ownable {
 		isNotNullUint256(eventID)
 		eventIsInState(eventID, stateOfCompetition.RewardDistribution)
 	{
-		require(
-			eventList[eventID - 1].hasMedal == true,
-			"no medal affected to the event"
-		);
+		require(eventList[eventID - 1].hasMedal == true, "ERR_4");
 		eventList[eventID - 1].eventState = stateOfCompetition
 			.RewardDistributed;
 		emit eventStatusChanged(eventID, stateOfCompetition.RewardDistributed);

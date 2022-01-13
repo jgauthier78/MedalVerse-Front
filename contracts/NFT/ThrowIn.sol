@@ -29,24 +29,24 @@ contract ThrowIn is ERC721, Ownable {
 	// Modifiers ----------------------------
 	///@dev Check that the address is not zero
 	modifier isNotNull(address a) virtual {
-		require(a != address(0), "Zero address");
+		require(a != address(0), "ERR_8");
 		_;
 	}
 
 	///@dev Check that the contract is paused
 	modifier whenPaused() {
-		require(pause == true, "Pausable: not paused");
+		require(pause == true, "ERR_9");
 		_;
 	}
 
 	///@dev Check that the contract is not paused
 	modifier whenNotPaused() {
-		require(pause == false, "Pausable: paused");
+		require(pause == false, "ERR_A:");
 		_;
 	}
 
 	modifier checkAntiDoping() {
-		require(antiDoping == true, "Anti-doping: not activated");
+		require(antiDoping == true, "ERR_B");
 		_;
 	}
 
@@ -96,7 +96,7 @@ contract ThrowIn is ERC721, Ownable {
 	///@dev Mint the only possible edition of the NFT Cup
 	///@param tokenId Token id of the NFTA Artist got the Uri
 	function mintCup(uint256 tokenId) public onlyOwner whenNotPaused {
-		require(mintCount == 0, "Only one single cup can be minted"); // Check if the nft has already been mint
+		require(mintCount == 0, "ERR_C"); // Check if the nft has already been mint
 		uint256 balance = Token.balanceOf(msg.sender); // Check the minter balance
 
 		require(balance > MDL_Mint_Royalties); // Check the balance is greater than the price
@@ -123,7 +123,7 @@ contract ThrowIn is ERC721, Ownable {
 		address ownerContract = owner();
 
 		if (ownerContract != msg.sender) {
-			require(!paused(), "ERC721Pausable: token transfer while paused");
+			require(!paused(), "ERR_D");
 		}
 	}
 
@@ -185,7 +185,7 @@ contract ThrowIn is ERC721, Ownable {
 		isNotNull(walletPlayer)
 		whenNotPaused
 	{
-		require(year != 0, "Define a year");
+		require(year != 0, "ERR_E");
 
 		// Define the winner structure
 		winnerMap[walletPlayer].playerName = name;

@@ -105,7 +105,7 @@ contract SportsmanHandler is Ownable {
 		returns (SportsmanDesc[] memory)
 	{
 		require(_start <= _end); // check params
-		require(_start < registeredSportsman.length, "StartIndex out of range");
+		require(_start < registeredSportsman.length, "ERR_1");
 
 		// we adjust the ending value
 		if (_end >= registeredSportsman.length)
@@ -188,10 +188,7 @@ contract SportsmanHandler is Ownable {
 		view
 		returns (uint256)
 	{
-		require(
-			indx < allSportsman[sportsmanId].medalList.length,
-			"indx out of range"
-		);
+		require(indx < allSportsman[sportsmanId].medalList.length, "ERR_1");
 		return allSportsman[sportsmanId].medalList[indx];
 	}
 

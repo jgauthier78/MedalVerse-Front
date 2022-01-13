@@ -112,7 +112,7 @@ contract OrganizerHandler is Ownable {
 		view
 		returns (string memory)
 	{
-		require(orgID < organizationList.length, "orgID out of range");
+		require(orgID < organizationList.length, "ERR_1");
 		return organizationList[orgID].name;
 	}
 
@@ -134,7 +134,7 @@ contract OrganizerHandler is Ownable {
 		returns (organizationDesc[] memory)
 	{
 		require(_start <= _end); // check params
-		require(_start < organizationList.length, "StartIndex out of range");
+		require(_start < organizationList.length, "ERR_1");
 
 		// we adjust the ending value
 		if (_end >= organizationList.length) _end = organizationList.length - 1;
@@ -203,8 +203,8 @@ contract OrganizerHandler is Ownable {
 		view
 		returns (bool)
 	{
-		require(orgIndx < organizationList.length, "Organization not found");
-		require(organizer <= organizerList.length, "Organizer Invalid Id");
+		require(orgIndx < organizationList.length, "ERR_5");
+		require(organizer <= organizerList.length, "ERR_1");
 		uint256 maxL = organizationList[orgIndx].adminList.length;
 
 		for (uint256 i = 0; i < maxL; i++) {
@@ -222,7 +222,7 @@ contract OrganizerHandler is Ownable {
 		returns (bool)
 	{
 		uint256 organizerId = organizerByAddress[msg.sender];
-		require(organizerId > 0, "you must be an organizer");
+		require(organizerId > 0, "ERR_6");
 		return checkorganizerisAdminOf(organizerId, orgIndx);
 	}
 
@@ -246,12 +246,12 @@ contract OrganizerHandler is Ownable {
 	{
 		// We make sure the provided addess is correct
 		uint256 indx = organizerByAddress[_user];
-		require(indx != 0, "user is not an organizer");
+		require(indx != 0, "ERR_6");
 		indx--; // Now that we have checked, we get the correct iD
 		uint256 size = organizerList[indx].nbActivOganization;
 
 		// we stop if no subscription
-		require(size > 0, "no subscription");
+		require(size > 0, "ERR_7");
 
 		// Create and fill returnable array
 		uint256[] memory result = new uint256[](size);
@@ -273,7 +273,7 @@ contract OrganizerHandler is Ownable {
 		uint256 organizationId,
 		uint256 eventID
 	) internal {
-		require(organizerID <= organizerList.length, "wrong Id");
+		require(organizerID <= organizerList.length, "ERR_1");
 
 		organizationList[organizationId].EventList.push(eventID);
 		emit organizerAddedEvent();

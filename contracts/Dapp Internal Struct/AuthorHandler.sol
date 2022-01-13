@@ -67,7 +67,7 @@ contract AuthorHandler is Ownable {
 		string memory _URI
 	) public onlyOwner isNotNull(_user) {
 		Author storage _author = allAuthors[_user];
-		require(_author.activ, "Invalid User");
+		require(_author.activ, "ERR_0");
 		uint256 allCreationCount = allCreations.length;
 		allCreations.push();
 		// Register the creation in the global list of creations
@@ -120,7 +120,7 @@ contract AuthorHandler is Ownable {
 		returns (NFT_Medal_Bkg_Desc[] memory)
 	{
 		require(_start <= _end); // check params
-		require(_start < allCreations.length, "StartIndex out of range");
+		require(_start < allCreations.length, "ERR_1");
 
 		// we adjust the ending value
 		if (_end >= allCreations.length) _end = allCreations.length - 1;
