@@ -103,7 +103,8 @@ class App extends Component {
             userMedals: null,
             userEvents: null,
             userOrganizations: null,
-            toastId: 0 // Toasts unique id
+            toastId: 0, // Toasts unique id
+            param: 0
         }
 
 
@@ -165,7 +166,7 @@ class App extends Component {
                             </I18nextProvider>
                         </Suspense>
                         :
-                        <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
+                        <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} param={this.state.param} />
                     } />
 
                     <Route element={NotFound} />
@@ -229,8 +230,7 @@ class App extends Component {
 
             contract = await new web3.eth.Contract(MedalVerseContract.abi, deployedNetwork && deployedNetwork.address);
 
-            if (contract.options.address === null || contract.options.address === undefined )
-            {
+            if (contract.options.address === null || contract.options.address === undefined) {
                 const nullContractWrongNetworkError = { title: "Contract not found", message: "Wrong network ?" }
                 // window.location.reload(true);
                 throw nullContractWrongNetworkError
@@ -269,7 +269,7 @@ class App extends Component {
     }
 
     // Redirect to the correct page after reading user details from contract
-    updateUserDetails = async () => {
+    updateUserDetails = async (val) => {
         let role = this.state.userRole
         if (role & ROLES.ROLE_ORGANIZER) // Organizer
         // this.setState({ redirectTo: "/organizer" })
@@ -277,7 +277,8 @@ class App extends Component {
             let organizations = await this.getOrganizerOrganisations()
             this.setState({
                 userOrganizations: organizations,
-                redirectTo: "/organizer"
+                redirectTo: "/organizer",
+                param: val
             })
         }
         else if (role & ROLES.ROLE_ATHLETE) // Athlete
@@ -288,7 +289,8 @@ class App extends Component {
             this.setState({
                 userEvents: evnts,
                 userMedals: usermedals,
-                redirectTo: "/athlete"
+                redirectTo: "/athlete",
+                param: val
             })
         }
         else if (role & ROLES.ROLE_AUTHOR) // Author
@@ -389,7 +391,7 @@ class App extends Component {
             if (this.state.contract !== null && this.state.contract !== undefined) {
                 result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
                 // for (let i = 0; i < result.nbMedals; i++) {
-    
+
                 let numbersArray = Array.from(Array(parseInt(result.nbMedals, 10)).keys())
                 await Promise.all(numbersArray.map(async (_, idx) => {
                     let medalID = await this.state.contract.methods.getSportsmanMedal(account, idx).call()
@@ -398,7 +400,7 @@ class App extends Component {
                     medal.org = await this.state.contract.methods.getOrganizationName(medal.succes.organizationID).call()
                     medal.event = await this.state.contract.methods.getEvent(medal.succes.eventID).call()
                     let medalContract = await new this.state.web3.eth.Contract(ThrowInContract.abi, medal.succes.throwIn);
-    
+
                     // We get the list of winners for the medal
                     let allWinners = await medalContract.methods.getAllWinners().call()
                     // console.log("--------------")
@@ -411,21 +413,21 @@ class App extends Component {
                         orgName: await medalContract.methods.getOrganizationName().call(),
                         winnersString,
                         yearsOfVictory,
-    
+
                     }
                     result.nftDesc.push(nfdesc)
                     // We get the uri of the medal
                     let img = await medalContract.methods.uriToken(1).call()
                     result.uriList.push(img)
                     result.Medals.push(medal)
-    
+
                     if (medal.succes.isInWinnerGallery) {
                         result.nbMedalsInGallery++
                         result.Gallery.push(medal)
                     }
                 })) // await Promise.all
-                } // contract defined
-                return result
+            } // contract defined
+            return result
         } // try
         catch (error) {
             // Catch any errors for any of the above operations.
@@ -585,7 +587,7 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            let eventChangeStateToCompetitionInProgressError = { title: "Error occured", message : "Error promoting event state to 'In progress'"  }
+            let eventChangeStateToCompetitionInProgressError = { title: "Error occured", message: "Error promoting event state to 'In progress'" }
             this.showEvent(eventChangeStateToCompetitionInProgressError, error, true)
         } // catch
     } // Event_changeStateToCompetitionInProgress
@@ -598,7 +600,7 @@ class App extends Component {
         }
         catch (error) {
             // Catch any errors for any of the above operations.
-            let eventChangeStateToRewardDistributionError = { title: "Error occured", message : "Error promoting event state to 'Rewards distribution'" }
+            let eventChangeStateToRewardDistributionError = { title: "Error occured", message: "Error promoting event state to 'Rewards distribution'" }
             this.showEvent(eventChangeStateToRewardDistributionError, error, true)
         } // catch
     } // Event_changeStateToRewardDistribution
@@ -826,83 +828,83 @@ class App extends Component {
 
         switch (newEvent.level) {
             case 'info':
-                toast.info(    <div style={{ padding: '0px' }}>
-                                    <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
-                                    <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
-                                    <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
-                                    {(newEvent.detail !== null && newEvent.detail !== undefined && newEvent.detail.length !== undefined && newEvent.detail.length > 0 )
-                                    &&
-                                    <>{newEvent.detail}</>
-                                    }
-                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
-                                    &&
-                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
-                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
-                                    </div>
-                                    }
-                                    </div>
+                toast.info(<div style={{ padding: '0px' }}>
+                    <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
+                    <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
+                    <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
+                    {(newEvent.detail !== null && newEvent.detail !== undefined && newEvent.detail.length !== undefined && newEvent.detail.length > 0)
+                        &&
+                        <>{newEvent.detail}</>
+                    }
+                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0)
+                        &&
+                        <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                            <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                        </div>
+                    }
+                </div>
                     ,
                     { ...eventDisplayOptions, autoClose: 10000, toastId: this.props.toastId }
                 );
                 break;
 
             case 'success':
-                toast.success(    <div style={{ padding: '0px' }}>
-                                    <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
-                                    <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
-                                    <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
-                                    {newEvent.detail
-                                    &&
-                                    <>{newEvent.detail}</>
-                                    }
-                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
-                                    &&
-                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
-                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
-                                    </div>
-                                    }
-                                    </div>
+                toast.success(<div style={{ padding: '0px' }}>
+                    <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
+                    <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
+                    <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
+                    {newEvent.detail
+                        &&
+                        <>{newEvent.detail}</>
+                    }
+                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0)
+                        &&
+                        <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                            <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                        </div>
+                    }
+                </div>
                     , { ...eventDisplayOptions, autoClose: 10000, toastId: this.props.toastId });
                 break;
 
             case 'warning':
-                toast.warn(    <div style={{ padding: '0px' }}>
-                                    <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
-                                    <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
-                                    <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
-                                    {newEvent.detail
-                                    &&
-                                    <>{newEvent.detail}</>
-                                    }
-                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
-                                    &&
-                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
-                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
-                                    </div>
-                                    }
-                                    </div>
+                toast.warn(<div style={{ padding: '0px' }}>
+                    <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
+                    <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
+                    <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
+                    {newEvent.detail
+                        &&
+                        <>{newEvent.detail}</>
+                    }
+                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0)
+                        &&
+                        <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                            <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                        </div>
+                    }
+                </div>
                     , { ...eventDisplayOptions, autoClose: 60000, toastId: this.props.toastId });
                 break;
 
             case 'error':
             default:
-                toast.error(    <div style={{ padding: '0px' }}>
-                                    <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
-                                    <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
-                                    <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
-                                    {newEvent.detail
-                                     &&
-                                     <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.detail}</p>
-                                    }
-                                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0 )
-                                    &&
-                                    <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
-                                        <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
-                                    </div>
-                                    }
-                                    </div>
-                    , {...eventDisplayOptions, autoClose: 120000, toastId: this.props.toastId });
-            break;
+                toast.error(<div style={{ padding: '0px' }}>
+                    <p style={{ marginBottom: 0, fontWeight: 'lighter', fontSize: 'small', padding: '0px' }}>{newEvent.dateTime}</p>
+                    <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.title}</p>
+                    <p style={{ marginBottom: 0, padding: '0px', fontSize: 'small' }}>{newEvent.message}</p>
+                    {newEvent.detail
+                        &&
+                        <p style={{ marginBottom: 0, fontWeight: 'bold', padding: '0px' }}>{newEvent.detail}</p>
+                    }
+                    {(newEvent.additionnalDetails !== null && newEvent.additionnalDetails !== undefined && newEvent.additionnalDetails.length !== undefined && newEvent.detail.length > 0)
+                        &&
+                        <div className="toastTooltip" style={{ marginBottom: 0, padding: '0px' }} >Details
+                            <span className="toastTooltipText">{newEvent.additionnalDetails}</span>
+                        </div>
+                    }
+                </div>
+                    , { ...eventDisplayOptions, autoClose: 120000, toastId: this.props.toastId });
+                break;
         }
 
     } // handleError
@@ -961,14 +963,14 @@ class App extends Component {
                         console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
                     } else {
                         // ! eventID != eventId !
-                        if (event.returnValues.eventId=== undefined) {
+                        if (event.returnValues.eventId === undefined) {
                             console.error("eventStatusChanged:No 'eventId' returned")
                         }
                         else {
                             this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
                             let eventStatusChanged = { title: "Event updated", level: "success" }
                             this.showEvent(eventStatusChanged, undefined)
-                            }
+                        }
                     }
                 }
                 // Event
@@ -981,14 +983,14 @@ class App extends Component {
                         console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
                     } else {
                         // ! eventID != eventId !
-                        if (event.returnValues.eventId=== undefined) {
+                        if (event.returnValues.eventId === undefined) {
                             console.error("eventWinnerSet:No 'eventId' returned")
                         }
                         else {
                             this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
-                            let eventWinnerSet = { title: "Winner set", level: "success"}
+                            let eventWinnerSet = { title: "Winner set", level: "success" }
                             this.showEvent(eventWinnerSet, undefined)
-                            }
+                        }
                     }
                 }
                 // Event

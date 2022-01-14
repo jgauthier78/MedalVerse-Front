@@ -87,7 +87,7 @@ const ProjectTimeline = () => {
                             </ul>
                         </TextEvent>
 
-                        <TextEvent date="S2 2022" text="**T2 2022:** Mise en production de la V3">
+                        <TextEvent date="S2 2022" text="**S2 2022:** Mise en production de la V3">
                             <p />
                             <ul>
                                 <li>Nouvelles Blockchains</li>

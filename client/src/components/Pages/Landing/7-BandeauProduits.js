@@ -30,8 +30,8 @@ const BandeauProduits = () => {
                                 <h6 className="text-success text-uppercase">
                                     {"Sportifs"}
                                 </h6>
-                                <p className="description mt-3">
-                                    {"Fans, profitez de la marketplace pour obtenir des produits dérivés exclusifs de vos personnalités préférées."}
+                                <p className="lead mt-5">
+                                    {"Fans, profitez de la marketplace pour obtenir des produits dérivés exclusifs de vos personnalités préférées et partagez-les dans vos galeries."}
                                 </p>
 
                             </Card.Body>
@@ -44,7 +44,7 @@ const BandeauProduits = () => {
                                 <h6 className="text-success text-uppercase">
                                     {"Visiteurs"}
                                 </h6>
-                                <p className="description mt-3">
+                                <p className="lead mt-5">
                                     {"Visiteurs, découvrez au cours d’une expérience immersive les galeries de vos athlètes préférés et de vos amis. Rejoignez-nous mainteant."}
                                 </p>
 

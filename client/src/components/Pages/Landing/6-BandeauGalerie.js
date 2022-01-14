@@ -18,7 +18,7 @@ const BandeauGalerie = () => {
                         <img src="img/MedalVerse.svg" className="Titre-MedalVerse" alt="MedalVerse" />
                     </div>
                     <div className="d-flex justify-content-center cards-margin-title-small">
-                        <h1 className="justify-content-sm-center text-white display-1">{"Créez votre propre galerie"}</h1>
+                        <h1 className="justify-content-sm-center text-white display-1">{"Créez votre propre Galerie"}</h1>
                     </div>
                     <Col lg="4">
 

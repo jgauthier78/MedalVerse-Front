@@ -28,11 +28,11 @@ const BandeauTitre = ({ AppCallBacks, loginCallBack }) => {
                     <Row className='justify-content-between'>
                         <Col lg="6">
                             <div>
-                                <Trophy size="40" color='white' />
+
                                 <img src="img/MedalVerse.svg" className="Titre-MedalVerse" alt={t("bandeauTitre.title")} />
                             </div>
                             <div>
-                                <span className="display-6 text-white text-light">{t("bandeauTitre.text")}</span>
+                                <span className="display-4 text-white text-light">{"Entrez dans l'Univers"}<br />{"Des récompenses NFT"}</span>
                             </div>
                         </Col>
 

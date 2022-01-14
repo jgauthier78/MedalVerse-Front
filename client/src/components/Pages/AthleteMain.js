@@ -40,11 +40,12 @@ class SporstmanMain extends Component {
         window.scroll(0, 0);
     }
 
-    render() {
+    render({ param }) {
         if (this.props.AppCallBacks === undefined || this.props.userProfile.userDetails === null) {
 
             return (<Navigate to="/" />)
         }
+        if (param != undefined) { this.setState({ curPannel: param }) }
         // <SporstmanSideBar setPannel={this.setPannel} />
 
         return (

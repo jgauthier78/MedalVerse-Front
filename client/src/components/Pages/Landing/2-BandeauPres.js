@@ -19,14 +19,14 @@ const BandeauPres = () => {
                         <div>
 
                             <div>
-                                <Trophy size="40" color='white' />
+
                                 <img src="img/MedalVerse.svg" className="Titre-MedalVerse" alt="MedalVerse" />
                             </div>
 
                         </div>
                     </Col>
                     <Col className="col-sm">
-                        <div className="pl-md-5 ">
+                        <div className="pl-md-3 ">
 
 
                             <p className=" MedalDescription justify-text">

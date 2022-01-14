@@ -16,10 +16,10 @@ const TrophyFactory = () => {
                                 <Col className="col-sm align-self-center">
                                     <div className="pl-md-5">
 
-                                        <h1>{"Trophy Factory"}</h1>
-                                        <p className="lead">
+                                        <h1 className="display-4">{"Trophy Factory"}</h1>
+                                        <h3 className="lead">
                                             {"MedalVerse permet de créer des récompenses sous forme de NFT, de les distribuer, et de les afficher dans des galeries de trophées. "}
-                                        </p>
+                                        </h3>
 
                                     </div>
                                 </Col>
@@ -38,26 +38,7 @@ const TrophyFactory = () => {
                                             <source src='img/trophee.mov' type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
-                                        <blockquote className="card-blockquote">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="svg-bg"
-                                                preserveAspectRatio="none"
-                                                viewBox="0 0 583 95"
-                                            >
-                                                <polygon
-                                                    className="fill-default"
-                                                    points="0,52 583,95 0,95"
-                                                />
 
-                                            </svg>
-                                            <h4 className=" font-weight-bold text-white">
-                                                {"Un succès d'équipe"}
-                                            </h4>
-                                            <p className="lead text-italic text-white">
-                                                {"Travaillons ensemble dans un esprit sportif pour mettre en valeur vos projets."}
-                                            </p>
-                                        </blockquote>
                                     </Card>
                                 </Col>
 

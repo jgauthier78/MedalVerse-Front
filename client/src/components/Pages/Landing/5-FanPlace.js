@@ -5,9 +5,9 @@ import NavigateButton from "../../UIElements/NavigateButton";
 
 const FanPlace = () => {
     return (
-        <section id="fan" className="section section-lg mt-8 Container-Full">
+        <section id="fan" className="section section-lg mt-4 Container-Full">
             <Container>
-                <Row className="row-grid align-items-center mb-8 ">
+                <Row className="row-grid align-items-center  ">
                     <Col className="order-md-2" md="6">
                         <img
                             alt="..."
@@ -18,22 +18,22 @@ const FanPlace = () => {
                     <Col className="order-md-1" md="6">
                         <div className="pr-md-5">
                             <h1>{"Fan Place"}</h1>
-                            <p className="description mt-3">
+                            <p className="lead mt-3">
                                 {"La Fan Place est le lieu de rencontre des sportifs et de leurs fans."}
                             </p>
-                            <ul className="list-unstyled mt-5">
+                            <ul className="list-unstyled mt-1">
                                 <li className="py-2">
                                     <div className="d-flex align-items-center">
                                         <div>
                                             <Badge
-                                                className="badge-circle mr-3"
+                                                className="badge-circle mr-4 mt-3"
                                                 color="success"
                                             >
                                                 <OkIcon size="3" />
                                             </Badge>
                                         </div>
                                         <div>
-                                            <h6 className="mb-0">
+                                            <h6 className="mb-0 lead">
                                                 {"Exposez vos médailles."}
                                             </h6>
                                         </div>
@@ -43,14 +43,14 @@ const FanPlace = () => {
                                     <div className="d-flex align-items-center">
                                         <div>
                                             <Badge
-                                                className="badge-circle mr-3"
+                                                className="badge-circle mr-4 mt-3"
                                                 color="success"
                                             >
                                                 <OkIcon size="3" />
                                             </Badge>
                                         </div>
                                         <div>
-                                            <h6 className="mb-0">{"Communiquez vos participations à des compétitions."}</h6>
+                                            <h6 className=" lead mb-0">{"Communiquez vos participations à des compétitions."}</h6>
                                         </div>
                                     </div>
                                 </li>
@@ -58,14 +58,14 @@ const FanPlace = () => {
                                     <div className="d-flex align-items-center">
                                         <div>
                                             <Badge
-                                                className="badge-circle mr-3"
+                                                className="badge-circle mr-4 mt-3"
                                                 color="success"
                                             >
                                                 <OkIcon size="3" />
                                             </Badge>
                                         </div>
                                         <div>
-                                            <h6 className="mb-0">
+                                            <h6 className="lead mb-0">
                                                 {"Montrez vos succès."}
                                             </h6>
                                         </div>
