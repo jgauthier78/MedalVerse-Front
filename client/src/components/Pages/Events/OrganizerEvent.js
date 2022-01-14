@@ -129,7 +129,10 @@ const EventLayout = ( { activEvents, AppCallBacks } ) =>
                 </Card.Header>
 
                 <Card.Body>
-                    <Card.Title>Actions</Card.Title>
+                    {(event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATE_00_REGISTRATIONOFPARTICIPANTS || event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATUS_01_COMPETITIONINPROGRESS)
+                    &&
+                    <Card.Title>{t("OrganizerEvent.actions.title")}</Card.Title>
+                    }
                     <Card.Text>
                         {event.stateOfCompetition === MEDALVERSE_STATES_VALUES.STATE_00_REGISTRATIONOFPARTICIPANTS
                          &&

@@ -10,6 +10,7 @@
   },
   "OrganizerEvent": {
     "actions" : {
+      "title" : "Action",
       "changeStateToCompetitionInProgress" : "Start competition",
       "changeStateToRewardDistribution" : "Distribute rewards",
       "changeStateToRewardDistributed" : "Rewards distributed",

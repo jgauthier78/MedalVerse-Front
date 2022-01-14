@@ -9,6 +9,7 @@
   },
   "OrganizerEvent": {
     "actions" : {
+      "title" : "Action",
       "changeStateToCompetitionInProgress" : "Démarrer la compétition",
       "changeStateToRewardDistribution" : "Remise des trophées",
       "changeStateToRewardDistributed" : "Trophées remis",
@@ -20,8 +21,8 @@
     "athlete" : {
       "athletes" : "Athlètes",
       "competitors" : "Competitors",
-      "won" : "won",
-      "address" : "adresse",
+      "won" : "Gagnant",
+      "address" : "Adresse",
       "action" : "action",
       "actions": {
         "setWinner": "Déclarer vainqueur"
