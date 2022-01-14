@@ -97,7 +97,7 @@ export default function Gallerie({ AppCallBacks }) {
     const [userDetails, setDetails] = useState(null);
     const [initialized, setInitialized] = useState(false);
     const [role, setRole] = useState(0);
-    const [setIncorrect] = useState(false);
+    // const [setIncorrect] = useState(false);
     const [events, setEvents] = useState(null)
     const [medals, setMedals] = useState(null)
 

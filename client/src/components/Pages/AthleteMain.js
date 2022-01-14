@@ -40,7 +40,7 @@ class SporstmanMain extends Component {
         window.scroll(0, 0);
         console.log("++++++++++++++++++++++++++++++")
         console.log(this.props.param)
-        if (this.props.param != undefined) {
+        if (this.props.param !== undefined) {
             console.log("########################################")
             this.setState({ curPannel: this.props.param })
         }
