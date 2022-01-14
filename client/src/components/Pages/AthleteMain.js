@@ -15,7 +15,7 @@ import MedalShow from "./Medals/MedalShow";
 // import ImageContainer from "../UIElements/ImageContainer";
 import TimelineMedals from "./Medals/TimelineMedals";
 import EventMaps from "./Events/EventMaps";
-import {NavBarSpacer} from "../UIElements/Spacers";
+import { NavBarSpacer } from "../UIElements/Spacers";
 // import BkgVideo from "../UIElements/BkgVideo";
 import EncourageBandeau from "./Medals/EncourageBandeau";
 import EventList from "./Events/EventList";
@@ -40,12 +40,12 @@ class SporstmanMain extends Component {
         window.scroll(0, 0);
     }
 
-    render({ param }) {
+    render() {
         if (this.props.AppCallBacks === undefined || this.props.userProfile.userDetails === null) {
 
             return (<Navigate to="/" />)
         }
-        if (param != undefined) { this.setState({ curPannel: param }) }
+        if (this.props.param != undefined) { this.setState({ curPannel: this.props.param }) }
         // <SporstmanSideBar setPannel={this.setPannel} />
 
         return (
