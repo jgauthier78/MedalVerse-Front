@@ -42,15 +42,16 @@
 # Contrats Solidity :
 <br/>
 <br/>
-
+### Contrats Principaux: 
 |CONTRAT|DESCRIPTION|
 |:---|:-----|
 |Medal|ERC20 utilisable pour mint les NFTs et les frais de MedalVerse|
 |NFTArtist|NFT servant d'illustration pour les trophés|
 |ThrowIn| Trophée de type Coupe Du Monde, mintable en 1 seul exemplaire, cumulant les vainqueurs presents et passés|
 |MedalVerse| contrat principal qui expose les fonctionnalités de la DAPP, possèdant les structures internes nécessaires au fonctionnement. MedalVerse hérite des contrats Handler des structures internes.|
+<br/>
 
-### Structures internes: 
+### Contrats Internes: 
 
 |CONTRAT|DESCRIPTION|
 |:---|:-----|
