@@ -12,6 +12,10 @@
  - npm i mocha chai --save-dev
  - npm i chai-bignumber --save-dev
 
+ Doc
+  - npm install --save-dev solc-0.8@npm:solc@^0.8.0
+  - npm install solidity-docgen --save-dev
+
  DID
  - npm i @3id/connect
  - npm i @ceramicnetwork/3id-did-resolver
