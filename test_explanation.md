@@ -39,10 +39,10 @@ Cas de bon Fonctionnement
 #### contrat UserHandler:
    
 Cas de bon Fonctionnement
-  ***A**-*Enregistrer un utilisateur dans la base et vérifier le stockage des paramètres*
-  ***C**-*Créer un User de type sportif, et vérifier qu'un SportsMan a été créé*
-  ***D**-*Creer un User de type organisateur, vérifier qu'un Organizer est créé*
-  ***E**-*Creer un User de type auteur, vérifier qu'un Author est créé*
+  *A-*Enregistrer un utilisateur dans la base et vérifier le stockage des paramètres*
+  *C**-*Créer un User de type sportif, et vérifier qu'un SportsMan a été créé*
+  *D-*Creer un User de type organisateur, vérifier qu'un Organizer est créé*
+  *E-*Creer un User de type auteur, vérifier qu'un Author est créé*
    
 Gestion d'erreurs
   **B**-*Vérifier qu'un utilisateur autre que owner ne peut pas enregistrer de User*
