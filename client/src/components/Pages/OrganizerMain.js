@@ -22,7 +22,7 @@ import { EventLayout } from "./Events/OrganizerEvent";
 
 /* Utils */
 import { extractOrganizerEventsFromProfile, filterValidEvents, filterCurrentEvents, filterEndedEvents, filterIncomingEvents, sortEventsByDate } from "./Events/OrganizerEvents-js";
-import { NavBarSpacer, Spacer } from "../UIElements/Spacers";
+import { NavBarSpacer } from "../UIElements/Spacers";
 
 class OrganizerLayout extends Component {
     componentDidMount() {

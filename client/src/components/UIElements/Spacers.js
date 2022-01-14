@@ -1,3 +1,6 @@
+import { Container } from "react-bootstrap";
+
+
 const NavBarSpacer = () => {
     return (
         <div className="NavBar-Spacer" />
@@ -5,14 +8,16 @@ const NavBarSpacer = () => {
 }
 
 const Spacer = ({size}) => {
-    if (size===40)
-    return (
-        <div className="Spacer-40" />
-    )
+    if (size>=0 && size <= 5)
+    {
+        return (
+            <Container className={`mt-${size}`}/>
+        )
+    }
     else
-    return (
-        <div className="Spacer-20" />
-    )
+        return (
+            <Container className="mt-auto"/>
+        )
 }
 
 export { NavBarSpacer, Spacer }

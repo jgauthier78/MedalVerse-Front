@@ -25,7 +25,7 @@ const OnlyCurrentEventsLayout = ( {events} ) =>
     const { t } = useTranslation();
     return (
         <Container>
-                            <Spacer size={40} />
+            <Spacer size={3} />
             <OrganizerEventsCards events={events}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEventsCards>
         </Container>
     )
