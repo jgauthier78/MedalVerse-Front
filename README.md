@@ -26,16 +26,7 @@ Projet réalisé dans le cadre de la formation Blockchain Alyra
  * react-i18next (21.3.3) pour traduction
 
 # Contrats Solidity :
-
-|NOM DE FICHIER|DESCRIPTION|
-|:---|:---|
-|DAPP-Test.js|Fonctionnalités internes de la DAPP, gère la base de données|
-|Medal-Test.js|Token ERC20: la monnaie $MDL de medalVerse|
-|NFTArtist-Test.js|test du contrat contenant les oeuvres proposées par les artistes|
-|ThrowIn-Test.js|Tet du contrat représentant le trophée Coupe Du Monde|
-   
-   
-
+  
 |CONTRAT|DESCRIPTION|
 |:---|:-----|
 |Medal|ERC20 utilisable pour mint les NFTs et les frais de MedalVerse|
@@ -43,21 +34,20 @@ Projet réalisé dans le cadre de la formation Blockchain Alyra
 |ThrowIn| Trophée de type Coupe Du Monde, mintable en 1 seul exemplaire, cumulant les vainqueurs presents et passés|
 |MedalVerse| contrat principal qui expose les fonctionnalités de la DAPP, possèdant les structures internes nécessaires au fonctionnement. MedalVerse hérite des contrats Handler des structures internes.|
 
-## Structures internes: 
- 
- - UserHandler : Un user est un utilisateur enregistré sur la plateforme, avec un ensemble de détails sur la personne détentrice du compte. UserHandler gère la liste des Users, accès, création, désactivation
+### Structures internes: 
 
- - AuthorHandler: un auteur est un user aynt des propriétés spécifiques qui possède une liste de créations, peut en produire de nouvelles et les vendre. AuthorHandler gère la liste des auteurs, des créations (accès à la base, appel de fonction sur ces structures).
+|CONTRAT|DESCRIPTION|
+|:---|:-----|
+|UserHandler|Un User est un utilisateur enregistré sur la plateforme, avec un ensemble de détails sur la personne détentrice du compte. UserHandler gère la liste des Users, accès, création, désactivation|
+|AuthorHandler|Un Auteur est un user aynt des propriétés spécifiques qui possède une liste de créations, peut en produire de nouvelles et les vendre. AuthorHandler gère la liste des auteurs, des créations (accès à la base, appel de fonction sur ses structures)|
+|OrganizerHandler|Un Organizer est un organisme qui peut créer des évènements, il est piloté par une liste d'admins qui ont le droit d'intéragir avec l'évènement. OrganizerHandler permet de lister, ajouter/désactiver un organizer|
+|EventHandler|Un évènement est généré par un organisme, et possède des propriétés particulières (date de départ, fin, etc.). EventHandler gère la liste des|
+|SportsmanHandler|Un Sportsman est un user ayant le rôle de Sportif et possède des propriétés supplémentaires comme une liste d'évènement auquel il est enregistré. SportsmanHandler gère la liste des Sportsman| 
+|MedalHandler|Gère la liste des médailles basées sur ThrowIn|
 
-- OrganizerHandler: Un organizer est un organisme qui peut créer des évènements, il est piloté par une liste d'admins qui ont le droit d'intéragir avec l'évènement. OrganizerHandler permet de lister, ajouter/désactiver un organizer
 
-- EventHandler: Un évènement est généré par un organisme, et possède des propriétés particulières (date de départ, fin, etc.). EventHandler gère la liste des
+# Installation
 
-- SportsmanHandler: Un Sportsman est un user ayant le rôle de Sportif et possède des propriétés supplémentaires comme une liste d'évènement auquel il est enregistré, ainsi qu'un champ de bits décrivant les sports qu'il pratique. SportsmanHandler gère la liste des Sportsman
-
-- MedalHandler: Gère la liste des médailles basées sur ThrowIn
-
-## Installation
 - à la racine du projet :
 npm i
 - dans le répertoire client :
