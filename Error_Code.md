@@ -1,3 +1,7 @@
+# Codes d'erreurs
+
+Liste des erreurs retournées par les contrats
+
 |CODE|DESCRIPTION|
 |---:|:---|
 |ERR_0|Invalid User|
