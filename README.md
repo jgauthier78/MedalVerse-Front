@@ -57,12 +57,13 @@ npm i
 les variables d'environnement sont à mentre dans un fichier **.env** à la racine du projet
 
 contenu du .env :
+`
 **Wallet_mnemonic**=
 **InfuraProjectId**=
 **Matic_MedalVerse_Dev_01_ProjectId**=
 ***InfuraProjectSecret***=[facultatif]
 ***Account00PK***=[facultatif] clé privée pour signer des transactions en batch
-
+`
 ## Lancement :
 - dans le répertoire client :
 npm start*
