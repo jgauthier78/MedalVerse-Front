@@ -642,6 +642,7 @@ section::after {
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
   --medalverse-light-blue-color: #05b5ff;
+  --medalverse-dark-blue-color: #2873a5;
   --medalverse-toast-color:  rgba(86, 135, 239, 0.95)
   
 }
@@ -17704,3 +17705,24 @@ border: hidden;
 .btn-landing:hover{
   background-color: rgba(0, 0, 0,0.6)!important;
 }
+
+.eventCardHeaderCurrent {
+  background-color: var(--medalverse-light-blue-color) !important;  
+}
+.eventCardHeaderFuture {
+  background-color: greenyellow !important;  
+}
+.eventCardHeaderPast {
+  background-color: darkgray !important;  
+}
+
+.eventCardBackgroundCurrent {
+  background-color: var(--medalverse-dark-blue-color) !important;  
+}
+.eventCardBackgroundFuture {
+  background-color: yellowgreen !important;  
+}
+.eventCardBackgroundPast {
+  background-color: grey !important;  
+}
+

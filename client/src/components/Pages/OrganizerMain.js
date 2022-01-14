@@ -5,8 +5,7 @@ import { Component } from "react";
 import { Row } from 'react-bootstrap';
 
 // React-router
-import { Routes, Route, Outlet
-,useLocation
+import { Routes, Route, Outlet, useLocation
  } from "react-router-dom";
 
 /* Components */
@@ -40,10 +39,10 @@ class OrganizerLayout extends Component {
                     <Row className="g-0">
                         <OrganizerProfile AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} animatedBackground='img/abstract7.webm'></OrganizerProfile>
                     </Row>
-                    <Row className="content">
+                    <Row className="content bkg-gradient">
                         <Outlet />
+                        <SimpleFooter />
                     </Row>
-                    <SimpleFooter />
                 </div>
             </>
         )
@@ -68,7 +67,7 @@ const OrganizerProfile = ( {AppCallBacks, userProfile, animatedBackground} ) =>
             }
             {location.pathname==="/organizer"
             &&
-            <Row className="content">
+            <Row className="content bkg-gradient">
                 <OnlyCurrentEventsLayout events={filterCurrentEvents(extractOrganizerEventsFromProfile(userProfile))} />
             </Row>
             }

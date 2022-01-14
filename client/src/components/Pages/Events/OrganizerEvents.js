@@ -27,6 +27,7 @@ const OnlyCurrentEventsLayout = ( {events} ) =>
         <Container>
             <Spacer size={3} />
             <OrganizerEventsCards events={events}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEventsCards>
+            <Spacer size={3}/>
         </Container>
     )
 }
@@ -36,9 +37,10 @@ const EventsByStateLayout = ( {currentEvents, incomingEvents, endedEvents} ) =>
     const { t } = useTranslation();
     return (
         <Container>
-            <OrganizerEventsCarousel eventsToDisplay={currentEvents}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEventsCarousel>
-            <OrganizerEventsCarousel eventsToDisplay={incomingEvents} prefix="next" bg="warning">{t("OrganizerEvents.titleUpcomingEvents")}</OrganizerEventsCarousel>
-            <OrganizerEventsCarousel eventsToDisplay={endedEvents}    prefix="prev" bg="secondary">{t("OrganizerEvents.titlePreviousEvents")}</OrganizerEventsCarousel>
+            <OrganizerEventsCarousel eventsToDisplay={currentEvents}  prefix="curr" headerClassname="eventCardHeaderCurrent" bgClassname="eventCardBackgroundCurrent" >{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEventsCarousel>
+            <OrganizerEventsCarousel eventsToDisplay={incomingEvents} prefix="next" headerClassname="eventCardHeaderFuture" bgClassname="eventCardBackgroundFuture" >{t("OrganizerEvents.titleUpcomingEvents")}</OrganizerEventsCarousel>
+            <OrganizerEventsCarousel eventsToDisplay={endedEvents}    prefix="prev" headerClassname="eventCardHeaderPast" bgClassname="eventCardBackgroundPast" >{t("OrganizerEvents.titlePreviousEvents")}</OrganizerEventsCarousel>
+            <Spacer size={3}/>
         </Container>
     )
 }
@@ -48,8 +50,9 @@ const EventsByDateLayout = ( {activEvents} ) =>
     const { t } = useTranslation();
     return (
         <Container>
-            <br/>
+            <Spacer size={3}/>
             <OrganizerEventsByDate activEvents={activEvents} >{t("OrganizerEvents.titleEventsByDate")}</OrganizerEventsByDate>
+            <Spacer size={3}/>
         </Container>
     )
 }
@@ -136,8 +139,8 @@ class OrganizerEventsCarouselBeforeTranslation extends Component
 
         return (
             <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 col-align-items-center">
-                <Card className="cardProfile shadow-sm ">
-                    <CardHeader className={`bg-${this.props.bg}`}>
+                <Card className={`cardProfile shadow-sm ${this.props.bgClassname}`}>
+                    <CardHeader className={this.props.headerClassname}>
                         <h6>{this.props.children}</h6>
                     </CardHeader>
 
@@ -190,7 +193,6 @@ const OrganizerEventsCards = ({ events, children }) =>
         )
 
     return (
-    
         <EventsCards events={events} />
         )
 }
@@ -215,12 +217,12 @@ const Event = ({ event }) =>
     return (
         <Container fluid>
             <Card style={{ width: '18rem' }}>
-            <Card.Header>{t("OrganizerEvents.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvents.to")} {format_TimeStampToEndDate(event.endDate)}</Card.Header>
+            <Card.Header>{t("OrganizerEvents.from")} {format_TimeStampToStartDate(event.startDate)}<br/>{t("OrganizerEvents.to")} {format_TimeStampToEndDate(event.endDate)}</Card.Header>
             <Card.Img variant="top" src={event.organization.logoURI} />
             <Card.Body> 
                 <Card.Title>{event.organization.name}</Card.Title>
                 <Card.Text>{event.eventDescription}</Card.Text>
-                <Button className="btn btn-light btn-sm m-2 opacity-100" onClick={() => onHandleDisplayEventDetails( event ) } >{t("OrganizerEvents.details")}</Button>
+                <Button className="btn btn-dark btn-sm m-2" onClick={() => onHandleDisplayEventDetails( event ) } >{t("OrganizerEvents.details")}</Button>
             </Card.Body>
             </Card>
         </Container>
@@ -229,19 +231,16 @@ const Event = ({ event }) =>
 
 const EventsByDate = ({ activEvents }) =>
 {
-
     // Display event details
-
     return (
     <Container>
-        <Row xs={1} md={4} xl={8} className="g-8">
+        <Row xs={1} md={4} xl={8} className="g-4">
         {activEvents.map((event, indx) => (
              <Col key={indx} >
                 <Event event={event}/>
             </Col>
         ))}
         </Row>
-        <br/>
     </Container>
     )
 }

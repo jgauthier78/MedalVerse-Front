@@ -15,6 +15,8 @@ import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../..
 
 import { ZERO_ADDRESS_STRING, MEDALVERSE_STATES_VALUES } from "../../../utils/consts";
 
+import { Spacer } from "../../UIElements/Spacers";
+
 /* Icons */
 import { Trophy } from 'react-bootstrap-icons';
 
@@ -108,6 +110,7 @@ const EventLayout = ( { activEvents, AppCallBacks } ) =>
         (event
         &&
         <Container className="col-md-9 col-lg-8 col-xl-8 mt-4 ">
+            <Spacer size={3}/>
             <Card border="secondary">
                 <Card.Header>
                     <div className="d-flex justify-content-between my-auto">
@@ -146,7 +149,7 @@ const EventLayout = ( { activEvents, AppCallBacks } ) =>
                 </Card.Body>
 
             </Card>
-            <br />
+            <Spacer size={2}/>
             <Card border="secondary" className="cardProfile shadow-sm ">
                 <Card.Header as="h5">{t("OrganizerEvent.athlete.athletes")}</Card.Header>
                 <Card.Body>
@@ -185,6 +188,7 @@ const EventLayout = ( { activEvents, AppCallBacks } ) =>
                     </Table>
                 </Card.Body>
             </Card>
+            <Spacer size={3}/>
         </Container>)
     )
 }
