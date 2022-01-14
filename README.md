@@ -1,31 +1,40 @@
 ![Cover](./data/medalverse.png)
-## _Description courte/sous-titre_
+## _Description 
+
+Le projet *MedalVerse* propose la création de médailles sportives sous forme de NFT: de la création d'un profil, à la gestion des compétitions, des participations et remise des prix.
+
+Projet réalisé dans le cadre de la formation Blockchain Alyra
 
 [![N|Solid](https://alyra.fr/wp-content/uploads/2019/06/logo-titre-alyra-bleu-transparent-64px_v3.png)](https://alyra.fr/)
 
-Description longue du **projet**.
 
-### Fonctionnalités :
+## Fonctionnalités :
 
-Technos. utlisées :
- - Solidity 0.8
- - React 17 (17.0.2) / Bootstrap 5 (5.1.3)
- - react-i18next (21.3.3)
+* Un utilisateur enregistré en sportif se loggue sur la plateforme et accède à ses événements en cours
+* Il peut consulter ses médailles
+* Il paramètre quelle médaille est visible par le grand public dans sa gallerie
+* Il visualise sa galerie et peut la partager avec d'autres
 
-**Contrats Solidity :** 
+* Un utilisateur, admninistrateur d'une association sportive, se loggue et arrive sur sa page d'administration
+* Il voit les comptétitions qu'il organise
+* Il peut les démarrer/cloturer
+* Il remet une médaille à un sportif
 
- - Contrat $Medal:
-   ERC20 utilisable pour mint les NFTs
-   
- - Contrat NFTArtist: 
-   NFT de base utilisé pour mint des NFTTrophée comme throwIn
+## Technologies Utilisées :
+ * Solidity 0.8
+ * React 17 (17.0.2) / Bootstrap 5 (5.1.3)
+ * react-i18next (21.3.3) pour traduction
 
- - Contrat NFT ThrowIn:
-    Mint d'un NFT mintable en 1 seul exemplaire il est capable de garder dans un tableau les vainqueur present et passé 
- 
- - MedalVerse: contrat principal qui expose les fonctionnalités de la DAPP, et possède les structures internes au fonctionnement de la DAPP. MedalVerse hérite des contrats Handler des structures internes.
+# Contrats Solidity :
 
- Structures internes: 
+|CONTRAT|DESCRIPTION|
+|:---|---|:-----|
+|Medal|ERC20 utilisable pour mint les NFTs et les frais de MedalVerse|
+|NFTArtist|NFT servant d'illustration pour les trophés|
+|ThrowIn| Trophée de type Coupe Du Monde, mintable en 1 seul exemplaire, cumulant les vainqueurs presents et passés|
+|MedalVerse| contrat principal qui expose les fonctionnalités de la DAPP, possèdant les structures internes nécessaires au fonctionnement. MedalVerse hérite des contrats Handler des structures internes.|
+
+## Structures internes: 
  
  - UserHandler : Un user est un utilisateur enregistré sur la plateforme, avec un ensemble de détails sur la personne détentrice du compte. UserHandler gère la liste des Users, accès, création, désactivation
 
