@@ -72,6 +72,14 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 ```"start": "cross-env BROWSER='brave' react-scripts start",```
 
 
+# Documents Annexes
+|DOCUMENT|FICHIER|
+|---:|:---|
+|Optimisations utilisées|[Optimisations.txt.md](Optimisations.txt.md)
+|Liste des codes d'erreur|[Error_Code.md](Error_Code.md)|
+|Audit de sécurité|[avoiding_common_attacks.md](avoiding_common_attacks.md)|
+
+
 ## Lancement des tests
 - à la racine du projet :
 
@@ -93,13 +101,6 @@ https://medalverse-dev-maticmumbai.herokuapp.com/
 
  - Faucet :
 ```https://faucet.polygon.technology/```
-
-# Documents Annexes
-|DOCUMENT|FICHIER|
-|---:|:---|
-|Optimisations utilisées|[Optimisations.txt.md](Optimisations.txt.md)
-|Liste des codes d'erreur|[Error_Code.md](Error_Code.md)|
-|Audit de sécurité|[avoiding_common_attacks.md](avoiding_common_attacks.md)|
 
 
 ------------
