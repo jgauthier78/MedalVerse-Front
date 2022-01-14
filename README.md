@@ -1,14 +1,13 @@
 <p align="center">
   <img src="https://github.com/MedalVerse/MedalVerse-Front/blob/main/data/medalverse.png" />
 </p>
-![Cover](./data/medalverse.png)
-## _Description 
+
+## Description Du Projet
 
 Le projet *MedalVerse* propose la création de médailles sportives sous forme de NFT: de la création d'un profil, à la gestion des compétitions, des participations et remise des prix.
 
-Projet réalisé dans le cadre de la formation Blockchain Alyra
 
-[![N|Solid](https://alyra.fr/wp-content/uploads/2019/06/logo-titre-alyra-bleu-transparent-64px_v3.png)](https://alyra.fr/)
+[![N|Solid](https://alyra.fr/wp-content/uploads/2019/06/logo-titre-alyra-bleu-transparent-64px_v3.png)](https://alyra.fr/) Projet réalisé dans le cadre de la formation Blockchain Alyra
 
 
 ## Fonctionnalités :
