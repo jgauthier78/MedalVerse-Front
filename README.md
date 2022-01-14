@@ -72,7 +72,7 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 ```"start": "cross-env BROWSER='brave' react-scripts start",```
 
 
-# Documents Annexes
+## Documents Annexes
 |DOCUMENT|FICHIER|
 |---:|:---|
 |Optimisations utilisées|[Optimisations.txt.md](Optimisations.txt.md)
