@@ -88,8 +88,8 @@ contenu du .env :
 
 utilise  le module cross-env pour lancer un navigateur spécifique : modifier package.json et supprimer cross-env et/ou remplacer le navigateur  dans la ligne :
 ```"start": "cross-env BROWSER='brave' react-scripts start",```
-
-
+</br>
+</br>
 ## Documents Annexes
 |DOCUMENT|FICHIER|
 |---:|:---|
@@ -98,9 +98,10 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 |Audit de sécurité|[avoiding_common_attacks.md](avoiding_common_attacks.md)|
 |Adresse de déploiement|[deployed_addresses.md](deployed_addresses.md)|
 |Aide a l'installation|[INSTALL.MD](INSTALL.MD)|
+|Tests|[test_explanation.md](test_explanation.md)|
 
-
-
+</br>
+</br>
 
 ## Lancement des tests
 - à la racine du projet :
