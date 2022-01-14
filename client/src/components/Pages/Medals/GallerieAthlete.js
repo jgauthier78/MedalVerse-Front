@@ -30,7 +30,7 @@ class GallerieAthlete extends Component {
                         <h6>{"Ma Gallerie"}:</h6> <span> {this.props.userProfile.userMedals.nbMedals} {" Médaille(s)"} </span>
                     </CardHeader>
                     <Col className="mt-5 ">
-                        <h7>Visualiser la gallerie dans une nouvelle page:</h7>
+                        <span className="lead">Visualiser la gallerie dans une nouvelle page:</span>
                         <Button className="ml-3" onClick={() => window.open("Gallerie/" + this.props.userProfile.address, "_blank")}
                         >Gallerie</Button>
                     </Col>

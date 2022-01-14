@@ -189,16 +189,16 @@ export default function Gallerie({ AppCallBacks }) {
                             data-transition="zoom"
                             data-autoslide="4000"
                         >
-                            <h2 class="r-fit-text">{"Les Médailles"}</h2>
-                            <h2 class="r-fit-text">{"Les Médailles partagées par "}{userDetails.userName}</h2>
+                            <h2 className="r-fit-text">{"Les Médailles"}</h2>
+                            <h2 className="r-fit-text">{"Les Médailles partagées par "}{userDetails.userName}</h2>
                         </section>
                         <MedalSlides mdl={medals} web3={_web3} />
                         <section data-background-video="/img/abstract5.webm" data-background-repeat="repeat"
                             data-transition="zoom"
                             data-autoslide="4000"
                         >
-                            <h2 class="r-fit-text">{"COMPETITIONS"}</h2>
-                            <h2 class="r-fit-text">{userDetails.userName} Participe</h2>
+                            <h2 className="r-fit-text">{"COMPETITIONS"}</h2>
+                            <h2 className="r-fit-text">{userDetails.userName} Participe</h2>
                         </section>
                         <EventSlides evnt={events} />
                     </div>

@@ -6,7 +6,7 @@ import { format_Date } from "../../../utils/dateUtils";
 async function setGallery(AppCallBacks, addr, contract, indx, display, succes) {
     try {
         await contract.methods.publishMedal(indx, display).send({ from: addr[0] })
-        AppCallBacks.updateUserDetails(3)
+        AppCallBacks.updateUserDetails(2)
     }
     catch (err) {
         console.log(err)

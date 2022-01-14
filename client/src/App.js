@@ -162,11 +162,11 @@ class App extends Component {
                     <Route exact path='athlete' element={this.state.redirectTo === null ?
                         <Suspense fallback={<Loading />}>
                             <I18nextProvider i18n={i18next}>
-                                <AthleteMain AppCallBacks={this.AppCallBacks} userProfile={userProfile} />
+                                <AthleteMain AppCallBacks={this.AppCallBacks} userProfile={userProfile} param={this.state.param} />
                             </I18nextProvider>
                         </Suspense>
                         :
-                        <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} param={this.state.param} />
+                        <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
 
                     <Route element={NotFound} />
@@ -285,7 +285,6 @@ class App extends Component {
         {
             let evnts = await this.getAthleteEvents(this.getAccounts())
             let usermedals = await this.getUserMedals(this.getAccounts())
-
             this.setState({
                 userEvents: evnts,
                 userMedals: usermedals,
