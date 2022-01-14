@@ -2,7 +2,7 @@
   <img src="https://github.com/MedalVerse/MedalVerse-Front/blob/main/data/medalverse.png" />
 </p>
 
-## _Description Du Projet
+## Description Du Projet
 
 Le projet *MedalVerse* propose la création de médailles sportives sous forme de NFT: de la création d'un profil, à la gestion des compétitions, des participations et remise des prix.
 
