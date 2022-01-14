@@ -44,7 +44,7 @@ Cas de bon Fonctionnement
 Cas de bon Fonctionnement
   * **A**-*Enregistrer un utilisateur dans la base et vérifier le stockage des paramètres*
   * **C**-*Créer un User de type sportif, et vérifier qu'un SportsMan a été créé*
-  * ***D**-*Creer un User de type organisateur, vérifier qu'un Organizer est créé*
+  * **D**-*Creer un User de type organisateur, vérifier qu'un Organizer est créé*
   * **E**-*Creer un User de type auteur, vérifier qu'un Author est créé*
    
 Gestion d'erreurs
@@ -97,9 +97,8 @@ Tests des NFTs
 Cas de bon Fonctionnement
   * **A**-*Mint d'un NFTArtist , Mint d'un NFTCup avec l'uri du NFTArtist et vérification de la balance et URI stockée*
   * **B**-*Ajoute uu gagnant et vérifie le stockage des paramètres*
-  * **C**-*Mint d'un NFTArtist, Mint d'un NFTCup, vérifie la balance du owner, envoi du NFTArtist à un user, vérifie la balance du owner, set pause au contract, verifie que l'état pause est effectif,*
-    l'owner recupere le NFT à l'user, vérifie la balance de l'owner, remove pause du contrat et vérifie que pause est faux*
-  * **I**-*Ajoute l'année de la compétition, ajoute 3 gagnants et vérifie le stockage *
+  * **C**-*Mint d'un NFTArtist, Mint d'un NFTCup, vérifie la balance du owner, envoi du NFTArtist à un user, vérifie la balance du owner, set pause au contract, verifie que l'état pause est effectif, l'owner recupere le NFT du user, vérifie la balance de l'owner, remove pause du contrat et vérifie que pause est faux*
+  * **I**-*Ajoute l'année de la compétition, ajoute 3 gagnants et vérifie le stockage*
    
    
 Gestion d'erreurs
