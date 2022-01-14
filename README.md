@@ -2,15 +2,22 @@
   <img src="https://github.com/MedalVerse/MedalVerse-Front/blob/main/data/medalverse.png" />
 </p>
 
-## Description Du Projet
 
-Le projet *MedalVerse* propose la création de médailles sportives sous forme de NFT: de la création d'un profil, à la gestion des compétitions, des participations et remise des prix.
+## Description Du Projet
+</br>
+<img align="right" src="https://github.com/MedalVerse/MedalVerse-Front/blob/main/data/Main.gif" /> 
+</br>
+</br>
+<p text-align="justify"> Le projet *MedalVerse* propose la création de médailles sportives sous forme de NFT: de la création d'un profil, à la gestion des compétitions, des participations et remise des prix.</p>
 
 
 [![N|Solid](https://alyra.fr/wp-content/uploads/2019/06/logo-titre-alyra-bleu-transparent-64px_v3.png)](https://alyra.fr/) Projet réalisé dans le cadre de la formation Blockchain Alyra
-
-
+</br>
+</br>
+</br>
+<br/>
 ## Fonctionnalités :
+</br>
 
 * Un utilisateur enregistré en sportif se loggue sur la plateforme et accède à ses événements en cours
 * Il peut consulter ses médailles
@@ -22,21 +29,29 @@ Le projet *MedalVerse* propose la création de médailles sportives sous forme d
 * Il peut les démarrer/cloturer
 * Il remet une médaille à un sportif
 
+</br>
+</br>
+
 ## Technologies Utilisées :
  * Solidity 0.8
  * React 17 (17.0.2) / Bootstrap 5 (5.1.3)
  * react-i18next (21.3.3) pour traduction
+</br>
+</br>
 
 # Contrats Solidity :
-  
+<br/>
+<br/>
+### Contrats Principaux: 
 |CONTRAT|DESCRIPTION|
 |:---|:-----|
 |Medal|ERC20 utilisable pour mint les NFTs et les frais de MedalVerse|
 |NFTArtist|NFT servant d'illustration pour les trophés|
 |ThrowIn| Trophée de type Coupe Du Monde, mintable en 1 seul exemplaire, cumulant les vainqueurs presents et passés|
 |MedalVerse| contrat principal qui expose les fonctionnalités de la DAPP, possèdant les structures internes nécessaires au fonctionnement. MedalVerse hérite des contrats Handler des structures internes.|
+<br/>
 
-### Structures internes: 
+### Contrats Internes: 
 
 |CONTRAT|DESCRIPTION|
 |:---|:-----|
@@ -47,6 +62,8 @@ Le projet *MedalVerse* propose la création de médailles sportives sous forme d
 |SportsmanHandler|Un Sportsman est un user ayant le rôle de Sportif et possède des propriétés supplémentaires comme une liste d'évènement auquel il est enregistré. SportsmanHandler gère la liste des Sportsman| 
 |MedalHandler|Gère la liste des médailles basées sur ThrowIn|
 
+</br>
+</br>
 
 # Installation
 
@@ -72,8 +89,8 @@ contenu du .env :
 
 utilise  le module cross-env pour lancer un navigateur spécifique : modifier package.json et supprimer cross-env et/ou remplacer le navigateur  dans la ligne :
 ```"start": "cross-env BROWSER='brave' react-scripts start",```
-
-
+</br>
+</br>
 ## Documents Annexes
 |DOCUMENT|FICHIER|
 |---:|:---|
@@ -82,9 +99,10 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 |Audit de sécurité|[avoiding_common_attacks.md](avoiding_common_attacks.md)|
 |Adresse de déploiement|[deployed_addresses.md](deployed_addresses.md)|
 |Aide a l'installation|[INSTALL.MD](INSTALL.MD)|
+|Tests|[test_explanation.md](test_explanation.md)|
 
-
-
+</br>
+</br>
 
 ## Lancement des tests
 - à la racine du projet :
