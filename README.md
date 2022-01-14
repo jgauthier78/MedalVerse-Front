@@ -27,6 +27,15 @@ Projet réalisé dans le cadre de la formation Blockchain Alyra
 
 # Contrats Solidity :
 
+|NOM DE FICHIER|DESCRIPTION|
+|:---|:---|
+|DAPP-Test.js|Fonctionnalités internes de la DAPP, gère la base de données|
+|Medal-Test.js|Token ERC20: la monnaie $MDL de medalVerse|
+|NFTArtist-Test.js|test du contrat contenant les oeuvres proposées par les artistes|
+|ThrowIn-Test.js|Tet du contrat représentant le trophée Coupe Du Monde|
+   
+   
+
 |CONTRAT|DESCRIPTION|
 |:---|---|:-----|
 |Medal|ERC20 utilisable pour mint les NFTs et les frais de MedalVerse|
