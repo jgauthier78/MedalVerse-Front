@@ -42,7 +42,9 @@
 # Contrats Solidity :
 <br/>
 <br/>
+
 ### Contrats Principaux: 
+
 |CONTRAT|DESCRIPTION|
 |:---|:-----|
 |Medal|ERC20 utilisable pour mint les NFTs et les frais de MedalVerse|
