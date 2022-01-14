@@ -1,8 +1,9 @@
+# Audit De Sécurité
 
-Nous détaillons ici la revue de sécurité effectuée sur les contrats MedalVerse et ThrowIn
+Nous détaillons ici la Revue de Sécurité effectuée sur les contrats MedalVerse et ThrowIn
 Le document est mis à jour régulièrement en fonction de l'évolution des contrats
 
-MedalVerse.sol
+## Contrat MedalVerse.sol
 
 Ré-entrance:
 -----------
@@ -10,7 +11,7 @@ MedalVerse n'effectue pas de transfert, encapsule les NFT dans une structure, ma
 
 - Il n'existe qu'un contrat MedalVerse
 - Le contrat hérite de tous les contrats avec lesquels il intéragit, pas de possibilité de fournir un contrat modifié
-- Pas de call, de send, de transfer, 
+- Pas de call, de send,  mais une withdraw (transfer) qui n'est appelable que par le propriétaire du contrat et sans dépendance à une condition.
 
 Pas de ré-entrance
 
@@ -83,12 +84,11 @@ tx.origin:
 Pas d'exploitation de "tx"
 
 
-..........................................................
-..........................................................
 
 
 
-Contrat ThrowIn.sol
+
+# Contrat ThrowIn.sol
 
 
 Ré-entrance:
@@ -222,12 +222,10 @@ Pas d'exploitation de "tx"
 
 
 
-..........................................................
-..........................................................
 
 
 
-Contrat $Medal.sol
+# Contrat $Medal.sol
 
 
 Ré-entrance:
