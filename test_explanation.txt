@@ -101,6 +101,23 @@ contrat NFTArtist:
 
 Cas de bon Fonctionnement
   A-Mint un NFTArtist, vérifie la balance de l'user ainsi que la structure du NFT
+  B-Change le prix de Mint
+  C-Change l'address du contrat MedalVerse
+
+
+--------------------
+-  Token:          -
+--------------------
+
+contrat Medal:
+
+Cas de bon Fonctionnement
+  A-Verifie que la supply est bonne et dans le bon wallet
+  B-Verification de la fonction burn
+
+Gestion d'erreurs
+  C-Verification qu'il est impossible de burn un montant depassant le montant max à burn
+  D-Verification qu'il est impossible de burn si on n'est pas l'owner
 
 
   
