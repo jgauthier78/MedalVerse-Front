@@ -9,7 +9,7 @@
 |ThrowIn-Test.js|Tet du contrat représentant le trophée Coupe Du Monde|
 
 
-##Outils Utilisés
+## Outils Utilisés
 
 **Mocha,Chai**
 *Utilisé pour l'ensemble des tests.
@@ -22,20 +22,20 @@ Nous partons avec un état vierge à chaque test, donc définition d'un beforEac
 *Utilisé pour tester qu'une exception a bien été levée. Permet de tester la bonne implémentation de modifiers / assert /require*
 
 
-##Code Coverage:
+## Code Coverage:
 
 MedalVerse expose la majorité des fonctionnalités disponibles, seules quelques fonctions provenant des classes (AuthorHandler, EventHandler, MedalHandler, OrganizerHandler, SportsmanHandler, UserHandler) sont publiques et utilisables par un autre utilisateur que Owner
 Les tests suivent le schéma de la User Story et ne couvrent pas les fonctionnalités hors de ce contexte  (suppression de sportifs / événements / organisateurs / Admin, n'est pas utilisé)
 
 
-##Structures Internes:
+## Structures Internes:
 
-###Tests de medalVerse
+### Tests de medalVerse
 
 Cas de bon Fonctionnement
   **ZC**-*Vérifie la possibilité de withdraw les tokens dans le contrat MedalVerse*
 
-####contrat UserHandler:
+####c ontrat UserHandler:
 
 Cas de bon Fonctionnement
   **A**-*Enregistrer un utilisateur dans la base et vérifier le stockage des paramètres*
@@ -49,7 +49,7 @@ Gestion d'erreurs
   **G**-*Vérifier qu'une exception est générée lorsque l'on lit en dehors de la plage des organizers créés*
   **H**-*Vérifier qu'un user non auteur retourne un auteur vide*
   
-####Contrat AuthorHandler:
+#### Contrat AuthorHandler:
 
 Cas de bon Fonctionnement
   **I**-*Ajouter une création à un auteur, vérifier la bonne écriture dans la base*
@@ -61,7 +61,7 @@ Gestion d'erreurs
   **M**-*Accéder à la liste des créations d'un auteur non existant*
   **N**-*Récupérer une liste de créations en dehors des ranges*
   
-####Contrat EventHandler:
+#### Contrat EventHandler:
 
 Cas de bon Fonctionnement:
   **O**-*Ajoute un événement sur une organization valide*
@@ -84,11 +84,11 @@ Gestion d'erreurs
   **ZD**-*Withdraw les tokens placés dans le contrat lorsqu'il est vide*
   
 
-###NFT:            -
+### NFT:            -
 
 Tests des NFTs
 
-####contrat ThrowIn: 
+#### contrat ThrowIn: 
 
 Cas de bon Fonctionnement
   **A**-*Mint d'un NFTArtist , Mint d'un NFTCup avec l'uri du NFTArtist et vérification de la balance et URI stockée*
@@ -106,7 +106,7 @@ Gestion d'erreurs
   **H**-*Vérifier qu'il n'est pas possible d'utiliser une fonction qui neccesite que le contrat ne soit pas en pause quand le contrat est en pause*
   **J**-*Vérifier qu'il n'est pas possible d'utiliser une fonction qui neccesite l'antiDopage quand il est desactivé*
 
-####contrat NFTArtist:
+#### contrat NFTArtist:
 
 Cas de bon Fonctionnement
   **A**-*Mint un NFTArtist, vérifie la balance de l'user ainsi que la structure du NFT*
@@ -115,7 +115,7 @@ Cas de bon Fonctionnement
 
 
 
-##Token
+## Token
 
 
 ###contrat Medal:
