@@ -49,24 +49,24 @@ Projet réalisé dans le cadre de la formation Blockchain Alyra
 # Installation
 
 - à la racine du projet :
-npm i
+```npm i```
 - dans le répertoire client :
-npm i
+```npm i```
 
 ### Paramétrage
 les variables d'environnement sont à mentre dans un fichier **.env** à la racine du projet
 
 contenu du .env :
-`
+```
 **Wallet_mnemonic**=
 **InfuraProjectId**=
 **Matic_MedalVerse_Dev_01_ProjectId**=
 ***InfuraProjectSecret***=[facultatif]
 ***Account00PK***=[facultatif] clé privée pour signer des transactions en batch
-`
+```
 ## Lancement :
 - dans le répertoire client :
-npm start*
+`npm start`
 
 utilise  le module cross-env pour lancer un navigateur spécifique : modifier package.json et supprimer cross-env et/ou remplacer le navigateur  dans la ligne :
 **"start": "***cross-env BROWSER='brave' * **react-scripts start"**,
