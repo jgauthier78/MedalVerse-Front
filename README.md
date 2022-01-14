@@ -78,6 +78,10 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 |Optimisations utilisées|[Optimisations.txt.md](Optimisations.txt.md)
 |Liste des codes d'erreur|[Error_Code.md](Error_Code.md)|
 |Audit de sécurité|[avoiding_common_attacks.md](avoiding_common_attacks.md)|
+|Adresse de déploiement|[deployed_addresses.md](deployed_addresses.md)|
+|Aide a l'installation|[INSTALL.MD](INSTALL.MD)|
+
+
 
 
 ## Lancement des tests
