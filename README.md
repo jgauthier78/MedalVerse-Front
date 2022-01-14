@@ -69,13 +69,13 @@ contenu du .env :
 `npm start`
 
 utilise  le module cross-env pour lancer un navigateur spécifique : modifier package.json et supprimer cross-env et/ou remplacer le navigateur  dans la ligne :
-**"start": "***cross-env BROWSER='brave' * **react-scripts start"**,
+```"start": "cross-env BROWSER='brave' react-scripts start",```
 
 
 ## Lancement des tests
 - à la racine du projet :
 
-truffle test --network developement
+```truffle test --network developement```
 
 ## Matic
 [Déploiement Dev](https://medalverse-dev-maticmumbai.herokuapp.com/)
@@ -83,16 +83,16 @@ https://medalverse-dev-maticmumbai.herokuapp.com/
 
 ### Testnet
  - Setting up Matic Mumbai Testnet :
-https://medium.com/@pinkmoonfinance/how-to-use-pinksale-matic-testnet-8788e6a09e10
+```https://medium.com/@pinkmoonfinance/how-to-use-pinksale-matic-testnet-8788e6a09e10```
 
  - Créer un Id projet pour le RPC :
-  https://rpc.maticvigil.com/
+```  https://rpc.maticvigil.com/```
  
  - Block Explorer :
- https://mumbai.polygonscan.com/
+ ```https://mumbai.polygonscan.com/```
 
  - Faucet :
-https://faucet.polygon.technology/
+```https://faucet.polygon.technology/```
 
 
 
