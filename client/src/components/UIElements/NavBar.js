@@ -72,9 +72,10 @@ const NavBar = ({ loginCallBack, options, AppCallBacks, isLanding, isAthlete, is
             }
             {isOrganizer === true ? (
               <>
-                <LinkContainer to="/organizer" className="text-bold text-light text-center nav-link"><Nav.Link style={{ color: 'white' }}>{t("OrganizerSideBar.menu.organizerHome")}</Nav.Link></LinkContainer>
-                <LinkContainer to="eventsByState" className="text-light text-center nav-link" ><Nav.Link>{t("OrganizerSideBar.menu.eventsByState")}</Nav.Link></LinkContainer>
-                <LinkContainer to="eventsByDate" className="text-light text-center nav-link" ><Nav.Link>{t("OrganizerSideBar.menu.eventsByDate")}</Nav.Link></LinkContainer>
+                <LinkContainer to="/organizer" className="text-bold text-light text-center nav-link"><Nav.Link style={{ color: 'white' }}>{t("OrganizerNavbar.menu.organizerHome")}</Nav.Link></LinkContainer>
+                <LinkContainer to="onlyCurrentEvents" className="text-light text-center nav-link" ><Nav.Link>{t("OrganizerNavbar.menu.onlyCurrentEvents")}</Nav.Link></LinkContainer>
+                <LinkContainer to="allEventsByState" className="text-light text-center nav-link" ><Nav.Link>{t("OrganizerNavbar.menu.allEventsByState")}</Nav.Link></LinkContainer>
+                <LinkContainer to="allEventsByDate" className="text-light text-center nav-link" ><Nav.Link>{t("OrganizerNavbar.menu.allEventsByDate")}</Nav.Link></LinkContainer>
               </>
             )
               : (<></>)

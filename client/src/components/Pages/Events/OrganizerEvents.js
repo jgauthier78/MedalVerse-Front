@@ -1,24 +1,35 @@
+// React
 import { Component } from "react";
 
-/* React - Bootstrap */
+// React - Bootstrap
 // Components
 import { Button, Card, Container } from "react-bootstrap";
 import { Col, Row } from 'react-bootstrap';
 
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
-// Router
+import { Spacer } from "../../UIElements/Spacers";
+
+// React-Router
 import { useNavigate } from 'react-router-dom';
 
 // Translation
-// Components
-import { withTranslation } from 'react-i18next';
-// Functions
-import { useTranslation } from 'react-i18next';
+import { withTranslation } from 'react-i18next'; // Components
+import { useTranslation } from 'react-i18next'; // Functions
 
 // Utils
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
-// import { extractOrgan
+
+const OnlyCurrentEventsLayout = ( {events} ) =>
+{
+    const { t } = useTranslation();
+    return (
+        <Container>
+            <Spacer size={3} />
+            <OrganizerEventsCards events={events}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEventsCards>
+        </Container>
+    )
+}
 
 const EventsByStateLayout = ( {currentEvents, incomingEvents, endedEvents} ) =>
 {
@@ -171,6 +182,19 @@ const OrganizerEventsByDate = ({ activEvents, children }) =>
         )
 }
 
+const OrganizerEventsCards = ({ events, children }) =>
+{
+    if ( events === undefined || events.length <= 0 )
+    return (
+        <NoEventToDisplay>{children}</NoEventToDisplay>
+        )
+
+    return (
+    
+        <EventsCards events={events} />
+        )
+}
+
 const Event = ({ event }) =>
 {
     const { t } = useTranslation();
@@ -222,6 +246,25 @@ const EventsByDate = ({ activEvents }) =>
     )
 }
 
+const EventsCards = ({ events }) =>
+{
+
+    // Display event details
+
+    return (
+    <Container>
+        <Row xs={1} md={4} xl={8} className="g-8">
+        {events.map((event, indx) => (
+             <Col key={indx} >
+                <Event event={event}/>
+            </Col>
+        ))}
+        </Row>
+        <br/>
+    </Container>
+    )
+}
+
 const OrganizerEventsCarousel = withTranslation()(OrganizerEventsCarouselBeforeTranslation);
 
-export { EventsByStateLayout, EventsByDateLayout/*, OrganizerEventsCarousel*/ };
+export { EventsByStateLayout, EventsByDateLayout, OnlyCurrentEventsLayout, OrganizerEventsCards };

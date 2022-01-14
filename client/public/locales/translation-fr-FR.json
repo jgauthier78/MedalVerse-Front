@@ -1,16 +1,10 @@
 {
-  "OrganizerSideBar" :{
-    "menu" : {
-      "organizerHome" : "Home",
-      "eventsByState" : "Evénements par état",
-      "eventsByDate" : "Evénements par date"
-    }
-  },
   "OrganizerNavbar" :{
     "menu" : {
       "organizerHome" : "Accueil organisateur",
-      "eventsByState" : "Evénements par état",
-      "eventsByDate" : "Evénements par date"
+      "onlyCurrentEvents" : "Evénements en cours",
+      "allEventsByState" : "Evénements par état",
+      "allEventsByDate" : "Evénements par date"
     }
   },
   "OrganizerEvent": {
