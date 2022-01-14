@@ -37,7 +37,7 @@ Projet réalisé dans le cadre de la formation Blockchain Alyra
    
 
 |CONTRAT|DESCRIPTION|
-|:---|---|:-----|
+|:---|:-----|
 |Medal|ERC20 utilisable pour mint les NFTs et les frais de MedalVerse|
 |NFTArtist|NFT servant d'illustration pour les trophés|
 |ThrowIn| Trophée de type Coupe Du Monde, mintable en 1 seul exemplaire, cumulant les vainqueurs presents et passés|
