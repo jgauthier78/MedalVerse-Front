@@ -5,7 +5,9 @@ import { Component } from "react";
 import { Row } from 'react-bootstrap';
 
 // React-router
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route, Outlet
+,useLocation
+ } from "react-router-dom";
 
 /* Components */
 import NavBar from "../UIElements/NavBar";
@@ -14,9 +16,13 @@ import ProfileBandeau from "./ProfileBandeau"
 import { OnlyCurrentEventsLayout, EventsByStateLayout, EventsByDateLayout } from "./Events/OrganizerEvents";
 import { EventLayout } from "./Events/OrganizerEvent";
 
+// Translation
+// import { withTranslation } from 'react-i18next'; // Components
+// import { useTranslation } from 'react-i18next'; // Functions
+
 /* Utils */
 import { extractOrganizerEventsFromProfile, filterValidEvents, filterCurrentEvents, filterEndedEvents, filterIncomingEvents, sortEventsByDate } from "./Events/OrganizerEvents-js";
-import NavBarSpacer from "../UIElements/NavBarSpacer";
+import { NavBarSpacer, Spacer } from "../UIElements/Spacers";
 
 class OrganizerLayout extends Component {
     componentDidMount() {
@@ -32,9 +38,7 @@ class OrganizerLayout extends Component {
                     </Row>
                     <NavBarSpacer />
                     <Row className="g-0">
-                        <div id="profil" className=" row g-0">
-                            <ProfileBandeau AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} animatedBackground='img/abstract7.webm' />
-                        </div>
+                        <OrganizerProfile AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} animatedBackground='img/abstract7.webm'></OrganizerProfile>
                     </Row>
                     <Row className="content">
                         <Outlet />
@@ -45,6 +49,33 @@ class OrganizerLayout extends Component {
         )
     } // render
 } // class OrganizerLayout
+
+const OrganizerProfile = ( {AppCallBacks, userProfile, animatedBackground} ) =>
+{
+    // const { t } = useTranslation();
+    let location = useLocation();
+    // debugger
+    console.log("location="+Object.entries(location))
+    return (
+        <>
+            {location.pathname==="/organizer"
+            &&
+            <Row className="g-0">
+                <div id="profil" className=" row g-0">
+                    <ProfileBandeau AppCallBacks={AppCallBacks} userProfile={userProfile} animatedBackground='img/abstract7.webm' />
+                </div>
+            </Row>
+            }
+            {location.pathname==="/organizer"
+            &&
+            <Row className="content">
+                <OnlyCurrentEventsLayout events={filterCurrentEvents(extractOrganizerEventsFromProfile(userProfile))} />
+            </Row>
+            }
+        </>
+        )
+}
+
 
 class OrganizerMainBeforeTranslation extends Component {
     constructor(props) {
@@ -67,7 +98,7 @@ class OrganizerMainBeforeTranslation extends Component {
         return (
             <Routes>
                 <Route path="/" element={<OrganizerLayout AppCallBacks={this.props.AppCallBacks} userProfile={this.props.userProfile} />}>
-                    <Route path="onlyCurrentEvents" element={<OnlyCurrentEventsLayout currentEvents={filterCurrentEvents(extractOrganizerEventsFromProfile(this.props.userProfile))} />} />
+                    <Route path="onlyCurrentEvents" element={<OnlyCurrentEventsLayout events={filterCurrentEvents(extractOrganizerEventsFromProfile(this.props.userProfile))} />} />
                     <Route path="allEventsByState" element={<EventsByStateLayout currentEvents={filterCurrentEvents(extractOrganizerEventsFromProfile(this.props.userProfile))} incomingEvents={filterIncomingEvents(extractOrganizerEventsFromProfile(this.props.userProfile))} endedEvents={filterEndedEvents(extractOrganizerEventsFromProfile(this.props.userProfile))} />} />
                     <Route path="allEventsByDate" element={<EventsByDateLayout activEvents={sortEventsByDate(filterValidEvents(extractOrganizerEventsFromProfile(this.props.userProfile)))} />} />
                     <Route path="event/:eventId" element={<EventLayout activEvents={filterValidEvents(extractOrganizerEventsFromProfile(this.props.userProfile))} AppCallBacks={this.props.AppCallBacks} />} />

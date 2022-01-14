@@ -8,6 +8,8 @@ import { Col, Row } from 'react-bootstrap';
 
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
+import { Spacer } from "../../UIElements/Spacers";
+
 // React-Router
 import { useNavigate } from 'react-router-dom';
 
@@ -18,12 +20,13 @@ import { useTranslation } from 'react-i18next'; // Functions
 // Utils
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
 
-const OnlyCurrentEventsLayout = ( {currentEvents} ) =>
+const OnlyCurrentEventsLayout = ( {events} ) =>
 {
     const { t } = useTranslation();
     return (
         <Container>
-            <OrganizerEventsCarousel eventsToDisplay={currentEvents}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEventsCarousel>
+                            <Spacer size={40} />
+            <OrganizerEventsCards events={events}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEventsCards>
         </Container>
     )
 }
@@ -179,6 +182,19 @@ const OrganizerEventsByDate = ({ activEvents, children }) =>
         )
 }
 
+const OrganizerEventsCards = ({ events, children }) =>
+{
+    if ( events === undefined || events.length <= 0 )
+    return (
+        <NoEventToDisplay>{children}</NoEventToDisplay>
+        )
+
+    return (
+    
+        <EventsCards events={events} />
+        )
+}
+
 const Event = ({ event }) =>
 {
     const { t } = useTranslation();
@@ -230,6 +246,25 @@ const EventsByDate = ({ activEvents }) =>
     )
 }
 
+const EventsCards = ({ events }) =>
+{
+
+    // Display event details
+
+    return (
+    <Container>
+        <Row xs={1} md={4} xl={8} className="g-8">
+        {events.map((event, indx) => (
+             <Col key={indx} >
+                <Event event={event}/>
+            </Col>
+        ))}
+        </Row>
+        <br/>
+    </Container>
+    )
+}
+
 const OrganizerEventsCarousel = withTranslation()(OrganizerEventsCarouselBeforeTranslation);
 
-export { EventsByStateLayout, EventsByDateLayout, OnlyCurrentEventsLayout };
+export { EventsByStateLayout, EventsByDateLayout, OnlyCurrentEventsLayout, OrganizerEventsCards };

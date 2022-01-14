@@ -15,7 +15,7 @@ import MedalShow from "./Medals/MedalShow";
 // import ImageContainer from "../UIElements/ImageContainer";
 import TimelineMedals from "./Medals/TimelineMedals";
 import EventMaps from "./Events/EventMaps";
-import NavBarSpacer from "../UIElements/NavBarSpacer";
+import {NavBarSpacer} from "../UIElements/Spacers";
 // import BkgVideo from "../UIElements/BkgVideo";
 import EncourageBandeau from "./Medals/EncourageBandeau";
 import EventList from "./Events/EventList";
