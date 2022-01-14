@@ -14,10 +14,14 @@ https://faucet.polygon.technology/
 https://medalverse-dev-maticmumbai.herokuapp.com/
 
 #### Contracts
-- [MedalVerse.sol : ](https://mumbai.polygonscan.com/address/0x9F4a32348179d4F0B73B25d4c713a344ebccBB9e "MedalVerse.sol : ")
-https://mumbai.polygonscan.com/address/0x9F4a32348179d4F0B73B25d4c713a344ebccBB9e
-- [NFTArtist.sol : ](https://mumbai.polygonscan.com/address/0xa5b7b6a5019d0268f116154240Acf0d14279DFbF "NFTArtist.sol : ")
-https://mumbai.polygonscan.com/address/0xa5b7b6a5019d0268f116154240Acf0d14279DFbF
+- [MedalVerse.sol : ](https://mumbai.polygonscan.com/address/0x7868ED8b738F8993c9c20F5f4411aFcD46CAeb59 "Medal.sol : ")
+https://mumbai.polygonscan.com/address/0x7868ED8b738F8993c9c20F5f4411aFcD46CAeb59
+
+- [MedalVerse.sol : ](https://mumbai.polygonscan.com/address/0xDd4bE198f19B49ec37aD5aa2A734E0EBf840e175 "MedalVerse.sol : ")
+https://mumbai.polygonscan.com/address/0xDd4bE198f19B49ec37aD5aa2A734E0EBf840e175
+
+- [NFTArtist.sol : ](https://mumbai.polygonscan.com/address/0x92f6B38b0082dD148a70dB9F971BfCAa9321944f "NFTArtist.sol : ")
+https://mumbai.polygonscan.com/address/0x92f6B38b0082dD148a70dB9F971BfCAa9321944f
 
 ------------
 [Editor.md Open source online Markdown editor.](https://pandao.github.io/editor.md "editor.md")
