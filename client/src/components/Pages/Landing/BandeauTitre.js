@@ -12,7 +12,7 @@ import BkgVideo from '../../UIElements/BkgVideo';
 import NavigateButton from '../../UIElements/NavigateButton';
 
 // Icons
-import { /*BoxArrowInRight,*/ BoxArrowInRight, Trophy } from 'react-bootstrap-icons';
+import { BoxArrowInRight } from 'react-bootstrap-icons';
 
 const BandeauTitre = ({ AppCallBacks, loginCallBack }) => {
     const { t } = useTranslation();
