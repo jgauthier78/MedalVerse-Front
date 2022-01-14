@@ -11,6 +11,7 @@
 
 ## Outils Utilisés
 
+
 **Mocha,Chai**
 *Utilisé pour l'ensemble des tests.
 Nous partons avec un état vierge à chaque test, donc définition d'un beforEach faisant les initialisations nécessaires"
@@ -35,7 +36,7 @@ Les tests suivent le schéma de la User Story et ne couvrent pas les fonctionnal
 Cas de bon Fonctionnement
   **ZC**-*Vérifie la possibilité de withdraw les tokens dans le contrat MedalVerse*
 
-####c ontrat UserHandler:
+#### contrat UserHandler:
 
 Cas de bon Fonctionnement
   **A**-*Enregistrer un utilisateur dans la base et vérifier le stockage des paramètres*
@@ -84,7 +85,7 @@ Gestion d'erreurs
   **ZD**-*Withdraw les tokens placés dans le contrat lorsqu'il est vide*
   
 
-### NFT:            -
+### NFT
 
 Tests des NFTs
 
