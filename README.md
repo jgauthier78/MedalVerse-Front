@@ -1,4 +1,4 @@
-![Cover](./data/medalverse.svg)
+![Cover](./data/MedalVerse.svg)
 ## _Description courte/sous-titre_
 
 [![N|Solid](https://alyra.fr/wp-content/uploads/2019/06/logo-titre-alyra-bleu-transparent-64px_v3.png)](https://alyra.fr/)
