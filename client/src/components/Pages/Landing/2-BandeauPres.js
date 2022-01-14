@@ -1,11 +1,7 @@
 
 import 'react-toastify/dist/ReactToastify.css';
 
-
-
 import { Container, Row, Col } from "react-bootstrap";
-// import BkgVideo from '../../UIElements/BkgVideo';
-import { Trophy } from 'react-bootstrap-icons';
 import NavigateButton from '../../UIElements/NavigateButton';
 
 
@@ -38,7 +34,7 @@ const BandeauPres = () => {
                             <p className=" MedalDescription justify-text">
                                 {"Nous avons créé une marketplace dans laquelle les sportifs pourront partager avec leurs fans des objets uniques basés sur leurs exploits. "}
                             </p>
-                            <a className="ca3-scroll-down-link ca3-scroll-down-arrow" data-ca3_iconfont="ETmodules" data-ca3_icon="" ></a>
+                            <a className="ca3-scroll-down-link ca3-scroll-down-arrow" data-ca3_iconfont="ETmodules" data-ca3_icon="" href={() => false}>&nbsp;</a>
                         </div>
 
                     </Col>

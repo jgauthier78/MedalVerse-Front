@@ -22,6 +22,9 @@
 #### local
 - truffle deploy --reset --network devlocalbenoist
 
+### Doc
+- npx solidity-docgen --solc-module solc-0.8 -o .\\docs\\solidity-docs
+
 ------------
 
 
