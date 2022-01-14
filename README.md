@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="https://github.com/MedalVerse/MedalVerse-Front/blob/main/data/medalverse.png" />
+</p>
 ![Cover](./data/medalverse.png)
 ## _Description 
 
