@@ -1,24 +1,32 @@
+// React
 import { Component } from "react";
 
-/* React - Bootstrap */
+// React - Bootstrap
 // Components
 import { Button, Card, Container } from "react-bootstrap";
 import { Col, Row } from 'react-bootstrap';
 
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
-// Router
+// React-Router
 import { useNavigate } from 'react-router-dom';
 
 // Translation
-// Components
-import { withTranslation } from 'react-i18next';
-// Functions
-import { useTranslation } from 'react-i18next';
+import { withTranslation } from 'react-i18next'; // Components
+import { useTranslation } from 'react-i18next'; // Functions
 
 // Utils
 import { format_TimeStampToStartDate, format_TimeStampToEndDate } from "../../../utils/dateUtils";
-// import { extractOrgan
+
+const OnlyCurrentEventsLayout = ( {currentEvents} ) =>
+{
+    const { t } = useTranslation();
+    return (
+        <Container>
+            <OrganizerEventsCarousel eventsToDisplay={currentEvents}  prefix="curr" bg="primary">{t("OrganizerEvents.titleCurrentEvents")}</OrganizerEventsCarousel>
+        </Container>
+    )
+}
 
 const EventsByStateLayout = ( {currentEvents, incomingEvents, endedEvents} ) =>
 {
@@ -224,4 +232,4 @@ const EventsByDate = ({ activEvents }) =>
 
 const OrganizerEventsCarousel = withTranslation()(OrganizerEventsCarouselBeforeTranslation);
 
-export { EventsByStateLayout, EventsByDateLayout/*, OrganizerEventsCarousel*/ };
+export { EventsByStateLayout, EventsByDateLayout, OnlyCurrentEventsLayout };
