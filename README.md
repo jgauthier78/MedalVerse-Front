@@ -2,20 +2,22 @@
   <img src="https://github.com/MedalVerse/MedalVerse-Front/blob/main/data/medalverse.png" />
 </p>
 
+
 ## Description Du Projet
-<br/>
-<div class="square">
-  <div float="left" margin="5px">
-  <img  src="https://github.com/MedalVerse/MedalVerse-Front/blob/main/data/Main.gif" />  
-    </div>
+</br>
+<img align="right" src="https://github.com/MedalVerse/MedalVerse-Front/blob/main/data/Main.gif" /> 
+</br>
+</br>
 <p text-align="justify"> Le projet *MedalVerse* propose la création de médailles sportives sous forme de NFT: de la création d'un profil, à la gestion des compétitions, des participations et remise des prix.</p>
-</div>
 
 
 [![N|Solid](https://alyra.fr/wp-content/uploads/2019/06/logo-titre-alyra-bleu-transparent-64px_v3.png)](https://alyra.fr/) Projet réalisé dans le cadre de la formation Blockchain Alyra
-
-
+</br>
+</br>
+</br>
+<br/>
 ## Fonctionnalités :
+</br>
 
 * Un utilisateur enregistré en sportif se loggue sur la plateforme et accède à ses événements en cours
 * Il peut consulter ses médailles
@@ -27,13 +29,20 @@
 * Il peut les démarrer/cloturer
 * Il remet une médaille à un sportif
 
+</br>
+</br>
+
 ## Technologies Utilisées :
  * Solidity 0.8
  * React 17 (17.0.2) / Bootstrap 5 (5.1.3)
  * react-i18next (21.3.3) pour traduction
+</br>
+</br>
 
 # Contrats Solidity :
-  
+<br/>
+<br/>
+
 |CONTRAT|DESCRIPTION|
 |:---|:-----|
 |Medal|ERC20 utilisable pour mint les NFTs et les frais de MedalVerse|
@@ -52,6 +61,8 @@
 |SportsmanHandler|Un Sportsman est un user ayant le rôle de Sportif et possède des propriétés supplémentaires comme une liste d'évènement auquel il est enregistré. SportsmanHandler gère la liste des Sportsman| 
 |MedalHandler|Gère la liste des médailles basées sur ThrowIn|
 
+</br>
+</br>
 
 # Installation
 
