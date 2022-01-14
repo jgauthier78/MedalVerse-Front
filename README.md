@@ -1,72 +1,96 @@
+<p align="center">
+  <img src="https://github.com/MedalVerse/MedalVerse-Front/blob/main/data/medalverse.png" />
+</p>
 ![Cover](./data/medalverse.png)
-## _Description courte/sous-titre_
+## _Description 
+
+Le projet *MedalVerse* propose la création de médailles sportives sous forme de NFT: de la création d'un profil, à la gestion des compétitions, des participations et remise des prix.
+
+Projet réalisé dans le cadre de la formation Blockchain Alyra
 
 [![N|Solid](https://alyra.fr/wp-content/uploads/2019/06/logo-titre-alyra-bleu-transparent-64px_v3.png)](https://alyra.fr/)
 
-Description longue du **projet**.
 
-### Fonctionnalités :
+## Fonctionnalités :
 
-Technos. utlisées :
- - Solidity 0.8
- - React 17 (17.0.2) / Bootstrap 5 (5.1.3)
- - react-i18next (21.3.3)
+* Un utilisateur enregistré en sportif se loggue sur la plateforme et accède à ses événements en cours
+* Il peut consulter ses médailles
+* Il paramètre quelle médaille est visible par le grand public dans sa gallerie
+* Il visualise sa galerie et peut la partager avec d'autres
 
-**Contrats Solidity :** 
+* Un utilisateur, admninistrateur d'une association sportive, se loggue et arrive sur sa page d'administration
+* Il voit les comptétitions qu'il organise
+* Il peut les démarrer/cloturer
+* Il remet une médaille à un sportif
 
- - Contrat $Medal:
-   ERC20 utilisable pour mint les NFTs
-   
- - Contrat NFTArtist: 
-   NFT de base utilisé pour mint des NFTTrophée comme throwIn
+## Technologies Utilisées :
+ * Solidity 0.8
+ * React 17 (17.0.2) / Bootstrap 5 (5.1.3)
+ * react-i18next (21.3.3) pour traduction
 
- - Contrat NFT ThrowIn:
-    Mint d'un NFT mintable en 1 seul exemplaire il est capable de garder dans un tableau les vainqueur present et passé 
- 
- - MedalVerse: contrat principal qui expose les fonctionnalités de la DAPP, et possède les structures internes au fonctionnement de la DAPP. MedalVerse hérite des contrats Handler des structures internes.
+# Contrats Solidity :
+  
+|CONTRAT|DESCRIPTION|
+|:---|:-----|
+|Medal|ERC20 utilisable pour mint les NFTs et les frais de MedalVerse|
+|NFTArtist|NFT servant d'illustration pour les trophés|
+|ThrowIn| Trophée de type Coupe Du Monde, mintable en 1 seul exemplaire, cumulant les vainqueurs presents et passés|
+|MedalVerse| contrat principal qui expose les fonctionnalités de la DAPP, possèdant les structures internes nécessaires au fonctionnement. MedalVerse hérite des contrats Handler des structures internes.|
 
- Structures internes: 
- 
- - UserHandler : Un user est un utilisateur enregistré sur la plateforme, avec un ensemble de détails sur la personne détentrice du compte. UserHandler gère la liste des Users, accès, création, désactivation
+### Structures internes: 
 
- - AuthorHandler: un auteur est un user aynt des propriétés spécifiques qui possède une liste de créations, peut en produire de nouvelles et les vendre. AuthorHandler gère la liste des auteurs, des créations (accès à la base, appel de fonction sur ces structures).
+|CONTRAT|DESCRIPTION|
+|:---|:-----|
+|UserHandler|Un User est un utilisateur enregistré sur la plateforme, avec un ensemble de détails sur la personne détentrice du compte. UserHandler gère la liste des Users, accès, création, désactivation|
+|AuthorHandler|Un Auteur est un user aynt des propriétés spécifiques qui possède une liste de créations, peut en produire de nouvelles et les vendre. AuthorHandler gère la liste des auteurs, des créations (accès à la base, appel de fonction sur ses structures)|
+|OrganizerHandler|Un Organizer est un organisme qui peut créer des évènements, il est piloté par une liste d'admins qui ont le droit d'intéragir avec l'évènement. OrganizerHandler permet de lister, ajouter/désactiver un organizer|
+|EventHandler|Un évènement est généré par un organisme, et possède des propriétés particulières (date de départ, fin, etc.). EventHandler gère la liste des|
+|SportsmanHandler|Un Sportsman est un user ayant le rôle de Sportif et possède des propriétés supplémentaires comme une liste d'évènement auquel il est enregistré. SportsmanHandler gère la liste des Sportsman| 
+|MedalHandler|Gère la liste des médailles basées sur ThrowIn|
 
-- OrganizerHandler: Un organizer est un organisme qui peut créer des évènements, il est piloté par une liste d'admins qui ont le droit d'intéragir avec l'évènement. OrganizerHandler permet de lister, ajouter/désactiver un organizer
 
-- EventHandler: Un évènement est généré par un organisme, et possède des propriétés particulières (date de départ, fin, etc.). EventHandler gère la liste des
+# Installation
 
-- SportsmanHandler: Un Sportsman est un user ayant le rôle de Sportif et possède des propriétés supplémentaires comme une liste d'évènement auquel il est enregistré, ainsi qu'un champ de bits décrivant les sports qu'il pratique. SportsmanHandler gère la liste des Sportsman
-
-- MedalHandler: Gère la liste des médailles basées sur ThrowIn
-
-## Installation
 - à la racine du projet :
-npm i
+```npm i```
 - dans le répertoire client :
-npm i
+```npm i```
 
 ### Paramétrage
 les variables d'environnement sont à mentre dans un fichier **.env** à la racine du projet
 
 contenu du .env :
+```
 **Wallet_mnemonic**=
 **InfuraProjectId**=
 **Matic_MedalVerse_Dev_01_ProjectId**=
 ***InfuraProjectSecret***=[facultatif]
 ***Account00PK***=[facultatif] clé privée pour signer des transactions en batch
-
+```
 ## Lancement :
 - dans le répertoire client :
-npm start*
+`npm start`
 
 utilise  le module cross-env pour lancer un navigateur spécifique : modifier package.json et supprimer cross-env et/ou remplacer le navigateur  dans la ligne :
-**"start": "***cross-env BROWSER='brave' * **react-scripts start"**,
+```"start": "cross-env BROWSER='brave' react-scripts start",```
+
+
+## Documents Annexes
+|DOCUMENT|FICHIER|
+|---:|:---|
+|Optimisations utilisées|[Optimisations.txt.md](Optimisations.txt.md)
+|Liste des codes d'erreur|[Error_Code.md](Error_Code.md)|
+|Audit de sécurité|[avoiding_common_attacks.md](avoiding_common_attacks.md)|
+|Adresse de déploiement|[deployed_addresses.md](deployed_addresses.md)|
+|Aide a l'installation|[INSTALL.MD](INSTALL.MD)|
+
+
 
 
 ## Lancement des tests
 - à la racine du projet :
 
-truffle test --network developement
+```truffle test --network developement```
 
 ## Matic
 [Déploiement Dev](https://medalverse-dev-maticmumbai.herokuapp.com/)
@@ -74,17 +98,16 @@ https://medalverse-dev-maticmumbai.herokuapp.com/
 
 ### Testnet
  - Setting up Matic Mumbai Testnet :
-https://medium.com/@pinkmoonfinance/how-to-use-pinksale-matic-testnet-8788e6a09e10
+```https://medium.com/@pinkmoonfinance/how-to-use-pinksale-matic-testnet-8788e6a09e10```
 
  - Créer un Id projet pour le RPC :
-  https://rpc.maticvigil.com/
+```  https://rpc.maticvigil.com/```
  
  - Block Explorer :
- https://mumbai.polygonscan.com/
+ ```https://mumbai.polygonscan.com/```
 
  - Faucet :
-https://faucet.polygon.technology/
-
+```https://faucet.polygon.technology/```
 
 
 ------------

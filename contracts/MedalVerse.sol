@@ -201,9 +201,8 @@ contract MedalVerse is
 	function withdraw() external onlyOwner {
 		uint256 balance = Token.balanceOf(address(this)); // check balance of contract MedalVerse
 		require(balance != 0, "ERR_H");
-		Token.transfer(msg.sender, balance); // transfer balance to owner
-
 		emit MedalVerseWithdraw(msg.sender);
+		Token.transfer(msg.sender, balance); // transfer balance to owner
 	}
 
 	///@dev Check balance contract

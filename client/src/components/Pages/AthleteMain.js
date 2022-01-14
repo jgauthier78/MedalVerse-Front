@@ -38,6 +38,13 @@ class SporstmanMain extends Component {
 
     componentDidMount() {
         window.scroll(0, 0);
+        console.log("++++++++++++++++++++++++++++++")
+        console.log(this.props.param)
+        if (this.props.param != undefined) {
+            console.log("########################################")
+            this.setState({ curPannel: this.props.param })
+        }
+
     }
 
     render() {
@@ -45,7 +52,6 @@ class SporstmanMain extends Component {
 
             return (<Navigate to="/" />)
         }
-        if (this.props.param != undefined) { this.setState({ curPannel: this.props.param }) }
         // <SporstmanSideBar setPannel={this.setPannel} />
 
         return (
