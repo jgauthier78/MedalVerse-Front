@@ -78,8 +78,8 @@ const TimelineMedals = ({ userProfile }) => {
     return (
         <section className="   bg-light-gray " >
 
-            <img src="img/MedalVerse.svg" className="Titre-MedalVerse mt-5" alt="MedalVerse" />
-            <h5 className="text-black text-light ml-4 margin--4">{"La timeline de vos succès"}</h5>
+            <img src="img/MedalVerse.svg" className="Titre-MedalVerse-lg mt-5" alt="MedalVerse" />
+            <h5 className="text-black text-light  lead ml-6 margin--4">{"La timeline de vos succès"}</h5>
 
             <Container className='d-flex justify-content-center'>
                 <div className='col mt-6 col-5 '>

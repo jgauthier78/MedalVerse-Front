@@ -20,7 +20,9 @@
 .margin--4{
   margin-top: -20px;
 }
-
+.margin--5{
+  margin-top: -20px;
+}
 .justify-text {
   text-align:justify;  
   text-justify:inter-character;
@@ -229,7 +231,14 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#024057",endCo
   margin-bottom: -40px;
   margin-top: -40px;
 }
-
+.Titre-MedalVerse-lg
+{
+  height:150px;
+  width:auto;
+  margin-left: -20px;  
+  margin-bottom: -60px;
+  margin-top: -40px;
+}
 .cardTopMargin {
   margin-top: 24px;
 }

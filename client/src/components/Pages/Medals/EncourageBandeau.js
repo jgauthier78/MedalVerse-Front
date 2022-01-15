@@ -15,11 +15,11 @@ class EncourageBandeau extends Component {
 
         return (
             <div className=" bg-light-gray">
-                <img src="img/MedalVerse.svg" className="Titre-MedalVerse mt-5" alt="MedalVerse" />
+                <img src="img/MedalVerse.svg" className="Titre-MedalVerse-lg mt-5" alt="MedalVerse" />
                 <div className="full-width">
                     <Container className=" d-flex ">
                         <Row className="justify-content-center ">
-                            <div className="col col-7 mt-4  text-center mb-7">
+                            <div className="col col-7 mt-5  text-center mb-7">
                                 <p className="display-6 text-black text-light mt-6">
 
                                     {"Vous possédez "}
