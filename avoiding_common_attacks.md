@@ -3,8 +3,7 @@
 Nous détaillons ici la Revue de Sécurité effectuée sur les contrats MedalVerse et ThrowIn
 Le document est mis à jour régulièrement en fonction de l'évolution des contrats
 
-<br\>
-<br\>
+
 
 ## Contrat MedalVerse.sol
 
@@ -17,7 +16,6 @@ MedalVerse n'effectue pas de transfert, encapsule les NFT dans une structure, ma
 - Pas de call, de send,  mais une withdraw (transfer) qui n'est appelable que par le propriétaire du contrat et sans dépendance à une condition.
 
 Pas de ré-entrance
-<\br>
 
 OverFlow: 
 ---------
@@ -27,7 +25,7 @@ Variables sensibles:
 - Toutes les données de référence (identifiant dans la base) sont checkées pour être dans les bonnes ranges de tableaux/map, on vérifie qu'elles ne générerent pas d'erreur ou d'échec innatendu via modifier & require
 
 pas d'utilisation de librairie, pas de send.
-<\br>
+
 
 Unexpected Ether: 
 ----------------
@@ -35,7 +33,7 @@ MedalVerse n'est pas payable, mais prend des NFT en paramètres qui eux peuvent 
 Le transfert vers MedalVerse ne peut etre gerer que par la fonction mint des nfts 
 La fonction withdraw est utilisable seulement par l'owner
 
-<\br>
+
 
 
 Visibilité:
@@ -93,9 +91,7 @@ tx.origin:
 ----------
 Pas d'exploitation de "tx"
 
-<\br>
-<\br>
-<\br>
+
 
 
 # Contrat ThrowIn.sol
@@ -168,9 +164,6 @@ tx.origin:
 ----------
 Pas d'exploitation de "tx"
 
-<\br>
-<\br>
-<\br>
 
 
 # Contrat NFTArtist
@@ -235,9 +228,7 @@ tx.origin:
 ----------
 Pas d'exploitation de "tx"
 
-<\br>
-<\br>
-<\br>
+
 
 
 # Contrat $Medal.sol
