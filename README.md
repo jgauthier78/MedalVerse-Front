@@ -21,7 +21,7 @@
 
 * Un utilisateur enregistré en sportif se loggue sur la plateforme et accède à ses événements en cours
 * Il peut consulter ses médailles
-* Il paramètre quelle médaille est visible par le grand public dans sa gallerie
+* Il paramètre quelle médaille est visible par le grand public dans sa galerie
 * Il visualise sa galerie et peut la partager avec d'autres
 
 * Un utilisateur, admninistrateur d'une association sportive, se loggue et arrive sur sa page d'administration

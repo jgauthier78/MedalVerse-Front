@@ -27,7 +27,7 @@ class GallerieAthlete extends Component {
                 />
                 <Card className="cardProfile shadow-sm ">
                     <CardHeader>
-                        <h6>{"Ma Gallerie"}:</h6> <span> {this.props.userProfile.userMedals.nbMedals} {" Médaille(s)"} </span>
+                        <h6>{"Ma Galerie"}:</h6> <span> {this.props.userProfile.userMedals.nbMedals} {" Médaille(s)"} </span>
                     </CardHeader>
                     <Col className="mt-5 ">
                         <span className="lead">Visualiser la gallerie dans une nouvelle page:</span>

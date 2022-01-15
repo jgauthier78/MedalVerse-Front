@@ -63,7 +63,7 @@ class MedalAthlete extends Component {
                                 <th scope="col">#</th>
                                 <th scope="col">{"Fédération"}</th>
                                 <th scope="col">{"Evénement"}</th>
-                                <th scope="col">{"Gallerie"}</th>
+                                <th scope="col">{"Galerie"}</th>
                                 <th scope="col">{"Image"}</th>
                             </tr>
                         </thead>
