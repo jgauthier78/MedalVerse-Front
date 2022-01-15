@@ -96,7 +96,7 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 ## Documents Annexes
 |DOCUMENT|FICHIER|
 |---:|:---|
-|Optimisations utilisées|[Optimisations.txt.md](Optimisations.txt.md)
+|Optimisations utilisées|[Optimisations.md](Optimisations.md)
 |Liste des codes d'erreur|[Error_Code.md](Error_Code.md)|
 |Audit de sécurité|[avoiding_common_attacks.md](avoiding_common_attacks.md)|
 |Adresse de déploiement|[deployed_addresses.md](deployed_addresses.md)|
