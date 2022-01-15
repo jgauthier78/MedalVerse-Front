@@ -3,6 +3,8 @@
 Nous détaillons ici la Revue de Sécurité effectuée sur les contrats MedalVerse et ThrowIn
 Le document est mis à jour régulièrement en fonction de l'évolution des contrats
 
+
+
 ## Contrat MedalVerse.sol
 
 Ré-entrance:
@@ -15,7 +17,6 @@ MedalVerse n'effectue pas de transfert, encapsule les NFT dans une structure, ma
 
 Pas de ré-entrance
 
-
 OverFlow: 
 ---------
 Variables sensibles: 
@@ -25,11 +26,14 @@ Variables sensibles:
 
 pas d'utilisation de librairie, pas de send.
 
+
 Unexpected Ether: 
 ----------------
 MedalVerse n'est pas payable, mais prend des NFT en paramètres qui eux peuvent déjà être mintés.
 Le transfert vers MedalVerse ne peut etre gerer que par la fonction mint des nfts 
 La fonction withdraw est utilisable seulement par l'owner
+
+
 
 
 Visibilité:
@@ -39,15 +43,18 @@ MedalVerse est très sensible à la visibilté, en effet:
 - Chaque contrat (Organizer,event,medal..) gère son métier de façon unilatérale, MedalVerse gère la synchronisation des différentes contrats en en assurant la bonne intégrité. Si une fonction des contrats Handler pouvait être appelée indépendemment des autres Handler, la base pourrait être rendue inutilisable.
 
 Aussi on définit les règles suivantes:
-**************************************
+--------------------------------------
 Pour les contrats handlers :
+```
 - Toutes les fonctions view peuvent-être publiques
 - Toutes les fonctions nécessitant une intéraction ou ayant une dépendance avec un autre Handler sont en internal et une fonction de Medalverse gère la synchronisation.
 - Tous les setters qui ont un role de fonction interne à la DAPP sont en owner
+```
 
 Pour le contrat MedalVerse:
+```
 - Les fonctions ne correspondant pas à des fonctionnalités utilisateurs (mais nécessaires aux fonctionnement de la DAPP) sont en onlyOwner
-
+```
 
 Référence à un contrat externe:
 -------------------------------
@@ -58,8 +65,9 @@ Référence à un contrat externe:
 MedalVerse.sol : adminAddMedal(uint256 eventID, address _nft)
 
 -> on vérifie la bonne implémentation de l'interface
+```
 IERC721(_nft).supportsInterface(type(IERC721).interfaceId);
-
+```
 
 Envoyer une adresse incomplete: 
 -------------------------------
@@ -82,8 +90,6 @@ Pas d'utilisation du nombre de block, ou de délais dans le contrat.
 tx.origin:
 ----------
 Pas d'exploitation de "tx"
-
-
 
 
 
@@ -132,8 +138,9 @@ Référence à un contrat externe:
 ThrowIn.sol : IERC721Metadata NFT_Medal;
 
 -> on vérifie la bonne implémentation de l'interface dans le constructor
+```
 IERC721(addressNFT_Medal).supportsInterface(type(IERC721).interfaceId);
-
+```
 
 Envoyer une adresse incomplete: 
 -------------------------------
@@ -158,7 +165,8 @@ tx.origin:
 Pas d'exploitation de "tx"
 
 
-Contrat NFTArtist
+
+# Contrat NFTArtist
 
 
 Ré-entrance:
@@ -219,8 +227,6 @@ Les dates utilisées sont en universal time, et gérées par le front. Pas d'int
 tx.origin:
 ----------
 Pas d'exploitation de "tx"
-
-
 
 
 
