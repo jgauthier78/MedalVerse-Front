@@ -3,8 +3,8 @@
 Nous détaillons ici la Revue de Sécurité effectuée sur les contrats MedalVerse et ThrowIn
 Le document est mis à jour régulièrement en fonction de l'évolution des contrats
 
-<\br>
-<\br>
+<br\>
+<br\>
 
 ## Contrat MedalVerse.sol
 
