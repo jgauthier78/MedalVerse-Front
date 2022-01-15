@@ -61,8 +61,9 @@ Référence à un contrat externe:
 MedalVerse.sol : adminAddMedal(uint256 eventID, address _nft)
 
 -> on vérifie la bonne implémentation de l'interface
+```
 IERC721(_nft).supportsInterface(type(IERC721).interfaceId);
-
+```
 
 Envoyer une adresse incomplete: 
 -------------------------------
@@ -135,8 +136,9 @@ Référence à un contrat externe:
 ThrowIn.sol : IERC721Metadata NFT_Medal;
 
 -> on vérifie la bonne implémentation de l'interface dans le constructor
+```
 IERC721(addressNFT_Medal).supportsInterface(type(IERC721).interfaceId);
-
+```
 
 Envoyer une adresse incomplete: 
 -------------------------------
