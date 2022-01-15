@@ -54,7 +54,7 @@ const OrganizerProfile = ( {AppCallBacks, userProfile, animatedBackground} ) =>
     // const { t } = useTranslation();
     let location = useLocation();
     // debugger
-    console.log("location="+Object.entries(location))
+    // console.log("location="+Object.entries(location))
     return (
         <>
             {location.pathname==="/organizer"

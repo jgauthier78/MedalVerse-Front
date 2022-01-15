@@ -116,13 +116,13 @@ const EventLayout = ( { activEvents, AppCallBacks } ) =>
                     <div className="d-flex justify-content-between my-auto">
                         <div className="d-flex flex-row align-items-center justify-content-center">
                             <img src={event.organization.logoURI} className="profileImage mt-3 shadow" alt="" />
-                            <div className="ms-2 c-details">
+                            <div className="ms-2 c-details col-sm-6">
                                 <h5 className="mb-0">{event.organization.description}</h5>
                                 <h5 className="mb-0">{event.eventDescription}</h5>
-                                <h6>{t("OrganizerEvent.from")} {format_TimeStampToStartDate(event.startDate)} {t("OrganizerEvent.to")} {format_TimeStampToEndDate(event.endDate, true)}</h6>
+                                <h6>{t("OrganizerEvent.from")} {format_TimeStampToStartDate(event.startDate)}<br/>{t("OrganizerEvent.to")} {format_TimeStampToEndDate(event.endDate, true)}</h6>
                             </div>
-                            <div className="ms-2 c-details">
-                                <h6>{t(`MedalVerse.event.states.${event.stateOfCompetition}`)}</h6>
+                            <div className="ms-2 c-details col-sm-6">
+                                <p className="float-end">{t(`MedalVerse.event.states.${event.stateOfCompetition}`)}</p>
                             </div>
                         </div>
                     </div>

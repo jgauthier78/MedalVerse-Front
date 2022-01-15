@@ -30,5 +30,15 @@ function truncateString(str, num) {
   return str.slice(0, num) + '...'
 }
 
+function shortenString(str, totalLength, leftRight) {
+  // If the length of str is less than or equal to num
+  // just return str--don't truncate it.
+  if (str.length <= totalLength) {
+    return str
+  }
+  // Return str truncated with '...' concatenated to the end of str.
+  // todo  : total length is not taken into account
+  return str.slice(0, leftRight) + '....' + str.slice(str.length-leftRight, str.length)
+}
 
-export { wait, zeroPad, truncateString };
+export { wait, zeroPad, truncateString, shortenString };

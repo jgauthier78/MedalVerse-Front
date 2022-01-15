@@ -20,6 +20,9 @@ import { Button } from "react-bootstrap";
 // React-Router Bootstrap
 import { LinkContainer } from 'react-router-bootstrap'
 
+// Utils
+import { shortenString } from './../../utils/AppUtils'
+
 
 import NavScroll from "./NavLink";
 
@@ -90,18 +93,18 @@ const NavBar = ({ loginCallBack, options, AppCallBacks, isLanding, isAthlete, is
                 <NavDropdown.Item style={{ padding: '0px 0px 0px 20px' }} onClick={() => changeLanguage('fr-FR')}><FR_FLAG style={{ width: '110px', height: '100px' }} /></NavDropdown.Item>
               }
             </NavDropdown>
+
           </Nav>
 
           <Nav className="align-items-lg-center ml-lg-auto" navbar>
             {AppCallBacks.isConnected() ?
-
               <Nav.Link className={textStyleCentered}>{AppCallBacks.getUserDetails().userName}</Nav.Link>
               :
               <></>
             }
             <NavItem className="d-none d-lg-block ml-lg-4">
               {AppCallBacks.isConnected() ?
-                <Button className={textStyleRight} onClick={AppCallBacks.disconnect}>{t("menu.LogoutButton")} <BoxArrowRight style={{ verticalAlign: '-10%' }} /></Button>
+                <Button className={textStyleRight} onClick={AppCallBacks.disconnect}><div style={{ fontWeight: 'lighter', fontSize: 'smaller' }}>{shortenString(AppCallBacks.getAccounts(), 26, 6 )}</div>{t("menu.LogoutButton")} <BoxArrowRight style={{ verticalAlign: '-10%' }} /></Button>
                 :
                 <Button className={textStyleRight} onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {t("menu.LoginButton")}</Button>
               }
