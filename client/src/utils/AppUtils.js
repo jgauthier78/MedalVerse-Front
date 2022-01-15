@@ -37,6 +37,7 @@ function shortenString(str, totalLength, leftRight) {
     return str
   }
   // Return str truncated with '...' concatenated to the end of str.
+  // todo  : total length is not taken into account
   return str.slice(0, leftRight) + '....' + str.slice(str.length-leftRight, str.length)
 }
 

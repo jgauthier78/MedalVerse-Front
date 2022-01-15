@@ -104,7 +104,7 @@ const NavBar = ({ loginCallBack, options, AppCallBacks, isLanding, isAthlete, is
             }
             <NavItem className="d-none d-lg-block ml-lg-4">
               {AppCallBacks.isConnected() ?
-                <Button className={textStyleRight} onClick={AppCallBacks.disconnect}><div style={{ fontWeight: 'lighter', fontSize: 'smaller' }}>{shortenString(AppCallBacks.getAccounts(), 26, 10 )}</div>{t("menu.LogoutButton")} <BoxArrowRight style={{ verticalAlign: '-10%' }} /></Button>
+                <Button className={textStyleRight} onClick={AppCallBacks.disconnect}><div style={{ fontWeight: 'lighter', fontSize: 'smaller' }}>{shortenString(AppCallBacks.getAccounts(), 26, 6 )}</div>{t("menu.LogoutButton")} <BoxArrowRight style={{ verticalAlign: '-10%' }} /></Button>
                 :
                 <Button className={textStyleRight} onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {t("menu.LoginButton")}</Button>
               }
