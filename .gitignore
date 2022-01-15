@@ -41,4 +41,4 @@ client/*.7z
 *.7z
 
 # Commenter pour déployer
-#client/src/contracts 
+client/src/contracts
