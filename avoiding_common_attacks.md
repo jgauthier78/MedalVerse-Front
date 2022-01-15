@@ -39,11 +39,11 @@ MedalVerse est très sensible à la visibilté, en effet:
 - Chaque contrat (Organizer,event,medal..) gère son métier de façon unilatérale, MedalVerse gère la synchronisation des différentes contrats en en assurant la bonne intégrité. Si une fonction des contrats Handler pouvait être appelée indépendemment des autres Handler, la base pourrait être rendue inutilisable.
 
 Aussi on définit les règles suivantes:
-**************************************
+--------------------------------------
 Pour les contrats handlers :
-- Toutes les fonctions view peuvent-être publiques
+```- Toutes les fonctions view peuvent-être publiques
 - Toutes les fonctions nécessitant une intéraction ou ayant une dépendance avec un autre Handler sont en internal et une fonction de Medalverse gère la synchronisation.
-- Tous les setters qui ont un role de fonction interne à la DAPP sont en owner
+- Tous les setters qui ont un role de fonction interne à la DAPP sont en owner```
 
 Pour le contrat MedalVerse:
 - Les fonctions ne correspondant pas à des fonctionnalités utilisateurs (mais nécessaires aux fonctionnement de la DAPP) sont en onlyOwner
