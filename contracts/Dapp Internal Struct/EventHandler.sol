@@ -51,11 +51,11 @@ contract EventHandler is Ownable {
 	}
 
 	// Events -------------------------------
-	event eventAdded(uint256 eventId);
-	event eventRemoved(uint256 eventId);
-	event eventRegisterSportsman(uint256 eventId, address sportsmanId);
-	event eventStatusChanged(uint256 eventId, stateOfCompetition newStatus);
-	event eventWinnerSet(uint256 eventId, address winner);
+	event eventAdded(uint256 indexed eventId);
+	event eventRemoved(uint256 indexed eventId);
+	event eventRegisterSportsman(uint256 indexed eventId, address indexed sportsmanId);
+	event eventStatusChanged(uint256 indexed eventId, stateOfCompetition newStatus);
+	event eventWinnerSet(uint256 indexed eventId, address indexed winner);
 
 	// Methods -------------------------------
 	///@dev add an event to the list of events

@@ -16,6 +16,9 @@ Wallet_mnemonic_MEDELAVERSE_COMMON = process.env.Wallet_mnemonic_MEDELAVERSE_COM
 Infura_ProjectId = process.env.InfuraProjectId
 Infura_ProjectSecret = process.env.InfuraProjectSecret
 
+// Alternative deployment nodes
+AlchemyProjectId = process.env.AlchemyProjectId
+
 Matic_MedalVerse_Dev_01_ProjectId = process.env.Matic_MedalVerse_Dev_01_ProjectId
 
 // Network Ids
@@ -43,12 +46,12 @@ const Matic_Tesnet_RPC_WSS_URL_1 = 'wss://rpc-mumbai.maticvigil.com/ws/v1/';
 // const Matic_Tesnet_RPC_WSS_URL_3 = 'wss://ws-matic-mumbai.chainstacklabs.com';
 // const Matic_Tesnet_RPC_WSS_URL_4 = 'wss://matic-testnet-archive-ws.bwarelabs.com';
 
-const Matic_Tesnet_Infura_RPC = 'https://polygon-mumbai.infura.io/v3/'
+const Matic_Testnet_Infura_RPC = 'https://polygon-mumbai.infura.io/v3/'
 
-
+const Matic_Testnet_Alchemy_RPC = 'https://polygon-mumbai.g.alchemy.com/v2/'
 
 // Matic Mainnet RPC URL
-const Matic_Mainnet_RPC_URL = 'https://rpc-mainnet.maticvigil.com/v1/3d71b717df879e0f3f3d1498bd0f9c24e7c386d6';
+const Matic_Mainnet_RPC_URL = 'https://rpc-mainnet.maticvigil.com/v1/';
 
 module.exports =
 {
@@ -133,10 +136,9 @@ module.exports =
     },
 
 
-    maticMumbaiTestnet:
+    maticMumbaiTestnetInfuraSlow:
     {
-      //provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_HTTPS_URL_1 + Matic_MedalVerse_Dev_01_ProjectId ),
-      provider: () => new HDWalletProvider(Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_Infura_RPC + Infura_ProjectId),
+      provider: () => new HDWalletProvider(Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Testnet_Infura_RPC + Infura_ProjectId),
       network_id: network_id_maticMumbaiTestnet,
       confirmations: 4,
       networkCheckTimeout: 5000,
@@ -144,7 +146,44 @@ module.exports =
       skipDryRun: true,
       gas: 6000000,
       gasPrice: 10000000000,
-    }
+    },
+
+    maticMumbaiTestnetInfuraFast:
+    {
+      provider: () => new HDWalletProvider(Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Testnet_Infura_RPC + Infura_ProjectId),
+      network_id: network_id_maticMumbaiTestnet,
+      confirmations: 1,
+      networkCheckTimeout: 1000,
+      timeoutBlocks: 1000,
+      skipDryRun: true,
+      gas: 6000000,
+      gasPrice: 10000000000,
+    },
+
+    maticMumbaiTestnetAlchemySlow:
+    {
+      provider: () => new HDWalletProvider(Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Testnet_Alchemy_RPC + AlchemyProjectId),
+      network_id: network_id_maticMumbaiTestnet,
+      confirmations: 4,
+      networkCheckTimeout: 5000,
+      timeoutBlocks: 5000,
+      skipDryRun: true,
+      gas: 6000000,
+      gasPrice: 10000000000,
+    },
+
+    maticMumbaiTestnet:
+    {
+      provider: () => new HDWalletProvider( Wallet_mnemonic_MEDELAVERSE_COMMON, Matic_Tesnet_RPC_HTTPS_URL_1 + Matic_MedalVerse_Dev_01_ProjectId ),
+      network_id: network_id_maticMumbaiTestnet,
+      confirmations: 4,
+      networkCheckTimeout: 10000,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+      gas: 6000000,
+      gasPrice: 10000000000,
+    },
+
   } // networks
 
 };

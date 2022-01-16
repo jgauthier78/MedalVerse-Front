@@ -26,6 +26,8 @@ import './utils/i18n';
 // Web3
 import getWeb3 from "./utils/getWeb3";
 
+import Web3 from 'web3'
+
 // Contracts
 import MedalVerseContract from "./contracts/MedalVerse.json";
 import ThrowInContract from "./contracts/ThrowIn.json";
@@ -44,6 +46,7 @@ import "./styles/Main.css"
 
 class App extends Component {
 
+        
     constructor(props) {
         super(props)
         this.handleSaveUserProfile = this.handleSaveUserProfile.bind(this);
@@ -230,12 +233,18 @@ class App extends Component {
 
             contract = await new web3.eth.Contract(MedalVerseContract.abi, deployedNetwork && deployedNetwork.address);
 
+            // TEST =>
+            const web3ForEvents = new Web3("wss://rpc-mumbai.maticvigil.com/ws/v1/3d71b717df879e0f3f3d1498bd0f9c24e7c386d6")
+            const medalVerseContractcontractInstanceForEvents = await new web3ForEvents.eth.Contract(MedalVerseContract.abi, deployedNetwork && deployedNetwork.address);
+            // <= TEST
+
+
             if (contract.options.address === null || contract.options.address === undefined) {
                 const nullContractWrongNetworkError = { title: "Contract not found", message: "Wrong network ?" }
                 // window.location.reload(true);
                 throw nullContractWrongNetworkError
             }
-            this.setState({ contract: contract })
+            this.setState({ contract: contract, contractEvents: medalVerseContractcontractInstanceForEvents }) // TEST
 
         }
         catch (error) {
@@ -687,7 +696,7 @@ class App extends Component {
 
     updateOrganizationsEventOnEvent = async (eventId, organizations) => {
         // REFRESH DATA
-        // console.log("updateOrganizationsEventOnEvent:eventId=" + eventId)
+        console.log("updateOrganizationsEventOnEvent:eventId=" + eventId)
         if (organizations === undefined) { console.error("App::updateOrganizationsEventOnEvent:organizations===undefined") }
         if (eventId === undefined) { console.error("App::updateOrganizationsEventOnEvent:eventId===undefined") }
 
@@ -910,20 +919,10 @@ class App extends Component {
 
     // -------------------------------------------------------------------------------------
 
-    MedalVerse_SetEventHandler = (_eventId) => {
-        // console.log("App::MedalVerse_SetEventHandler:_eventID=" + _eventID)
-        // const connectedAccountAddr = this.getAccounts()
-        //   const { t } = this.props;
-        const medalVerseContractInstance = this.state.contract
-
-        let eventId = parseInt(_eventId)
-        if (isNaN(eventId)) {
-            const error = "MedalVerse_SetEventHandler:eventId is not a number"
-            console.log(error)
-            throw error
-        }
+    MedalVerse_SubscribeToEvents = (medalVerseContractInstance) => {
+        
         if (medalVerseContractInstance === undefined) {
-            const error = "MedalVerse_SetEventHandler:medalVerseContractInstance is undefined"
+            const error = "MedalVerse_SubscribeEvents:medalVerseContractInstance is undefined"
             console.log(error)
             throw error
         }
@@ -931,20 +930,21 @@ class App extends Component {
         // https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#events-allevents
 
         if (medalVerseContractInstance.medalVerseContractEvents === undefined) {
+            console.log("OLD medalVerseContractInstance.medalVerseContractEvents === undefined")
+            const eventsOptions = { fromBlock: 'latest' } // , address: medalVerseContractAddress, topics: []
             // Create event handler
             var medalVerseContractEvents = medalVerseContractInstance.events.allEvents
-                (
-                    { fromBlock: 'latest' },
-                    (error, result) => {
-                        if (error) {
-                            console.error("medalVerseContractInstance: %s error: %s", medalVerseContractInstance.options.address, error);
-                            alert(error)
-                        }
-                        else {
-                            console.log("medalVerseContractInstance: %s result: " + JSON.stringify(result), medalVerseContractInstance.options.address);
-                        }
+            (
+                { eventsOptions },
+                (error, result) => {
+                    if (error) {
+                        console.error("OLD medalVerseContractInstance: %s error: %s", medalVerseContractInstance.options.address, error);
                     }
-                ); // erc20ContractInstance.events.allEvents
+                    else {
+                        console.log("OLD medalVerseContractInstance: %s result: " + JSON.stringify(result), medalVerseContractInstance.options.address);
+                    }
+                }
+            ); // erc20ContractInstance.events.allEvents
 
             // Set property to avoid creating event handler twice
             medalVerseContractInstance.medalVerseContractEvents = medalVerseContractEvents;
@@ -959,11 +959,11 @@ class App extends Component {
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
-                        console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
+                        console.error("OLD App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
                     } else {
                         // ! eventID != eventId !
                         if (event.returnValues.eventId === undefined) {
-                            console.error("eventStatusChanged:No 'eventId' returned")
+                            console.error("OLD eventStatusChanged:No 'eventId' returned")
                         }
                         else {
                             this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
@@ -979,11 +979,11 @@ class App extends Component {
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
-                        console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
+                        console.error("OLD App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
                     } else {
                         // ! eventID != eventId !
                         if (event.returnValues.eventId === undefined) {
-                            console.error("eventWinnerSet:No 'eventId' returned")
+                            console.error("OLD eventWinnerSet:No 'eventId' returned")
                         }
                         else {
                             this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
@@ -994,34 +994,311 @@ class App extends Component {
                 }
                 // Event
                 else if (event.event === "MedalAdded") {
-                    console.log("MedalAdded")
+                    console.log("OLD MedalAdded")
                 }
                 // Event
                 else if (event.event === "sportsmanMedalAdded") {
-                    console.log("sportsmanMedalAdded")
+                    console.log("OLD sportsmanMedalAdded")
                 }
                 // Event
                 else if (event.event === "sportsmanUnregisterdEvent") {
-                    console.log("sportsmanUnregisterdEvent")
+                    console.log("OLD sportsmanUnregisterdEvent")
                 }
                 // Event
                 else if (event.event === "sportsmanRegisterdEvent") {
-                    console.log("sportsmanRegisterdEvent")
+                    console.log("OLD sportsmanRegisterdEvent")
                 }
                 // Event
                 else if (event.event === "sportsmanAdded") {
-                    console.log("sportsmanAdded")
+                    console.log("OLD sportsmanAdded")
                 }
                 // Unknown Event
                 else {
-                    console.error("Unknown event : %s", event.event)
+                    console.error("OLD Unknown event : %s", event.event)
                 }
 
             }); // medalVerseContractEvents.on
 
-        } // erc20ContractInstance.medalVerseContractEvents === undefined
+        } // medalVerseContractInstance.medalVerseContractEvents === undefined
 
-    }; // MedalVerse_SetEventHandler
+    } // MedalVerse_SubscribeEvents
+    // -------------------------------------------------------------------------------------
+
+    MedalVerse_SetEventHandler = (/*_eventId*/) => {
+        // console.log("App::MedalVerse_SetEventHandler:_eventID=" + _eventID)
+        // const connectedAccountAddr = this.getAccounts()
+        //   const { t } = this.props;
+        const medalVerseContractInstance = this.state.contract
+        const medalVerseContractcontractInstanceForEvents = this.state.contractEvents
+
+
+        this.MedalVerse_SubscribeToEvents(medalVerseContractInstance)
+        this.MedalVerse_SubscribeToEvents(medalVerseContractcontractInstanceForEvents)
+
+        // let eventId = parseInt(_eventId)
+        // if (isNaN(eventId)) {
+        //     const error = "MedalVerse_SetEventHandler:eventId is not a number"
+        //     console.log(error)
+        //     throw error
+        // }
+
+        // if (medalVerseContractcontractInstanceForEvents === undefined) {
+        //     const error = "MedalVerse_SetEventHandler:medalVerseContractcontractInstanceForEvents is undefined"
+        //     console.log(error)
+        //     throw error
+        // }
+
+// Dagger
+// https://docs.polygon.technology/docs/develop/dagger/
+// Matic Network#
+// Mainnet#
+// Copy
+// Websocket: wss://matic-mainnet.dagger.matic.network
+// Socket: mqtts://matic-mainnet.dagger.matic.network (You can also use `ssl://` protocol)
+// Mumbai Testnet#
+// Websocket: wss://mumbai-dagger.matic.today
+// Socket: mqtts://mumbai-dagger.matic.today (You can also use `ssl://` protocol)
+
+// import Dagger from '@maticnetwork/dagger'
+// import Dagger from '@maticnetwork/dagger'
+// const dagger = new Dagger("wss://mumbai-dagger.matic.today")
+// dagger.on('latest:block.number', result => {
+//     console.log(`dagger: New block created: ${Object.entries(result)}`)
+//   })
+
+
+// test event handler
+// const web3 = new Web3("wss://rpc-mumbai.maticvigil.com/ws/v1/3d71b717df879e0f3f3d1498bd0f9c24e7c386d6")
+
+/*
+try {
+    // Use web3 to get the user's accounts.
+
+    const networkId = await web3.eth.net.getId();
+    const deployedNetwork = await MedalVerseContract.networks[networkId];
+
+    medalVerseContractcontractInstanceForEvents = await new web3.eth.Contract(MedalVerseContract.abi, deployedNetwork && deployedNetwork.address);
+
+    if (contract.options.address === null || contract.options.address === undefined) {
+        const nullContractWrongNetworkError = { title: "Contract not found", message: "Wrong network ?" }
+        // window.location.reload(true);
+        throw nullContractWrongNetworkError
+    }
+    this.setState({ contract: contract })
+
+}
+catch (error) {
+    // Catch any errors for any of the above operations.
+    //err = error
+    //console.log(err)
+    this.showEvent(error, error, true, true)
+}
+*/
+
+/*
+        // const web3 = this.state.web3
+        const medalVerseContractAddress = medalVerseContractcontractInstanceForEvents.options.address;
+        // const accountAdr = this.getAccounts();
+        const eventsOptions = { fromBlock: 'latest', address: medalVerseContractAddress, topics: [] }
+
+        // debugger // DEBUGGER
+        if (medalVerseContractcontractInstanceForEvents.subscribedEventsHandlers === undefined) {
+            console.log("NEW NEW medalVerseContractInstance.subscribedeventsHandlers === undefined")
+
+            let subscription = web3.eth.subscribe('logs', eventsOptions, (error, result) =>{
+                if (!error)
+                console.log("web3.eth.subscribe:"+result);
+                else
+                console.error(result);
+            }).on("connected", function(subscriptionId){
+                console.log("web3.eth.subscribe:connected: "+subscriptionId);
+            }).on("data", function(log){
+                console.log("web3.eth.subscribe:data: "+Object.entries(log));
+            })
+            .on("changed", function(log){
+                console.log("web3.eth.subscribe:changed: "+log);
+            });
+            medalVerseContractcontractInstanceForEvents.subscribedEventsHandlers = subscription
+    
+        } else {
+            console.log("NEW NEW medalVerseContractInstance.subscribedeventsHandlers !== undefined")
+        }
+*/
+
+/*
+        // https://web3js.readthedocs.io/en/v1.2.11/web3-eth-contract.html#contract-events
+        if (medalVerseContractcontractInstanceForEvents.eventsHandlers === undefined) {
+             // Debug
+             console.log("NEW medalVerseContractInstance.eventsHandlers === undefined")
+            try {
+
+                // Create an event handler for each event
+
+                // const account = this.getAccounts()
+                // Subscribe to ALL "eventStatusChanged" event, whatever the address or eventId
+                const eventsOptions = { fromBlock: 'latest' }
+                // Create event handlers for ... events
+
+                var medalVerseContract_EventStatusChanged = medalVerseContractcontractInstanceForEvents.events.eventStatusChanged(
+                    eventsOptions,
+                    (error, result) => {
+                        if (error) {
+                            console.error("medalVerseContractInstance: %s error: %s", medalVerseContractcontractInstanceForEvents.options.address, error);
+                        }
+                        else {
+                            console.log("medalVerseContractInstance: %s result: " + JSON.stringify(result), medalVerseContractcontractInstanceForEvents.options.address);
+                        }
+                    }
+                ); // medalVerseContractInstance.event.eventStatusChanged
+
+                // Set event handler(s) to contract instance as propert(y|ies) to avoid creating event handler multiple time
+                medalVerseContractcontractInstanceForEvents.eventsHandlers = []
+                medalVerseContractcontractInstanceForEvents.eventsHandlers.eventStatusChanged = medalVerseContract_EventStatusChanged
+
+                medalVerseContract_EventStatusChanged.on('data', event => {
+                    console.log("NEW event.event=" + event.event)
+                    // Event
+                        console.log("NEW eventStatusChanged")
+                        // console.log("event.returnValues= " + Object.entries(event.returnValues));
+                        let userOrganizations = this.state.userOrganizations
+                        // REFRESH DATA
+                        if (event.returnValues === undefined) {
+                            console.error("NEW  App::MedalVerse_SetEventHandler:medalVerseContract_EventStatusChanged.on('data':eventStatusChanged:event.returnValues===undefined")
+                        } else {
+                            // ! eventID != eventId !
+                            if (event.returnValues.eventId === undefined) {
+                                console.error("NEW eventStatusChanged:No 'eventId' returned")
+                            }
+                            else {
+                                this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
+                                let eventStatusChanged = { title: "Event updated", level: "success" }
+                                this.showEvent(eventStatusChanged, undefined)
+                            }
+                        }
+
+                }); // medalVerseContract_EventStatusChanged.on('data'
+
+                medalVerseContract_EventStatusChanged.on('error', err => {
+                    console.error("NEW medalVerseContract_EventStatusChanged.on('error':"+err)
+                }); // medalVerseContract_EventStatusChanged.on('connected'
+
+                medalVerseContract_EventStatusChanged.on('connected', str => {
+                    console.log("NEW medalVerseContract_EventStatusChanged.on('connected':"+str)
+                }); // medalVerseContract_EventStatusChanged.on('error'
+
+            } // try
+            catch (error)
+            {
+                delete medalVerseContractcontractInstanceForEvents.eventsHandlers
+            } // catch (error)
+        } else
+        {
+            // Debug
+            console.log("NEW medalVerseContractInstance.eventsHandlers !== undefined")
+        }
+*/
+
+
+/*
+        // https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#events-allevents
+
+        if (medalVerseContractcontractInstanceForEvents.medalVerseContractEvents === undefined) {
+            console.log("OLD medalVerseContractInstance.medalVerseContractEvents === undefined")
+            const eventsOptions = { fromBlock: 'latest' } // , address: medalVerseContractAddress, topics: []
+            // Create event handler
+            var medalVerseContractEvents = medalVerseContractcontractInstanceForEvents.events.allEvents
+            (
+                { eventsOptions },
+                (error, result) => {
+                    if (error) {
+                        console.error("OLD medalVerseContractInstance: %s error: %s", medalVerseContractcontractInstanceForEvents.options.address, error);
+                    }
+                    else {
+                        console.log("OLD medalVerseContractInstance: %s result: " + JSON.stringify(result), medalVerseContractcontractInstanceForEvents.options.address);
+                    }
+                }
+            ); // erc20ContractInstance.events.allEvents
+
+            // Set property to avoid creating event handler twice
+            medalVerseContractcontractInstanceForEvents.medalVerseContractEvents = medalVerseContractEvents;
+
+            medalVerseContractEvents.on('data', event => {
+                // alert("event.event=" + event.event)
+                // Event
+                if (event.event === "eventStatusChanged") {
+
+                    // console.log("eventStatusChanged")
+                    // console.log("event.returnValues= " + Object.entries(event.returnValues));
+                    let userOrganizations = this.state.userOrganizations
+                    // REFRESH DATA
+                    if (event.returnValues === undefined) {
+                        console.error("OLD App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
+                    } else {
+                        // ! eventID != eventId !
+                        if (event.returnValues.eventId === undefined) {
+                            console.error("OLD eventStatusChanged:No 'eventId' returned")
+                        }
+                        else {
+                            this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
+                            let eventStatusChanged = { title: "Event updated", level: "success" }
+                            this.showEvent(eventStatusChanged, undefined)
+                        }
+                    }
+                }
+                // Event
+                else if (event.event === "eventWinnerSet") {
+                    // console.log("eventWinnerSet")
+                    // console.log("event.returnValues= " + event.returnValues);
+                    let userOrganizations = this.state.userOrganizations
+                    // REFRESH DATA
+                    if (event.returnValues === undefined) {
+                        console.error("OLD App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
+                    } else {
+                        // ! eventID != eventId !
+                        if (event.returnValues.eventId === undefined) {
+                            console.error("OLD eventWinnerSet:No 'eventId' returned")
+                        }
+                        else {
+                            this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
+                            let eventWinnerSet = { title: "Winner set", level: "success" }
+                            this.showEvent(eventWinnerSet, undefined)
+                        }
+                    }
+                }
+                // Event
+                else if (event.event === "MedalAdded") {
+                    console.log("OLD MedalAdded")
+                }
+                // Event
+                else if (event.event === "sportsmanMedalAdded") {
+                    console.log("OLD sportsmanMedalAdded")
+                }
+                // Event
+                else if (event.event === "sportsmanUnregisterdEvent") {
+                    console.log("OLD sportsmanUnregisterdEvent")
+                }
+                // Event
+                else if (event.event === "sportsmanRegisterdEvent") {
+                    console.log("OLD sportsmanRegisterdEvent")
+                }
+                // Event
+                else if (event.event === "sportsmanAdded") {
+                    console.log("OLD sportsmanAdded")
+                }
+                // Unknown Event
+                else {
+                    console.error("OLD Unknown event : %s", event.event)
+                }
+
+            }); // medalVerseContractEvents.on
+
+        } // medalVerseContractcontractInstanceForEvents.medalVerseContractEvents === undefined
+else{
+    console.log("OLD medalVerseContractInstance.medalVerseContractEvents !== undefined")
+}
+*/
+
+}; // MedalVerse_SetEventHandler
 
 } // class App
 

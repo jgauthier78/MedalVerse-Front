@@ -228,6 +228,30 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 5", { from: ACCOUNT_ORGANIZER_01 });
   await MVerse.adminSetEventPosition(8, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
 
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 6", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(9, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 7", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(10, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 8", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(11, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 9", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(12, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 10", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(13, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 11", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(14, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 12", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(15, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
+  await MVerse.newEvent(2, Time04_start, Time04_end, "Coupe des coupes de gagnants de coupes 13", { from: ACCOUNT_ORGANIZER_01 });
+  await MVerse.adminSetEventPosition(16, "48.9267091", "2.3557909", { from: ACCOUNT_ORGANIZER_01 })
+
   console.log(".")
 
   // L'athlete 01 participe à ces évènements:
@@ -235,6 +259,19 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_ONE);
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_TWO);
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, EVENT_FOUR);
+
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 5);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 6);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 7);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 8);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 9);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 10);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 11);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 12);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 13);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 14);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 15);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 16);
   console.log(".")
 
   // evenements de test
@@ -242,6 +279,14 @@ module.exports = async function (deployer, network, accounts) {
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 6);
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 7);
   await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 8);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 9);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 10);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 11);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 12);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 13);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 14);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 15);
+  await MVerse.LinkUserAndEvent(ACCOUNT_ATHLETE_01, 16);
   console.log(".")
 
 
@@ -275,11 +320,18 @@ module.exports = async function (deployer, network, accounts) {
 
 
   // evenements de test
-  await MVerse.adminAddMedal(5, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
-  await MVerse.adminAddMedal(6, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
-  await MVerse.adminAddMedal(7, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
-  await MVerse.adminAddMedal(8, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
-
+  await MVerse.adminAddMedal(5,  rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(6,  rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(7,  rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(8,  rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(9,  rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(10, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(11, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(12, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(13, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(14, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(15, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
+  await MVerse.adminAddMedal(16, rcup3.address, { from: ACCOUNT_ORGANIZER_01 })
 
 
   console.log("done.")
