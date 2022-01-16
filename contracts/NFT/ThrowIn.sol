@@ -49,7 +49,10 @@ contract ThrowIn is ERC721, Ownable {
 		require(antiDoping == true, "ERR_B");
 		_;
 	}
-
+	modifier notMinted() {
+		require(mintCount == 0, "ERR_C"); // Check if the nft has already been mint
+		_;
+	}
 	// Events ---------------------------------
 	event throwInCupMinted(address mint);
 	event throwInWinnersAdd(address organizer, address winners);
@@ -95,7 +98,12 @@ contract ThrowIn is ERC721, Ownable {
 
 	///@dev Mint the only possible edition of the NFT Cup
 	///@param tokenId Token id of the NFTA Artist got the Uri
-	function mintCup(uint256 tokenId) external onlyOwner whenNotPaused {
+	function mintCup(uint256 tokenId)
+		external
+		onlyOwner
+		whenNotPaused
+		notMinted
+	{
 		require(mintCount == 0, "ERR_C"); // Check if the nft has already been mint
 		uint256 balance = Token.balanceOf(msg.sender); // Check the minter balance
 
