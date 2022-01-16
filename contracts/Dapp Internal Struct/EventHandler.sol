@@ -220,6 +220,9 @@ contract EventHandler is Ownable {
 		return eventList[eventId - 1].organizedBy;
 	}
 
+	///@dev Define the medal for the event
+	///@param eventId id of the event
+	///@param medalID id of the medal
 	function eventSetMedal(uint256 eventID, uint256 medalID)
 		internal
 		isInRange(eventID, eventCount)

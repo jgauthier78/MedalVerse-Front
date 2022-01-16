@@ -35,30 +35,6 @@ contract SportsmanHandler is Ownable {
 	event sportsmanMedalAdded(address sportsmanId, uint256 medalID);
 
 	// Methods -------------------------------
-	///@dev Register an author, given an address
-	///@param _user Address of the user to register as author
-	function addSportsman(address _user) internal onlyOwner isNotNull(_user) {
-		registeredSportsman.push(_user);
-		Sportsman storage _sportsMan = allSportsman[_user];
-		_sportsMan.userAddress = _user;
-		emit sportsmanAdded(_user);
-	}
-
-	///@dev Sportsman registers to an Event
-	///@param _sportsMan Address of the user sportsman
-	///@param eventId id of the event to register to
-	function registerSportsmanToEvent(address _sportsMan, uint256 eventId)
-		internal
-		onlyOwner
-		isNotNull(_sportsMan)
-		isNotNullUint256(eventId)
-	{
-		uint256 indx = allSportsman[_sportsMan].nbEventsSubscrided++;
-		allSportsman[_sportsMan].eventsSubscribed[indx] = eventId;
-		allSportsman[_sportsMan].eventsActivSubscription[eventId] = true;
-		allSportsman[_sportsMan].nbActivSubscriptions++;
-		emit sportsmanRegisterdEvent(_sportsMan, eventId);
-	}
 
 	struct SportsmanDesc {
 		address userAddress; // address used as ref
@@ -135,6 +111,8 @@ contract SportsmanHandler is Ownable {
 		return result;
 	}
 
+	///@dev Returns the medals of a sportsman
+	///@param sportsmanId id of the sportsman
 	function getSportsmanMedalList(address sportsmanId)
 		external
 		view
@@ -143,6 +121,8 @@ contract SportsmanHandler is Ownable {
 		return allSportsman[sportsmanId].medalList;
 	}
 
+	///@dev Gets the number of medal owned by the Sportsman
+	///@param sportsmanId id of the sportsman
 	function getSportsmanMedalCount(address sportsmanId)
 		external
 		view
@@ -151,6 +131,9 @@ contract SportsmanHandler is Ownable {
 		return allSportsman[sportsmanId].medalList.length;
 	}
 
+	///@dev Returns a specific medal of a sportsman
+	///@param sportsmanId id of the sportsman
+	///@param indx indx of a sportsman
 	function getSportsmanMedal(address sportsmanId, uint256 indx)
 		public
 		view
@@ -160,8 +143,36 @@ contract SportsmanHandler is Ownable {
 		return allSportsman[sportsmanId].medalList[indx];
 	}
 
+	///@dev Affect a medal to a sportsman
+	///@param sportsmanId id of the sportsman
+	///@param medalID id of the medal
 	function sportsmanAddMedal(address sportsmanId, uint256 medalID) internal {
 		allSportsman[sportsmanId].medalList.push(medalID);
 		emit sportsmanMedalAdded(sportsmanId, medalID);
+	}
+
+	///@dev Register an author, given an address
+	///@param _user Address of the user to register as author
+	function addSportsman(address _user) internal onlyOwner isNotNull(_user) {
+		registeredSportsman.push(_user);
+		Sportsman storage _sportsMan = allSportsman[_user];
+		_sportsMan.userAddress = _user;
+		emit sportsmanAdded(_user);
+	}
+
+	///@dev Sportsman registers to an Event
+	///@param _sportsMan Address of the user sportsman
+	///@param eventId id of the event to register to
+	function registerSportsmanToEvent(address _sportsMan, uint256 eventId)
+		internal
+		onlyOwner
+		isNotNull(_sportsMan)
+		isNotNullUint256(eventId)
+	{
+		uint256 indx = allSportsman[_sportsMan].nbEventsSubscrided++;
+		allSportsman[_sportsMan].eventsSubscribed[indx] = eventId;
+		allSportsman[_sportsMan].eventsActivSubscription[eventId] = true;
+		allSportsman[_sportsMan].nbActivSubscriptions++;
+		emit sportsmanRegisterdEvent(_sportsMan, eventId);
 	}
 }

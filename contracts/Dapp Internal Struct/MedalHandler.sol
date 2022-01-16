@@ -24,28 +24,34 @@ contract MedalHandler is Ownable {
 
 	// Methods -------------------------------
 
+	///@dev Add a medal to the list of available Medals
+	///@param orgID id of the organization
+	///@param evntID id of the event
 	function addMedal(
 		address _nft,
-		uint256 oID,
-		uint256 eID
+		uint256 orgID,
+		uint256 evntID
 	) internal {
 		medalList.push(
 			Medal({
 				throwIn: _nft,
 				winner: address(0),
-				organizationID: oID,
-				eventID: eID,
+				organizationID: orgID,
+				eventID: evntID,
 				isInWinnerGallery: false
 			})
 		);
 
-		emit MedalAdded(medalList.length - 1, eID);
+		emit MedalAdded(medalList.length - 1, evntID);
 	}
 
+	///@dev Returns the number of medal in the contract
 	function getMedalCount() public view returns (uint256) {
 		return medalList.length;
 	}
 
+	///@dev Returns the nmedal for a specific id
+	///@param medalID id of the Medal to get
 	function getMedal(uint256 medalID)
 		external
 		view
@@ -55,6 +61,9 @@ contract MedalHandler is Ownable {
 		return medalList[medalID];
 	}
 
+	///@dev Affects the id of the Winner to the Medal
+	///@param medalID id of the Medal to set
+	///@param _winner address of the Winner
 	function setMedalWinner(uint256 medalID, address _winner)
 		internal
 		indexInRange(medalID)
@@ -62,6 +71,9 @@ contract MedalHandler is Ownable {
 		medalList[medalID].winner = _winner;
 	}
 
+	///@dev Allow the medal to be published in the gallery
+	///@param medalID id of the Medal to set
+	///@param status published or not
 	function medalPublish(uint256 medalID, bool status)
 		internal
 		indexInRange(medalID)

@@ -259,6 +259,10 @@ contract OrganizerHandler is Ownable {
 
 	event organizerAddedEvent();
 
+	///@dev Add an event to an organization
+	///@param organizerID id of the organizer
+	///@param organizationId id of the organization
+	///@param eventID id of the event
 	function organizerAddEvent(
 		uint256 organizerID,
 		uint256 organizationId,

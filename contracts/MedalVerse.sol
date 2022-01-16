@@ -206,7 +206,7 @@ contract MedalVerse is
 	}
 
 	///@dev Check balance contract
-	///@return return balance contract
+	///@return returns balance contract
 	function getBalance() external view returns (uint256) {
 		return Token.balanceOf(address(this));
 	}

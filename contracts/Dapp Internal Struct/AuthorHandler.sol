@@ -104,7 +104,7 @@ contract AuthorHandler is Ownable {
 		return allAuthors[_author].creations;
 	}
 
-	///@dev returns the list of creations: they may be inactive, must test activ value TESTED
+	///@dev returns the list of creations
 	///@param _start start index  - paging
 	///@param _end ending index - paging
 	function getCreationList(uint256 _start, uint256 _end)
