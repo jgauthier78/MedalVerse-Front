@@ -932,7 +932,7 @@ class App extends Component {
         // https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#events-allevents
 
         if (medalVerseContractInstance.medalVerseContractEvents === undefined) {
-            console.log("OLD medalVerseContractInstance.medalVerseContractEvents === undefined")
+            console.log("medalVerseContractInstance.medalVerseContractEvents === undefined")
             const eventsOptions = { fromBlock: 'latest' } // , address: medalVerseContractAddress, topics: []
             // Create event handler
             var medalVerseContractEvents = medalVerseContractInstance.events.allEvents
@@ -940,10 +940,10 @@ class App extends Component {
                 { eventsOptions },
                 (error, result) => {
                     if (error) {
-                        console.error("OLD medalVerseContractInstance: %s error: %s", medalVerseContractInstance.options.address, error);
+                        console.error("medalVerseContractInstance: %s error: %s", medalVerseContractInstance.options.address, error);
                     }
                     else {
-                        console.log("OLD medalVerseContractInstance: %s result: " + JSON.stringify(result), medalVerseContractInstance.options.address);
+                        console.log("medalVerseContractInstance: %s result: " + JSON.stringify(result), medalVerseContractInstance.options.address);
                     }
                 }
             ); // erc20ContractInstance.events.allEvents
@@ -961,11 +961,11 @@ class App extends Component {
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
-                        console.error("OLD App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
+                        console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventStatusChanged:event.returnValues===undefined")
                     } else {
                         // ! eventID != eventId !
                         if (event.returnValues.eventId === undefined) {
-                            console.error("OLD eventStatusChanged:No 'eventId' returned")
+                            console.error("eventStatusChanged:No 'eventId' returned")
                         }
                         else {
                             this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
@@ -981,11 +981,11 @@ class App extends Component {
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
                     if (event.returnValues === undefined) {
-                        console.error("OLD App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
+                        console.error("App::MedalVerse_SetEventHandler:medalVerseContractEvents.on('data':eventWinnerSet:event.returnValues===undefined")
                     } else {
                         // ! eventID != eventId !
                         if (event.returnValues.eventId === undefined) {
-                            console.error("OLD eventWinnerSet:No 'eventId' returned")
+                            console.error("eventWinnerSet:No 'eventId' returned")
                         }
                         else {
                             this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
@@ -996,27 +996,27 @@ class App extends Component {
                 }
                 // Event
                 else if (event.event === "MedalAdded") {
-                    console.log("OLD MedalAdded")
+                    console.log("MedalAdded")
                 }
                 // Event
                 else if (event.event === "sportsmanMedalAdded") {
-                    console.log("OLD sportsmanMedalAdded")
+                    console.log("sportsmanMedalAdded")
                 }
                 // Event
                 else if (event.event === "sportsmanUnregisterdEvent") {
-                    console.log("OLD sportsmanUnregisterdEvent")
+                    console.log("sportsmanUnregisterdEvent")
                 }
                 // Event
                 else if (event.event === "sportsmanRegisterdEvent") {
-                    console.log("OLD sportsmanRegisterdEvent")
+                    console.log("sportsmanRegisterdEvent")
                 }
                 // Event
                 else if (event.event === "sportsmanAdded") {
-                    console.log("OLD sportsmanAdded")
+                    console.log("sportsmanAdded")
                 }
                 // Unknown Event
                 else {
-                    console.error("OLD Unknown event : %s", event.event)
+                    console.error("Unknown event : %s", event.event)
                 }
 
             }); // medalVerseContractEvents.on
