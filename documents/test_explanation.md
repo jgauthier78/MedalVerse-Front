@@ -121,7 +121,7 @@ Cas de bon Fonctionnement
 ## Token
    
    
-###contrat Medal:
+### contrat Medal:
    
 Cas de bon Fonctionnement
   * **A**-*Verifie que la supply est bonne et dans le bon wallet*
