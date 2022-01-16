@@ -11,7 +11,7 @@ import AthleteMain from "./components/Pages/AthleteMain";
 import RedirectTo from "./components/UIElements/RedirectTo";
 
 // React router
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, UNSAFE_LocationContext } from 'react-router-dom'
 
 // Toast
 import { ToastContainer, toast } from 'react-toastify';
@@ -150,7 +150,6 @@ class App extends Component {
                             :
                             <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                         }
-
                     />
                     <Route exact path='organizer/*' element={this.state.redirectTo === null ?
                         <I18nextProvider i18n={i18next}>
@@ -169,7 +168,9 @@ class App extends Component {
                         <RedirectTo to={this.state.redirectTo} resetNavigateTo={this.resetNavigateTo} />
                     } />
 
-                    <Route element={NotFound} />
+                    <Route component={
+                        <RedirectTo to="/" resetNavigateTo={this.resetNavigateTo} />
+                    } />
                 </Routes>
             </BrowserRouter >
         )
@@ -299,7 +300,7 @@ class App extends Component {
 
     disconnect = () => {
         this.setState({ userDetails: null, isConnected: false, userRole: 0 })
-        this.setState({ redirectTo: "/" })
+        this.setState({ redirectTo: "/unknown" })
     }
 
     getUserDetails = () => {
