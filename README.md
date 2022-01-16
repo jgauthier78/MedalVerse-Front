@@ -102,6 +102,8 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 |Adresse de déploiement|[deployed_addresses.md](deployed_addresses.md)|
 |Aide a l'installation|[INSTALL.MD](INSTALL.MD)|
 |Tests|[test_explanation.md](test_explanation.md)|
+|design_patterns.md|[design_patterns.md](design_patterns.md)|
+
 
 </br>
 </br>
