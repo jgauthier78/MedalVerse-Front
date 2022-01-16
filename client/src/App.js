@@ -679,7 +679,7 @@ class App extends Component {
 
     updateOrganizerEvent = async (eventId, organization) => {
         // REFRESH DATA
-        // console.log("updateOrganizerEvent:eventId=" + eventId)
+        console.log("REFRESH DATA -> updateOrganizerEvent:eventId=" + eventId)
         let updatedEvent = await this.getEventData(eventId, organization)
         let userOrganizationEvents = organization.events
         for (let userOrgEventIdx = 0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++) {
@@ -696,7 +696,7 @@ class App extends Component {
 
     updateOrganizationsEventOnEvent = async (eventId, organizations) => {
         // REFRESH DATA
-        // console.log("updateOrganizationsEventOnEvent:eventId=" + eventId)
+        console.log("REFRESH DATA -> updateOrganizationsEventOnEvent:eventId=" + eventId)
         if (organizations === undefined) { console.error("App::updateOrganizationsEventOnEvent:organizations===undefined") }
         if (eventId === undefined) { console.error("App::updateOrganizationsEventOnEvent:eventId===undefined") }
 
@@ -952,11 +952,10 @@ class App extends Component {
             medalVerseContractInstance.medalVerseContractEvents = medalVerseContractEvents;
 
             medalVerseContractEvents.on('data', event => {
-                // alert("event.event=" + event.event)
+                // 
                 // Event
                 if (event.event === "eventStatusChanged") {
-
-                    // console.log("eventStatusChanged")
+                    console.log("EVENT -> eventStatusChanged")
                     // console.log("event.returnValues= " + Object.entries(event.returnValues));
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
@@ -968,6 +967,7 @@ class App extends Component {
                             console.error("eventStatusChanged:No 'eventId' returned")
                         }
                         else {
+                            // Update data
                             this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
                             let eventStatusChanged = { title: "Event updated", level: "success" }
                             this.showEvent(eventStatusChanged, undefined)
@@ -976,7 +976,7 @@ class App extends Component {
                 }
                 // Event
                 else if (event.event === "eventWinnerSet") {
-                    // console.log("eventWinnerSet")
+                    console.log("EVENT -> eventWinnerSet")
                     // console.log("event.returnValues= " + event.returnValues);
                     let userOrganizations = this.state.userOrganizations
                     // REFRESH DATA
