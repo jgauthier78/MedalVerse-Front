@@ -104,7 +104,6 @@ contract ThrowIn is ERC721, Ownable {
 		whenNotPaused
 		notMinted
 	{
-		require(mintCount == 0, "ERR_C"); // Check if the nft has already been mint
 		uint256 balance = Token.balanceOf(msg.sender); // Check the minter balance
 
 		require(balance > MDL_Mint_Royalties); // Check the balance is greater than the price
