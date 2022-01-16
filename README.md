@@ -96,12 +96,14 @@ utilise  le module cross-env pour lancer un navigateur spécifique : modifier pa
 ## Documents Annexes
 |DOCUMENT|FICHIER|
 |---:|:---|
-|Optimisations utilisées|[Optimisations.md](Optimisations.md)
-|Liste des codes d'erreur|[Error_Code.md](Error_Code.md)|
+|design_patterns.md|[design_patterns.md](design_patterns.md)|
 |Audit de sécurité|[avoiding_common_attacks.md](avoiding_common_attacks.md)|
+|Optimisations utilisées|[Optimisations.md](Optimisations.md)
+|Tests|[test_explanation.md](test_explanation.md)|
+|Liste des codes d'erreur|[Error_Code.md](Error_Code.md)|
 |Adresse de déploiement|[deployed_addresses.md](deployed_addresses.md)|
 |Aide a l'installation|[INSTALL.MD](INSTALL.MD)|
-|Tests|[test_explanation.md](test_explanation.md)|
+
 
 </br>
 </br>
