@@ -446,14 +446,13 @@ class App extends Component {
 
     getOrganizerOrganisations = async () => {
         try {
-            const contratInstance = this.state.contractEvents // this.state.contract
             // console.log("getOrganizerOrganisations")
             let account = this.getAccounts()
             //let result = { organizations: null }
             const result = []
             if (this.state.contract !== null && this.state.contract !== undefined) {
                 // We get the list of organization the organizer subscribed to uint256[]
-                let organisationList = await contratInstance.methods.getOrganizerOrganisationList(account).call()
+                let organisationList = await this.state.contract.methods.getOrganizerOrganisationList(account).call()
                 // console.log("organisationList.length=" + organisationList.length)
                 if (organisationList.length > 0) {
                     // For each organization this organizer belongs to
@@ -461,7 +460,7 @@ class App extends Component {
                         // console.log("organisationId=" + organisationId)
                         let organization = {};
                         // Load ONE organization details
-                        let organizationList = contratInstance.methods.getOrganizationsList(organisationId, organisationId).call()
+                        let organizationList = await this.state.contract.methods.getOrganizationsList(organisationId, organisationId).call()
                         // console.log("organizationList="+ JSON.stringify( organizationList ) )
                         organization["id"] = organisationId
                         organization["name"] = organizationList[0][0]
@@ -472,7 +471,7 @@ class App extends Component {
                         organization["events"] = []
                         // console.log("organization[]="+ JSON.stringify( organization ) )
                         // Load organization admins ids list uint256[]
-                        let adminsList = await contratInstance.methods.getAdminList(organisationId).call()
+                        let adminsList = await this.state.contract.methods.getAdminList(organisationId).call()
                         if (adminsList.length > 0) {
                             // For each admin
                             adminsList.forEach(adminId => {
@@ -480,7 +479,7 @@ class App extends Component {
                                 organization["admins"].push({ id: adminId })
                             }); // For each admin
                         }
-                        let eventsList = await contratInstance.methods.getEventList(organisationId).call()
+                        let eventsList = await this.state.contract.methods.getEventList(organisationId).call()
                         // console.log("eventsList.length=" + eventsList.length)
                         if (eventsList.length > 0) {
                             await Promise.all(eventsList.map(async (eventId) => {
@@ -511,8 +510,7 @@ class App extends Component {
     adminSetWinner = async (eventId, athleteAdr) => {
         // console.log("App::adminSetWinner: eventId=" + eventId + " athleteAdr=" + athleteAdr + " this.getAccounts()=" + this.getAccounts())
         try {
-            const contratInstance = this.state.contract // this.state.contractEvents
-            await contratInstance.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
+            await this.state.contract.methods.adminSetWinner(eventId, athleteAdr).send({ from: this.getAccounts() })
             /// Data refresh : Handled by event
         } // try
         catch (error) {
@@ -525,9 +523,10 @@ class App extends Component {
     adminAddMedal = async (eventId) => {
         // console.log("App::adminAddMedal: eventId=" + eventId + " this.getAccounts()=" + this.getAccounts())
         try {
-            const contratInstance = this.state.contract // this.state.contractEvents
+            // Create NFT
+            // await this.createNFT()
             let adressNFT = 0
-            await contratInstance.methods.adminAddMedal(eventId, adressNFT).send({ from: this.getAccounts() })
+            await this.state.contract.methods.adminAddMedal(eventId, adressNFT).send({ from: this.getAccounts() })
             // Data refresh : Handled by event
         } // try
         catch (error) {
@@ -540,8 +539,8 @@ class App extends Component {
     createNFT = async (/*Todo params*/) => {
         // console.log("App::createNFT: ")
         try {
-            const contratInstance = this.state.contract // this.state.contractEvents
-            await contratInstance.methods.todo(/*Todo params*/).send({ from: this.getAccounts() })
+            // Create NFT
+            await this.state.contract.methods.todo(/*Todo params*/).send({ from: this.getAccounts() })
             // Data refresh : Handled by event
         } // try
         catch (error) {
@@ -575,8 +574,7 @@ class App extends Component {
 
     Event_getState = async (eventId) => {
         try {
-            const contratInstance = this.state.contractEvents // this.state.contract
-            let val = await contratInstance.methods.getEventCurrentState(eventId).call()
+            let val = await this.state.contract.methods.getEventCurrentState(eventId).call()
             const status_val = parseInt(val, 10)
             // console.log("Event_getState:status_val=" + status_val)
             return status_val
@@ -643,8 +641,7 @@ class App extends Component {
     }
 
     getEventData = async (eventId, organization) => {
-        const contratInstance = this.state.contractEvents // this.state.contract
-        let eventData = await contratInstance.methods.getEvent(eventId).call()
+        let eventData = await this.state.contract.methods.getEvent(eventId).call()
         // console.log("getEventData:eventId=" + eventId + " eventData:eventId=" +  eventData.eventId)
         // console.log("getEventData:eventData: " + Object.entries(eventData))
         let event = {
@@ -668,7 +665,7 @@ class App extends Component {
         //  console.log("stateOfCompetition="+event.stateOfCompetition)
         // Medal data
         let throwIn = {}
-        let medalData = await contratInstance.methods.getMedal(event.medalID).call()
+        let medalData = await this.state.contract.methods.getMedal(event.medalID).call()
         // ThrowIn contract data
         throwIn.address = medalData.throwIn
         throwIn.winner = medalData.winner
