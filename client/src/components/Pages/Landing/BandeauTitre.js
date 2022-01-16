@@ -45,9 +45,9 @@ const BandeauTitre = ({ AppCallBacks, loginCallBack }) => {
                                 <NavScroll label={t("LandingPage.menu.gallery")} linkTo="galerie" white={true} />
                                 <NavScroll label={t("LandingPage.menu.roadmap")} linkTo="timeline" white={true} />
                                 {AppCallBacks.isConnected() ?
-                                    <Button className="text-light btn-landing" variant="outline-secondary" onClick={AppCallBacks.disconnect}>{"Se Déconnecter"} <BoxArrowInRight style={{ verticalAlign: '-10%' }} /></Button>
+                                    <Button className="text-light btn-landing" variant="outline-secondary" onClick={AppCallBacks.disconnect}>{t("menu.LogoutButton")} <BoxArrowInRight style={{ verticalAlign: '-10%' }} /></Button>
                                     :
-                                    <Button className="text-light  btn-landing" variant="outline-secondary" onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {"Se Connecter"}</Button>
+                                    <Button className="text-light  btn-landing" variant="outline-secondary" onClick={loginCallBack}><BoxArrowInRight style={{ verticalAlign: '-10%' }} /> {t("menu.LoginButton")}</Button>
                                 }
                             </div>
 
