@@ -4,14 +4,19 @@ import { Container, Col, Row } from 'react-bootstrap';
 // Icons
 import { Clock } from 'react-bootstrap-icons';
 
-const Loading = ( /* {  } */) => {
-  return (
+const Loading = ( /* {  } */ ) =>
+{
+   return (
     <Container fluid expand="lg">
-
-    </Container>
+      <Row style={{backgroundColor: 'rgba(53, 112, 238, 0.829)'}}>
+        <Col xs lg="12" style={{ height: '70px'}}>
+        Loading ... <Clock style={{verticalAlign: '-10%'}}/>
+        </Col>
+      </Row>
+  </Container>
 
   ); // render
-
+    
 } // Toolbar
 
-export default Loading;
+export default Loading ;
