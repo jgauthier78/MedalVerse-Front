@@ -46,7 +46,7 @@ const EventLayout = ( { activEvents, AppCallBacks } ) =>
 
     const init = useCallback( async() => {
         // console.log(">EventLayout::init")
-        await AppCallBacks.MedalVerse_SetEventHandler(eventId)
+        await AppCallBacks.MedalVerse_SetEventHandler()
         setEvent( getEvent(activEvents, eventId) )
         // console.log("EventLayout::init<")
       }, [eventId,AppCallBacks,activEvents]/*[dependencies]*/)
