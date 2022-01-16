@@ -3,7 +3,6 @@ import /*React,*/ { Component, Suspense } from "react";
 
 // Components
 import Loading from './components/Loading';
-import NotFound from "./components/Pages/NotFound"
 import Gallerie from "./components/Pages/Gallerie"
 import LandingPage from "./components/Pages/LandingPage"
 import OrganizerMain from "./components/Pages/OrganizerMain";
