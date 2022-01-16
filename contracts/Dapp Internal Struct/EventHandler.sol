@@ -221,7 +221,7 @@ contract EventHandler is Ownable {
 	}
 
 	///@dev Define the medal for the event
-	///@param eventId id of the event
+	///@param eventID id of the event
 	///@param medalID id of the medal
 	function eventSetMedal(uint256 eventID, uint256 medalID)
 		internal
