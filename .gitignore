@@ -41,6 +41,4 @@ client/*.7z
 *.7z
 
 # Commenter pour déployer
-#client/src/contracts
-# Local Netlify folder
-.netlify
+client/src/contracts
