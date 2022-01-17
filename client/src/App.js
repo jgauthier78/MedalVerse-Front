@@ -235,7 +235,7 @@ class App extends Component {
             contract = await new web3.eth.Contract(MedalVerseContract.abi, deployedNetwork && deployedNetwork.address);
 
             // Second instance only for events
-            const web3ForEvents = new Web3("wss://rpc-mumbai.maticvigil.com/ws/v1/" + process.env.REACT_APP_MATIC_MUMBAY_INFURA_PROJECT_ID ) // VAR DEFINED IN HEROKU CONFIG https://devcenter.heroku.com/articles/config-vars#managing-config-vars
+            const web3ForEvents = new Web3("wss://rpc-mumbai.maticvigil.com/ws/v1/" + process.env.REACT_APP_MATIC_MUMBAY_INFURA_PROJECT_ID) // VAR DEFINED IN HEROKU CONFIG https://devcenter.heroku.com/articles/config-vars#managing-config-vars
             const medalVerseContractcontractInstanceForEvents = await new web3ForEvents.eth.Contract(MedalVerseContract.abi, deployedNetwork && deployedNetwork.address);
 
             if (contract.options.address === null || contract.options.address === undefined) {
@@ -394,7 +394,7 @@ class App extends Component {
 
     getUserMedals = async (account) => {
         try {
-            let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [], nftDesc: [] }
+            let result = { nbMedals: 0, nbMedalsInGallery: 0, Medals: [], Gallery: [], uriList: [], nftDesc: [], galleryUriList: [] }
             if (this.state.contract !== null && this.state.contract !== undefined) {
                 result.nbMedals = await this.state.contract.methods.getSportsmanMedalCount(account).call()
                 // for (let i = 0; i < result.nbMedals; i++) {
@@ -431,6 +431,7 @@ class App extends Component {
                     if (medal.succes.isInWinnerGallery) {
                         result.nbMedalsInGallery++
                         result.Gallery.push(medal)
+                        result.galleryUriList.push(img)
                     }
                 })) // await Promise.all
             } // contract defined
@@ -680,7 +681,7 @@ class App extends Component {
         // REFRESH DATA
         console.log("REFRESH DATA -> updateOrganizerEvent:eventId=" + eventId)
         let updatedEvent = await this.getEventData(eventId, organization)
-        console.log("updatedEvent="+Object.entries(updatedEvent) )
+        console.log("updatedEvent=" + Object.entries(updatedEvent))
         let userOrganizationEvents = organization.events
         for (let userOrgEventIdx = 0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++) {
             if (organization.events[userOrgEventIdx].eventId === eventId) {
@@ -921,7 +922,7 @@ class App extends Component {
     // -------------------------------------------------------------------------------------
 
     MedalVerse_SubscribeToEvents = (medalVerseContractInstance) => {
-        
+
         if (medalVerseContractInstance === undefined) {
             const error = "MedalVerse_SubscribeEvents:medalVerseContractInstance is undefined"
             console.log(error)
@@ -935,17 +936,17 @@ class App extends Component {
             const eventsOptions = { fromBlock: 'latest' } // , address: medalVerseContractAddress, topics: []
             // Create event handler
             var medalVerseContractEvents = medalVerseContractInstance.events.allEvents
-            (
-                { eventsOptions },
-                (error, result) => {
-                    if (error) {
-                        console.error("medalVerseContractInstance: %s error: %s", medalVerseContractInstance.options.address, error);
+                (
+                    { eventsOptions },
+                    (error, result) => {
+                        if (error) {
+                            console.error("medalVerseContractInstance: %s error: %s", medalVerseContractInstance.options.address, error);
+                        }
+                        else {
+                            console.log("medalVerseContractInstance: %s result: " + JSON.stringify(result), medalVerseContractInstance.options.address);
+                        }
                     }
-                    else {
-                        console.log("medalVerseContractInstance: %s result: " + JSON.stringify(result), medalVerseContractInstance.options.address);
-                    }
-                }
-            ); // erc20ContractInstance.events.allEvents
+                ); // erc20ContractInstance.events.allEvents
 
             // Set property to avoid creating event handler twice
             medalVerseContractInstance.medalVerseContractEvents = medalVerseContractEvents;
@@ -1038,7 +1039,7 @@ class App extends Component {
         this.MedalVerse_SubscribeToEvents(medalVerseContractInstance) // Only useful for local node
         this.MedalVerse_SubscribeToEvents(medalVerseContractcontractInstanceForEvents) // Used on Polygon
 
-}; // MedalVerse_SetEventHandler
+    }; // MedalVerse_SetEventHandler
 
 
 } // class App

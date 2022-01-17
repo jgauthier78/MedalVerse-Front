@@ -28,7 +28,9 @@ function getMedalCountString(medal) {
 const getImageSrcFromEvent = (evnt, i) => {
     return (evnt.encoursOrganisationDesc[i])[0].logoURI
 }
-const getOrgNameFromEvent = (evnt, i) => { return (evnt.encoursOrganisationDesc[i])[0].name }
+const getOrgNameFromEvent = (evnt, i) => {
+    return (evnt.encoursOrganisationDesc[i])[0].name
+}
 const getOrgDescFromEvent = (evnt, i) => { return (evnt.encoursOrganisationDesc[i])[0].description }
 const getEventStartDate = (evnt, i) => { return format_Date(((evnt.encoursEvent[i])).endDate) }
 const getEventEndDate = (evnt, i) => { return format_Date(((evnt.encoursEvent[i])).startDate) }
@@ -48,7 +50,7 @@ const MedalSlides = ({ web3, mdl }) => {
                         < section key={indx}
 
                             data-transition={indx === mdl.Gallery.length - 1 ? "fade" : "fade-in zoom-out"}
-                            data-background-image={mdl.uriList[indx]}
+                            data-background-image={mdl.galleryUriList[indx]}
 
 
                         >
