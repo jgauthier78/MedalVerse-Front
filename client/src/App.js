@@ -680,6 +680,7 @@ class App extends Component {
         // REFRESH DATA
         console.log("REFRESH DATA -> updateOrganizerEvent:eventId=" + eventId)
         let updatedEvent = await this.getEventData(eventId, organization)
+        console.log("updatedEvent="+Object.entries(updatedEvent) )
         let userOrganizationEvents = organization.events
         for (let userOrgEventIdx = 0; userOrgEventIdx < userOrganizationEvents.length; userOrgEventIdx++) {
             if (organization.events[userOrgEventIdx].eventId === eventId) {
@@ -706,7 +707,6 @@ class App extends Component {
             for (let userOrgEventIdx = 0; userOrgEventIdx < organizationEvents.length; userOrgEventIdx++) {
                 let userOrganizationEvent = organizationEvents[userOrgEventIdx]
                 // console.log("organizations.eventId=" + userOrganizationEvent.eventId)
-
                 if (eventId === userOrganizationEvent.eventId) {
                     // Update event
                     this.updateOrganizerEvent(userOrganizationEvent.eventId, organization)
