@@ -967,7 +967,9 @@ class App extends Component {
                         }
                         else {
                             // Update data
-                            this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
+                            setTimeout(() => {
+                                this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
+                            }, 1000);
                             let eventStatusChanged = { title: "Event updated", level: "success" }
                             this.showEvent(eventStatusChanged, undefined)
                         }
@@ -987,7 +989,9 @@ class App extends Component {
                             console.error("eventWinnerSet:No 'eventId' returned")
                         }
                         else {
-                            this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
+                            setTimeout(() => {
+                                this.updateOrganizationsEventOnEvent(event.returnValues.eventId, userOrganizations)
+                            }, 1000);
                             let eventWinnerSet = { title: "Winner set", level: "success" }
                             this.showEvent(eventWinnerSet, undefined)
                         }
