@@ -26,7 +26,7 @@ function getMedalCountString(medal) {
 
 
 const getImageSrcFromEvent = (evnt, i) => {
-    return (evnt.organisationDesc[i])[0].logoURI
+    return (evnt.encoursOrganisationDesc[i])[0].logoURI
 }
 const getOrgNameFromEvent = (evnt, i) => { return (evnt.encoursOrganisationDesc[i])[0].name }
 const getOrgDescFromEvent = (evnt, i) => { return (evnt.encoursOrganisationDesc[i])[0].description }
